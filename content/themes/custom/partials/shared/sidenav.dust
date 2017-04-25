@@ -1,0 +1,42 @@
+	<aside class="menu-wrapper">
+		<h3 class="menu-heading show-for-medium-up">{Sidenav.S.valikko}</h3>
+		<ul class="menu">
+			{#Sidenav.Content}
+			<li class="menu-item{?has_children} menu-item-has-children{/has_children}">
+				<a href={url}>{title}{?has_children}<span class="toggler"></span>{/has_children}</a>
+			{?has_children}
+				<ul class="sub-menu">
+					{#children}
+						<li class="menu-item{?has_sub_children} menu-item-has-children{/has_sub_children}">
+							<a href={permalink}>{post_title}{?has_sub_children}<span class="toggler"></span>{/has_sub_children}</a>
+							{?has_sub_children}
+								<ul class="sub-menu">
+									{#children}
+										<li class="menu-item"><a href={permalink}>{post_title}</a></li>
+									{/children}
+								</ul>
+							{/has_sub_children}
+						</li>
+					{/children}
+				</ul>
+			{/has_children}
+			</li>
+			{/Sidenav.Content}
+		</ul>
+		{! Search elements hide before implementation
+		<div class="sidenav-search">
+			<div class="sidenav-search__inner">
+				<label><i class="fa fa-search"></i></label>
+				<input placeholder="Hae aktiviteetteja" id="" class="form-control sidenav-search__input">
+			</div>
+		</div>!}
+		<div class="row lang-menu-row">
+			<div class="lang-menu-container">
+				<ul class="lang-menu">
+					{#Sidenav.LangSwitcher}
+						<li><a{?active} class="active"{/active} href="{url}">{language_code}</a></li>
+					{/Sidenav.LangSwitcher}
+				</ul>
+			</div>
+		</div>
+	</aside>

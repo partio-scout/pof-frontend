@@ -1,0 +1,16 @@
+/wp
+/vendor
+/shared
+/local-config.php
+/sql-dump-*.sql
+/db-sync
+/content/upgrade/
+.DS_Store
+/content/themes/custom/assets/scss/.sass-cache/
+.xml
+.idea
+/content/plugins/dustpress-debugger/
+/content/plugins/dustpress-comments/
+/content/plugins/dustpress-js/
+/content/plugins/advanced-custom-fields-pro/
+/content/themes/custom/config.codekit

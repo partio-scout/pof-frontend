@@ -1,0 +1,481 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "38cd5a3c750fb25ae7020e8c0c46572a",
+    "packages": [
+        {
+            "name": "composer/installers",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/installers.git",
+                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/installers/zipball/79ad876c7498c0bbfe7eed065b8651c93bfd6045",
+                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0"
+            },
+            "replace": {
+                "roundcube/plugin-installer": "*",
+                "shama/baton": "*"
+            },
+            "require-dev": {
+                "composer/composer": "1.0.*@dev",
+                "phpunit/phpunit": "4.1.*"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Composer\\Installers\\Plugin",
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Installers\\": "src/Composer/Installers"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kyle Robinson Young",
+                    "email": "kyle@dontkry.com",
+                    "homepage": "https://github.com/shama"
+                }
+            ],
+            "description": "A multi-framework Composer library installer",
+            "homepage": "https://composer.github.io/installers/",
+            "keywords": [
+                "Craft",
+                "Dolibarr",
+                "Eliasis",
+                "Hurad",
+                "ImageCMS",
+                "Kanboard",
+                "MODX Evo",
+                "Mautic",
+                "Maya",
+                "OXID",
+                "Plentymarkets",
+                "Porto",
+                "RadPHP",
+                "SMF",
+                "Thelia",
+                "WolfCMS",
+                "agl",
+                "aimeos",
+                "annotatecms",
+                "attogram",
+                "bitrix",
+                "cakephp",
+                "chef",
+                "cockpit",
+                "codeigniter",
+                "concrete5",
+                "croogo",
+                "dokuwiki",
+                "drupal",
+                "elgg",
+                "expressionengine",
+                "fuelphp",
+                "grav",
+                "installer",
+                "itop",
+                "joomla",
+                "kohana",
+                "laravel",
+                "lavalite",
+                "lithium",
+                "magento",
+                "mako",
+                "mediawiki",
+                "modulework",
+                "moodle",
+                "phpbb",
+                "piwik",
+                "ppi",
+                "puppet",
+                "reindex",
+                "roundcube",
+                "shopware",
+                "silverstripe",
+                "sydes",
+                "symfony",
+                "typo3",
+                "wordpress",
+                "yawik",
+                "zend",
+                "zikula"
+            ],
+            "time": "2017-04-24T06:37:16+00:00"
+        },
+        {
+            "name": "devgeniem/dustpress",
+            "version": "1.6.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/devgeniem/dustpress.git",
+                "reference": "bac704a73029db95ef89f47676531effafe9b172"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/devgeniem/dustpress/zipball/bac704a73029db95ef89f47676531effafe9b172",
+                "reference": "bac704a73029db95ef89f47676531effafe9b172",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "dustpress.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Miika Arponen",
+                    "email": "miika.arponen@geniem.com",
+                    "homepage": "http://geniem.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Ville Siltala",
+                    "email": "ville.siltala@geniem.com",
+                    "homepage": "http://geniem.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "WordPress Theme Framework.",
+            "keywords": [
+                "dustjs",
+                "dustpress",
+                "framework",
+                "javascript",
+                "theme",
+                "wordpress"
+            ],
+            "time": "2017-04-21T09:50:39+00:00"
+        },
+        {
+            "name": "devgeniem/dustpress-debugger",
+            "version": "1.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/devgeniem/dustpress-debugger.git",
+                "reference": "f0f457d40b94add2816285bf66e5046a48d77bed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/devgeniem/dustpress-debugger/zipball/f0f457d40b94add2816285bf66e5046a48d77bed",
+                "reference": "f0f457d40b94add2816285bf66e5046a48d77bed",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "^1.0.12",
+                "devgeniem/dustpress": ">=0.4.0.2",
+                "php": ">=5.4"
+            },
+            "type": "wordpress-plugin",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Miika Arponen",
+                    "email": "miika.arponen@geniem.com",
+                    "homepage": "http://geniem.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Ville Siltala",
+                    "email": "ville.siltala@geniem.com",
+                    "homepage": "http://geniem.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Provides handy ajaxified debugger tool for DustPress based themes.",
+            "keywords": [
+                "debugger",
+                "dustjs",
+                "dustpress",
+                "framework",
+                "javascript",
+                "plugin",
+                "theme",
+                "wordpress"
+            ],
+            "time": "2017-02-21T14:25:41+00:00"
+        },
+        {
+            "name": "devgeniem/dustpress-js",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/devgeniem/dustpress-js.git",
+                "reference": "3a98a6ae4c51652b12573ab3405f5bfd803ac086"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/devgeniem/dustpress-js/zipball/3a98a6ae4c51652b12573ab3405f5bfd803ac086",
+                "reference": "3a98a6ae4c51652b12573ab3405f5bfd803ac086",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "^1.0.12",
+                "devgeniem/dustpress": ">=0.4.0",
+                "php": ">=5.4"
+            },
+            "type": "wordpress-plugin",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Ville Siltala",
+                    "email": "ville.siltala@geniem.com",
+                    "homepage": "http://geniem.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Miika Arponen",
+                    "email": "miika.arponen@geniem.com",
+                    "homepage": "https://github.com/Nomafin"
+                }
+            ],
+            "description": "A DustPress plugin that provides a handy JavaScript library for using your DustPress Model methods on the front end.",
+            "keywords": [
+                "debugger",
+                "dustjs",
+                "dustpress",
+                "framework",
+                "javascript",
+                "plugin",
+                "theme",
+                "wordpress"
+            ],
+            "time": "2017-03-13T12:52:58+00:00"
+        },
+        {
+            "name": "johnpbloch/wordpress",
+            "version": "4.7.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnpbloch/wordpress.git",
+                "reference": "373c6caed518228364a8bc004ae05e877d74364a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/373c6caed518228364a8bc004ae05e877d74364a",
+                "reference": "373c6caed518228364a8bc004ae05e877d74364a",
+                "shasum": ""
+            },
+            "require": {
+                "johnpbloch/wordpress-core": "4.7.4",
+                "johnpbloch/wordpress-core-installer": "~0.2",
+                "php": ">=5.3.2"
+            },
+            "type": "package",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "WordPress Community",
+                    "homepage": "http://wordpress.org/about/"
+                }
+            ],
+            "description": "WordPress is web software you can use to create a beautiful website or blog.",
+            "homepage": "http://wordpress.org/",
+            "keywords": [
+                "blog",
+                "cms",
+                "wordpress"
+            ],
+            "time": "2017-04-20T20:49:27+00:00"
+        },
+        {
+            "name": "johnpbloch/wordpress-core",
+            "version": "4.7.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnpbloch/wordpress-core.git",
+                "reference": "46c55710c3f7aa99c6377151e626c98d7fb4b959"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/46c55710c3f7aa99c6377151e626c98d7fb4b959",
+                "reference": "46c55710c3f7aa99c6377151e626c98d7fb4b959",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "wordpress-core",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "WordPress Community",
+                    "homepage": "http://wordpress.org/about/"
+                }
+            ],
+            "description": "WordPress is web software you can use to create a beautiful website or blog.",
+            "homepage": "http://wordpress.org/",
+            "keywords": [
+                "blog",
+                "cms",
+                "wordpress"
+            ],
+            "time": "2017-04-20T19:59:59+00:00"
+        },
+        {
+            "name": "johnpbloch/wordpress-core-installer",
+            "version": "0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnpbloch/wordpress-core-installer.git",
+                "reference": "a04c2c383ef13aae077f36799ed2eafdebd618d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core-installer/zipball/a04c2c383ef13aae077f36799ed2eafdebd618d2",
+                "reference": "a04c2c383ef13aae077f36799ed2eafdebd618d2",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0"
+            },
+            "conflict": {
+                "composer/installers": "<1.0.6"
+            },
+            "require-dev": {
+                "composer/composer": "1.0.*@dev"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "johnpbloch\\Composer\\WordPressCorePlugin"
+            },
+            "autoload": {
+                "psr-0": {
+                    "johnpbloch\\Composer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "John P. Bloch",
+                    "email": "me@johnpbloch.com"
+                }
+            ],
+            "description": "A custom installer to handle deploying WordPress with composer",
+            "keywords": [
+                "wordpress"
+            ],
+            "time": "2015-06-11T15:15:30+00:00"
+        },
+        {
+            "name": "partio-scout/wordpress-advanced-custom-fields-pro",
+            "version": "5.3.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:partio-scout/wordpress-advanced-custom-fields-pro.git",
+                "reference": "19b40278f4ce86e4e2adfef08fba1164daaafc0a"
+            },
+            "type": "wordpress-plugin",
+            "extra": {
+                "installer-name": "advanced-custom-fields-pro"
+            },
+            "license": [
+                "GPLv2 or later"
+            ],
+            "authors": [
+                {
+                    "name": "elliotcondon"
+                }
+            ],
+            "description": "Customise WordPress with powerful, professional and intuitive fields",
+            "time": "2017-04-25T11:06:39+00:00"
+        },
+        {
+            "name": "predis/predis",
+            "version": "v1.1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nrk/predis.git",
+                "reference": "98ec0cc27efc1efab32b369962f97e29ecc0464a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/98ec0cc27efc1efab32b369962f97e29ecc0464a",
+                "reference": "98ec0cc27efc1efab32b369962f97e29ecc0464a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net"
+                }
+            ],
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+            "homepage": "http://github.com/nrk/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "time": "2016-11-22 14:32:30"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "predis/predis": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

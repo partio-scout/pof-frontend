@@ -1,0 +1,119 @@
+{#PageTaskgroupDemo}
+
+	{>"shared/header" /}
+
+	{>"shared/content_hero" /}
+
+		{#Content}
+
+			<div class="content-bg">
+
+				<div class="row">
+
+					<div class="page-wrapper clearfix">
+
+						{>"shared/sidenav" /}
+
+						<main class="content-wrapper clearfix">					
+
+							<div class="content-inner">
+
+								{>"shared/sidenav_button" /}
+
+								{>"shared/breadcrumbs" /}
+
+								{>"shared/second_langnav" /}
+
+								{! Otsikko-osio !}
+
+								<section class="content__headers">
+									<h1 class="content__main-header">Leirikokki</h1>
+								</section>
+
+								{! Tekstiosio !}
+
+								<section class="task-group__header" data-equalizer data-equalizer-mq="medium-up">
+
+									{! logo ifin sisään !}
+									<div class="task-group__logo-container" data-equalizer-watch>
+										<img src="{WP.template_directory}/assets/img/seikkailijat.png" alt="">
+									</div>
+									<div class="task-group__text-container" data-equalizer-watch>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus sint quas obcaecati, ipsum, ipsam commodi atque nam facilis vero tempore minus, dicta facere dolorem voluptas mollitia praesentium ad nisi accusamus.</p>
+									</div>
+
+								</section>
+
+								<section class="tasks">
+
+									<div class="row tasks__heading-row">
+										<div class="columns small-12">
+											<h3 class="tasks__filter-heading opened">Pakolliset aktiviteetit<i class="fa fa-chevron-down"></i></h3>
+										</div>
+									</div>
+									<div class="row tasks__body-row opened">
+										<div class="columns medium-6">
+											{>"shared/task_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/task_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/task_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/task_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/task_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/task_item_demo.dust" /}
+										</div>
+									</div>
+
+									<div class="row tasks__heading-row">
+										<div class="columns small-12">
+											<h3 class="tasks__filter-heading opened">Valinnaiset aktiviteetit<i class="fa fa-chevron-down"></i></h3>
+										</div>
+									</div>
+									<div class="row tasks__body-row opened">
+
+										<div class="columns medium-6">
+											{>"shared/task_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/task_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/task_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/task_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/task_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/task_item_demo.dust" /}
+										</div>
+									</div>
+									
+								</section>
+
+								{>"shared/comments_demo" /}
+
+							</div>
+
+						</main>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		{/Content}
+
+	{>"shared/footer" /}
+{/PageTaskgroupDemo}

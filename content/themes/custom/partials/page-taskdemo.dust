@@ -1,0 +1,65 @@
+{#PageTaskDemo}
+
+	{>"shared/header" /}
+
+	{>"shared/content_hero" /}
+
+		{#Content}
+
+			<div class="content-bg">
+
+				<div class="row">
+
+					<div class="page-wrapper clearfix">
+
+						{>"shared/sidenav" /}
+
+						<main class="content-wrapper clearfix">					
+
+							<div class="content-inner">
+
+								{>"shared/sidenav_button" /}
+
+								{>"shared/breadcrumbs" /}
+
+								{>"shared/second_langnav" /}
+
+								{! Otsikko-osio !}
+
+								<section class="content__headers">
+									<h1 class="content__main-header">Opettelen valmistamaan ruokaa retkikeittimellä</h1>
+									<h2 class="ingress">Sudenpentu oppii retkikeittimen käytön perusteet.</h2>
+								</section>
+
+								{! Tekstiosio !}
+
+								<section class="text-content">
+									<p>Harjoitelkaa retkikeittimen kokoamista ensin akelan johdolla. Varmistakaa, että jokainen sudenpentu saa kokeilla vuorollaan retkikeittimen kasaamista ja pakkaamista. Akela huolehtii polttonesteen laittamisesta ja retkikeittimen sytyttämisestä. Valmistakaa retkikeittimellä jokin yksinkertainen ruoka tai juoma. Hyviä ja helppoja vaihtoehtoja ovat erilaiset padat: yhdistäkää esimerkiksi makaronia, nakkeja ja pakastevihanneksia tai nuudelia, kinkkusuikaleita ja maissia. Askeleeseen on helppo yhdistää myös muita ruoanvalmistukseen liittyviä aktiviteetteja. Teen keittäminen luonnon antimista onnistuu esimerkiksi havunneulasista.</p>
+								</section>
+
+								{! Tähän toinen text-content, joka on wp:stä tuleva rikastussisältö !}
+
+								<section class="print not-printable">
+									<a class="print-button"><i class="fa fa-print"></i>Tulosta sivu</a>
+								</section>
+
+								{>"shared/task_info_demo" /}
+
+								{>"shared/tips_demo" /}
+
+								{>"shared/comments_demo" /}
+
+							</div>
+
+						</main>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		{/Content}
+
+	{>"shared/footer" /}
+{/PageTaskDemo}

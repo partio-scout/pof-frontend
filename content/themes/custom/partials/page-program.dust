@@ -1,0 +1,42 @@
+{#PageProgram}
+
+	{>"shared/header" /}
+
+	{>"shared/content_hero" /}
+
+		{#Content}
+
+			<div class="content-bg">
+
+				<div class="row">
+
+					<div class="page-wrapper clearfix">
+
+						{>"shared/sidenav" /}
+
+						<main class="content-wrapper clearfix">					
+
+							<div class="content-inner">
+
+								{>"shared/sidenav_button" /}
+								
+								{>"shared/breadcrumbs" /}
+
+								{>"shared/program-langnav" /}
+
+								<div id="program-content">
+									{>"layouts/content-program" /}
+								</div>
+
+						</main>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		{/Content}
+
+	{>"shared/footer" /}
+{/PageProgram}

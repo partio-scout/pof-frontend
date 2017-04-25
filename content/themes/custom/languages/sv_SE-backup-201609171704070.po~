@@ -1,0 +1,253 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Project-Id-Version: Partio-ohjelma Theme\n"
+"POT-Creation-Date: 2016-09-17 20:02+0300\n"
+"PO-Revision-Date: 2016-09-17 17:03+0000\n"
+"Last-Translator: partioadmin <ville.siltala@geniem.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: style.css\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: sv_SE"
+
+#: functions/function-geniem_admin.php:41 
+#: functions/function-geniem_admin.php:42
+msgid "CDN-asetukset"
+msgstr ""
+
+#: functions/function-geniem_admin.php:46 
+#: functions/function-geniem_admin.php:47
+msgid "Sivuston asetukset"
+msgstr ""
+
+#: functions/function-menus.php:3
+msgid "Main Menu"
+msgstr ""
+
+#: functions/function-post_types.php:4
+msgid "Header images"
+msgstr ""
+
+#: functions/function-post_types.php:5
+msgid "Header image"
+msgstr ""
+
+#: functions/function-post_types.php:6
+msgid "Add new"
+msgstr ""
+
+#: functions/function-post_types.php:7
+msgid "Add new header image"
+msgstr ""
+
+#: functions/function-post_types.php:8
+msgid "Edit header image"
+msgstr ""
+
+#: functions/function-post_types.php:9
+msgid "New header image"
+msgstr ""
+
+#: functions/function-post_types.php:10
+msgid "All header images"
+msgstr ""
+
+#: functions/function-post_types.php:11
+msgid "View header image"
+msgstr ""
+
+#: functions/function-post_types.php:12
+msgid "Find header images"
+msgstr ""
+
+#: functions/function-post_types.php:13
+msgid "No header images found"
+msgstr ""
+
+#: functions/function-post_types.php:14
+msgid "No header images in trash"
+msgstr ""
+
+#: models/page-agegroup.php:51 models/page-taskgroup.php:98
+msgid "Selectable"
+msgstr ""
+
+#: models/page-agegroup.php:52 models/page-task.php:108 
+#: models/page-taskgroup.php:99
+msgid "Obligatory"
+msgstr ""
+
+#: models/page-task.php:93
+msgid "Execution and goals"
+msgstr ""
+
+#: models/page-task.php:94
+msgid "Additional information"
+msgstr ""
+
+#: models/page-task.php:95
+msgid "Equipment"
+msgstr ""
+
+#: models/page-task.php:96
+msgid "Activity group"
+msgstr ""
+
+#: models/page-task.php:97
+msgid "Paraller"
+msgstr ""
+
+#: models/page-task.php:98
+msgid "Choose"
+msgstr ""
+
+#: models/page-task.php:99
+msgid "Skill areas"
+msgstr ""
+
+#: models/page-task.php:100 models/shared/tips.php:47
+msgid "Tips"
+msgstr ""
+
+#: models/page-task.php:101
+msgid "Comments"
+msgstr ""
+
+#: models/page-task.php:102
+msgid "Keywords"
+msgstr ""
+
+#: models/page-task.php:103
+msgid "Preparation"
+msgstr ""
+
+#: models/page-task.php:104
+msgid "Length"
+msgstr ""
+
+#: models/page-task.php:105
+msgid "Level"
+msgstr ""
+
+#: models/page-task.php:106
+msgid "Leaders task"
+msgstr ""
+
+#: models/page-task.php:107
+msgid "Leadership skills"
+msgstr ""
+
+#: models/page-task.php:109
+msgid "Group size"
+msgstr ""
+
+#: models/page-task.php:110
+msgid "Place"
+msgstr ""
+
+#: models/page-task.php:111
+msgid "Educational goals"
+msgstr ""
+
+#: models/page-task.php:112
+msgid "Goal"
+msgstr ""
+
+#: models/page-task.php:113
+msgid "Description"
+msgstr ""
+
+#: models/shared/attachments.php:9
+msgid "Attachments"
+msgstr ""
+
+#: models/shared/attachments.php:10 models/shared/tips.php:53
+msgid "Pictures"
+msgstr ""
+
+#: models/shared/attachments.php:11
+msgid "Documents"
+msgstr ""
+
+#: models/shared/attachments.php:12
+msgid "Links"
+msgstr ""
+
+#: models/shared/breadcrumbs.php:30
+msgid "Front page"
+msgstr ""
+
+#: models/shared/comments.php:10
+msgid "Lisää kommentti"
+msgstr ""
+
+#: models/shared/comments.php:11
+msgid "Lähetä"
+msgstr ""
+
+#: models/shared/footer.php:8
+msgid "Back up"
+msgstr ""
+
+#: models/shared/footer.php:9
+msgid "Sitemap"
+msgstr ""
+
+#: models/shared/tips.php:48
+msgid "Order"
+msgstr ""
+
+#: models/shared/tips.php:49
+msgid "Latest"
+msgstr ""
+
+#: models/shared/tips.php:50
+msgid "Most popular"
+msgstr ""
+
+#: models/shared/tips.php:51
+msgid "Show more"
+msgstr ""
+
+#: models/shared/tips.php:52
+msgid "Add a tip"
+msgstr ""
+
+#: models/shared/tips.php:54
+msgid "Send"
+msgstr ""
+
+#: models/shared/tips.php:55
+msgid "Name"
+msgstr ""
+
+#: models/shared/tips.php:56
+msgid "Title"
+msgstr ""
+
+#: models/shared/tips.php:57
+msgid "Write your tips here"
+msgstr ""
+
+#: models/shared/tips.php:58
+msgid "Add an attachment"
+msgstr ""
+
+#. Theme Name of the plugin/theme
+msgid "Partio-ohjelma Theme"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Geniem Oy"
+msgstr ""

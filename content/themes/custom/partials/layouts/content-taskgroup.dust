@@ -1,0 +1,89 @@
+{! Otsikko-osio !}
+
+<section class="content__headers">
+	<h1 class="content__main-header">{Content.post_title}</h1>
+	{?Content.fields.api_ingress}
+		<h2 class="ingress">{Content.fields.api_ingress}</h2>
+	{/Content.fields.api_ingress}									
+</section>
+
+{! Tekstiosio !}
+
+<section class="task-group__header" data-equalizer data-equalizer-mq="medium-up">
+	
+	{#Content.fields.api_images}
+		<div class="task-group__logo-container" data-equalizer-watch>
+			<a href="{logo.url}"><img src="{logo.thumbnail.url}" alt="{logo.title}"></a>
+			<a href="{main_image.url}"><img src="{main_image.thumbnail.url}" alt="{main_image.title}"></a>
+		</div>
+	{/Content.fields.api_images}
+	<div class="task-group__text-container" data-equalizer-watch>
+	{?Content.post_content}
+		{@content data=Content.post_content /}
+	{/Content.post_content}
+	</div>
+
+	{?Content.fields.custom_content}
+	<div class="task-group__text-container" data-equalizer-watch>
+		{@content data=Content.fields.custom_content /}
+	</div>
+	{/Content.fields.custom_content}
+
+</section>
+
+<section class="tasks">
+		{?Children.mandatory}
+			<div class="row tasks__heading-row">
+				<div class="columns small-12">
+					<h3 class="tasks__filter-heading opened">
+						{S.pakolliset} {Content.subtaskgroup_term.plural}<i class="fa fa-chevron-down"></i>
+					</h3>
+				</div>
+			</div>
+			<div class="row tasks__body-row opened">										
+				{#Children.mandatory}
+					<div class="columns small-12">
+						{>"shared/task_item.dust" /}
+						<section>
+							{#children}
+								{?fields.level}
+									<div class="columns large-3 tag-groups">
+										{>"shared/task_item.dust" /}	
+									</div>
+								{/fields.level}
+							{/children}
+						</section>
+					</div>
+				{/Children.mandatory}
+			</div>
+		{/Children.mandatory}	
+
+		{?Children.voluntary}
+			<div class="row tasks__heading-row">
+				<div class="columns small-12">
+					<h3 class="tasks__filter-heading opened">
+						{S.valinnaiset} {Content.subtaskgroup_term.plural}<i class="fa fa-chevron-down"></i>
+					</h3>
+				</div>
+			</div>
+			<div class="row tasks__body-row opened">										
+				{#Children.voluntary}
+					<div class="columns small-12">
+						{>"shared/task_item.dust" /}
+						<section>
+							{#children}
+								{?fields.level}
+									<div class="columns large-3 tag-groups">
+										{>"shared/task_item.dust" /}	
+									</div>
+								{/fields.level}
+							{/children}
+						</section>
+					</div>
+				{/Children.voluntary}
+			</div>
+		{/Children.voluntary}	
+</section>
+
+{! Liitteet !}
+{>"shared/attachments" /}

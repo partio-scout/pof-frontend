@@ -1,0 +1,50 @@
+{#PageGeneral}
+
+	{>"shared/header" /}
+
+	{>"shared/content_hero" /}
+
+		{#Content}
+
+			<div class="content-bg">
+
+				<div class="row">
+
+					<div class="page-wrapper clearfix">
+
+						{>"shared/sidenav" /}
+
+						<main class="content-wrapper">					
+
+							<div class="content-inner">
+
+								{>"shared/sidenav_button" /}
+
+								{>"shared/breadcrumbs" /}
+
+								{>"shared/second_langnav" /}
+
+								{! Otsikko-osio !}
+
+								<section class="content__headers">
+									<h1 class="content__main-header">{post_title}</h1>
+								</section>
+
+								<section class="text-content">
+									{@content data=post_content /}
+								</section>
+
+							</div>
+
+						</main>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		{/Content}	
+
+	{>"shared/footer" /}
+{/PageGeneral}

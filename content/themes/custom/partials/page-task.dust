@@ -1,0 +1,45 @@
+{#PageTask}
+
+	{#Content}
+
+		{>"shared/header" /}
+
+		{>"shared/content_hero" /}
+
+				<div class="content-bg">
+
+					<div class="row">
+
+						<div class="page-wrapper clearfix">
+
+							{>"shared/sidenav" /}
+
+							<main class="content-wrapper">
+
+								<div class="content-inner">
+
+									{>"shared/sidenav_button" /}
+
+									{>"shared/breadcrumbs" /}
+
+									{>"shared/program-langnav" /}
+
+									<div id="program-content">
+										{>"layouts/content-task" /}
+									</div>
+
+								</div>
+
+							</main>
+
+						</div>
+
+					</div>
+
+				</div>
+
+		{>"shared/footer" /}
+
+	{/Content}
+
+{/PageTask}

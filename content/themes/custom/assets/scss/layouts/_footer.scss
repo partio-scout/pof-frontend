@@ -1,0 +1,77 @@
+
+.main-footer {
+	padding: rem-calc(32 0);
+	background-color: #28a9e1;//$partio_main_color;
+	color: $white;
+}
+
+.back-to-top {
+	text-align: center;
+}
+
+.back-to-top__link {
+	@extend %pt-sans;
+	display: inline-block;
+	text-transform: uppercase;
+	font-size: .6875rem;
+	padding-bottom: rem-calc(32);
+	color: $white;
+	i {
+		color: $partio_main_color_lightest;
+		// font-size: .875em;
+		&.bef {
+			padding-right: .5rem;
+		}
+
+		&.aft {
+			padding-left: .5rem;
+		}
+	}
+	&:hover {
+		color: $white;
+		i {
+			color: $jet;
+		}
+	}
+}
+
+.footer__info {
+	padding-bottom: rem-calc(16);
+
+	p {
+		@extend %pt-sans;
+		text-transform: uppercase;
+		color: $white;
+		font-size: .6875rem;
+		margin: 0;
+		padding-bottom: rem-calc(16);
+	}
+}
+
+.sivukartta {
+	color: $white;
+	font-size: .875em;
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.main-footer__logo {
+	max-width: 140px;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	display: block;
+}
+
+.partio-spinner {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: 0 auto;
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	opacity: 0.9;
+}

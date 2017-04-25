@@ -1,0 +1,8 @@
+<div class="row lang-menu-row">
+	<div class="lang-menu-container">
+		<ul class="lang-menu">
+			<li><a class="active" href="">FI</a></li>
+			<li><a href="">SV</a></li>
+		</ul>
+	</div>
+</div>

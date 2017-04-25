@@ -1,0 +1,5 @@
+<nav class="breadcrumbs">
+	<a href="{WP.home}/etusivu">Etusivu</a>
+	<a href="{WP.home}/ajankohtaista">Ajankohtaista</a>
+	<a href="{WP.home}/ajankohtaista/uutisartikkeli" class="current">Uutisartikkeli</a>
+</nav>

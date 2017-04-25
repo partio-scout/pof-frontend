@@ -1,0 +1,255 @@
+{#PageAgegroupDemo}
+
+	{>"shared/header" /}
+
+	{>"shared/content_hero" /}
+
+		{#Content}
+
+			<div class="content-bg">
+
+				<div class="row">
+
+					<div class="page-wrapper clearfix">
+
+						{>"shared/sidenav" /}
+
+						<main class="content-wrapper clearfix">					
+
+							<div class="content-inner">
+
+								{>"shared/sidenav_button" /}
+
+								{>"shared/breadcrumbs" /}
+
+								{>"shared/second_langnav" /}
+
+								{! Otsikko-osio !}
+
+								<section class="content__headers">
+									<h1 class="content__main-header">Sudenpennut (7-9 v.)</h1>
+								</section>
+
+								<section class="task-group__header age-group__header clearfix">
+
+									{! logo ifin sisään !}
+									<div class="age-group__logo-container">
+										<img src="{WP.template_directory}/assets/img/seikkailijat.png" alt="">
+									</div>
+									<div class="age-group__text-container">
+
+										<p>Sudenpentu tekee retkiä pesästään ulkopuoliseen maailmaan, vielä kuitenkin lähellä kotipesää. Sudenpentu on innokas, reipas ja riehakas, mutta herkkä. Toimintaa kuvaavat sanat: puuhailu, tarinat, tutustuminen, harjaantuminen ja ohjeiden mukaan toimiminen.</p>
+										
+										<p>Sudenpentujen ohjelma koostuu <strong>jäljistä</strong> ja <strong>askeleista</strong>. Jälkiä eli aktiviteettikokonaisuuksia on yhteensä 35. Jokaisessa jäljessä on tarjolla 8 - 12 askelta eli aktiviteettia. Jäljet on jaettu pakollisiin ja valinnaisiin askeliin. Jäljessä tehdään pakolliset askeleet sekä valinnaisista askeleista vähintään kaksi.</p>
+
+										<p>Jäljet on sijoitettu neljään kasvatustavoitteiden mukaiseen <strong>osioon</strong>. Kustakin osiosta tulee tehdä vähintään yksi jälki toimintavuoden aikana.</p>
+
+										<p>Lisämateriaalia: </p>
+
+										<ul>
+											<li>
+												<a href="http://www.scandinavianoutdoorstore.com/partiotuotteet/kasikirjat-ja-oppaat/sudenpennun-jaljet/" target="_blank">Sudenpennun jäljet -kirja</a>
+											</li>
+										</ul>
+
+									</div>
+
+								</section>
+
+
+								<section class="tasks">
+
+									{! Osio vaihtuu !}
+
+									<div class="row tasks__heading-row">
+										<div class="columns small-12">
+											<h3 class="tasks__filter-heading opened">Aloitus<i class="fa fa-chevron-down"></i></h3>
+										</div>
+									</div>
+									<div class="row tasks__body-row opened">
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+									</div>
+
+									{! Osio vaihtuu !}
+
+									<div class="row tasks__heading-row">
+										<div class="columns small-12">
+											<h3 class="tasks__filter-heading opened">Suhde itseen<i class="fa fa-chevron-down"></i></h3>
+										</div>
+									</div>
+									<div class="row tasks__body-row opened">
+
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>								
+									</div>
+
+									{! Osio vaihtuu !}
+
+									<div class="row tasks__heading-row">
+										<div class="columns small-12">
+											<h3 class="tasks__filter-heading opened">Suhde toiseen<i class="fa fa-chevron-down"></i></h3>
+										</div>
+									</div>
+									<div class="row tasks__body-row opened">
+
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>						
+									</div>
+
+									{! Osio vaihtuu !}
+
+									<div class="row tasks__heading-row">
+										<div class="columns small-12">
+											<h3 class="tasks__filter-heading opened">Suhde toiseen<i class="fa fa-chevron-down"></i></h3>
+										</div>
+									</div>
+									<div class="row tasks__body-row opened">
+
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>					
+									</div>	
+
+									{! Osio vaihtuu !}
+
+									<div class="row tasks__heading-row">
+										<div class="columns small-12">
+											<h3 class="tasks__filter-heading opened">Suhde yhteiskuntaan<i class="fa fa-chevron-down"></i></h3>
+										</div>
+									</div>
+									<div class="row tasks__body-row opened">
+
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>			
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>												
+									</div>	
+
+									{! Osio vaihtuu !}
+
+									<div class="row tasks__heading-row">
+										<div class="columns small-12">
+											<h3 class="tasks__filter-heading opened">Siirtymä seikkailijoihin<i class="fa fa-chevron-down"></i></h3>
+										</div>
+									</div>
+									<div class="row tasks__body-row opened">
+
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>											
+									</div>	
+
+								</section>
+
+								{>"shared/comments_demo" /}
+
+							</div>
+
+						</main>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		{/Content}
+
+	{>"shared/footer" /}
+{/PageAgegroupDemo}

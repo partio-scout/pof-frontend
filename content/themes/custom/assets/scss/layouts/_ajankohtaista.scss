@@ -1,0 +1,34 @@
+
+// Sekä listaussivun että yksittäisen uutisjutun sivun css:t
+
+.ajankohtaista-list {
+	.event {
+		width: 100%;
+		max-width: 44rem;
+		border-bottom: 1px solid $partio_border_light_grey;
+		margin-bottom: 1rem;
+
+		&:last-of-type {
+			border-bottom: none;
+		}
+	}
+
+	.date {
+		margin-bottom: .5rem;
+	}
+
+	.event__block-link {
+		display: block;
+		color: $jet;
+		text-decoration: none;
+	}
+}
+
+.content__headers {
+	.date {
+		font-size: 1rem;
+		margin-top: 0;
+		@extend %garamond-italic;
+		color: $partio_main_color_lighter;
+	}
+}

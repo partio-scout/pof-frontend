@@ -1,0 +1,28 @@
+<div class="partio_topnav">
+	<div class="partio_topnav_inner">
+		<a class="logo-link" href="http://partio.fi"><h2 class="partio-logo ir">Partio</h2></a>
+		<div class="topnav__links">
+			<a href="http://partio.fi" class="topnav__link">Partio.fi</a>
+			<a href="http://toiminta.partio.fi" class="topnav__link">Toiminta.partio.fi</a>
+			<a href="http://ohjelma.partio.fi" class="topnav__link active">Ohjelma.Partio.fi</a>
+			<a href="http://partiojohtaja.fi" class="topnav__link">Partiojohtaja.fi</a>
+			<a href="https://teltta.partio.fi" class="topnav__link">Teltta</a>
+			<a href="https://kuksa.partio.fi" class="topnav__link">Kuksa</a>
+			<a href="https://posti.partio.fi/owa" class="topnav__link">Sähköposti</a>
+			<a href="http://adventtikalenteri.fi" class="topnav__link">Adventtikalenteri</a>
+		</div>
+	</div>
+	{>"langnav" /}
+</div>
+
+
+{! 			<div id="portal-nav"><div id="portal-nav-inner" class="clearfix"><a id="portal-nav-logo" href="http://www.partio.fi"><img src="http://www.partio.fi/sites/partio.fi/themes/partio/logo.png" alt="Partio.fi"></a><ul><li id="portalnavi_470"><a href="http://www.partio.fi">Partio.fi</a></li><li id="portalnavi_1132"><a href="http://toiminta.partio.fi">Toiminta.partio.fi</a></li><li id="portalnavi_735"><a href="http://ohjelma.partio.fi">Ohjelma.partio.fi</a></li><li id="portalnavi_471"><a href="http://www.partiojohtaja.fi/">Partiojohtaja.fi</a></li><li id="portalnavi_472"><a href="https://teltta.partio.fi/">Teltta</a></li><li id="portalnavi_736"><a href="https://kuksa.partio.fi">Kuksa</a></li><li id="portalnavi_1141"><a href="https://posti.partio.fi/owa/">Sähköposti</a></li><li id="portalnavi_1183"><a href="http://www.adventtikalenteri.fi">Adventtikalenteri.fi</a></li></ul><form class="google-cse" action="/" method="post" id="search-block-form" accept-charset="UTF-8"><div><div class="container-inline">
+			      <h2 class="element-invisible">Hakulomake</h2>
+			    <div class="form-item form-type-textfield form-item-search-block-form">
+			  <label class="element-invisible" for="edit-search-block-form--2">Etsi </label>
+			 <input title="Kirjoita haluamasi hakusanat." type="text" id="edit-search-block-form--2" name="search_block_form" value="" size="15" maxlength="128" class="form-text" style="background: url(https://www.google.com/cse/intl//images/google_custom_search_watermark.gif) 0% 50% no-repeat rgb(255, 255, 255);">
+			</div>
+			<div class="form-actions form-wrapper" id="edit-actions"><input alt="Search" type="image" id="edit-submit" name="submit" src="http://www.partio.fi/sites/partio.fi/themes/partio/images/button-search.png" class="form-submit"></div><input type="hidden" name="form_build_id" value="form-a6DXMOsMcR14ce1kgdA3-jrXuiu5eBiFPDbWMv9DKGk">
+			<input type="hidden" name="form_id" value="search_block_form">
+			</div>
+			</div></form></div></div> !}

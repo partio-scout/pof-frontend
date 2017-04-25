@@ -1,0 +1,175 @@
+
+
+.search-section {}
+
+.search-section__header {
+	color: $white;
+	padding-bottom: .5rem;
+	border-bottom: 1px solid $partio_main_color_lightest;
+	padding-top: 1rem;
+	margin-bottom: 1rem;
+
+	@extend %garamond-italic;
+
+	i {
+		font-size: .875rem;
+		transition: transform .3s ease;
+		-webkit-transition: -webkit-transform .3s ease;
+		color: $partio_main_color;
+		padding: 0 .5rem;
+	}
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	&.opened {
+		i {
+			transform: rotate(-180deg);
+			-webkit-transform: rotate(-180deg);
+		}
+	}
+}
+
+.search-section__body--always-open { 
+	padding: 0 0 1rem;
+}
+
+.search-section__body {
+	padding-left: .5rem;
+	height: 0;
+	overflow: hidden;
+	opacity: 0;
+
+	transform: scale3d(.9,.9,1);
+	-webkit-transform: scale3d(.9,.9,1);
+
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+
+	&.opened {
+		height: auto;
+
+		opacity: 1;
+
+		transform: scale3d(1,1,1);
+		-webkit-transform: scale3d(1,1,1);
+
+		transition: opacity .3s ease, transform .3s ease;
+		-webkit-transition: opacity .3s ease, -webkit-transform .3s ease;
+
+	}
+
+	.input-wrapper {
+
+		input {
+			margin: 0;
+		}
+		label {
+			color: $jet;
+			@extend %pt-sans;
+		}
+
+
+
+		input[type="checkbox"] {
+		    display:none;
+		}
+		input[type="checkbox"] + label span {
+		    display:inline-block;
+		    width:12px;
+		    height:12px;
+		    margin:-2px 4px 0 0;
+		    vertical-align:middle;
+		   	background-image: url(../img/checkbox.png);
+		   	background-size: 12px 12px;
+		   	background-repeat: no-repeat;
+
+		}
+		input[type="checkbox"]:checked + label span {
+		   	background-image: url(../img/checkbox-checked.png);
+		}
+
+
+
+		input[type="radio"] {
+		    display:none;
+		}
+		input[type="radio"] + label span {
+		    display:inline-block;
+		    width:12px;
+		    height:12px;
+		    margin:-2px 4px 0 0;
+		    vertical-align:middle;
+		   	background-image: url(../img/radio.png);
+		   	background-size: 12px 12px;
+		   	background-repeat: no-repeat;
+
+		}
+		input[type="radio"]:checked + label span {
+		   	background-image: url(../img/radio-checked.png);
+		}
+
+	}
+
+	fieldset {
+		border: none;
+		padding: 0;
+		margin: 0 0 1rem;
+		
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+}
+
+.ui-slider {
+	&.ui-slider-horizontal {
+		width: 90%;
+		margin-left: 5%;
+		border: none;
+		margin-top: 1rem;
+	}
+	.ui-slider-range{
+		background: none;
+		background-color: $partio-main-color-lightest;
+	}
+
+	.ui-slider-handle {
+		&:focus {
+			outline: none;
+		}
+		border: none;
+		top: -.2rem;
+	}
+}
+
+.input-wrapper {
+	input[type="text"][readonly].slider-label {
+		background-color: transparent;
+		border: none;
+		text-align: center;
+		padding: 0;
+		box-shadow: none;
+		font-size: rem-calc(14);
+	}
+}
+
+.search-section__body__header {
+	@extend %garamond-italic;
+	color: $partio_main_color;
+}
+
+.button-section	{
+	text-align: center;
+	.search-button {
+		font-size: rem-calc(14) !important;
+		text-transform: uppercase;
+		background-color: $button-bg-hover;
+		&:hover {
+			background-color: scale-color($button-bg-hover, $lightness: $button-function-factor);
+		}
+	}
+}
+

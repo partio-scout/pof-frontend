@@ -1,0 +1,88 @@
+
+{! Vinkit !}
+
+<section class="tips">
+
+	{! Vinkkiheader !}
+
+	<div class="tips__header">
+
+		<p class="tips__heading">Toteutusvinkit<span class="tip-count">(8kpl)</span><i class="fa fa-chevron-down"></i></p>
+		<div class="tips__header__border"></div>
+	</div>
+
+	{! Vinkkibody !}
+
+	<div class="tips__body opened">
+
+		{! Vinkkilista !}
+
+		<div class="tips__list clearfix">
+
+			<div class="sort-tips not-printable">
+				<span>Järjestys:</span>
+				<span class="sort-filter active">Uusimmat</span>
+				<span class="sort-filter">Suosituimmat</span>
+			</div>
+
+			<div class="tip">
+				<div class="tip__header clearfix">
+					<div class="tip__avatar">
+						<div class="tip__avatar__inner" style="background-image:url({WP.template_directory}/assets/img/partiologo.png)"></div>
+					</div>
+					<div class="tip__info">
+						<p class="tip__heading">Suomen Meripartiolaiset</p>
+						<p class="tip__date">23.06.2015</p>
+					</div>
+				</div>
+				<div class="tip__content">
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore ut distinctio magni labore, voluptatem laboriosam praesentium voluptatibus, rerum obcaecati voluptas ratione impedit. Corporis nesciunt quasi aliquid officia, fugit, voluptatibus alias! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla repudiandae aspernatur vel deserunt, exercitationem voluptatum accusamus iste adipisci consequatur molestias, fugiat, rem ab sint expedita repellendus deleniti, alias accusantium hic.</p>
+				</div>
+				<div class="tip__likes">
+					<i class="fa fa-heart"></i>
+					<span class="likes-count">3</span>
+				</div>
+			</div>
+
+			<div class="tip">
+				<div class="tip__header">
+					<div class="tip__info">
+						<p class="tip__heading">Suomen Partiolaiset</p>
+						<p class="tip__date">23.06.2015</p>
+					</div>
+				</div>
+				<div class="tip__content">
+					<p>Tämä on mallivinkki. Lopullisessa versiossa tähän voidaan liittää helposti kuvia tai esimerkiksi videoita Youtubesta.</p>
+				</div>
+				<div class="tip__likes">
+					<i class="fa fa-heart"></i>
+					<span class="likes-count">3</span>
+				</div>
+			</div>
+
+			<div class="show-more text-center not-printable">
+				<a href="#" class="show-more__link">Näytä lisää<i class="fa fa-arrow-down"></i></a>
+			</div>
+
+		</div>
+
+		{! Vinkkiform !}
+
+		<div class="tips__form-container not-printable">
+
+			<p class="tips__form-header">Lisää vinkki</p>
+			
+			<form action="" class="tips__form">
+				
+				<input class="radius" type="text" name="name" placeholder="Nimi *" aria-label="Name">
+				<input class="radius" type="text" name="title" placeholder="Otsikko *" aria-label="Title">
+				<textarea class="radius form-textarea" placeholder="Kirjoita vinkkisi tähän..."></textarea>
+				<input class="button radius" type="submit" name="submit-tip" value="Lähetä" aria-label="Send">
+
+			</form>
+
+		</div>
+
+	</div>
+
+</section>

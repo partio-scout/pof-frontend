@@ -1,0 +1,72 @@
+.content-hero-wrapper {
+	background-color: $partio_main_color;
+}
+
+.content-hero-bg {
+	width: 100%;
+	margin: 0 auto;
+	height: 40%;
+	min-height: 14rem;
+	position: relative;
+	background-color: $partio_main_color;
+	transition: min-height .3s ease;
+	&:after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		display: none;
+		background: linear-gradient(to right, $partio_main_color 0%, transparent 20%, transparent 80%, $partio_main_color 100%);
+	}
+}
+
+.content-hero__shade {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-position: 50% 50%;
+	background-size: cover;
+	opacity: .6;
+	// filter: grayscale(100%);
+	// -webkit-filter: grayscale(100%);
+}
+
+.content-hero__heading-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	top: 25%;
+	text-align: center;
+}
+.content-hero__heading {
+
+	@extend %garamond-italic;
+
+	color: $white;
+	margin: 0 auto;
+	width: 100%;
+	max-width: 20rem;
+	text-shadow: 1px 1px 0px $black;
+	font-size: 1rem;
+	padding: 0 .5rem;
+}
+
+@media #{$medium-up} {
+	.content-hero__heading {
+		font-size: 1.375rem;
+		max-width: 30rem;
+	}
+}
+
+@media #{$large-up} {
+	.content-hero__heading {
+		font-size: 1.375rem;
+		max-width: 40rem;
+	}
+}

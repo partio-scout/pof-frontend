@@ -1,0 +1,45 @@
+.content-inner {
+	.breadcrumbs {
+		padding-top: .5rem;
+		padding-bottom: .75rem;
+		@extend %pt-sans;
+		font-size: rem-calc(10);
+		text-transform: uppercase;
+		border-bottom: 1px solid $partio_border_light_grey;
+		a {
+			display: inline-block;
+			text-decoration: none;
+			position: relative;
+			line-height: 1;
+			padding: .5rem .5rem 0 0;
+			color: $partio_main_color_lighter;
+
+			&:after {
+				display: inline-block;
+				content: '/';
+				padding-left: .5rem;
+				color: $aluminum;
+			}
+
+
+			&:hover {
+				text-decoration: underline;
+				color: $partio_main_color;
+			}
+
+			&.current {
+				color: $jet;
+				&:hover {
+					color: inherit;
+				}
+			}
+
+			&:last-child {
+				&:after {
+					display: none;
+				}
+			}
+
+		}
+	}
+}

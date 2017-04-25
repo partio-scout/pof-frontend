@@ -1,0 +1,53 @@
+.second-lang-menu-container {
+	padding-bottom: .5rem;
+	.second-lang-menu {
+		list-style-type: none;
+		padding: .75rem 0;
+		margin: 0;
+		font-size: 0;
+		border-bottom: 1px solid $partio_border_light_grey;
+		width: auto;
+		display: inline-block;
+		li {
+			display: inline-block;
+			padding: 0;
+			i {
+				color: $tuatara;
+				font-size: rem-calc(12);
+				display: inline-block;
+				padding-right: .5rem;
+			}
+
+			a {
+				font-size: rem-calc(10);
+				color: $partio_main_color_lighter;
+				@extend %pt-sans;
+				position: relative;
+				display: block;
+				text-decoration: none;
+				padding-right: .5rem;
+				&:after {
+					display: inline-block;
+					content: '/';
+					padding-left: .5rem;
+					color: $aluminum;
+				}
+
+
+				&:hover {
+					text-decoration: underline;
+					color: $partio_main_color;
+				}
+
+				&.active {
+					text-decoration: underline;
+					&:after { text-decoration: none; }
+				}
+
+			}
+
+			&:last-child a:after { display: none; }
+		}
+	}
+
+}

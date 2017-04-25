@@ -1,0 +1,22 @@
+	<div class="second-lang-menu-container not-printable">
+		<ul class="second-lang-menu" id="second-lang-menu">
+			<li><i class="fa fa-flag"></i></li>
+			{#ProgramLangnav.Lang.langs}
+				<li>
+                    {!
+                        Add data attributes to identify dynamic language links.
+                        These links control ajaxified content translations.
+                    !}
+                    <a
+                        class="{class}"
+                        href="{permalink}"
+                        data-id="{id}"
+                        data-lang="{lang}"
+                        data-model="{model}"
+                    ">
+                        {lang}
+                    </a>
+                </li>
+			{/ProgramLangnav.Lang.langs}
+		</ul>
+	</div>

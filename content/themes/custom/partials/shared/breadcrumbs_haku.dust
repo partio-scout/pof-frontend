@@ -1,0 +1,5 @@
+<nav class="breadcrumbs">
+	<a href="{WP.home}/etusivu">Etusivu</a>
+	<a href="{WP.home}/etusivu/ohjelma">Ohjelma</a>
+	<a href="{WP.home}/haku" class="current">Aktiviteettihaku</a>
+</nav>

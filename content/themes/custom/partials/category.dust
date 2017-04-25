@@ -1,0 +1,71 @@
+{#Category}
+
+	{#Content}
+
+	{>"shared/header" /}
+
+	{>"shared/content_hero" /}
+
+	<div class="content-bg">
+
+		<div class="row">
+
+			<div class="page-wrapper clearfix">
+
+				{>"shared/sidenav" /}
+
+				<main class="content-wrapper">					
+
+					<div class="content-inner">
+
+						{>"shared/sidenav_button" /}
+
+						{>"shared/breadcrumbs_ajankoht" /}
+
+						{! Otsikko-osio !}
+
+						<section class="content__headers mt05">
+							<h1 class="content__main-header">Ajankohtaista</h1>
+						</section>
+
+						{! Tekstiosio !}
+
+						<section class="text-content ajankohtaista-list">
+
+							{! Ajankohtaista -nostot !}
+
+						{#uutiset}
+
+							<div class="event">
+
+								<a href="{WP.template_url}/ajankohtaista/uutisartikkeli" class="event__block-link">
+									<div class="event__text-container">
+										<h4 class="event__heading">Uutisen otsikko</h4>
+										<div class="date"><span class="event__date">30.6.2015</span></div>
+										<p class="event__intro show-for-small">Tähän uutisen ote.</p>
+										<p class="event__intro show-for-medium-up">Tähän uutisen isompi ote.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae omnis harum id voluptatum autem cumque aliquam, corrupti sequi saepe similique, molestias cum deserunt, sapiente accusantium rem eaque fugiat facilis esse.</p>
+									</div>
+								</a>
+							</div>
+
+						{/uutiset}
+
+						<a href="#" class="button radius tdn">Lataa lisää</a>
+
+						</section>
+
+					</div>
+
+				</main>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	{>"shared/footer" /}
+
+	{/Content}
+
+{/Category}

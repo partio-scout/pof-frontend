@@ -1,0 +1,18 @@
+<section class="tips comments" id="comments-section" data-page="{ID}">	
+
+	<div class="tips__header not-printable">
+		<p class="tips__heading opened">{S.kommentit}<span class="tip-count" id="comments_count"></span><i class="fa fa-chevron-down"></i></p>
+		<div class="tips__header__border"></div>
+	</div>
+
+	{! Kommentit body !}
+
+	<div class="tips__body opened not-printable">
+		
+		{#Comments.Content}
+			{@comments form_args=form_args comments_args=comments_args /}
+		{/Comments.Content}
+
+	</div>
+
+</section>

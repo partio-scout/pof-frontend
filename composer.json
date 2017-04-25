@@ -1,0 +1,38 @@
+{
+    "name": "partio-scout/pof-frontend-private",
+    "config": {
+        "preferred-install": "source",
+        "discard-changes": false
+    },
+    "authors": [
+        {
+            "name": "Ville Siltala",
+            "email": "ville.siltala@geniem.com",
+            "homepage": "https://github.com/villesiltala",
+            "role": "Project Lead Developer"
+        }
+    ],
+    "require": {
+        "johnpbloch/wordpress-core-installer": "~0.1",
+        "johnpbloch/wordpress": "*",
+        "predis/predis": "1.1.*@dev",
+        "devgeniem/dustpress": "1.*",
+        "devgeniem/dustpress-debugger": "^1.2",
+        "devgeniem/dustpress-js": "*",
+        "partio-scout/wordpress-advanced-custom-fields-pro": "5.*"
+    },
+    "extra": {
+        "wordpress-install-dir": "wp",
+        "installer-paths": {
+            "content/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
+            "content/plugins/{$name}/": ["type:wordpress-plugin"],
+            "content/themes/{$name}/": ["type:wordpress-theme"]
+        }
+    },
+    "repositories": {
+        "1": {
+            "type": "git",
+            "url": "git@github.com:partio-scout/wordpress-advanced-custom-fields-pro.git"
+        }
+    }
+}

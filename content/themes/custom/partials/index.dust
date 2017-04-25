@@ -1,0 +1,9 @@
+{#Index}
+	{>"shared/header" /}
+
+	{#Content}
+		<h1></h1>
+	{/Content}
+
+	{>"shared/footer" /}	
+{/Index}

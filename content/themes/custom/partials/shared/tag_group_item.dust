@@ -1,0 +1,8 @@
+<div class="tag-group">
+	<div class="tag-group__icon">
+		<img src="{WP.template_directory}/assets/img/icon1.png" alt="">
+	</div>
+	<div class="tag-group__text">
+		<span>Pakollinen</span>
+	</div>
+</div>

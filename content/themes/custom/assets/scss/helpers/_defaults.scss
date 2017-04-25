@@ -1,0 +1,85 @@
+
+$tablet-breakpoint: em-calc(768);
+$tablet-range: ($tablet-breakpoint + em-calc(1), $medium-breakpoint);
+$tablet-up: "#{$screen} and (min-width:#{lower-bound($tablet-range)})";
+$tablet-only: "#{$screen} and (min-width:#{lower-bound($tablet-range)}) and (max-width:#{upper-bound($tablet-range)})";
+
+@media #{$tablet-up} {
+	.hide-for-tablet-up {
+		display: none !important;
+	}
+}
+
+.main-wrapper {
+	height: 100%;
+}
+
+.button {
+	&:focus {
+		outline: 0;
+	}
+	
+	&:active {
+		transform: translateY(2px);
+	}
+}
+// ANIMATTIOIDEN HELPERIT
+
+.delay_05 {
+	-webkit-animation-delay: .5s;
+	animation-delay: .5s;
+}
+
+.delay_1 {
+	-webkit-animation-delay: 1s;
+	animation-delay: 1s;
+}
+
+@-webkit-keyframes stretch {
+	0% {
+		width: 0rem;
+	}
+
+	100% {
+		width: 4rem;
+	}
+}
+
+@keyframes stretch {
+	0% {
+		width: 0rem;
+	}
+
+	100% {
+		width: 4rem;
+	}
+}
+
+.stretch {
+	-webkit-animation-name: stretch;
+	animation-name: stretch;
+}
+
+// image replacement
+
+.ir {
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.block {
+	display: block;
+}
+
+.columns + .columns:last-child {
+	float: left;
+}
+
+
+
+

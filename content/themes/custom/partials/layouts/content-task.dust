@@ -1,0 +1,22 @@
+{! Otsikko-osio !}
+
+<section class="content__headers">
+    <h1 class="content__main-header">{Content.post_title}</h1>
+    {?Content.fields.api_ingress}
+        <h2 class="ingress">{S.tavoite}: {Content.fields.api_ingress}</h2>
+    {/Content.fields.api_ingress}
+</section>
+
+{! Tekstiosio !}
+
+<section class="text-content">
+    <strong>{S.kuvaus}:</strong> {@content data=Content.post_content /}
+</section>
+
+{>"shared/task_info" /}
+
+{! Liitteet !}
+{>"shared/attachments" /}
+
+{! Vinkit !}
+{>"shared/tips" /}

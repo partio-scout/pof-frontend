@@ -1,0 +1,86 @@
+{
+    "key": "group_57cd76f867598",
+    "title": "Etusivu",
+    "fields": [
+        {
+            "key": "field_57cd770913051",
+            "label": "Nostot",
+            "name": "featured",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "min": "",
+            "max": "",
+            "layout": "table",
+            "button_label": "Lis\u00e4\u00e4 nosto",
+            "sub_fields": [
+                {
+                    "key": "field_57cd781b13053",
+                    "label": "Kuva",
+                    "name": "featured_image",
+                    "type": "image",
+                    "instructions": "Nostoon liittyv\u00e4 kuva",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "preview_size": "thumbnail",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": ""
+                },
+                {
+                    "key": "field_57cd775013052",
+                    "label": "Sis\u00e4lt\u00f6",
+                    "name": "featured_content",
+                    "type": "wysiwyg",
+                    "instructions": "Karusellielementin sis\u00e4lt\u00f6",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "all",
+                    "toolbar": "full",
+                    "media_upload": 1
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "models\/page-frontpage.php"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "modified": 1473086227
+}

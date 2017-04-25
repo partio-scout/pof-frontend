@@ -1,0 +1,32 @@
+.content-inner {
+	.ingress {
+		@extend %source_sans-pro;
+		margin: .5rem 0 0;
+	}
+}
+
+.print {
+	.print-button {
+		i {
+			padding-right: .5rem;
+			font-size: 1rem;
+			color: $partio_main_color;
+		}
+		color: $jet;
+		text-decoration: none;
+		&:hover {
+			color: $partio_main_color_lighter;
+			i {
+				color: inherit;
+			}
+		}
+	}
+}
+
+@media #{$large-up} {
+	.content-inner {
+		.ingress {
+			font-size: 1.5rem;
+		}
+	}
+}

@@ -1,0 +1,129 @@
+<section class="task-info">
+
+	<div class="task-info__body row" data-equalizer data-equalizer-mq="medium-up">
+		
+		<div class="columns medium-6 tag-groups" data-equalizer-watch>
+
+			<header class="task-info__header">
+				<h4 class="task-info__heading">Suoritustiedot</h4>
+			</header>
+		
+			{! {>"tag_group_item" /} !}
+
+			<div class="tag-group">
+				<div class="tag-group__icon">
+					<img src="{WP.template_directory}/assets/img/icon1.png" alt="">
+				</div>
+				<div class="tag-group__text">
+					<span>Pakollinen</span>
+				</div>
+			</div>
+
+			<div class="tag-group">
+				<div class="tag-group__icon">
+					<img src="{WP.template_directory}/assets/img/icon2.png" alt="">
+				</div>
+				<div class="tag-group__text">
+					<span>Kesto: 60min</span>
+				</div>
+			</div>
+
+			<div class="tag-group">
+				<div class="tag-group__icon">
+					<img src="{WP.template_directory}/assets/img/icon3.png" alt="">
+				</div>
+				<div class="tag-group__text">
+					<span>Valmisteluaika: 30min</span>
+				</div>
+			</div>
+
+			<div class="tag-group">
+				<div class="tag-group__icon">
+					<img src="{WP.template_directory}/assets/img/icon4.png" alt="">
+				</div>
+				<div class="tag-group__text">
+					<span>Kololla</span>
+				</div>
+			</div>
+
+			<div class="tag-group">
+				<div class="tag-group__icon">
+					<img src="{WP.template_directory}/assets/img/icon5.png" alt="">
+				</div>
+				<div class="tag-group__text">
+					<span>Metsässä</span>
+				</div>
+			</div>
+
+			<div class="tag-group">
+				<div class="tag-group__icon">
+					<img src="{WP.template_directory}/assets/img/icon6.png" alt="">
+				</div>
+				<div class="tag-group__text">
+					<span>Lauma</span>
+				</div>
+			</div>
+
+
+			{! Tarvikkeiden tag group on erilainen !}
+
+			<div class="tag-group">
+				<div class="tag-group__icon">
+					<img src="{WP.template_directory}/assets/img/icon1.png" alt="">
+				</div>
+				<div class="tag-group__text">
+					<div class="equipment">
+						<span class="equipment__heading">Tarvikkeet:</span>
+						<span class="equipment__item">Luonnonantimia</span>
+						<span class="equipment__item">Keitin</span>
+						<span class="equipment__item">Tulentekovälineet</span>
+					</div>
+				</div>
+			</div>
+				
+		</div>
+		
+		<div class="columns medium-6 additional-info" data-equalizer-watch>
+
+			<header class="task-info__header">
+				<h4 class="task-info__heading">Lisätiedot</h4>
+			</header>
+
+			<div class="current-task-group">
+				<p class="heading">Aktiviteettiryhmä</p>
+				<a href="#" class="link">Leirikokki</a>
+			</div>
+
+			<div class="other-tasks-from-current not-printable">
+				<p class="heading">Ryhmän muut aktiviteetit</p>
+				<form action="">
+			        <select class="radius">
+			          <option selected disabled>Valitse...</option>
+			          <option value="">Valmistan syötävää avotulella</option>
+			          <option value="">Opin pesemään kädet ja tiskaamaan leiriolosuhteissa</option>
+			          <option value="">Suunnittelemme lauman kanssa retken ruokalistan ja tiedän, mitkä ruoat ja ainekset voi ottaa retkelle mukaan</option>
+			          <option value="">Keitän teetä luonnonantimista</option>
+			          <option value="">Siivoan laumani kanssa retkialueen ja lajittelemme jätteet retkellä</option>
+			          <option value="">Opettelen laumani kanssa ruokalauluja ja -huutoja</option>
+			        </select>
+		        </form>
+			</div>
+
+			<div class="skills">
+				<p class="heading">Taitoalueet</p>
+				<a href="#" class="skill">Erä- ja leiritaidot</a>
+				<a href="#" class="skill">Luonnontuntemus ja -suojelu</a>
+				<a href="#" class="skill">Ruokakulttuuri</a>
+			</div>
+
+			<div class="skills keywords">
+				<p class="heading">Avainsanat</p>
+				<a href="#" class="keyword">Käytöskasvatus</a>
+				<a href="#" class="keyword">Sosiaaliset taidot</a>
+				<a href="#" class="keyword">Yhteiskuntakasvatus</a>
+			</div>
+
+		</div>
+
+	</div>
+</section>

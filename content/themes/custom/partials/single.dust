@@ -1,0 +1,90 @@
+{#Single}
+
+	{#Content}
+
+	{>"shared/header" /}
+
+	{>"shared/content_hero" /}
+
+	<div class="content-bg">
+
+		<div class="row">
+
+			<div class="page-wrapper clearfix">
+
+				{>"shared/sidenav" /}
+
+				<main class="content-wrapper">					
+
+					<div class="content-inner">
+
+						{>"shared/sidenav_button" /}
+
+						{>"shared/breadcrumbs_ajankoht" /}
+
+						{! Otsikko-osio !}
+
+						<section class="content__headers mt05">
+							<h1 class="content__main-header">Uutisen otsikko</h1>
+							<span class="date">30.6.2015 klo 15.43</span>
+						</section>
+
+						{! Tekstiosio !}
+
+						<section class="text-content">
+
+							<h2>Testiotsikko tässä ja vielä vähän pidempikin.</h2>
+							<p>
+								Seikkailijoiden ohjelma koostuu ilmansuunnista. Ohjelma alkaa kuukauden kestävällä tervetuloa-vaiheella, jonka aikana tutustutaan omaan seikkailijajoukkueeseen ja partioon. Tervetuloa-vaiheen jälkeen siirrytään tekemään pääilmansuuntia: pohjoista, etelää, itää ja länttä. Ilmansuunnista tehdään kaikki aktiviteetit.
+							</p>
+
+
+
+							<p>
+								Kuhunkin pääilmansuuntaan sisältyy:
+							</p>
+
+							<ul>
+								<li>Parisenkymmentä aktiviteettia eli tekemistä</li>
+								<li>Kaksi retkeä</li>
+								<li>Osallistuminen seikkailijakisoihin tai muuhun kisatapahtumaan</li>
+								<li>Vähintään yksi taitomerkki.</li>
+							</ul>
+
+							<h3>Testiotsikko tässä ja vielä vähän pidempikin.</h3>
+
+							<p>
+								Seikkailijoiden perusohjelma kestää kaksi vuotta. Valinnaisena kolmantena vuonna ohjelma koostuu väli-ilmansuunnista, jotka ovat talvileiri, <strong>palvelu</strong>, vaellus ja isojen kisat. Seikkailija saa merkin tervetuloa-vaiheesta sekä jokaisesta pää- ja väli-ilmansuunnasta. Seikkailijaikäkauden päätösmerkki on metallinen kompassiruusu.
+							</p>
+
+							<img src="{WP.template_directory}/assets/img/bg3.jpg" alt="">
+
+							<p>
+								Seikkailijoiden perusohjelma kestää kaksi vuotta. Valinnaisena kolmantena vuonna ohjelma koostuu väli-ilmansuunnista, jotka ovat talvileiri, <strong>palvelu</strong>, vaellus ja isojen kisat. Seikkailija saa merkin tervetuloa-vaiheesta sekä jokaisesta pää- ja väli-ilmansuunnasta. Seikkailijaikäkauden päätösmerkki on metallinen kompassiruusu.
+							</p>
+							
+							<p>Lisämateriaalia:</p>
+
+							<ul>
+								<li>
+									<a href="#">Reppu-kirja</a>
+								</li>
+							</ul>
+
+						</section>
+
+					</div>
+
+				</main>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	{>"shared/footer" /}
+
+	{/Content}
+
+{/Single}

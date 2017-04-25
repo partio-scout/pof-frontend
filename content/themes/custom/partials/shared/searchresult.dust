@@ -1,0 +1,46 @@
+<div class="search-result clearfix">
+
+	<div class="search-result__breadcrumbs">
+		<nav class="breadcrumbs">
+			<a href="{WP.home}/etusivu/ohjelma/ikaryhma">Sudenpennut (7-9 v.)</a>
+			<a href="{WP.home}/etusivu/ohjelma/ikaryhma/aktiviteettiryhma">Jälki: Leirikokki</a>
+			<a href="{WP.home}/etusivu/ohjelma/ikaryhma/aktiviteettiryhma/aktiviteetti" class="current">Keitän teetä luonnonantimista</a>
+		</nav>									
+	</div>
+
+	<div class="search-result__header">
+
+		<h4 class="search-result__heading"><a href="#">Ompelen itselleni ruokailuvälinepussin retkiä varten</a></h4>
+
+		<div class="search-result__icons">
+			<img src="{WP.template_directory}/assets/img/icon1.png" alt="">
+			<img src="{WP.template_directory}/assets/img/icon2.png" alt="">
+			<img src="{WP.template_directory}/assets/img/icon3.png" alt="">
+			<img src="{WP.template_directory}/assets/img/icon4.png" alt="">
+			<img src="{WP.template_directory}/assets/img/icon5.png" alt="">
+		</div>
+
+	</div>
+
+	<div class="search-result__body show-for-medium-up">
+		<a href="" class="post-link">
+			<p>Vartio tekee esittelyn lippukunnastaan esimerkiksi partiowikiin, paikalliseen lehteen tai ystävyysvartiolle toiselle paikkakunnalle tai ulkomaille. Esittelyn voi toteuttaa esimerkiksi tekstinä, valokuvina tai videolla. Esittely voi koskea myös lippukunnan historiaa tai muuta teemaa, ja sen voi toteuttaa haastattelemalla lippukunnan vanhoja jäseniä.
+			</p>
+		</a>
+	</div>
+
+	<div class="search-result__skills show-for-medium-up">
+		<span class="heading">Taitoalueet:</span>
+		<a href="#" class="skill">Erä- ja leiritaidot</a>
+		<a href="#" class="skill">Luonnontuntemus ja -suojelu</a>
+		<a href="#" class="skill">Ruokakulttuuri</a>
+	</div>
+
+	<div class="search-result__skills keywords show-for-medium-up">
+		<span class="heading">Avainsanat:</span>
+		<a href="#" class="keyword">Käytöskasvatus</a>
+		<a href="#" class="keyword">Sosiaaliset taidot</a>
+		<a href="#" class="keyword">Yhteiskuntakasvatus</a>
+	</div>
+
+</div>

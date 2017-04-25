@@ -1,0 +1,37 @@
+{#Footer}
+
+			<footer class="main-footer">
+
+				<div class="back-to-top">
+					<a href="#" class="back-to-top__link">
+						<i class="fa fa-arrow-up bef"></i>{S.takaisinylos}<i class="fa fa-arrow-up aft"></i>
+					</a>
+				</div>
+
+				<div class="footer__info text-center">
+					<p>
+						Suomen Partiolaiset – Finlands Scouter ry<br>
+						Töölönkatu 55, FI-00250 Helsinki - (09) 8865 1100 - info@partio.fi
+					</p>
+					<p>
+						Y-tunnus: 0202252-9, Rek.nro: 112.328<br>
+						Keräysluvat 2020/2013/4272 ja 2020/2013/4543
+					</p>
+
+					{!<p><a href="#" data-reveal-id="sivukartta" class="sivukartta">{S.sivukartta}</a></p>!}
+				</div>
+
+				<img class="main-footer__logo" src="{WP.template_directory}/assets/img/partiologovalk.png" alt="">
+			</footer>
+
+			{!>"sitemap" / !}
+
+			{@wpfooter /}
+
+		</div> {! end wrapper !}
+		<div class="partio-spinner">
+		 	<i class="fa fa-spinner fa-pulse fa-3x fa-align-center" aria-hidden="true"></i>
+		</div>
+		</body>
+	</html>
+{/Footer}

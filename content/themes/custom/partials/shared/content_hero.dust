@@ -1,0 +1,16 @@
+
+	<div class="content-hero-wrapper">
+		<div class="content-hero-bg">
+			{?Hero.image}
+				{#Hero.image}
+				<div class="content-hero__shade" alt="{fields.image.title}" title="{fields.image.title}" style="background-image:url({fields.image.url})"></div>
+				{/Hero.image}
+			{/Hero.image}
+			{?Hero.slogan}
+			<div class="content-hero__heading-container animated fadeIn delay_05">
+				<h3 class="content-hero__heading">{Hero.slogan}</h3>
+				<div class="hero__divider animated stretch delay_1"></div>
+			</div>
+			{/Hero.slogan}
+		</div>
+	</div>

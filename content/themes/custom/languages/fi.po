@@ -1,0 +1,252 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Partio-ohjelma Theme\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-28 19:11+0300\n"
+"PO-Revision-Date: 2016-09-28 19:34+0300\n"
+"Last-Translator: partioadmin <ville.siltala@geniem.com>\n"
+"Language-Team: Finnish\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.8.9\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: style.css\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: functions/function-geniem_admin.php:41
+#: functions/function-geniem_admin.php:42
+msgid "CDN-asetukset"
+msgstr ""
+
+#: functions/function-geniem_admin.php:46
+#: functions/function-geniem_admin.php:47
+msgid "Sivuston asetukset"
+msgstr ""
+
+#: functions/function-menus.php:3 models/shared/sidenav.php:47
+msgid "Main Menu"
+msgstr "Päävalikko"
+
+#: functions/function-post_types.php:4
+msgid "Header images"
+msgstr "Otsakekuvat"
+
+#: functions/function-post_types.php:5
+msgid "Header image"
+msgstr "Otsakekuva"
+
+#: functions/function-post_types.php:6
+msgid "Add new"
+msgstr "Lisää uusi"
+
+#: functions/function-post_types.php:7
+msgid "Add new header image"
+msgstr "Lisää uusi otsakekuva"
+
+#: functions/function-post_types.php:8
+msgid "Edit header image"
+msgstr "Muokkaa otsakekuvaa"
+
+#: functions/function-post_types.php:9
+msgid "New header image"
+msgstr "Uusi otsakekuva"
+
+#: functions/function-post_types.php:10
+msgid "All header images"
+msgstr "Kaikki otsakekuvat"
+
+#: functions/function-post_types.php:11
+msgid "View header image"
+msgstr "Näytä otsakekuva"
+
+#: functions/function-post_types.php:12
+msgid "Find header images"
+msgstr "Etsi otsakekuvia"
+
+#: functions/function-post_types.php:13
+msgid "No header images found"
+msgstr "Ei otsakekuvia"
+
+#: functions/function-post_types.php:14
+msgid "No header images in trash"
+msgstr "Ei otsakekuvia roskakorissa"
+
+#: models/page-agegroup.php:56 models/page-taskgroup.php:102
+msgid "Selectable"
+msgstr "Valinnaiset"
+
+#: models/page-agegroup.php:57 models/page-task.php:108
+#: models/page-taskgroup.php:103
+msgid "Obligatory"
+msgstr "Pakolliset"
+
+#: models/page-task.php:93
+msgid "Execution and goals"
+msgstr "Toteutus ja tavoitteet"
+
+#: models/page-task.php:94
+msgid "Additional information"
+msgstr "Lisätiedot"
+
+#: models/page-task.php:95
+msgid "Equipment"
+msgstr "Tarvikkeet"
+
+#: models/page-task.php:96
+msgid "Task group"
+msgstr "Aktiviteettiryhmä"
+
+#: models/page-task.php:97
+msgid "Paraller"
+msgstr "Rinnakkaiset"
+
+#: models/page-task.php:98
+msgid "Choose"
+msgstr "Valitse"
+
+#: models/page-task.php:99
+msgid "Skill areas"
+msgstr "Taitoalueet"
+
+#: models/page-task.php:100 models/shared/tips.php:47
+msgid "Tips"
+msgstr "Vinkit"
+
+#: models/page-task.php:101
+msgid "Comments"
+msgstr "Kommentit"
+
+#: models/page-task.php:102
+msgid "Keywords"
+msgstr "Avainsanat"
+
+#: models/page-task.php:103
+msgid "Preparation"
+msgstr "Valmistelu"
+
+#: models/page-task.php:104
+msgid "Length"
+msgstr "Kesto"
+
+#: models/page-task.php:105
+msgid "Level"
+msgstr "Taso"
+
+#: models/page-task.php:106
+msgid "Leaders task"
+msgstr "Johtajan tehtävä"
+
+#: models/page-task.php:107
+msgid "Leadership skills"
+msgstr "Johtamistaito"
+
+#: models/page-task.php:109
+msgid "Group size"
+msgstr "Ryhmäkoko"
+
+#: models/page-task.php:110
+msgid "Place"
+msgstr "Paikka"
+
+#: models/page-task.php:111
+msgid "Educational goals"
+msgstr "Kasvatustavoitteet"
+
+#: models/page-task.php:112
+msgid "Goal"
+msgstr "Tavoite"
+
+#: models/page-task.php:113
+msgid "Description"
+msgstr "Kuvaus"
+
+#: models/shared/attachments.php:9
+msgid "Attachments"
+msgstr "Liitteet"
+
+#: models/shared/attachments.php:10 models/shared/tips.php:53
+msgid "Pictures"
+msgstr "Kuvat"
+
+#: models/shared/attachments.php:11
+msgid "Documents"
+msgstr "Tiedostot"
+
+#: models/shared/attachments.php:12
+msgid "Links"
+msgstr "Linkit"
+
+#: models/shared/breadcrumbs.php:30
+msgid "Front page"
+msgstr "Etusivu"
+
+#: models/shared/footer.php:8
+msgid "Back up"
+msgstr "Takaisin ylös"
+
+#: models/shared/footer.php:9
+msgid "Sitemap"
+msgstr "Sivukartta"
+
+#: models/shared/tips.php:48
+msgid "Order"
+msgstr "Järjestys"
+
+#: models/shared/tips.php:49
+msgid "Latest"
+msgstr "Uusimmat"
+
+#: models/shared/tips.php:50
+msgid "Most popular"
+msgstr "Suosituimmat"
+
+#: models/shared/tips.php:51
+msgid "Show more"
+msgstr "Näytä lisää"
+
+#: models/shared/tips.php:52
+msgid "Add a tip"
+msgstr "Lisää vinkki"
+
+#: models/shared/tips.php:54
+msgid "Send"
+msgstr "Lähetä"
+
+#: models/shared/tips.php:55
+msgid "Name"
+msgstr "Nimi"
+
+#: models/shared/tips.php:56
+msgid "Title"
+msgstr "Otsikko"
+
+#: models/shared/tips.php:57
+msgid "Write your tips here"
+msgstr "Kirjoita vinkkisi tähän"
+
+#: models/shared/tips.php:58
+msgid "Add an attachment"
+msgstr "Lisää liite"
+
+#. Theme Name of the plugin/theme
+msgid "Partio-ohjelma Theme"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Geniem Oy"
+msgstr ""
+
+#~ msgid "Activity group"
+#~ msgstr "Aktiviteettiryhmä"
+
+#, fuzzy
+#~ msgid "Lähetä"
+#~ msgstr "Lähetä"

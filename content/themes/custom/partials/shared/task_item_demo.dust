@@ -1,0 +1,13 @@
+<a href="aktiviteetti" class="task">
+
+	<h5 class="task__heading">Keitän teetä luonnonantimista</h5>
+	<div class="task__icons">
+		<img src="{WP.template_directory}/assets/img/icon1.png" alt="">
+		<img src="{WP.template_directory}/assets/img/icon2.png" alt="">
+		<img src="{WP.template_directory}/assets/img/icon3.png" alt="">
+		<img src="{WP.template_directory}/assets/img/icon4.png" alt="">
+		<img src="{WP.template_directory}/assets/img/icon5.png" alt="">
+		<img src="{WP.template_directory}/assets/img/icon6.png" alt="">
+	</div>
+	<p class="task__ingress">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque minus reiciendis quibusdam ad ipsa enim alias? Asperiores nulla cumque recusandae sequi.</p>
+</a>

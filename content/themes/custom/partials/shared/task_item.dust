@@ -1,0 +1,15 @@
+<a href="{permalink}" class="task">
+	<h5 class="task__heading">{?fields.level}{fields.level}{/fields.level} {post_title}</h5>
+	<div class="task__icons">
+		{#fields.tags}
+			{#.values}
+				{?icon}
+					<div class="icon"><img src="{icon}" alt="{name}" title="{name}"></div>
+				{/icon}
+			{/.values}
+		{/fields.tags}
+	</div>
+	<p class="task__ingress">
+		{fields.api_ingress|s}
+	</p>
+</a>

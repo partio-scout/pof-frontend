@@ -1,0 +1,17 @@
+<a href="aktiviteetti" class="task task--agegroup clearfix">
+
+	{! ifin sisään kuva !}
+	<div class="img-cont">
+		<img src="{WP.template_directory}/assets/img/sudenpennut.png" alt="">
+	</div>
+	
+	
+	<div class="ingress-cont">
+		
+		<h5 class="task__heading">Leirikokki</h5>
+		{! ifin sisään ote !}
+		<div class="ingress-cont-inner">
+			<p class="task__ingress">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque minus reiciendis quibusdam ad ipsa enim alias? Asperiores nulla cumque recusandae sequi.</p>
+		</div>
+	</div>
+</a>

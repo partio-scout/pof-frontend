@@ -1,0 +1,74 @@
+{#PageFrontpage}
+	{>"shared/header" /}
+
+	{#Content}
+			{! Slider !}
+			{?Content.fields.featured}
+			<section class="hero">
+				<div class="slider" data-time={SliderTime}>
+					{#Content.fields.featured}
+					<div class="slide" style="background-image:url({featured_image.url})">
+						<div class="hero__shade">
+							<div class="hero__heading-group-top">
+								<div class="hero__heading--main">
+									<img class="hero__heading-image" src="/content/themes/custom/assets/img/sp-logo-400px.png">
+									<h1 class="hero__heading-title">{WP.name}</h1>
+								</div>
+								
+							</div>
+							<div class="hero__heading-group-middle">
+								<div class="hero__divider"></div>
+							</div>
+							<div class="hero__heading-group-bottom animated fadeIn delay_05">
+								<div class="hero__heading--main">
+									{featured_content|s}
+								</div>
+							</div>
+						</div>
+					</div>
+					{/Content.fields.featured}
+				</div>
+			</section>
+			{/Content.fields.featured}
+			{! Ohjelma !}
+			{#Program}
+			<section class="programs clearfix">
+				<div class="programs__shade clearfix">
+					<div class="programs__inner">
+						{#Children}
+						<a href={permalink} class="program">
+							<div class="program__logo-container">
+                                {#fields.api_images}
+                                    {#logo}
+                                        <img src="{thumbnail.url}" width="{thumbnail.width}" height="{thumbnail.height}" alt="{title}">
+                                    {/logo}
+                                {/fields.api_images}
+								<div class="program__divider"></div>
+								<h3 class="program__heading">{post_title}</h3>
+							</div>
+						</a>
+						{/Children}
+					</div>
+				</div>
+
+			</section>
+			{/Program}
+
+			{! Haku (hide temporarily for release before implementation) !}
+
+			{!<section class="search">
+
+				<div class="row">
+					<div class="small-12 medium-10 medium-centered columns">
+						<label><i class="fa fa-search"></i></label>
+						<input placeholder="Hae aktiviteetteja" id="" class="form-control search__input-lg">
+						<a class="search__advanced-link">Tarkennettu haku &raquo;</a>
+					</div>
+				</div>
+
+			</section>!}
+
+	{/Content}
+
+	{>"shared/footer" /}
+{/PageFrontpage}

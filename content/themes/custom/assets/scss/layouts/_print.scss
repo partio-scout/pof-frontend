@@ -1,0 +1,28 @@
+// PRINTTITYYLIT 
+
+@media print {	
+
+	.not-printable {
+		display: none;
+	}
+
+	.partio_topnav, .content-hero-wrapper, .menu-wrapper, .main-footer {
+		display: none;
+	}
+
+	.content-wrapper {
+		width: 100%;
+		margin-left: 0;
+	}
+
+	.tag-groups, .additional-info {
+		height: auto !important;
+		float: left;
+		width: 50%;
+	}
+
+	.breadcrumbs {
+		margin-bottom: 1rem;
+	}
+
+}

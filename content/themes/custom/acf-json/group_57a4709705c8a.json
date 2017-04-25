@@ -1,0 +1,49 @@
+{
+    "key": "group_57a4709705c8a",
+    "title": "Ohjelma - Staattinen teksti",
+    "fields": [
+        {
+            "key": "field_57a470a92118d",
+            "label": "Vaillinainen sis\u00e4lt\u00f6",
+            "name": "custom_content",
+            "type": "wysiwyg",
+            "instructions": "Vapaaehtoinen staattinen sis\u00e4lt\u00f6 ik\u00e4ryhm\u00e4-sivulle.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "models\/page-agegroup.php"
+            }
+        ],
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "models\/page-taskgroup.php"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "modified": 1470395181
+}

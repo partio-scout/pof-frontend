@@ -1,0 +1,71 @@
+
+.content-inner {
+	.age-group__logo-container {
+		margin-bottom: 1.25rem;
+	}
+
+	.tasks {
+		.task {
+
+			.task--agegroup {
+				display: table;
+			}
+			.img-cont {
+				display: table-cell;
+				width: rem-calc(86);
+				vertical-align: top;
+				padding-right: 1rem;
+				text-align: right;
+			}
+
+			.ingress-cont {
+				display: table-cell;
+				vertical-align: top;
+			}
+
+			.task__ingress {
+				margin-bottom: 0;
+			}
+
+			margin-bottom: 1.25rem;
+		}
+	}
+}
+@media #{$medium-up} {
+
+	.content-inner {
+		.age-group__logo-container {
+			float: right;
+			max-width: rem-calc(100);
+			margin: 0 0 1.25rem 1.25rem;
+		}
+
+		.age-group__header {
+			padding-bottom: 0;
+		}
+	}
+
+}
+
+// @media #{$medium-up} {
+// 	.content-inner {
+// 		.age-group__header {
+// 			.task-group__logo-container {
+// 				padding-bottom: 0;
+// 				width: $task-group-logo-width;
+// 				position: absolute;
+// 				right: 0;
+// 				top: 0;
+// 				text-align: right;
+// 				left: auto;
+// 			}
+// 			.task-group__logo-container + .task-group__text-container {
+// 				margin-right: $task-group-logo-width;
+// 				width: auto;
+// 				padding-right: 1rem;
+// 				margin-left: 0;
+// 				padding-left: 0;
+// 			}
+// 		}
+// 	}
+// }

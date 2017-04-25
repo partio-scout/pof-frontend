@@ -1,0 +1,136 @@
+
+$task-group-logo-width: rem-calc(100);
+
+.content-inner {
+	
+	.task-group__header{
+		position: relative;
+	}
+	.task-group__logo-container {
+		padding-bottom: 1rem;
+	}
+	.task-group__text-container {
+
+	}
+
+
+	.tasks {
+		padding-bottom: 1rem;
+	}
+
+	.task__icons {
+		padding-bottom: .5rem;
+    	display: table;
+
+    	.icon {
+    		display: table-cell;
+    		max-width: 1.8625rem;
+    		padding: .15rem;
+    	}
+	}
+
+	.task {
+		display: block;
+		color: inherit;
+		text-decoration: none;
+
+		.task__heading {
+			font-size: 1.25rem;
+		}
+
+		.task__ingress {
+			font-size: rem-calc(14);
+		}
+		&:hover {
+			.task__heading {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.tasks__filter-heading {
+		color: #28a9e1; //$jet;
+		padding-bottom: .5rem;
+		border-bottom: 1px solid $gainsboro;
+		padding-top: 1rem;
+		margin-bottom: 1rem;
+
+		i {
+			font-size: .875rem;
+			transition: transform .3s ease;
+			-webkit-transition: -webkit-transform .3s ease;
+			color: $partio_main_color_lighter;
+			padding: 0 .5rem;
+		}
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		&.opened {
+			i {
+				transform: rotate(-180deg);
+				-webkit-transform: rotate(-180deg);
+			}
+		}
+	}
+
+	.tasks__body-row {
+		height: 0;
+		overflow: hidden;
+		opacity: 0;
+
+		transform: scale3d(.9,.9,1);
+		-webkit-transform: scale3d(.9,.9,1);
+
+		backface-visibility: hidden;
+		-webkit-backface-visibility: hidden;
+
+		&.opened {
+			height: auto;
+
+			opacity: 1;
+
+			transform: scale3d(1,1,1);
+			-webkit-transform: scale3d(1,1,1);
+
+			transition: opacity .3s ease, transform .3s ease;
+			-webkit-transition: opacity .3s ease, -webkit-transform .3s ease;
+
+		}
+
+	}
+
+}
+
+@media #{$medium-up} {
+	.content-inner {
+
+		.task-group__header {
+			padding-bottom: 2rem;
+			&:empty {
+				display: none;
+			}
+		}
+		.task-group__logo-container {
+			padding-bottom: 0;
+			width: $task-group-logo-width;
+			position: absolute;
+			left: 0;
+			top: 0;
+			text-align: left;
+		}
+		.task-group__logo-container + .task-group__text-container {
+			margin-left: $task-group-logo-width;
+			width: auto;
+			padding-left: 1rem;
+		}
+
+		.tasks {
+			margin-bottom: 1rem;
+		}
+		.tasks__filter-heading {
+			padding-top: 2rem;
+		}
+	}
+}

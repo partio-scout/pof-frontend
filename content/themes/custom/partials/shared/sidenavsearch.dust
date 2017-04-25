@@ -1,0 +1,185 @@
+<aside class="menu-wrapper">
+
+	<h3 class="menu-heading show-for-medium-up">Haku</h3>
+	
+	<form>
+
+		<section class="search-section">
+			<div class="search-section__body--always-open">
+				<h5 class="search-section__body__header">Sanahaku</h5>
+				<div class="sidenav-search__inner">
+					<label><i class="fa fa-search"></i></label>
+					<input placeholder="Hakusanat" id="" class="form-control sidenav-search__input">
+				</div>
+			</div>
+		</section>
+
+		<section class="search-section">
+			<h4 class="search-section__header section-filter">Ikäkaudet<i class="fa fa-chevron-down"></i></h4>
+			<div class="search-section__body">
+
+				<h5 class="search-section__body__header">Ikäkausi</h5>
+
+				<fieldset>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Sudenpennut</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Seikkailijat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Tarpojat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Samoajat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Vaeltajat</label></div>
+				</fieldset>
+			</div>
+		</section>
+
+		<section class="search-section">
+			<h4 class="search-section__header section-filter">Ominaisuudet<i class="fa fa-chevron-down"></i></h4>
+			<div class="search-section__body">
+
+				<h5 class="search-section__body__header">Pakollisuus</h5>
+				<fieldset>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Pakollinen</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Meripartiolaisille pakollinen</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Valinnainen</label></div>
+				</fieldset>
+
+				<h5 class="search-section__body__header">Paikka</h5>
+
+				<fieldset>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Kolo</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Retki</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Leiri</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Vene</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Muu</label></div>
+				</fieldset>
+
+
+				<h5 class="search-section__body__header">Suorituksen kesto</h5>
+				<div id="kestoslider"></div>
+				<div class="input-wrapper">
+  					<input type="text" id="kestolabel" class="slider-label" readonly>
+  				</div>
+
+				<h5 class="search-section__body__header">Ryhmäkoko</h5>
+				<div id="ryhmaslider"></div>
+				<div class="input-wrapper">
+  					<input type="text" id="ryhmalabel" class="slider-label" readonly>
+  				</div>
+{! 				<h5 class="search-section__body__header">Kesto</h5>
+
+				<div class="input-wrapper">
+					<input type="range" min=0 max=100 value=50 step=25 list="volsettings">
+					<datalist id="volsettings">
+						<option>0</option>
+						<option>25</option>
+						<option>50</option>
+						<option>75</option>
+						<option>100</option>
+					</datalist>	
+				</div>		
+
+				<h5 class="search-section__body__header">Valmisteluaika</h5>
+
+				<div class="input-wrapper">
+					<input type="range" min=0 max=100 value=50 step=25 list="volsettings">
+					<datalist id="volsettings">
+						<option>0</option>
+						<option>25</option>
+						<option>50</option>
+						<option>75</option>
+						<option>100</option>
+					</datalist>	
+				</div> !}
+
+{! 				<h5 class="search-section__body__header">Kesto</h5>
+
+				<fieldset>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>30min</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>45min</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>1h</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>1,5h</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Puoli päivää</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Koko päivä</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Viikonloppu</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Kauemmin</label></div>					
+				</fieldset>
+
+				<h5 class="search-section__body__header">Ryhmäkoko</h5>
+
+				<fieldset>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Yksin</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Kaksin</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Muutama</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Ryhmässä</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Isommassa ryhmässä</label></div>
+				</fieldset> !}
+
+
+{! 				<div class="input-wrapper">
+					<input type="radio" name="group2" id="radio1" value="Water">
+					<label for="radio1"><span></span>Water</label>
+				</div>
+				<div class="input-wrapper">
+					<input type="radio" name="group2" id="radio2" value="Water">
+					<label for="radio2"><span></span>Beer</label>
+				</div>
+				<div class="input-wrapper">
+					<input type="radio" name="group2" id="radio3" value="Water">
+					<label for="radio3"><span></span>Juice</label>
+				</div> !}	
+
+
+			</div>
+		</section>
+
+		<section class="search-section">
+			<h4 class="search-section__header section-filter">Taitoalueet<i class="fa fa-chevron-down"></i></h4>
+			<div class="search-section__body">
+				<h5 class="search-section__body__header">Taitoalue</h5>
+				<fieldset>
+
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Sudenpennut</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Seikkailijat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Tarpojat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Samoajat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Vaeltajat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Sudenpennut</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Seikkailijat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Tarpojat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Samoajat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Vaeltajat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Sudenpennut</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Seikkailijat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Tarpojat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Samoajat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Vaeltajat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Sudenpennut</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Seikkailijat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Tarpojat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Samoajat</label></div>
+					<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Vaeltajat</label></div>															
+				</fieldset>	
+			</div>
+		</section>
+
+		<section class="search-section">
+			<h4 class="search-section__header section-filter">Avainsanat<i class="fa fa-chevron-down"></i></h4>
+			<div class="search-section__body">
+				<h5 class="search-section__body__header">Taitoalue</h5>
+				<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Sudenpennut</label></div>
+				<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Seikkailijat</label></div>
+				<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Tarpojat</label></div>
+				<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Samoajat</label></div>
+				<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Vaeltajat</label></div>
+			</div>
+		</section>
+
+		{! YLEMPI HAKUNAPPI !}
+
+		<section class="button-section hide-for-tablet-up">
+			<input class="button radius large expand search-button mt1" type="submit" name="submit-tip" value="Tee haku" aria-label="Search">
+		</section>
+
+		{! / YLEMPI HAKUNAPPI !}
+
+	</form>
+
+</aside>

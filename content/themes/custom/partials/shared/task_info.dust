@@ -1,0 +1,159 @@
+<section class="task-info">
+
+	<div class="task-info__body row" data-equalizer data-equalizer-mq="medium-up">
+		
+		<div class="columns medium-6 tag-groups" data-equalizer-watch>
+
+			<header class="task-info__header">
+				<h4 class="task-info__heading">{S.suoritustiedot}</h4>
+			</header>
+
+			{! SUORITUSTIEDOT !}			
+			{#Content.fields.tags}
+				{@select key=key}
+					<div class="tag-group">
+						{?icon}
+							<div class="tag-group__icon">
+								<img src="{icon}" alt="">
+							</div>
+						{/icon}
+						<div class="tag-group__text">
+							<div class="equipment">
+								<span class="equipment__heading">
+									{@eq value="suoritus_kesto"}
+										{S.suoritus_kesto}:
+									{/eq}
+									{@eq value="pakollisuus"}
+										{S.pakollisuus}:
+									{/eq}
+									{@eq value="johtamistaito"}
+										{S.johtamistaito}:
+									{/eq}
+									{@eq value="valmistelu"}
+										{S.valmistelu}:
+									{/eq}	
+									{@eq value="suoritus_valmistelu_kesto"}
+										{S.suoritus_valmistelu_kesto}:
+									{/eq}
+									{@eq value="taitoalueet"}
+										{S.taitoalueet}:
+									{/eq}	
+									{@eq value="ryhmakoko"}
+										{S.ryhmakoko}:
+									{/eq}
+									{@eq value="paikka"}
+										{S.paikka}:
+									{/eq}
+									{@eq value="tarvikkeet"}
+										{S.tarvikkeet}:
+									{/eq}
+									{@eq value="kasvatustavoitteet"}
+										{S.kasvatustavoitteet}:
+									{/eq}																																		
+								</span>
+								{#values}
+									<span class="equipment__item">
+										{?icon}
+											<span class="tag-group__icon"><img src="{icon}" alt=""></span>
+										{/icon}
+										{name}</span>
+								{/values}
+							</div>
+						</div>
+					</div>
+				{/select}
+			{/Content.fields.tags}
+
+			{?Content.fields.level}
+				<div class="tag-group">
+					<div class="tag-group__text">
+						<div class="equipment">
+							<span class="equipment__heading">{S.taso}:</span>
+							<span class="equipment__item">{Content.fields.level}</span>
+						</div>
+					</div>
+				</div>
+			{/Content.fields.level}
+			{?Content.fields.leader_tasks}
+				<div class="tag-group">
+					<div class="tag-group__text">
+						<div class="equipment">
+							<span class="equipment__heading"><strong>{S.johtajan_tehtava}:</strong></span>
+							<span class="equipment__item">{Content.fields.leader_tasks|s}</span>
+						</div>
+					</div>
+				</div>
+			{/Content.fields.leader_tasks}			
+				
+		</div>
+		
+		<div class="columns medium-6 additional-info" data-equalizer-watch>
+
+			<header class="task-info__header">
+				<h4 class="task-info__heading">{S.lisatiedot}</h4>
+			</header>
+			
+			{?Parent}
+				<div class="current-task-group">
+					<p class="heading">{S.aktiviteettiryhma}</p>
+					<a href="{Parent.permalink}" class="link">{Parent.post_title}</a>
+				</div>
+			{/Parent}
+			
+			{?Siblings}
+				<div class="other-tasks-from-current">
+					<p class="heading">{S.ryhman_muut_aktiviteetit}</p>
+					<form action="">
+				        <select class="radius" onChange="window.location.href=this.value">
+				         	<option selected disabled>{S.valitse}...</option>
+							{#Siblings}
+								<option value="{permalink}">{post_title}</option>
+							{/Siblings}
+				        </select>
+			        </form>
+				</div>
+			{/Siblings}
+			
+			{! Kuvat !}
+			{?Content.fields.api_images}
+			<div class="skills">
+				{#Content.fields.api_images}
+					<div class="columns medium-6">
+						<a href="{logo.url}">
+							<img 
+								height="{logo.thumbnail.height}" 
+								width="{logo.thumbnail.width}"
+								src="{logo.thumbnail.url}"
+								alt="{logo.title}" />
+						</a>
+					</div>
+					<div class="columns medium-6">
+						<a href="{main_image.url}">
+							<img 
+								height="{main_image.thumbnail.height}" 
+								width="{main_image.thumbnail.width}"
+								src="{main_image.thumbnail.url}"
+								alt="{main_image.title}" />
+						</a>
+					</div>				
+				{/Content.fields.api_images}
+			</div>
+			{/Content.fields.api_images}
+			{! WP AVAINSANAT !}
+			
+			{?wp_tags}
+				<div class="skills keywords">
+					
+					<p class="heading">{S.avainsanat}</p>
+					
+					{#wp_tags}
+						<a href="" class="keyword">{name}</a>
+					{/wp_tags}
+
+				</div>
+			{/wp_tags}
+
+		</div>
+
+	</div>
+</section>

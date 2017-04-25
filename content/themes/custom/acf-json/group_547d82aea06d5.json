@@ -1,0 +1,106 @@
+{
+    "key": "group_547d82aea06d5",
+    "title": "CDN-asetukset",
+    "fields": [
+        {
+            "key": "field_54855d9b05c6d",
+            "label": "CDN",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_54855e0d05c6e",
+            "label": "K\u00e4yt\u00e4 CDN:\u00e4\u00e4",
+            "name": "cdn_on",
+            "type": "true_false",
+            "instructions": "Onko CDN k\u00e4yt\u00f6ss\u00e4 vai ei?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1
+        },
+        {
+            "key": "field_54855e2b05c6f",
+            "label": "CDN-urlit",
+            "name": "cdn_urls",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_54855e0d05c6e",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "min": 1,
+            "max": "",
+            "layout": "row",
+            "button_label": "Lis\u00e4\u00e4 url",
+            "sub_fields": [
+                {
+                    "key": "field_54855e6905c70",
+                    "label": "Url",
+                    "name": "url",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": "",
+                    "readonly": 0,
+                    "disabled": 0
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "cdnasetukset"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "local": "json",
+    "modified": 1469428566
+}

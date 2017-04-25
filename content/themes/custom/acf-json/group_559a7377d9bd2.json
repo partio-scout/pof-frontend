@@ -1,0 +1,263 @@
+{
+    "key": "group_559a7377d9bd2",
+    "title": "Sivuston asetukset",
+    "fields": [
+        {
+            "key": "field_559a7d65d2f13",
+            "label": "Kieliversiot",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_559a737dde24d",
+            "label": "Kielet",
+            "name": "kielet",
+            "type": "repeater",
+            "instructions": "Lis\u00e4\u00e4 t\u00e4h\u00e4n sivuston p\u00e4\u00e4kielet. Kirjoita kielen kaksikirjaiminen lyhenne isoilla kirjaimilla, esimerkiksi 'FI'.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "min": "",
+            "max": "",
+            "layout": "row",
+            "button_label": "Lis\u00e4\u00e4 rivi",
+            "sub_fields": [
+                {
+                    "key": "field_559a7416de24e",
+                    "label": "Kielilyhenne",
+                    "name": "kielilyhenne",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": 2,
+                    "readonly": 0,
+                    "disabled": 0
+                }
+            ]
+        },
+        {
+            "key": "field_559a7da0b3dfc",
+            "label": "Sis\u00e4lt\u00f6",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_57cd8a6a0d114",
+            "label": "Etusivun karusellin vaihtov\u00e4li",
+            "name": "slider_time",
+            "type": "number",
+            "instructions": "Aseta luku sekunneissa mink\u00e4 v\u00e4lein etusivun karuselli vaihtaa nostoa.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 10,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_559d20afda46a",
+            "label": "API",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_559d20beda46b",
+            "label": "Ohjelma-JSON",
+            "name": "ohjelma-json",
+            "type": "url",
+            "instructions": "Url kohteeseen: SP:n ohjelma, JSON, t\u00e4ysi.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "http:\/\/pof-backend.partio.fi\/spn-ohjelma-json-taysi\/?postGUID=86b5b30817ce3649e590c5059ec88921",
+            "placeholder": ""
+        },
+        {
+            "key": "field_57bd770f6d047",
+            "label": "Vinkit-JSON",
+            "name": "tips-json",
+            "type": "url",
+            "instructions": "Url kohteeseen: Vinkit, JSON, kaikki.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "http:\/\/pof-backend.partio.fi\/json-vinkit-kaikki",
+            "placeholder": ""
+        },
+        {
+            "key": "field_57c66abf9293b",
+            "label": "Vinkkien l\u00e4hetysosoite",
+            "name": "tips-send-url",
+            "type": "url",
+            "instructions": "URL jonne vinkkiehdotukset l\u00e4hetet\u00e4\u00e4n hyv\u00e4ksytt\u00e4v\u00e4ksi.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "http:\/\/pof-backend.partio.fi\/lisaa-vinkki\/",
+            "placeholder": ""
+        },
+        {
+            "key": "field_57c6b36acafd4",
+            "label": "Viimeisin importerajo (automaattinen)",
+            "name": "importer-last-execute",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "api_edit_block_wrap",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_57c6b3e52325e",
+            "label": "Viimeisin vinkki-importerajo (automaattinen)",
+            "name": "tips-importer-last-execute",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "api_edit_block_wrap",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_57bdb3729d455",
+            "label": "Analytiikka",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_57bdb3999d456",
+            "label": "Google Analytics",
+            "name": "google_analytics",
+            "type": "textarea",
+            "instructions": "T\u00e4h\u00e4n Google Analytics tagi GA -koodilla varustettuna.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": "",
+            "readonly": 0,
+            "disabled": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "sivuston-asetukset"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "modified": 1473088210
+}

@@ -1,0 +1,43 @@
+{?Content.fields.api_attachments}
+<section class="tasks attachments">
+	<div class="row tasks__heading-row">
+		<div class="columns small-12">
+			<h3 class="tasks__filter-heading opened">{Attachments.S.liitteet}<i class="fa fa-chevron-down"></i></h3>
+		</div>
+	</div>
+	<div class="row tasks__body-row opened">
+		{?Content.fields.api_attachments.images}
+		<div class="columns small-4">
+		<h5>{Attachments.S.kuvat}</h5>
+			{#Content.fields.api_attachments.images}
+				<div>
+					<a href="{url}"><img src="{thumbnail.url}" /></a>
+				</div>
+			{/Content.fields.api_attachments.images}
+		</div>
+		{/Content.fields.api_attachments.images}
+
+		{?Content.fields.api_attachments.files}
+		<div class="columns small-4">
+		<h5>{Attachments.S.tiedostot}</h5>
+			{#Content.fields.api_attachments.files}
+				<div>
+					<a href="{url}"><img src="{icon}" alt="{mime_type}" /></a>
+				</div>
+			{/Content.fields.api_attachments.files}
+		</div>
+		{/Content.fields.api_attachments.files}	
+
+		{?Content.fields.api_attachments.links}
+		<div class="columns small-4">
+		<h5>{Attachments.S.linkit}</h5>
+			{#Content.fields.api_attachments.links}
+				<div>
+					<a href="{url}">{description}</a>
+				</div>
+			{/Content.fields.api_attachments.links}
+		</div>
+		{/Content.fields.api_attachments.links}														
+	</div>
+</section>
+{/Content.fields.api_attachments}

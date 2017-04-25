@@ -1,0 +1,29 @@
+{! Otsikko-osio !}
+
+<section class="content__headers">
+	<h1 class="content__main-header">{Content.post_title}</h1>
+</section>
+
+<section class="text-content">
+	{@content data=Content.post_content /}
+</section>
+
+{?Children}
+	<section class="programs-page__programs">
+        <div class="row">
+			{#Children}
+                <div class="programs-page__program columns large-6">
+                    <a href="{permalink}" class="program-container clearfix">
+                        {#fields.api_images}
+                            {#logo}
+                                <img src="{medium.url}" alt="{title}" class="program-container__logo">
+                            {/logo}
+                        {/fields.api_images}
+						<div class="program-container__divider"></div>
+						<h3 class="program-container__heading">{post_title}</h3>
+					</a>
+				</div>
+			{/Children}
+        </div>
+	</section>
+{/Children}

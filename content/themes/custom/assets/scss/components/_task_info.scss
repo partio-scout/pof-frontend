@@ -1,0 +1,134 @@
+
+.task-info {
+	padding: 0 1rem 2rem;
+
+	// border-style: solid;
+	// border-width: 1px 0;
+	// border-color: $gainsboro;
+
+	// vasen palsta
+
+	.task-info__heading {
+		color: $white;
+		text-shadow: 1px 1px 1px $partio_main_color;
+	}
+
+	.tag-groups {
+		background-color: $partio_main_color_lightest;
+		padding-top: 1rem;
+		padding-bottom: 1rem;
+	}
+
+	.additional-info {
+		background-color: $partio_main_color_superlight;
+		padding-top: 1rem;
+		padding-bottom: 1rem;
+	}
+	.tag-group {
+		display: table;
+		padding-bottom: .5rem;
+	}
+	.tag-group__icon {
+		display: table-cell;
+		max-width: rem-calc(25);
+		vertical-align: middle;
+		img {
+			max-width: rem-calc(25);
+			max-height: rem-calc(25);
+		}
+	}
+
+	.tag-group__text {
+		font-size: rem-calc(12);
+		vertical-align: middle;
+		display: table-cell;
+		padding-left: .5rem;
+	}
+	
+	.equipment__item {
+		position: relative;
+		&:after {
+			position: relative;
+			content: ',';
+		}
+
+		&:last-of-type {
+			&:after {display: none;}
+		}
+	}
+
+	// oikea palsta 
+
+	.additional-info {
+
+		padding-top: 1rem;
+		padding-bottom: 1rem;
+		
+		.heading {
+			margin-bottom: .25rem;
+			font-size: rem-calc(14);
+		}
+
+		a { 
+			font-size: rem-calc(12);
+			display: block;
+			&:hover {
+				color: $jet;
+			}
+		}
+
+		select {
+			// font-size: rem-calc(13);
+			@extend %pt-sans;
+			background-color: $white;
+			&:hover, &:focus {
+				outline: 0;
+				border-color: $partio_main_color_lighter;
+				background-color: $white;
+			}
+			border-color: $partio_main_color_lightest;
+
+			option.faded{
+				color: $gainsboro;
+			} 
+		}
+
+		.current-task-group {
+			margin-bottom: 1rem;
+		}
+
+		.other-tasks-from-current {
+			padding: .5rem 0;
+		}
+
+		// .skills {
+		// 	.skill {
+		// 		display: inline-block;
+		// 	}
+		// }
+		
+		.keywords {
+			padding-top: 1rem;
+
+			.keyword {
+				display: inline-block;
+			}
+		}
+	}
+
+}
+
+@media #{$tablet-up} {
+	.task-info {
+		padding: 1rem 1rem 3rem;
+	}
+}
+
+
+
+
+
+
+
+
+
