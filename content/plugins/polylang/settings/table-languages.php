@@ -1,7 +1,7 @@
 <?php
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ); // since WP 3.1
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php'; // since WP 3.1
 }
 
 /**
@@ -83,7 +83,7 @@ class PLL_Table_Languages extends WP_List_Table {
 		return sprintf(
 			'<a title="%s" href="%s">%s</a>',
 			esc_attr__( 'Edit this language', 'polylang' ),
-			esc_url( admin_url( 'options-general.php?page=mlang&amp;pll_action=edit&amp;lang=' . $item->term_id ) ),
+			esc_url( admin_url( 'admin.php?page=mlang&amp;pll_action=edit&amp;lang=' . $item->term_id ) ),
 			esc_html( $item->name )
 		);
 	}
@@ -169,6 +169,17 @@ class PLL_Table_Languages extends WP_List_Table {
 	}
 
 	/**
+	 * Gets the name of the default primary column.
+	 *
+	 * @since 2.1
+	 *
+	 * @return string Name of the default primary column, in this case, 'name'.
+	 */
+	protected function get_default_primary_column_name() {
+		return 'name';
+	}
+
+	/**
 	 * Generates and display row actions links for the list table.
 	 *
 	 * @since 1.8
@@ -187,7 +198,7 @@ class PLL_Table_Languages extends WP_List_Table {
 			'edit'   => sprintf(
 				'<a title="%s" href="%s">%s</a>',
 				esc_attr__( 'Edit this language', 'polylang' ),
-				esc_url( admin_url( 'options-general.php?page=mlang&amp;pll_action=edit&amp;lang=' . $item->term_id ) ),
+				esc_url( admin_url( 'admin.php?page=mlang&amp;pll_action=edit&amp;lang=' . $item->term_id ) ),
 				esc_html__( 'Edit','polylang' )
 			),
 			'delete' => sprintf(

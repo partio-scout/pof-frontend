@@ -6,16 +6,17 @@
  * List of parameters accepted in $args:
  *
  * dropdown               => displays a dropdown if set to 1, defaults to 0
- * echo                   => echoes the the switcher if set to 1 ( default )
+ * echo                   => echoes the switcher if set to 1 ( default )
  * hide_if_empty          => hides languages with no posts ( or pages ) if set to 1 ( default )
  * show_flags             => shows flags if set to 1, defaults to 0
  * show_names             => shows languages names if set to 1 ( default )
- * display_names_as       => whether to display the language name or code. valid options are 'slug' and 'name'
+ * display_names_as       => whether to display the language name or its slug, valid options are 'slug' and 'name', defaults to name
  * force_home             => forces linking to the home page is set to 1, defaults to 0
  * hide_if_no_translation => hides the link if there is no translation if set to 1, defaults to 0
  * hide_current           => hides the current language if set to 1, defaults to 0
  * post_id                => if not null, link to translations of post defined by post_id, defaults to null
  * raw                    => set this to true to build your own custom language switcher, defaults to 0
+ * item_spacing           => whether to preserve or discard whitespace between list items, valid options are 'preserve' and 'discard', defaults to preserve
  *
  * @since 0.5
  *
@@ -122,22 +123,31 @@ function pll_register_string( $name, $string, $context = 'polylang', $multiline 
  * @return string the string translation in the current language
  */
 function pll__( $string ) {
-	static $cache; // Cache object to avoid translating the same string several times
+	return is_scalar( $string ) ? __( $string, 'pll_string' ) : $string;
+}
 
-	if ( ! did_action( 'pll_language_defined' ) || ! is_scalar( $string ) ) { // No need for translation
-		return $string;
-	}
+/**
+ * Translates a string ( previously registered with pll_register_string ) and escapes it for safe use in HTML output.
+ *
+ * @since 2.1
+ *
+ * @param string $string the string to translate
+ * @return string translation in the current language
+ */
+function pll_esc_html__( $string ) {
+	return esc_html( pll__( $string ) );
+}
 
-	if ( empty( $cache ) ) {
-		$cache = new PLL_Cache();
-	}
-
-	if ( false === $str = $cache->get( $string ) ) {
-		$str = __( $string, 'pll_string' );
-		$cache->set( $string, $str );
-	}
-
-	return $str;
+/**
+ * Translates a string ( previously registered with pll_register_string ) and escapes it for safe use in HTML attributes.
+ *
+ * @since 2.1
+ *
+ * @param $string
+ * @return string
+ */
+function pll_esc_attr__( $string ) {
+	return esc_attr( pll__( $string ) );
 }
 
 /**
@@ -149,6 +159,28 @@ function pll__( $string ) {
  */
 function pll_e( $string ) {
 	echo pll__( $string );
+}
+
+/**
+ * Echoes a translated string ( previously registered with pll_register_string ) and escapes it for safe use in HTML output.
+ *
+ * @since 2.1
+ *
+ * @param string $string the string to translate
+ */
+function pll_esc_html_e( $string ) {
+	echo pll_esc_html__( $string );
+}
+
+/**
+ * Echoes a translated a string ( previously registered with pll_register_string ) and escapes it for safe use in HTML attributes.
+ *
+ * @since 2.1
+ *
+ * @param $string
+ */
+function pll_esc_attr_e( $string ) {
+	echo pll_esc_attr__( $string );
 }
 
 /**

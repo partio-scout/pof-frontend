@@ -13,7 +13,8 @@ class PageGeneral extends \DustPress\Model {
         $this->bind_sub("Header");
         $this->bind_sub("Footer");
         $this->bind_sub("Breadcrumbs");
-        $this->bind_sub("Sidenav");        
+        $this->bind_sub("Sidenav");
+        $this->bind_sub("ProgramLangnav");
     }
 
     public function Content() {
@@ -24,7 +25,7 @@ class PageGeneral extends \DustPress\Model {
 
     public function Hero() {
         $hero = [
-            'image'  => \DustPress\Query::get_acf_posts( get_hero_args() ), 
+            'image'  => \DustPress\Query::get_acf_posts( get_hero_args() ),
             'slogan' => $this->post->fields['slogan']
         ];
         return $hero;

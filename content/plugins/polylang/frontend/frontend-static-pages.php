@@ -144,7 +144,7 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 	}
 
 	/**
-	 * Prevents canonical redirection if we are on a static front page
+	 * Handles canonical redirection if we are on a static front page
 	 *
 	 * @since 1.8
 	 *
@@ -152,7 +152,24 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 	 * @return bool|string
 	 */
 	public function pll_check_canonical_url( $redirect_url ) {
-		return $this->options['redirect_lang'] && ! empty( $this->curlang->page_on_front ) && is_page( $this->curlang->page_on_front ) ? false : $redirect_url;
+		if ( ! empty( $this->curlang->page_on_front ) && is_page( $this->curlang->page_on_front ) ) {
+			// Redirect www.mysite.fr to mysite.fr
+			if ( 3 === $this->options['force_lang'] ) {
+				foreach ( $this->options['domains'] as $lang => $domain ) {
+					$host = parse_url( $domain, PHP_URL_HOST );
+					if ( 'www.' . $_SERVER['HTTP_HOST'] === $host || 'www.' . $host === $_SERVER['HTTP_HOST'] ) {
+						$language = $this->model->get_language( $lang );
+						return $language->home_url;
+					}
+				}
+			}
+
+			// Prevents canonical redirection made by WP from secondary language to main language
+			if ( $this->options['redirect_lang'] ) {
+				return false;
+			}
+		}
+		return $redirect_url;
 	}
 
 	/**
@@ -175,8 +192,17 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 		}
 
 		// Redirect the language page to the homepage when using a static front page
-		elseif ( ( $this->options['redirect_lang'] || $this->options['hide_default'] ) && ( count( $query->query ) == 1 || ( is_paged() && count( $query->query ) == 2 ) ) && is_tax( 'language' ) ) {
+		elseif ( ( $this->options['redirect_lang'] || $this->options['hide_default'] ) && ( count( $query->query ) == 1 || ( ( is_preview() || is_paged() || ! empty( $query->query['page'] ) ) && count( $query->query ) == 2 ) || ( ( is_preview() && ( is_paged() || ! empty( $query->query['page'] ) ) ) && count( $query->query ) == 3 ) ) && is_tax( 'language' ) ) {
 			$lang = $this->model->get_language( get_query_var( 'lang' ) );
+			$query->set( 'page_id', $lang->page_on_front );
+			$query->is_singular = $query->is_page = true;
+			$query->is_archive = $query->is_tax = false;
+			unset( $query->query_vars['lang'], $query->queried_object ); // Reset queried object
+		}
+
+		// Fix paged static front page in plain permalinks when Settings > Reading doesn't match the default language
+		elseif ( ! $this->links_model->using_permalinks && count( $query->query ) === 1 && ! empty( $query->query['page'] ) ) {
+			$lang = $this->model->get_language( $this->options['default_lang'] );
 			$query->set( 'page_id', $lang->page_on_front );
 			$query->is_singular = $query->is_page = true;
 			$query->is_archive = $query->is_tax = false;
@@ -195,9 +221,11 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 		}
 
 		// Fix <!--nextpage--> for page_on_front
-		if ( ! empty( $lang ) ) {
-			$query->set( 'page', $query->query_vars['paged'] );
-			unset( $query->query_vars['paged'] );
+		if ( ( $this->options['force_lang'] < 2 || ! $this->options['redirect_lang'] ) && $this->links_model->using_permalinks && ! empty( $lang ) && isset( $query->query['paged'] ) ) {
+			$query->set( 'page', $query->query['paged'] );
+			unset( $query->query['paged'] );
+		} elseif ( ! $this->links_model->using_permalinks && ! empty( $query->query['page'] ) ) {
+			$query->is_paged = true;
 		}
 
 		return $lang;

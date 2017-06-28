@@ -14,7 +14,7 @@
 
 						{>"shared/sidenav" /}
 
-						<main class="content-wrapper">					
+						<main class="content-wrapper">
 
 							<div class="content-inner">
 
@@ -22,7 +22,8 @@
 
 								{>"shared/breadcrumbs" /}
 
-								{>"shared/second_langnav" /}
+                                {>"shared/program-langnav" /}
+
 
 								{! Otsikko-osio !}
 
@@ -44,7 +45,7 @@
 
 			</div>
 
-		{/Content}	
+		{/Content}
 
 	{>"shared/footer" /}
 {/PageGeneral}

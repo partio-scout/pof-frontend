@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 				// displays the add ( or edit ) language form
 				// adds noheader=true in the action url to allow using wp_redirect when processing the form ?>
-				<form id="add-lang" method="post" action="options-general.php?page=mlang&amp;noheader=true" class="validate"><?php
+				<form id="add-lang" method="post" action="admin.php?page=mlang&amp;noheader=true" class="validate"><?php
 					wp_nonce_field( 'add-lang', '_wpnonce_add-lang' );
 
 				if ( ! empty( $edit_lang ) ) {?>
@@ -42,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<label for="lang_list"><?php esc_html_e( 'Choose a language', 'polylang' );?></label>
 					<select name="lang_list" id="lang_list">
 						<option value=""></option><?php
-						include( PLL_SETTINGS_INC.'/languages.php' );
+						include PLL_SETTINGS_INC . '/languages.php';
 						foreach ( $languages as $lg ) {
 							printf(
 								'<option value="%1$s:%2$s:%3$s:%4$s">%5$s - %2$s</option>'."\n",
@@ -103,7 +103,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<label for="flag_list"><?php esc_html_e( 'Flag', 'polylang' );?></label>
 					<select name="flag" id="flag_list">
 						<option value=""></option><?php
-						include( PLL_SETTINGS_INC.'/flags.php' );
+						include PLL_SETTINGS_INC . '/flags.php';
 						foreach ( $flags as $code => $label ) {
 							printf(
 								'<option value="%1$s"%2$s>%3$s</option>'."\n",

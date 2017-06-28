@@ -30,6 +30,13 @@ class PLL_Filters {
 
 		// Converts the locale to a valid W3C locale
 		add_filter( 'language_attributes', array( $this, 'language_attributes' ) );
+
+		// Prevents deleting all the translations of the default category
+		add_filter( 'map_meta_cap', array( $this, 'fix_delete_default_category' ), 10, 4 );
+
+		// Translate the site title in emails sent to users
+		add_filter( 'password_change_email', array( $this, 'translate_user_email' ) );
+		add_filter( 'email_change_email', array( $this, 'translate_user_email' ) );
 	}
 
 	/**
@@ -154,6 +161,8 @@ class PLL_Filters {
 					unset( $pages[ $key ] );
 				}
 			}
+
+			$pages = array_values( $pages ); // In case 3rd parties suppose the existence of $pages[0]
 		}
 
 		// Not done by WP but extremely useful for performance when manipulating taxonomies
@@ -176,5 +185,41 @@ class PLL_Filters {
 			$output = str_replace( '"' . get_bloginfo( 'language' ) . '"', '"' . $language->get_locale( 'display' ) . '"', $output );
 		}
 		return $output;
+	}
+
+
+	/**
+	 * Prevents deleting all the translations of the default category
+	 *
+	 * @since 2.1
+	 *
+	 * @param array  $caps    The user's actual capabilities.
+	 * @param string $cap     Capability name.
+	 * @param int    $user_id The user ID.
+	 * @param array  $args    Adds the context to the cap. The category id.
+	 * @return array
+	 */
+	public function fix_delete_default_category( $caps, $cap, $user_id, $args ) {
+		if ( 'delete_term' === $cap && array_intersect( $args, $this->model->term->get_translations( get_option( 'default_category' ) ) ) ) {
+			$caps[] = 'do_not_allow';
+		}
+
+		return $caps;
+	}
+
+	/**
+	 * Translates the site title in emails sent to the user (change email, reset password)
+	 * It is necessary to filter the email because WP evaluates the site title before calling switch_to_locale()
+	 *
+	 * @since 2.1.3
+	 *
+	 * @param array $email
+	 * @return array
+	 */
+	function translate_user_email( $email ) {
+		$blog_name = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+		$email['subject'] = sprintf( $email['subject'], $blog_name );
+		$email['message'] = str_replace( '###SITENAME###', $blog_name, $email['message'] );
+		return $email;
 	}
 }
