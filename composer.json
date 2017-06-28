@@ -1,7 +1,6 @@
 {
     "name": "partio-scout/pof-frontend-private",
     "config": {
-        "preferred-install": "source",
         "discard-changes": false
     },
     "authors": [
@@ -13,13 +12,15 @@
         }
     ],
     "require": {
-        "johnpbloch/wordpress-core-installer": "~0.1",
-        "johnpbloch/wordpress": "*",
-        "predis/predis": "1.1.*@dev",
-        "devgeniem/dustpress": "1.*",
+        "johnpbloch/wordpress-core-installer": "^1.0.0",
+        "johnpbloch/wordpress": "^4.7",
+        "devgeniem/dustpress": "^1.6",
         "devgeniem/dustpress-debugger": "^1.2",
-        "devgeniem/dustpress-js": "*",
-        "partio-scout/wordpress-advanced-custom-fields-pro": "5.*"
+        "devgeniem/dustpress-js": "^1.1",
+        "partio-scout/wordpress-advanced-custom-fields-pro": "^5.3",
+        "vlucas/phpdotenv": "^2.4",
+        "composer/installers": "^1.3",
+        "predis/predis": "^1.1"
     },
     "extra": {
         "wordpress-install-dir": "wp",
