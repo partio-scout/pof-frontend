@@ -97,14 +97,14 @@ define( 'DB_COLLATE', '' );
 // Salts, for security
 // Grab these from: https://api.wordpress.org/secret-key/1.1/salt
 // ==============================================================
-define( 'AUTH_KEY', 'jKsJ-_U EU?o2K55)+_u&NraAI7tU0->DylYPJ}%*q)`2|!,:{*LyK!g^|qkC%TX' );
-define( 'SECURE_AUTH_KEY', '0-{)--v`d7%Q=1+w0uV2CsZ-mFSh5/[y0pE>dW-H9O&s-->E|L;fE1^2N||0-6n4' );
-define( 'LOGGED_IN_KEY', 'tzk[Ko~s) J@P-c>*;ARx?83p5|;K-FK3-:q0eETPb$@c~^tI|smCZ:YwRuZ +B:' );
-define( 'NONCE_KEY', '{BO.A&8tSmZTh-I!J2KelkrfumDa6Q/%+2Paz$nFxl Y`0iP8Z%%|Xe.+CpYj5em' );
-define( 'AUTH_SALT', '}z+6[jy-EL7|rQgDL+T.Zb!uh}.~ bEL75T#)nf^H3->Khe3k=kB*R)OnVJ?+kZ/' );
-define( 'SECURE_AUTH_SALT', '^qgz=F+bY[+QI-Kd^qM7CntWg`arUC14y$l$N7@hX*_XcFUjDZ;+k:.!l-jd1aK<' );
-define( 'LOGGED_IN_SALT', '^/1pR@RF,hX-6i_*iqdKGnzSEkJ^X/lP2:5Zr*+1_-%_[NnK/p~J~[njmBYNU}Vl' );
-define( 'NONCE_SALT', '7N@t(QT1FGJ)2~j4:nE/==|San@ek:>buT$vlv#.2uIo<[Y#}>:i8HvmJLb~gq00' );
+define( 'AUTH_KEY', getenv( 'AUTH_KEY' ) );
+define( 'SECURE_AUTH_KEY', getenv( 'SECURE_AUTH_KEY' ) );
+define( 'LOGGED_IN_KEY', getenv( 'LOGGED_IN_KEY' ) );
+define( 'NONCE_KEY', getenv( 'NONCE_KEY' ) );
+define( 'AUTH_SALT', getenv( 'AUTH_SALT' ) );
+define( 'SECURE_AUTH_SALT', getenv( 'SECURE_AUTH_SALT' ) );
+define( 'LOGGED_IN_SALT', getenv( 'LOGGED_IN_SALT' ) );
+define( 'NONCE_SALT', getenv( 'NONCE_SALT' ) );
 
 // ==============================================================
 // Table prefix

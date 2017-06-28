@@ -45,7 +45,7 @@ $dkey   = md5( $domain );
 $ukey   = md5( $url );
 
 // Debugging vars.
-$debug                    = 1;  // set to 1 if you wish to see execution time and cache actions
+$debug                    = 0;  // set to 1 if you wish to see execution time and cache actions
 $display_powered_by_redis = 0;  // set to 1 if you want to display a powered by redis message with execution time, see below
 $start = microtime();   // start timing page exec
 

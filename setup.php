@@ -33,7 +33,7 @@ if ( file_exists( $root_dir . '/.env' ) ) {
 else {
     define( 'WP_LOCAL_DEV', false );
     // Step one level up
-    $root_dir = dirname( __FILE__ ) . '/..';
+    $root_dir = dirname( __FILE__ ) . '/../..';
 }
 
 // Use Dotenv to set required environment variables and load the .env file.

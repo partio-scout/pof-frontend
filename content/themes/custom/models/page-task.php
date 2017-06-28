@@ -10,7 +10,7 @@ class PageTask extends \DustPress\Model {
     private $page;
     private $par; // parent
 
-    public $allowed_functions = [
+    public $api = [
         'translate'
     ];
 

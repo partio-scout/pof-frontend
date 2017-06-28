@@ -10,7 +10,7 @@ class PageAgegroup extends \DustPress\Model {
     private $lang;
     private $post;
 
-    public $allowed_functions = [
+    public $api = [
         'translate'
     ];
 
@@ -81,5 +81,5 @@ class PageAgegroup extends \DustPress\Model {
         $this->set_template('content-agegroup');
 
         return $content;
-    }       
+    }
 }
