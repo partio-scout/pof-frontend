@@ -25,7 +25,7 @@ end
 namespace :composer do
 	desc "Run composer tasks"
 	task :run_composer do
-		run "cd #{release_path}/ && /usr/bin/php composer.phar update"
+		run "cd #{release_path}/ && /usr/bin/php composer.phar install"
 	end
 end
 
