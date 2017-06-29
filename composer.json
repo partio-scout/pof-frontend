@@ -2,7 +2,8 @@
     "name": "partio-scout/pof-frontend-private",
     "config": {
         "preferred-install": "dist",
-        "discard-changes": false
+        "discard-changes": false,
+        "optimize-autoloader": true
     },
     "authors": [
         {
