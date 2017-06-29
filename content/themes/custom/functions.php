@@ -6,9 +6,6 @@ function err($str) {
     echo '<p>';
 }
 
-// DustPress
-include_once( VENDOR_PATH . 'devgeniem/dustpress/dustpress.php' );
-
 // Instantiate DustPress
 dustpress();
 
