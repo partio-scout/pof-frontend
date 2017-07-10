@@ -14,7 +14,7 @@
 
 						{>"shared/sidenav" /}
 
-						<main class="content-wrapper clearfix">					
+						<main class="content-wrapper clearfix">
 
 							<div class="content-inner">
 
@@ -22,7 +22,7 @@
 
 								{>"shared/breadcrumbs" /}
 
-								{>"shared/second_langnav" /}
+								{>"shared/program-langnav" /}
 
 								{! Otsikko-osio !}
 
@@ -98,7 +98,7 @@
 											{>"shared/task_item_demo.dust" /}
 										</div>
 									</div>
-									
+
 								</section>
 
 								{>"shared/comments_demo" /}

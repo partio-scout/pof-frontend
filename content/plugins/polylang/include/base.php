@@ -26,6 +26,7 @@ abstract class PLL_Base {
 
 		// User defined strings translations
 		add_action( 'pll_language_defined', array( $this, 'load_strings_translations' ), 5 );
+		add_action( 'change_locale', array( $this, 'load_strings_translations' ) ); // Since WP 4.7
 
 		// Switch_to_blog
 		add_action( 'switch_blog', array( $this, 'switch_blog' ), 10, 2 );
@@ -44,32 +45,30 @@ abstract class PLL_Base {
 			unregister_widget( 'WP_Widget_Calendar' );
 			register_widget( 'PLL_Widget_Calendar' );
 		}
-
-		// Backward compatibility with WP < 4.4
-		// Overwrites the recent posts and recent comments widget to use a language dependant cache key
-		// Useful only if using a cache plugin
-		if ( version_compare( $GLOBALS['wp_version'], '4.4', '<' ) && defined( 'WP_CACHE' ) && WP_CACHE ) {
-			if ( ! defined( 'PLL_WIDGET_RECENT_POSTS' ) || PLL_WIDGET_RECENT_POSTS ) {
-				unregister_widget( 'WP_Widget_Recent_Posts' );
-				register_widget( 'PLL_Widget_Recent_Posts' );
-			}
-
-			if ( ! defined( 'PLL_WIDGET_RECENT_COMMENTS' ) || PLL_WIDGET_RECENT_COMMENTS ) {
-				unregister_widget( 'WP_Widget_Recent_Comments' );
-				register_widget( 'PLL_Widget_Recent_Comments' );
-			}
-		}
 	}
 
 	/**
 	 * Loads user defined strings translations
 	 *
 	 * @since 1.2
+	 * @since 2.1.3 $locale parameter added.
+	 *
+	 * @param string $locale Locale. Defaults to current locale.
 	 */
-	public function load_strings_translations() {
-		$mo = new PLL_MO();
-		$mo->import_from_db( $this->model->get_language( get_locale() ) );
-		$GLOBALS['l10n']['pll_string'] = &$mo;
+	public function load_strings_translations( $locale = '' ) {
+		if ( empty( $locale ) ) {
+			$locale = get_locale();
+		}
+
+		$language = $this->model->get_language( $locale );
+
+		if ( ! empty( $language ) ) {
+			$mo = new PLL_MO();
+			$mo->import_from_db( $language );
+			$GLOBALS['l10n']['pll_string'] = &$mo;
+		} else {
+			unset( $GLOBALS['l10n']['pll_string'] );
+		}
 	}
 
 	/**

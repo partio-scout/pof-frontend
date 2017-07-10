@@ -2,7 +2,7 @@
 /vendor
 /shared
 /local-config.php
-/sql-dump-*.sql
+/*.sql
 /db-sync
 /content/upgrade/
 .DS_Store
@@ -14,3 +14,4 @@
 /content/plugins/dustpress-js/
 /content/plugins/advanced-custom-fields-pro/
 /content/themes/custom/config.codekit
+.env

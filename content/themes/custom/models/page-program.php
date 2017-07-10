@@ -9,7 +9,7 @@ class PageProgram extends \DustPress\Model {
     private $dp;
     private $post;
 
-    public $allowed_functions = [
+    public $api = [
         'translate'
     ];
 
@@ -78,6 +78,6 @@ class PageProgram extends \DustPress\Model {
         $this->set_template('content-program');
 
         return $content;
-    }     
+    }
 
 }

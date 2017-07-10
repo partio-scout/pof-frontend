@@ -1,6 +1,0 @@
-[submodule "wp"]
-	path = wp
-	url = git://github.com/WordPress/WordPress.git
-[submodule "vendor/predis/predis"]
-	path = vendor/predis/predis
-	url = https://github.com/nrk/predis.git

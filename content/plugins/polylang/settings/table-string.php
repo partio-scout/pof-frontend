@@ -1,7 +1,7 @@
 <?php
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ); // since WP 3.1
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php'; // since WP 3.1
 }
 
 /**
@@ -133,6 +133,17 @@ class PLL_Table_String extends WP_List_Table {
 			'name'    => array( 'name', false ),
 			'context' => array( 'context', false ),
 		);
+	}
+
+	/**
+	 * Gets the name of the default primary column.
+	 *
+	 * @since 2.1
+	 *
+	 * @return string Name of the default primary column, in this case, 'string'.
+	 */
+	protected function get_default_primary_column_name() {
+		return 'string';
 	}
 
 	/**

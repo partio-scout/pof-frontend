@@ -6,6 +6,23 @@ class ProgramLangnav extends \DustPress\Model {
 
     public function Lang() {
         $post = \DustPress\Query::get_acf_post( get_the_ID() );
+
+        // If the post is not created by the api, we have to get the translations otherway.
+       if (empty($post->fields['api_guid'])) {
+            $langs = pll_the_languages([
+                'echo' => 0,
+                'raw' => 1,
+                'hide_if_no_translation' => 1,
+            ]);
+            foreach ($langs as $key => $value) {
+                $lang['langs'][$key]['lang']        = strtoupper($value['slug']);
+                $lang['langs'][$key]['permalink']   = $value['url'];
+                if($value['current_lang']) $lang['langs'][$key]['class']   = 'active ';
+
+            }
+            return $lang;
+        }
+
         $args = [
             'posts_per_page'    => -1,
             'post_type'         => 'page',

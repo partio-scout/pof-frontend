@@ -14,7 +14,7 @@
 
 						{>"shared/sidenav" /}
 
-						<main class="content-wrapper clearfix">					
+						<main class="content-wrapper clearfix">
 
 							<div class="content-inner">
 
@@ -22,7 +22,7 @@
 
 								{>"shared/breadcrumbs" /}
 
-								{>"shared/second_langnav" /}
+								{>"shared/program-langnav" /}
 
 								{! Otsikko-osio !}
 
@@ -39,7 +39,7 @@
 									<div class="age-group__text-container">
 
 										<p>Sudenpentu tekee retkiä pesästään ulkopuoliseen maailmaan, vielä kuitenkin lähellä kotipesää. Sudenpentu on innokas, reipas ja riehakas, mutta herkkä. Toimintaa kuvaavat sanat: puuhailu, tarinat, tutustuminen, harjaantuminen ja ohjeiden mukaan toimiminen.</p>
-										
+
 										<p>Sudenpentujen ohjelma koostuu <strong>jäljistä</strong> ja <strong>askeleista</strong>. Jälkiä eli aktiviteettikokonaisuuksia on yhteensä 35. Jokaisessa jäljessä on tarjolla 8 - 12 askelta eli aktiviteettia. Jäljet on jaettu pakollisiin ja valinnaisiin askeliin. Jäljessä tehdään pakolliset askeleet sekä valinnaisista askeleista vähintään kaksi.</p>
 
 										<p>Jäljet on sijoitettu neljään kasvatustavoitteiden mukaiseen <strong>osioon</strong>. Kustakin osiosta tulee tehdä vähintään yksi jälki toimintavuoden aikana.</p>
@@ -122,7 +122,7 @@
 										</div>
 										<div class="columns medium-6">
 											{>"shared/taskgroup_item_demo.dust" /}
-										</div>								
+										</div>
 									</div>
 
 									{! Osio vaihtuu !}
@@ -151,7 +151,7 @@
 										</div>
 										<div class="columns medium-6">
 											{>"shared/taskgroup_item_demo.dust" /}
-										</div>						
+										</div>
 									</div>
 
 									{! Osio vaihtuu !}
@@ -177,8 +177,8 @@
 										</div>
 										<div class="columns medium-6">
 											{>"shared/taskgroup_item_demo.dust" /}
-										</div>					
-									</div>	
+										</div>
+									</div>
 
 									{! Osio vaihtuu !}
 
@@ -203,9 +203,6 @@
 										</div>
 										<div class="columns medium-6">
 											{>"shared/taskgroup_item_demo.dust" /}
-										</div>			
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
 										</div>
 										<div class="columns medium-6">
 											{>"shared/taskgroup_item_demo.dust" /}
@@ -218,8 +215,11 @@
 										</div>
 										<div class="columns medium-6">
 											{>"shared/taskgroup_item_demo.dust" /}
-										</div>												
-									</div>	
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+									</div>
 
 									{! Osio vaihtuu !}
 
@@ -232,8 +232,8 @@
 
 										<div class="columns medium-6">
 											{>"shared/taskgroup_item_demo.dust" /}
-										</div>											
-									</div>	
+										</div>
+									</div>
 
 								</section>
 

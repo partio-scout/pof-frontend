@@ -9,7 +9,7 @@ class PageTaskgroup extends \DustPress\Model {
     private $post;
     private $dp; // helper
 
-    public $allowed_functions = [
+    public $api = [
         'translate'
     ];
 
@@ -103,5 +103,5 @@ class PageTaskgroup extends \DustPress\Model {
         $this->set_template('content-taskgroup');
 
         return $content;
-    }    
+    }
 }

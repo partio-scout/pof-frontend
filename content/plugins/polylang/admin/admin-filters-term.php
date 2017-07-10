@@ -101,7 +101,7 @@ class PLL_Admin_Filters_Term {
 		// Adds translation fields
 		echo '<div id="term-translations" class="form-field">';
 		if ( $lang ) {
-			include( PLL_ADMIN_INC.'/view-translations-term.php' );
+			include PLL_ADMIN_INC . '/view-translations-term.php';
 		}
 		echo '</div>'."\n";
 	}
@@ -112,14 +112,17 @@ class PLL_Admin_Filters_Term {
 	 * @since 0.1
 	 */
 	public function edit_term_form( $tag ) {
-		$term_id = $tag->term_id;
-		$lang = $this->model->term->get_language( $term_id );
-		$taxonomy = $tag->taxonomy;
 		$post_type = isset( $GLOBALS['post_type'] ) ? $GLOBALS['post_type'] : $_REQUEST['post_type'];
 
 		if ( ! post_type_exists( $post_type ) ) {
 			return;
 		}
+
+		$term_id = $tag->term_id;
+		$taxonomy = $tag->taxonomy;
+
+		$lang = $this->model->term->get_language( $term_id );
+		$lang = empty( $lang ) ? $this->pref_lang : $lang;
 
 		$dropdown = new PLL_Walker_Dropdown();
 
@@ -151,7 +154,7 @@ class PLL_Admin_Filters_Term {
 
 		echo '<tr id="term-translations" class="form-field">';
 		if ( $lang ) {
-			include( PLL_ADMIN_INC.'/view-translations-term.php' );
+			include PLL_ADMIN_INC . '/view-translations-term.php';
 		}
 		echo '</tr>'."\n";
 	}
@@ -165,10 +168,13 @@ class PLL_Admin_Filters_Term {
 	 * @return string modified html
 	 */
 	public function wp_dropdown_cats( $output ) {
-		if ( isset( $_GET['taxonomy'], $_GET['from_tag'], $_GET['new_lang'] ) && taxonomy_exists( $_GET['taxonomy'] ) && $id = get_term( (int) $_GET['from_tag'], $_GET['taxonomy'] )->parent ) {
-			$lang = $this->model->get_language( $_GET['new_lang'] );
-			if ( $parent = $this->model->term->get_translation( $id, $lang ) ) {
-				return str_replace( '"'.$parent.'"', '"'.$parent.'" selected="selected"', $output );
+		if ( isset( $_GET['taxonomy'], $_GET['from_tag'], $_GET['new_lang'] ) && taxonomy_exists( $_GET['taxonomy'] ) ) {
+			$term = get_term( (int) $_GET['from_tag'], $_GET['taxonomy'] );
+			if ( $term && $id = $term->parent ) {
+				$lang = $this->model->get_language( $_GET['new_lang'] );
+				if ( $parent = $this->model->term->get_translation( $id, $lang ) ) {
+					return str_replace( '"' . $parent . '"', '"' . $parent . '" selected="selected"', $output );
+				}
 			}
 		}
 		return $output;
@@ -399,13 +405,6 @@ class PLL_Admin_Filters_Term {
 	public function pre_term_slug( $slug, $taxonomy ) {
 		$name = sanitize_title( $this->pre_term_name );
 
-		// If the new term has the same name as a language, we *need* to differentiate the term
-		// See http://core.trac.wordpress.org/ticket/23199
-		// Backward compatibility with WP < 4.1
-		if ( version_compare( $GLOBALS['wp_version'], '4.1', '<' ) && term_exists( $name, 'language' ) && ! term_exists( $name, $taxonomy ) && ( ! $slug || $slug == $name ) ) {
-			$slug = $name . '-' . $taxonomy; // A convenient slug which may be modified later by the user
-		}
-
 		// If the term already exists in another language
 		if ( ! $slug && $this->model->is_translated_taxonomy( $taxonomy ) && term_exists( $name, $taxonomy ) ) {
 			if ( isset( $_POST['term_lang_choice'] ) ) {
@@ -421,8 +420,7 @@ class PLL_Admin_Filters_Term {
 				// Bulk edit does not modify the language
 				if ( -1 == $_GET['inline_lang_choice'] ) {
 					$slug = $name . '-' .  $this->model->post->get_language( $this->post_id )->slug;
-				}
-				else {
+				} else {
 					$slug = $name . '-' . $this->model->get_language( $_GET['inline_lang_choice'] )->slug;
 				}
 			}
@@ -463,7 +461,7 @@ class PLL_Admin_Filters_Term {
 
 		ob_start();
 		if ( $lang ) {
-			include( PLL_ADMIN_INC.'/view-translations-term.php' );
+			include PLL_ADMIN_INC . '/view-translations-term.php';
 		}
 		$x = new WP_Ajax_Response( array( 'what' => 'translations', 'data' => ob_get_contents() ) );
 		ob_end_clean();
@@ -566,7 +564,8 @@ class PLL_Admin_Filters_Term {
 	 */
 	protected function get_queried_language( $taxonomies, $args ) {
 		// Does nothing except on taxonomies which are filterable
-		if ( ! $this->model->is_translated_taxonomy( $taxonomies ) ) {
+		// Since WP 4.7, make sure not to filter wp_get_object_terms()
+		if ( ! $this->model->is_translated_taxonomy( $taxonomies ) || ! empty( $args['object_ids'] ) ) {
 			return false;
 		}
 
@@ -631,23 +630,26 @@ class PLL_Admin_Filters_Term {
 	 * @return int
 	 */
 	public function option_default_category( $value ) {
-		$traces = debug_backtrace();
-		$n = version_compare( PHP_VERSION, '7', '>=' ) ? 3 : 4; // PHP 7 does not include call_user_func_array
-
-		if ( isset( $traces[ $n ] ) ) {
-			// FIXME 'column_name' for backward compatibility with WP < 4.3
-			if ( in_array( $traces[ $n ]['function'], array( 'column_cb', 'column_name', 'handle_row_actions' ) ) && in_array( $traces[ $n ]['args'][0]->term_id, $this->model->term->get_translations( $value ) ) ) {
-				return $traces[ $n ]['args'][0]->term_id;
-			}
-
-			if ( 'wp_delete_term' == $traces[ $n ]['function'] ) {
-				return $this->model->term->get( $value, $this->model->term->get_language( $traces[ $n ]['args'][0] ) );
-			}
+		// Filters the default category in note below the category list table and in settings->writing dropdown
+		if ( isset( $this->pref_lang ) && $tr = $this->model->term->get( $value, $this->pref_lang ) ) {
+			$value = $tr;
 		}
 
-		// Filters the default category in note below the category list table and in settings->writing dropdown
-		elseif ( isset( $traces[ $n - 1 ]['file'] ) && ( false !== stripos( $traces[ $n - 1 ]['file'], 'edit-tags.php' ) || false !== stripos( $traces[ $n - 1 ]['file'], 'options-writing.php' ) ) ) {
-			return $this->model->term->get( $value, $this->pref_lang );
+		// FIXME backward compatibility with WP < 4.7
+		if ( version_compare( $GLOBALS['wp_version'], '4.7alpha', '<' ) ) {
+			$traces = debug_backtrace();
+			$n = version_compare( PHP_VERSION, '7', '>=' ) ? 3 : 4; // PHP 7 does not include call_user_func_array
+
+			if ( isset( $traces[ $n ] ) ) {
+				// FIXME 'column_name' for backward compatibility with WP < 4.3
+				if ( in_array( $traces[ $n ]['function'], array( 'column_cb', 'column_name', 'handle_row_actions' ) ) && in_array( $traces[ $n ]['args'][0]->term_id, $this->model->term->get_translations( $value ) ) ) {
+					return $traces[ $n ]['args'][0]->term_id;
+				}
+
+				if ( 'wp_delete_term' == $traces[ $n ]['function'] ) {
+					return $this->model->term->get( $value, $this->model->term->get_language( $traces[ $n ]['args'][0] ) );
+				}
+			}
 		}
 
 		return $value;

@@ -33,9 +33,9 @@
 		<div class="row lang-menu-row">
 			<div class="lang-menu-container">
 				<ul class="lang-menu">
-					{#Sidenav.LangSwitcher}
-						<li><a{?active} class="active"{/active} href="{url}">{language_code}</a></li>
-					{/Sidenav.LangSwitcher}
+					{#Sidenav.LangSwitcher.langs}
+						<li><a{?active} class="active"{/active} href="{permalink}">{lang}</a></li>
+					{/Sidenav.LangSwitcher.langs}
 				</ul>
 			</div>
 		</div>

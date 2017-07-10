@@ -27,17 +27,17 @@ class POF_Importer {
     private $tips_importer;     // tell that we run tips importer
     private $site_languages;    // get site general languages
 
-    public function __construct() {        
-        add_action( 'init', array( $this, 'init_plugin' ) );   
-        add_action( 'daily_cron',  array( $this, 'importer_cron' ) ); 
+    public function __construct() {
+        add_action( 'init', array( $this, 'init_plugin' ) );
+        add_action( 'daily_cron',  array( $this, 'importer_cron' ) );
     }
 
     public function init_plugin() {
-        
+
         // get API url from options
         include_once( ABSPATH . 'wp-admin/includes/plugin.php' ); // included for is_plugin_active()
         if ( is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
-            $this->tree_url = get_field('ohjelma-json', 'option')  . '&rand=' . mt_rand();
+            $this->tree_url = get_field('ohjelma-json', 'option')  . '?rand=' . mt_rand();
             $this->tips_url = get_field('tips-json', 'option') . '?rand=' . mt_rand();
             $this->site_languages = array();
             if (function_exists('pll_languages_list')) {
@@ -49,7 +49,7 @@ class POF_Importer {
         $this->debug = 1;
 
         // Add admin menu
-        if ( is_admin() ) {            
+        if ( is_admin() ) {
             add_action( 'admin_menu', array($this, 'pof_menu_init') );
         }
     }
@@ -121,7 +121,7 @@ class POF_Importer {
 
     /*
     * import tips data
-    * 
+    *
     * This function starts the tips importing
     *
     */
@@ -140,12 +140,12 @@ class POF_Importer {
             'post_status'       => 'publish',
             'meta_key'          => 'api_type',
             'meta_value'        => 'task'
-        ];       
+        ];
         $tasks = \DustPress\Query::get_acf_posts( $args );
 
         $taskData = array();
         foreach ($tasks as $key => $task) {
-            $taskData[$task->fields['api_guid']][strtolower($task->fields['api_lang'])] = $task; 
+            $taskData[$task->fields['api_guid']][strtolower($task->fields['api_lang'])] = $task;
         }
 
         $this->update_tips($taskData);
@@ -162,7 +162,7 @@ class POF_Importer {
         // create or update current page of branch
         $success = $this->get_items( $branch, $parent );
         // an error occured
-        if ( isset( $success['error'] ) ) {            
+        if ( isset( $success['error'] ) ) {
             return $success;
         } elseif ( is_array( $success ) ) {
             // store items for later
@@ -171,7 +171,7 @@ class POF_Importer {
 
         // loop through age groups
         if ( isset( $branch['agegroups'] ) ) {
-            foreach ( $branch['agegroups'] as $ag ) {                
+            foreach ( $branch['agegroups'] as $ag ) {
                 $success = $this->import_data( $ag, $branch['guid'] );
             }
             // an error occured
@@ -182,7 +182,7 @@ class POF_Importer {
 
         // loop through task groups
         if ( isset( $branch['taskgroups'] ) ) {
-            foreach ( $branch['taskgroups'] as $ag ) {              
+            foreach ( $branch['taskgroups'] as $ag ) {
                 $success = $this->import_data( $ag, $branch['guid'] );
             }
             // an error occured
@@ -190,11 +190,11 @@ class POF_Importer {
                 return $success;
             }
         }
-        
+
         // loop through tasks
         if ( isset( $branch['tasks'] ) ) {
-            foreach ( $branch['tasks'] as $ag ) {                 
-                $success = $this->import_data( $ag, $branch['guid'] );                
+            foreach ( $branch['tasks'] as $ag ) {
+                $success = $this->import_data( $ag, $branch['guid'] );
             }
             // an error occured
             if ( isset( $success['error'] ) ) {
@@ -214,12 +214,12 @@ class POF_Importer {
     *  Modified pages/json data are returned for later use.
     *
     */
-    private function get_items( $branch, $parent ) {        
-        $guid               = $branch['guid'];        
-        $languages          = [];  
-        $details            = [];  
+    private function get_items( $branch, $parent ) {
+        $guid               = $branch['guid'];
+        $languages          = [];
+        $details            = [];
         $pages              = [];
-        $api_data           = [];   
+        $api_data           = [];
         $count              = 0;
 
         // loop languages and get the item data
@@ -238,35 +238,37 @@ class POF_Importer {
         );
         $posts = get_posts($args);
         // index array by language
-        foreach ($posts as $p) {            
-            $lang = strtoupper( get_post_meta( $p->ID, 'api_lang', true ) );         
+        foreach ($posts as $p) {
+            $lang = strtoupper( get_post_meta( $p->ID, 'api_lang', true ) );
             $pages[$lang] = $p;
-        }        
-
+        }
         // page found
         if ( count( $pages) > 0 ) {
             // store pages for later
-            $this->queried[$guid] = $pages;            
-
+            $this->queried[$guid] = $pages;
             // loop through pages and check if modified
             foreach ( $languages as $lang => $leaf ) {
-                if ( isset( $pages[$lang] ) ) { 
-                    $modified = get_field( 'api_lastmodified', $pages[$lang]->ID );   
-                             
-                    if ( $languages[$lang]['modified'] > $modified ) {                                        
-                        $languages[$lang]['update'] = true;                       
-                    }   
+                if ( isset( $pages[$lang] ) ) {
+                    $modified = get_field( 'api_lastmodified', $pages[$lang]->ID );
+
+                    if ( $languages[$lang]['modified'] > $modified ) {
+                        $languages[$lang]['update'] = true;
+                    }
+                    else if ( $this->queried[$parent][$lang]->ID !== $pages[$lang]->post_parent && ! is_null($this->queried[$parent][$lang]->ID) ) {
+                        $languages[$lang]['update'] = true;
+                    }
+
                 } else {
                     $languages[$lang]['new_lang'] = true;
                 }
             }
-        } else {            
+        } else {
             $create = true;
         }
 
         // fetch details if create/update
-        foreach ( $languages as $lang => $leaf ) {                        
-            if ( $create || isset( $leaf['update'] ) || isset( $leaf['new_lang'] ) ) {                               
+        foreach ( $languages as $lang => $leaf ) {
+            if ( $create || isset( $leaf['update'] ) || isset( $leaf['new_lang'] ) ) {
                 $d = $this->fetch_data( $leaf['url'] );
 
                 // check if an error occurred
@@ -278,12 +280,12 @@ class POF_Importer {
                 }
 
                 $d['url'] = $leaf['url']; // store url
-                
+
                 $details[$lang] = $d;
                 $count++;
 
             }
-        }            
+        }
 
         // nothing loaded -> return
         if ( $count === 0 ) return;
@@ -293,20 +295,19 @@ class POF_Importer {
             foreach ( $details as $lang => $data ) {
 
                 // has a $parent
-                if ( $parent !== 0 ) {                                        
+                if ( $parent !== 0 ) {
                     $data['parent'] = $parent;
                 }
 
                 // store by language index
                 $api_data[$lang] = $data;
-            }            
+            }
         } else {
-            return [ 
+            return [
                 'error' => __('An error occured while importing data for guid:<br/>', 'pof_importer'),
                 'guid'  => $guid
             ]; // something went wrong
         }
-
         return $api_data;
     }
 
@@ -316,7 +317,7 @@ class POF_Importer {
     *  This function updates/creates pages
     *
     */
-    private function update_pages() {  
+    private function update_pages() {
         // loop through loaded data
         if ( is_array( $this->data ) ) {
             foreach ( $this->data as $guid => $items ) {
@@ -338,7 +339,7 @@ class POF_Importer {
 
                     // has a parent
                     if ( isset( $item['parent'] ) ) {
-                        $parent_guid = $item['parent'];                    
+                        $parent_guid = $item['parent'];
                         $parent_id = $this->queried[$parent_guid][$item['lang']]->ID;
                     } else {
                         $parent_id = 0;
@@ -361,7 +362,7 @@ class POF_Importer {
                             pll_set_post_language($post_id, strtolower($item['lang']));
                         }
                         $polyLangs[strtolower($item['lang'])] = $post_id;
-                    }                        
+                    }
 
                     isset($args['ID']) ? $this->updated++ : $this->created++;
                 }
@@ -383,10 +384,10 @@ class POF_Importer {
         if ( !$tips_data ) {
             $this->error = __('An error occured while fetching tips from backend.', 'pof_importer');
         } else {
-            foreach ($tips_data as $id => $tip) {                
+            foreach ($tips_data as $id => $tip) {
                 $parent = $data[$tip['post']['guid']][$tip['lang']];
                 $comment_id = null;
-                if (isset($parent)) { 
+                if (isset($parent)) {
                     // Data for new import
                     $comment_data = array(
                         'comment_post_ID'   => $parent->ID,
@@ -397,24 +398,24 @@ class POF_Importer {
                         'comment_approved'  => 1,
                     );
 
-                    // Check if comment exists                         
+                    // Check if comment exists
                     $args = array(
                         'meta_key' => 'ag_'.$tip['guid'].'_'.$tip['lang'],
                         'meta_value' => 'true',
                     );
                     $comments = get_comments( $args );
-                    
+
                     if (count($comments) > 0) {
-                        if ( $tip['modified'] > $comments[0]->comment_date ) { 
+                        if ( $tip['modified'] > $comments[0]->comment_date ) {
                             $comment_id = $comments[0]->comment_ID;
                             $comment_data['comment_ID'] = $comment_id;
                             wp_update_comment( $comment_data );
                             $this->data['updated'][] = $tip;
-                            $this->updated++;                                       
-                        }  
-                    } else {                        
+                            $this->updated++;
+                        }
+                    } else {
                         $comment_id = wp_new_comment( $comment_data );
-                        // Force update after insert because looks like inserting won't auto approve tip 
+                        // Force update after insert because looks like inserting won't auto approve tip
                         $comment_data['comment_ID'] = $comment_id;
                         wp_update_comment( $comment_data );
                         $this->data['created'][] = $tip;
@@ -428,6 +429,10 @@ class POF_Importer {
                         }
                     }
                 }
+                else {
+
+                    // TODO: Errorlog, if some tips not importet
+                }
             }
         }
     }
@@ -438,8 +443,8 @@ class POF_Importer {
     *  This function updates api related meta for pages.
     *
     */
-    public function update_page_meta( $post_id, $guid, $item ) {      
-        // update acf fields        
+    public function update_page_meta( $post_id, $guid, $item ) {
+        // update acf fields
         update_field( 'field_559a2aa1bbff7', $item['type'], $post_id ); // api_type
         update_field( 'field_559a2abfbbff8', $item['ingress'], $post_id ); // api_ingress
         update_field( 'field_559a2aebbbff9', $item['lastModified'], $post_id ); // last_modified
@@ -448,18 +453,18 @@ class POF_Importer {
         update_field( 'field_559e4a50b1f42', $item['url'], $post_id ); // api_url
         update_post_meta($post_id, 'ag_'.$guid, 'true');
 
-        // images (acf repeater)        
+        // images (acf repeater)
         $i = 1;
         $saved = 0;
         // update acf repeater field to create/clear the array
         update_field( 'field_55a369e3d3b3a', null, $post_id );
         if ( is_array( $item['images'] ) ) {
-            foreach ( $item['images'] as $key => $obj ) {            
-                if ( is_array( $obj ) && count( $obj ) > 0 ) {                
+            foreach ( $item['images'] as $key => $obj ) {
+                if ( is_array( $obj ) && count( $obj ) > 0 ) {
                     update_sub_field( array( 'api_images', $i, 'key' ), $key, $post_id );
-                    update_sub_field( array( 'api_images', $i, 'object' ), json_encode( $obj ), $post_id );                
+                    update_sub_field( array( 'api_images', $i, 'object' ), json_encode( $obj ), $post_id );
                     $saved++;
-                }            
+                }
                 $i++;
             }
         }
@@ -477,7 +482,7 @@ class POF_Importer {
         $j = 1;
         $attachments = 0;
         // update acf repeater field to create/clear the array
-        update_field( 'field_57bffb08a4191', null, $post_id );        
+        update_field( 'field_57bffb08a4191', null, $post_id );
         if ( !empty( $item['additional_content'] )) {
             foreach ( $item['additional_content'] as $type => $content ) {
                 foreach ($content as $obj) {
@@ -496,14 +501,14 @@ class POF_Importer {
                 'key'   => 'field_57bffb08a4191',
             );
             acf_update_value( $attachments, $post_id, $field );
-        }        
+        }
 
         // update page specific fields
         switch ( $item['type'] ) {
-            case 'agegroup': 
+            case 'agegroup':
                 if (isset($item['subtaskgroup_term'])) {
                     update_field( 'field_57c067cfff3cf', json_encode($item['subtaskgroup_term']), $post_id ); // task_term
-                }                           
+                }
                 break;
             case 'taskgroup':
                 if (isset($item['subtaskgroup_term'])) {
@@ -511,11 +516,11 @@ class POF_Importer {
                 }
                 if (isset($item['taskgroup_term'])) {
                     update_field( 'field_57c06808e6bcf', json_encode($item['taskgroup_term']), $post_id ); // task_term
-                } 
+                }
                 if (isset($item['subtask_term'])) {
                     update_field( 'field_57c0680ae6bd0', json_encode($item['subtask_term']), $post_id ); // task_term
-                }    
-                $this->update_task_data( $post_id, $guid, $item, true );                               
+                }
+                $this->update_task_data( $post_id, $guid, $item, true );
                 break;
             case 'task':
                 $this->update_task_data( $post_id, $guid, $item );
@@ -533,14 +538,14 @@ class POF_Importer {
     *  and creates custom taxonomies based on tags.
     *
     */
-    public function update_task_data( $post_id, $guid, $item, $taskgroup = false ) {  
+    public function update_task_data( $post_id, $guid, $item, $taskgroup = false ) {
 
         // init counters
         $saved = 0;
         $saved_groups = 0;
 
         if (!$taskgroup) {
-            // update acf fields 
+            // update acf fields
             if (isset($item['level'])) {
                 update_field( 'field_57c05f189b016', $item['level'], $post_id ); // level
             }
@@ -563,9 +568,9 @@ class POF_Importer {
                     update_sub_field( array( 'tags', $saved_groups + 1, 'group', $saved + 1, 'slug' ), $values['slug'], $post_id );
                     update_sub_field( array( 'tags', $saved_groups + 1, 'group', $saved + 1, 'name' ), $values['name'], $post_id );
                     if ( isset( $values['icon'] ) ) {
-                        update_sub_field( array( 'tags', $saved_groups + 1, 'group', $saved + 1, 'icon' ), $values['icon'], $post_id );                               
+                        update_sub_field( array( 'tags', $saved_groups + 1, 'group', $saved + 1, 'icon' ), $values['icon'], $post_id );
                     }
-                    $saved++;                     
+                    $saved++;
                 }
             } // only a single value set
             else {
@@ -573,9 +578,9 @@ class POF_Importer {
                 update_sub_field( array( 'tags', $saved_groups + 1, 'group', $saved + 1, 'slug' ), $group['slug'], $post_id );
                 update_sub_field( array( 'tags', $saved_groups + 1, 'group', $saved + 1, 'name' ), $group['name'], $post_id );
                 if ( isset( $group['icon'] ) ) {
-                    update_sub_field( array( 'tags', $saved_groups + 1, 'group', $saved + 1, 'icon' ), $group['icon'], $post_id );                               
+                    update_sub_field( array( 'tags', $saved_groups + 1, 'group', $saved + 1, 'icon' ), $group['icon'], $post_id );
                 }
-                $saved++; 
+                $saved++;
             }
 
             $field = array(
@@ -584,8 +589,8 @@ class POF_Importer {
             );
             acf_update_value( $saved, $post_id, $field );
             $saved = 0; // init counter
-            $saved_groups++;            
-        }     
+            $saved_groups++;
+        }
 
         if ( $saved_groups > 0 ) {
             $field = array(
@@ -630,7 +635,7 @@ class POF_Importer {
     public function pof_menu_init() {
         add_options_page( 'POF Importer Options', 'POF Importer', 'manage_options', 'pof_importer', array( $this, 'pof_menu') );
     }
-    
+
     /*
     *  pof_menu
     *
@@ -647,29 +652,29 @@ class POF_Importer {
             $this->normal_importer = true;
             $this->import();
 
-        } 
+        }
 
         if ( isset ( $_POST['pof_import_tips'] ) ) {
             $this->tips_importer = true;
             $this->import_tips();
         }
         ?>
-        
+
         <div class="pof-wrap wrap">
-            
+
             <h2>POF API Importer</h2>
-            
+
             <div class="card">
                 <form name="pof-importer-form" method="post">
                     <input type="hidden" name="pof_import" value="1"/>
                     <h3>Import</h3>
                     <p class="pof-info"><?php _e('Click here to import data from the POF API. The import might take a while, please be patient.', 'pof_importer'); ?></p>
-                    <p class="pof-submit">                
+                    <p class="pof-submit">
                         <input type="submit" name="import" class="button-primary" value="<?php _e('Import', 'pof_importer'); ?>"/>
                     </p>
                 </form>
             <?php if ( $this->normal_importer ): ?>
-                <?php if ( $this->error ) : ?>        
+                <?php if ( $this->error ) : ?>
                     <div class="pof-error">
                         <h4>Error!</h4>
                         <p><?php echo $this->error; ?></p>
@@ -679,7 +684,7 @@ class POF_Importer {
                         <h4><?php _e('Data imported!', 'pof_importer'); ?></h4>
                         <ul style="color:#00A0D2">
                             <li><?php echo $this->created; _e(' pages created.'); ?></li>
-                            <li><?php echo $this->updated; _e(' pages updated.'); ?></li>                
+                            <li><?php echo $this->updated; _e(' pages updated.'); ?></li>
                         </ul>
                     </div>
                 <?php elseif ( $this->updated === 0  && $this->created === 0): ?>
@@ -690,11 +695,11 @@ class POF_Importer {
                 <?php endif; ?>
                 <?php if ($this->debug): ?>
                 <?php $this->execution_time(); ?>
-                <?php endif; ?>                
+                <?php endif; ?>
                 <?php if ( $this->debug && $this->data ) : ?>
                     <h2>Data</h2>
                     <pre><?php var_dump( $this->data ); ?></pre>
-                    <hr />                
+                    <hr />
                     <h2>Queried</h2>
                     <pre><?php var_dump( $this->queried ); ?></pre>
                 <?php endif; ?>
@@ -706,12 +711,12 @@ class POF_Importer {
                     <input type="hidden" name="pof_import_tips" value="1" />
                     <h3>Import tips</h3>
                     <p class="pof-info"><?php _e('Click here to import tips data from the POF API. The import might take a while, please be patient.', 'pof_importer'); ?></p>
-                    <p class="pof-submit">                
+                    <p class="pof-submit">
                         <input type="submit" name="import-tips" class="button-primary" value="<?php _e('Import', 'pof_importer'); ?>"/>
                     </p>
-                </form>        
+                </form>
             <?php if ( $this->tips_importer ): ?>
-                <?php if ( $this->error ) : ?>        
+                <?php if ( $this->error ) : ?>
                     <div class="pof-error">
                         <h4>Error!</h4>
                         <p><?php echo $this->error; ?></p>
@@ -721,7 +726,7 @@ class POF_Importer {
                         <h4><?php _e('Data imported!', 'pof_importer'); ?></h4>
                         <ul style="color:#00A0D2">
                             <li><?php echo $this->created; _e(' tips created.'); ?></li>
-                            <li><?php echo $this->updated; _e(' tips updated.'); ?></li>                
+                            <li><?php echo $this->updated; _e(' tips updated.'); ?></li>
                         </ul>
                     </div>
                 <?php elseif ( $this->updated === 0  && $this->created === 0): ?>
@@ -733,7 +738,7 @@ class POF_Importer {
                 <?php if ($this->debug): ?>
                 <?php $this->execution_time(); ?>
                 <?php endif; ?>
-                <?php if ( $this->debug && $this->data ) : ?>   
+                <?php if ( $this->debug && $this->data ) : ?>
                     <?php if ($this->data['created']): ?>
                     <hr/>
                     <h2>Tips created</h2>
@@ -743,7 +748,7 @@ class POF_Importer {
                     <hr />
                     <h2>Tips updated</h2>
                     <pre><?php var_dump( $this->data['updated'] ); ?></pre>
-                    <?php endif; ?>                     
+                    <?php endif; ?>
                 <?php endif; ?>
             <?php endif; ?>
             </div>
