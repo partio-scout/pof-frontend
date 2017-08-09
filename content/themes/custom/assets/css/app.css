@@ -9218,6 +9218,7 @@ body .ui-tooltip {
 }
 .task-info .equipment__item {
   position: relative;
+  word-break: break-word;
 }
 .task-info .equipment__item:after {
   position: relative;
@@ -10899,14 +10900,25 @@ body {
     display: none;
   }
 
-  .partio_topnav, .content-hero-wrapper, .menu-wrapper, .main-footer {
+  .partio_topnav, .content-hero-wrapper, .menu-wrapper, .main-footer, .task-group__logo-container, .additional-info, #tips__form-container {
     display: none;
   }
 
-  .content-wrapper {
-    width: 100%;
-    margin-left: 0;
+  .content-wrapper, .tag-groups {
+    width: 100% !important;
   }
+
+  .content-wrapper {
+    min-height: 0 !important;
+  }
+
+    a[href]:after {
+    content:"" !important;
+    }
+
+    abbr[title]:after {
+        content: "" !important;
+      }
 
   .tag-groups, .additional-info {
     height: auto !important;
