@@ -14,6 +14,7 @@
         }
     ],
     "require": {
+        
         "johnpbloch/wordpress-core-installer": "^1.0.0",
         "johnpbloch/wordpress": "^4.7",
         "devgeniem/dustpress": "^1.6",
@@ -22,7 +23,8 @@
         "partio-scout/wordpress-advanced-custom-fields-pro": "^5.3",
         "vlucas/phpdotenv": "^2.4",
         "composer/installers": "^1.3",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "wpackagist-plugin/user-switching": "^1.0"
     },
     "extra": {
         "wordpress-install-dir": "wp",
@@ -36,6 +38,10 @@
         "1": {
             "type": "git",
             "url": "git@github.com:partio-scout/wordpress-advanced-custom-fields-pro.git"
+        },
+        "2": {
+            "type": "composer",
+            "url": "https://wpackagist.org"
         }
     }
 }
