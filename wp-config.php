@@ -3,6 +3,8 @@
  * WORDPRESS CONFIGURATIONS
  */
 
+define( 'CONCATENATE_SCRIPTS', false );
+
 // Run setup on admin side.
 if ( ! defined( 'SETUP_DONE' ) ) {
     require_once( dirname( __FILE__ ) . '/setup.php' );
