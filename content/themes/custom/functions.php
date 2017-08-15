@@ -50,10 +50,9 @@ function acf_fix() {
 
     $dp         = new DustPressHelper();
     $acf_key    = 'group_559a2a90921ab'; // group key
-
-    $fields = file_get_contents(get_template_directory_uri() . '/acf-json/' . $acf_key . '.json');
-    $fields = json_decode( $fields, true );
-    $fields = $fields['fields'];
+    $fields     = file_get_contents( get_template_directory_uri() . '/acf-json/' . $acf_key . '.json' );
+    $fields     = json_decode( $fields, true );
+    $fields     = $fields['fields'];
 
     $pages = $dp->get_acf_posts( ['meta_keys' => 'all', 'posts_per_page' => -1, 'post_type' => 'page'] );
 
@@ -62,7 +61,7 @@ function acf_fix() {
             $idx = [];
             if ( dustpress()->array_search_recursive( $k, $fields, $idx ) ) {
                 $key = $fields[$idx[0]]['key'];
-                update_post_meta( $page['ID'], '_' . $k, $key);
+                update_post_meta( $page['ID'], '_' . $k, $key );
             }
         }
     }

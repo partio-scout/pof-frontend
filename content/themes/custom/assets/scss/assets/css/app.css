@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Set default font family to sans-serif.
@@ -7154,9 +7155,6 @@ body .ui-tooltip {
   width: auto;
   overflow-x: hidden;
   background-color: #fff; }
-  @media print {
-    .page-wrapper {
-      overflow-x: visible; } }
 
 .menu-wrapper {
   width: 15rem;
@@ -8878,4 +8876,6 @@ body {
     float: left;
     width: 50%; }
   .breadcrumbs {
-    margin-bottom: 1rem; } }
+    margin-bottom: 1rem; }
+  .page-wrapper {
+    overflow-x:  visible; } }
