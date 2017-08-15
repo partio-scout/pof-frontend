@@ -9,12 +9,12 @@ $column-gutter-half: $column-gutter / 2;
 	position: relative;
 	width: auto;
 	overflow-x: hidden;
+	background-color: #fff;
 
+	// Only for print
 	@media print {
 		overflow-x: visible;
 	}
-
-	background-color: #fff;
 }
 
 .menu-wrapper {
