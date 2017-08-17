@@ -99,6 +99,16 @@
 		"oF": 0,
 		"oS": 0
 		},
+	"\/assets\/css\/app.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "\/assets\/css\/app-min.css",
+		"oF": 0,
+		"oS": 0
+		},
 	"\/assets\/css\/images\/ui-bg_flat_0_aaaaaa_40x100.png": {
 		"ft": 32768,
 		"iS": 212,
