@@ -24,6 +24,9 @@ include_once( 'functions/function-taxonomies.php' );
 // Disable emojis
 include_once( 'functions/function-disable_emojis.php' );
 
+// Disable discover links
+include_once( 'functions/function-disable_discover_links.php' );
+
 // Enqueue scripts and styles
 include_once( 'functions/function-scripts_and_styles.php' );
 
@@ -41,6 +44,7 @@ include_once( 'functions/function-lang_helpers.php' );
 
 // Menu functions
 include_once( 'functions/function-menus.php' );
+
 
 
 /*
