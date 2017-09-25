@@ -44,9 +44,10 @@
 		display: table-cell;
 		padding-left: .5rem;
 	}
-	
+
 	.equipment__item {
 		position: relative;
+        word-break: break-word;
 		&:after {
 			position: relative;
 			content: ',';
@@ -57,19 +58,19 @@
 		}
 	}
 
-	// oikea palsta 
+	// oikea palsta
 
 	.additional-info {
 
 		padding-top: 1rem;
 		padding-bottom: 1rem;
-		
+
 		.heading {
 			margin-bottom: .25rem;
 			font-size: rem-calc(14);
 		}
 
-		a { 
+		a {
 			font-size: rem-calc(12);
 			display: block;
 			&:hover {
@@ -90,7 +91,7 @@
 
 			option.faded{
 				color: $gainsboro;
-			} 
+			}
 		}
 
 		.current-task-group {
@@ -106,7 +107,7 @@
 		// 		display: inline-block;
 		// 	}
 		// }
-		
+
 		.keywords {
 			padding-top: 1rem;
 
