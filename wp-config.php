@@ -3,7 +3,7 @@
  * WORDPRESS CONFIGURATIONS
  */
 
-define( 'CONCATENATE_SCRIPTS', false );
+// define( 'CONCATENATE_SCRIPTS', false );
 
 // Run setup on admin side.
 if ( ! defined( 'SETUP_DONE' ) ) {
