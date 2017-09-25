@@ -408,7 +408,8 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit; }
 
-html, body {
+html,
+body {
   font-size: 100%; }
 
 body {
@@ -3729,7 +3730,7 @@ form .row textarea.columns {
 
 /* Label Styles */
 label {
-  color: #4d4c4c;
+  color: #4d4d4d;
   cursor: pointer;
   display: block;
   font-size: 0.875rem;
@@ -4073,7 +4074,7 @@ select {
   select.radius {
     border-radius: 3px; }
   select:hover {
-    background-color: #f3f2f2;
+    background-color: #f3f3f3;
     border-color: #9fbfd5; }
   select:disabled {
     background-color: #DDDDDD;
@@ -4761,7 +4762,7 @@ blockquote p {
   position: absolute;
   top: 0;
   width: 2.8125rem;
-  border-right: solid 1px #1a1919;
+  border-right: solid 1px #1a1a1a;
   left: 0; }
 
 .right-small {
@@ -4769,7 +4770,7 @@ blockquote p {
   position: absolute;
   top: 0;
   width: 2.8125rem;
-  border-left: solid 1px #1a1919;
+  border-left: solid 1px #1a1a1a;
   right: 0; }
 
 .tab-bar-section {
@@ -4812,7 +4813,7 @@ blockquote p {
     box-shadow: 0 0 0 1px #FFFFFF, 0 7px 0 1px #FFFFFF, 0 14px 0 1px #FFFFFF;
     width: 1rem; }
   .tab-bar .menu-icon span:hover:after {
-    box-shadow: 0 0 0 1px #b3b2b2, 0 7px 0 1px #b3b2b2, 0 14px 0 1px #b3b2b2; }
+    box-shadow: 0 0 0 1px #b3b3b3, 0 7px 0 1px #b3b3b3, 0 14px 0 1px #b3b3b3; }
 
 .left-off-canvas-menu {
   -webkit-backface-visibility: hidden;
@@ -7533,7 +7534,8 @@ body .ui-tooltip {
     display: table-cell;
     padding-left: .5rem; }
   .task-info .equipment__item {
-    position: relative; }
+    position: relative;
+    word-break: break-word; }
     .task-info .equipment__item:after {
       position: relative;
       content: ','; }
@@ -8868,11 +8870,19 @@ body {
 @media print {
   .not-printable {
     display: none; }
-  .partio_topnav, .content-hero-wrapper, .menu-wrapper, .main-footer {
+  .partio_topnav, .content-hero-wrapper, .menu-wrapper, .main-footer, .task-group__logo-container, .additional-info, #tips__form-container {
     display: none; }
   .tag-groups, .additional-info {
     height: auto !important;
     float: left;
     width: 50%; }
   .breadcrumbs {
-    margin-bottom: 1rem; } }
+    margin-bottom: 1rem; }
+  .content-wrapper {
+    min-height: 0 !important; }
+  a[href]:after {
+    content: "" !important; }
+  abbr[title]:after {
+    content: "" !important; }
+  .content-wrapper, .tag-groups {
+    width: 100% !important; } }

@@ -7,7 +7,7 @@
 		"uuidString": "AD4DD48E-E78A-4405-B52F-A6D1551667A3"
 		}
 	],
-"creatorBuild": "25813",
+"creatorBuild": "25444",
 "files": {
 	"\/acf-json\/group_547d82aea06d5.json": {
 		"ft": 524288,
@@ -115,10 +115,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-bg_flat_0_aaaaaa_40x100.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/css\/images\/ui-bg_flat_75_ffffff_40x100.png": {
 		"ft": 32768,
@@ -126,10 +123,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-bg_flat_75_ffffff_40x100.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/css\/images\/ui-bg_glass_55_fbf9ee_1x400.png": {
 		"ft": 32768,
@@ -137,10 +131,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-bg_glass_55_fbf9ee_1x400.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/css\/images\/ui-bg_glass_65_ffffff_1x400.png": {
 		"ft": 32768,
@@ -148,10 +139,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-bg_glass_65_ffffff_1x400.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/css\/images\/ui-bg_glass_75_dadada_1x400.png": {
 		"ft": 32768,
@@ -159,10 +147,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-bg_glass_75_dadada_1x400.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/css\/images\/ui-bg_glass_75_e6e6e6_1x400.png": {
 		"ft": 32768,
@@ -170,10 +155,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-bg_glass_75_e6e6e6_1x400.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/css\/images\/ui-bg_glass_95_fef1ec_1x400.png": {
 		"ft": 32768,
@@ -181,10 +163,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-bg_glass_95_fef1ec_1x400.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/css\/images\/ui-bg_highlight-soft_75_cccccc_1x100.png": {
 		"ft": 32768,
@@ -192,10 +171,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-bg_highlight-soft_75_cccccc_1x100.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/css\/images\/ui-icons_222222_256x240.png": {
 		"ft": 32768,
@@ -203,10 +179,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-icons_222222_256x240.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/css\/images\/ui-icons_2e83ff_256x240.png": {
 		"ft": 32768,
@@ -214,10 +187,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-icons_2e83ff_256x240.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/css\/images\/ui-icons_454545_256x240.png": {
 		"ft": 32768,
@@ -225,10 +195,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-icons_454545_256x240.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/css\/images\/ui-icons_888888_256x240.png": {
 		"ft": 32768,
@@ -236,10 +203,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-icons_888888_256x240.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/css\/images\/ui-icons_cd0a0a_256x240.png": {
 		"ft": 32768,
@@ -247,10 +211,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/css\/images\/ui-icons_cd0a0a_256x240.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/bg.jpg": {
 		"ft": 16384,
@@ -258,9 +219,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/bg.jpg",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/bg2.jpg": {
 		"ft": 16384,
@@ -268,9 +227,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/bg2.jpg",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/bg3.jpg": {
 		"ft": 16384,
@@ -278,9 +235,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/bg3.jpg",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/bg4.jpg": {
 		"ft": 16384,
@@ -288,9 +243,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/bg4.jpg",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/bg5.jpg": {
 		"ft": 16384,
@@ -298,9 +251,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/bg5.jpg",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/checkbox-checked.png": {
 		"ft": 32768,
@@ -308,10 +259,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/checkbox-checked.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/checkbox-checked1.png": {
 		"ft": 32768,
@@ -319,10 +267,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/checkbox-checked1.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/checkbox.png": {
 		"ft": 32768,
@@ -330,10 +275,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/checkbox.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/file_doc.png": {
 		"ft": 32768,
@@ -341,10 +283,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/file_doc.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/file_pdf.png": {
 		"ft": 32768,
@@ -352,10 +291,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/file_pdf.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/file_xls.png": {
 		"ft": 32768,
@@ -363,10 +299,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/file_xls.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/icon1.png": {
 		"ft": 32768,
@@ -374,10 +307,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/icon1.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/icon2.png": {
 		"ft": 32768,
@@ -385,10 +315,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/icon2.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/icon3.png": {
 		"ft": 32768,
@@ -396,10 +323,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/icon3.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/icon4.png": {
 		"ft": 32768,
@@ -407,10 +331,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/icon4.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/icon5.png": {
 		"ft": 32768,
@@ -418,10 +339,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/icon5.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/icon6.png": {
 		"ft": 32768,
@@ -429,10 +347,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/icon6.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/partiologo.png": {
 		"ft": 32768,
@@ -440,10 +355,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/partiologo.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/partiologovalk.png": {
 		"ft": 32768,
@@ -451,10 +363,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/partiologovalk.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/radio-checked.png": {
 		"ft": 32768,
@@ -462,10 +371,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/radio-checked.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/radio.png": {
 		"ft": 32768,
@@ -473,10 +379,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/radio.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/samoajat.png": {
 		"ft": 32768,
@@ -484,10 +387,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/samoajat.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/seikkailijat.png": {
 		"ft": 32768,
@@ -495,10 +395,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/seikkailijat.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/sp-logo-1000px.png": {
 		"ft": 32768,
@@ -506,10 +403,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/sp-logo-1000px.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/sp-logo-400px.png": {
 		"ft": 32768,
@@ -517,10 +411,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/sp-logo-400px.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/sudenpennut.png": {
 		"ft": 32768,
@@ -528,10 +419,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/sudenpennut.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/tarpojat.png": {
 		"ft": 32768,
@@ -539,10 +427,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/tarpojat.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/img\/vaeltajat.png": {
 		"ft": 32768,
@@ -550,10 +435,7 @@
 		"oA": 0,
 		"oAP": "\/assets\/img\/vaeltajat.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/assets\/js\/api-edit-block.js": {
 		"ft": 64,
@@ -5709,10 +5591,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/media\/Modernizr 2 Logo.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/media\/Modernizr 2 Logo.svg": {
 		"ft": 2097152,
@@ -5769,10 +5648,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/alpha.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/apng_test.png": {
 		"ft": 32768,
@@ -5780,10 +5656,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/apng_test.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/before-after.png": {
 		"ft": 32768,
@@ -5791,10 +5664,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/before-after.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/form_validation.html": {
 		"ft": 8192,
@@ -5817,10 +5687,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/green5x5.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/hashchange.html": {
 		"ft": 8192,
@@ -5849,10 +5716,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/mathml_ref.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/modernizr-1.7.min.js": {
 		"ft": 64,
@@ -5869,10 +5733,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/png_alpha_result.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/pushstate.html": {
 		"ft": 8192,
@@ -5886,10 +5747,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/red30x30.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/ruby.png": {
 		"ft": 32768,
@@ -5897,10 +5755,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/ruby.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/stroked-text.png": {
 		"ft": 32768,
@@ -5908,10 +5763,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/stroked-text.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/style.css": {
 		"aP": 1,
@@ -5929,10 +5781,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/svg-html-blur.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/svg-img.svg": {
 		"ft": 2097152,
@@ -5956,10 +5805,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/svg_blur.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/table.png": {
 		"ft": 32768,
@@ -5967,10 +5813,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/table.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/text-shadow1.png": {
 		"ft": 32768,
@@ -5978,10 +5821,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/text-shadow1.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/text-shadow2.png": {
 		"ft": 32768,
@@ -5989,10 +5829,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/text-shadow2.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/Windsong-webfont.eot": {
 		"ft": 8192,
@@ -6034,10 +5871,7 @@
 		"oA": 2,
 		"oAP": "\/bower_components\/modernizr\/test\/caniuse_files\/windsong_font.png",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"\/bower_components\/modernizr\/test\/caniuse_files\/xhtml.html": {
 		"ft": 8192,
@@ -7333,10 +7167,6 @@
 			"active": 0,
 			"optionString": "{'properties': 'always'}"
 			},
-		"capitalized-comments": {
-			"active": 0,
-			"optionString": "'always', {'ignoreInlineComments': false, 'ignoreConsecutiveComments': false}"
-			},
 		"class-methods-use-this": {
 			"active": 0,
 			"optionString": "{'exceptMethods': []}"
@@ -7501,10 +7331,6 @@
 			"active": 0,
 			"optionString": "{'max': 10}, {'ignoreTopLevelFunctions': true}"
 			},
-		"max-statements-per-line": {
-			"active": 0,
-			"optionString": "{'max': 1}"
-			},
 		"multiline-ternary": {
 			"active": 0,
 			"optionString": "'always'"
@@ -7537,10 +7363,6 @@
 			"active": 0,
 			"optionString": ""
 			},
-		"no-await-in-loop": {
-			"active": 0,
-			"optionString": ""
-			},
 		"no-bitwise": {
 			"active": 0,
 			"optionString": "{'allow': ['~'], 'int32Hint': true}"
@@ -7559,10 +7381,6 @@
 			},
 		"no-class-assign": {
 			"active": 1,
-			"optionString": ""
-			},
-		"no-compare-neg-zero": {
-			"active": 0,
 			"optionString": ""
 			},
 		"no-cond-assign": {
@@ -7765,10 +7583,6 @@
 			"active": 0,
 			"optionString": ""
 			},
-		"no-multi-assign": {
-			"active": 0,
-			"optionString": ""
-			},
 		"no-multi-spaces": {
 			"active": 0,
 			"optionString": "{'exceptions': {'Property': true, 'BinaryExpression': false, 'VariableDeclarator': false, 'ImportDeclaration': false}}"
@@ -7849,10 +7663,6 @@
 			"active": 0,
 			"optionString": ""
 			},
-		"no-prototype-builtins": {
-			"active": 0,
-			"optionString": ""
-			},
 		"no-redeclare": {
 			"active": 1,
 			"optionString": "{'builtinGlobals': false}"
@@ -7884,10 +7694,6 @@
 		"no-return-assign": {
 			"active": 0,
 			"optionString": "'except-parens'"
-			},
-		"no-return-await": {
-			"active": 0,
-			"optionString": ""
 			},
 		"no-script-url": {
 			"active": 0,
@@ -8049,10 +7855,6 @@
 			"active": 0,
 			"optionString": ""
 			},
-		"nonblock-statement-body-position": {
-			"active": 0,
-			"optionString": "'beside'"
-			},
 		"object-curly-newline": {
 			"active": 0,
 			"optionString": "{'ObjectExpression': {'multiline': true}, 'ObjectPattern': {'multiline': true}}"
@@ -8097,17 +7899,9 @@
 			"active": 0,
 			"optionString": "{'destructuring': 'any', 'ignoreReadBeforeAssign': false}"
 			},
-		"prefer-destructuring": {
-			"active": 0,
-			"optionString": "{'array': true, 'object': true}, {'enforceForRenamedProperties': false}"
-			},
 		"prefer-numeric-literals": {
 			"active": 0,
 			"optionString": ""
-			},
-		"prefer-promise-reject-errors": {
-			"active": 0,
-			"optionString": "{'allowEmptyReject': false}"
 			},
 		"prefer-rest-params": {
 			"active": 0,
@@ -8132,10 +7926,6 @@
 		"radix": {
 			"active": 0,
 			"optionString": "'always'"
-			},
-		"require-await": {
-			"active": 0,
-			"optionString": ""
 			},
 		"require-jsdoc": {
 			"active": 0,
@@ -8202,10 +7992,6 @@
 			"optionString": ""
 			},
 		"template-curly-spacing": {
-			"active": 0,
-			"optionString": "'never'"
-			},
-		"template-tag-spacing": {
 			"active": 0,
 			"optionString": "'never'"
 			},
@@ -8652,8 +8438,7 @@
 		"autoOutputPathRelativePath": "",
 		"autoOutputPathReplace1": "",
 		"autoOutputPathReplace2": "",
-		"autoOutputPathStyle": 0,
-		"quality": 100
+		"autoOutputPathStyle": 0
 		},
 	"languageDefaultsJS": {
 		"autoOutputAction": 0,
@@ -8676,6 +8461,14 @@
 		"autoOutputPathStyle": 0,
 		"orderOutput": 0,
 		"outputStyle": 1
+		},
+	"languageDefaultsJSX": {
+		"autoOutputAction": 0,
+		"autoOutputPathFilenamePattern": "*.js",
+		"autoOutputPathRelativePath": "",
+		"autoOutputPathReplace1": "jsx",
+		"autoOutputPathReplace2": "js",
+		"autoOutputPathStyle": 0
 		},
 	"languageDefaultsKIT": {
 		"autoOutputAction": 0,
@@ -8738,9 +8531,7 @@
 		"autoOutputPathRelativePath": "",
 		"autoOutputPathReplace1": "",
 		"autoOutputPathReplace2": "",
-		"autoOutputPathStyle": 0,
-		"optimizerType": 1,
-		"quality": 100
+		"autoOutputPathStyle": 0
 		},
 	"languageDefaultsPUG": {
 		"autoOutputAction": 0,
@@ -8968,10 +8759,6 @@
 			},
 		"space-colon": {
 			"active": 1,
-			"flagValue": -1
-			},
-		"support-ie8": {
-			"active": 0,
 			"flagValue": -1
 			},
 		"toplevel": {

@@ -1,11 +1,11 @@
-// PRINTTITYYLIT 
+// PRINTTITYYLIT
 @media print {
 
 	.not-printable {
 		display: none;
 	}
 
-	.partio_topnav, .content-hero-wrapper, .menu-wrapper, .main-footer {
+	.partio_topnav, .content-hero-wrapper, .menu-wrapper, .main-footer, .task-group__logo-container, .additional-info, #tips__form-container {
 		display: none;
 	}
 
@@ -18,4 +18,20 @@
 	.breadcrumbs {
 		margin-bottom: 1rem;
 	}
+
+    .content-wrapper {
+        min-height: 0 !important;
+    }
+
+    a[href]:after {
+      content:"" !important;
+    }
+
+    abbr[title]:after {
+        content: "" !important;
+    }
+
+    .content-wrapper, .tag-groups {
+        width: 100% !important;
+    }
 }
