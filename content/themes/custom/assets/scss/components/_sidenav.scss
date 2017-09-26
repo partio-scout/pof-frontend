@@ -8,10 +8,13 @@ $column-gutter-half: $column-gutter / 2;
 .page-wrapper {
 	position: relative;
 	width: auto;
-	// min-height: rem-calc(800);
 	overflow-x: hidden;
-
 	background-color: #fff;
+
+	// Only for print
+	@media print {
+		overflow-x: visible;
+	}
 }
 
 .menu-wrapper {
