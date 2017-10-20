@@ -6188,6 +6188,12 @@
 		"oAP": "\/functions\/function-disable_api_inputs.php",
 		"oF": 0
 		},
+	"\/functions\/function-disable_discover_links.php": {
+		"ft": 8192,
+		"oA": 2,
+		"oAP": "\/functions\/function-disable_discover_links.php",
+		"oF": 0
+		},
 	"\/functions\/function-disable_emojis.php": {
 		"ft": 8192,
 		"oA": 2,
