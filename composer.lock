@@ -4,20 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+    "hash": "8da3b4ad8c696f6b84688a1476c864a0",
     "content-hash": "b74b6ef644402ef7803b784d0c24bb70",
     "packages": [
         {
             "name": "composer/installers",
-            "version": "v1.3.0",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045"
+                "reference": "9ce17fb70e9a38dd8acff0636a29f5cf4d575c1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/79ad876c7498c0bbfe7eed065b8651c93bfd6045",
-                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045",
+                "url": "https://api.github.com/repos/composer/installers/zipball/9ce17fb70e9a38dd8acff0636a29f5cf4d575c1b",
+                "reference": "9ce17fb70e9a38dd8acff0636a29f5cf4d575c1b",
                 "shasum": ""
             },
             "require": {
@@ -63,6 +64,7 @@
                 "Hurad",
                 "ImageCMS",
                 "Kanboard",
+                "Lan Management System",
                 "MODX Evo",
                 "Mautic",
                 "Maya",
@@ -86,6 +88,7 @@
                 "croogo",
                 "dokuwiki",
                 "drupal",
+                "eZ Platform",
                 "elgg",
                 "expressionengine",
                 "fuelphp",
@@ -102,6 +105,7 @@
                 "mediawiki",
                 "modulework",
                 "moodle",
+                "osclass",
                 "phpbb",
                 "piwik",
                 "ppi",
@@ -118,20 +122,20 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2017-04-24T06:37:16+00:00"
+            "time": "2017-08-09 07:53:48"
         },
         {
             "name": "devgeniem/dustpress",
-            "version": "1.6.6",
+            "version": "1.6.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devgeniem/dustpress.git",
-                "reference": "ee7ab3ce9598bf2e626e544929d8ef33ef457e4e"
+                "reference": "8f7ffd97e69102eeb217840358979f42cd9647f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devgeniem/dustpress/zipball/ee7ab3ce9598bf2e626e544929d8ef33ef457e4e",
-                "reference": "ee7ab3ce9598bf2e626e544929d8ef33ef457e4e",
+                "url": "https://api.github.com/repos/devgeniem/dustpress/zipball/8f7ffd97e69102eeb217840358979f42cd9647f1",
+                "reference": "8f7ffd97e69102eeb217840358979f42cd9647f1",
                 "shasum": ""
             },
             "type": "library",
@@ -167,7 +171,7 @@
                 "theme",
                 "wordpress"
             ],
-            "time": "2017-06-05T07:34:07+00:00"
+            "time": "2017-10-20 10:23:45"
         },
         {
             "name": "devgeniem/dustpress-debugger",
@@ -218,20 +222,20 @@
                 "theme",
                 "wordpress"
             ],
-            "time": "2017-06-02T14:37:56+00:00"
+            "time": "2017-06-02 14:37:56"
         },
         {
             "name": "devgeniem/dustpress-js",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devgeniem/dustpress-js.git",
-                "reference": "3a98a6ae4c51652b12573ab3405f5bfd803ac086"
+                "reference": "5cea474d02ec082daef8f32b4ccbad1b94321cf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devgeniem/dustpress-js/zipball/3a98a6ae4c51652b12573ab3405f5bfd803ac086",
-                "reference": "3a98a6ae4c51652b12573ab3405f5bfd803ac086",
+                "url": "https://api.github.com/repos/devgeniem/dustpress-js/zipball/5cea474d02ec082daef8f32b4ccbad1b94321cf9",
+                "reference": "5cea474d02ec082daef8f32b4ccbad1b94321cf9",
                 "shasum": ""
             },
             "require": {
@@ -268,24 +272,24 @@
                 "theme",
                 "wordpress"
             ],
-            "time": "2017-03-13T12:52:58+00:00"
+            "time": "2017-10-04 12:10:25"
         },
         {
             "name": "johnpbloch/wordpress",
-            "version": "4.8.0",
+            "version": "4.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress.git",
-                "reference": "24edf4daca6bc15ad3b78c5927468df487d47a37"
+                "reference": "d5bc0df53dd6e6e43082f47ccee89aab2049bc23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/24edf4daca6bc15ad3b78c5927468df487d47a37",
-                "reference": "24edf4daca6bc15ad3b78c5927468df487d47a37",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/d5bc0df53dd6e6e43082f47ccee89aab2049bc23",
+                "reference": "d5bc0df53dd6e6e43082f47ccee89aab2049bc23",
                 "shasum": ""
             },
             "require": {
-                "johnpbloch/wordpress-core": "4.8.0",
+                "johnpbloch/wordpress-core": "4.8.3",
                 "johnpbloch/wordpress-core-installer": "^1.0",
                 "php": ">=5.3.2"
             },
@@ -307,24 +311,27 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2017-06-08T15:12:19+00:00"
+            "time": "2017-10-31 16:40:07"
         },
         {
             "name": "johnpbloch/wordpress-core",
-            "version": "4.8.0",
+            "version": "4.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
-                "reference": "58f209dfd66f61c4398a47cf53e90d378abc25d7"
+                "reference": "949e279f9752b458d70288636a77d2b8f66801f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/58f209dfd66f61c4398a47cf53e90d378abc25d7",
-                "reference": "58f209dfd66f61c4398a47cf53e90d378abc25d7",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/949e279f9752b458d70288636a77d2b8f66801f6",
+                "reference": "949e279f9752b458d70288636a77d2b8f66801f6",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
+            },
+            "provide": {
+                "wordpress/core-implementation": "4.8.3"
             },
             "type": "wordpress-core",
             "notification-url": "https://packagist.org/downloads/",
@@ -344,7 +351,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2017-06-08T15:12:14+00:00"
+            "time": "2017-10-31 16:39:59"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -393,7 +400,7 @@
             "keywords": [
                 "wordpress"
             ],
-            "time": "2017-05-31T18:42:33+00:00"
+            "time": "2017-05-31 18:42:33"
         },
         {
             "name": "partio-scout/wordpress-advanced-custom-fields-pro",
@@ -416,7 +423,7 @@
                 }
             ],
             "description": "Customise WordPress with powerful, professional and intuitive fields",
-            "time": "2017-04-25T11:06:39+00:00"
+            "time": "2017-04-25 11:06:39"
         },
         {
             "name": "predis/predis",
@@ -466,7 +473,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2016-06-16T16:22:20+00:00"
+            "time": "2016-06-16 16:22:20"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -516,20 +523,20 @@
                 "env",
                 "environment"
             ],
-            "time": "2016-09-01T10:05:43+00:00"
+            "time": "2016-09-01 10:05:43"
         },
         {
             "name": "wpackagist-plugin/user-switching",
-            "version": "1.0.9",
+            "version": "1.2.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/user-switching/",
-                "reference": "tags/1.0.9"
+                "reference": "tags/1.2.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/user-switching.1.0.9.zip",
-                "reference": null,
+                "url": "https://downloads.wordpress.org/plugin/user-switching.1.2.0.zip",
+                "reference": "tags/1.2.0",
                 "shasum": null
             },
             "require": {

@@ -7276,12 +7276,20 @@ body .ui-tooltip {
       -webkit-transform: scale3d(1, 1, 1);
       transition: opacity .3s ease, transform .3s ease;
       -webkit-transition: opacity .3s ease, -webkit-transform .3s ease; }
+    .menu-wrapper ul li.menu-item-has-children li.current-page > a {
+      text-decoration: underline; }
     .menu-wrapper ul li a {
       position: relative;
       display: block;
       color: #FFFFFF; }
       .menu-wrapper ul li a:hover {
         text-decoration: underline; }
+      .menu-wrapper ul li a .toggler {
+        transform: translateX(0);
+        transition: transform .2s; }
+        .menu-wrapper ul li a .toggler:hover {
+          font-weight: bold;
+          transform: translateX(0.2rem); }
     .menu-wrapper ul li ul {
       list-style-type: none;
       padding: .125rem 0 0 .5rem; }
