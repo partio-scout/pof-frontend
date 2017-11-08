@@ -39,7 +39,7 @@ function enqueue_styles_and_scripts(){
 	wp_enqueue_style( 'slick', get_template_directory_uri().'/bower_components/slick.js/slick/slick.css', false, 1, all );
 	wp_enqueue_style( 'slick', get_template_directory_uri().'/bower_components/slick.js/slick/slick-theme.css', false, 1, all );
 	// main styles
-	wp_enqueue_style( 'app', get_template_directory_uri().'/assets/css/app.css', false, "1.0.3", all );
+	wp_enqueue_style( 'app', get_template_directory_uri().'/assets/css/app.css', false, "1.0.4", all );
 
 }
 

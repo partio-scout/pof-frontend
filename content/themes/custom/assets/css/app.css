@@ -7536,8 +7536,7 @@ body .ui-tooltip {
 .task-info {
   padding: 0 1rem 2rem; }
   .task-info .task-info__heading {
-    color: #FFFFFF;
-    text-shadow: 1px 1px 1px #253764; }
+    color: #FFFFFF; }
   .task-info .tag-groups {
     background-color: #28aaff;
     padding-top: 1rem;

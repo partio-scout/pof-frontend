@@ -527,6 +527,15 @@
 		"sC": 1,
 		"tS": 0
 		},
+	"\/assets\/js\/tips.js": {
+		"ft": 64,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/assets\/js\/tips-min.js",
+		"oF": 0,
+		"sC": 1,
+		"tS": 0
+		},
 	"\/assets\/js\/tips.min.js": {
 		"ft": 64,
 		"mi": 1,
