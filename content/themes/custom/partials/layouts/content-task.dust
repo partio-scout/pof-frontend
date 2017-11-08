@@ -2,8 +2,10 @@
 
 <section class="content__headers">
     <h1 class="content__main-header">{Content.post_title}</h1>
+    <br>
     {?Content.fields.api_ingress}
-        <h2 class="ingress">{S.tavoite}: {Content.fields.api_ingress}</h2>
+        <strong> {S.tavoite}: </strong>
+        <p> {Content.fields.api_ingress} </p>
     {/Content.fields.api_ingress}
 </section>
 

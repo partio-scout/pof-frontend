@@ -1,6 +1,15 @@
 	<aside class="menu-wrapper">
 		<h3 class="menu-heading show-for-medium-up">{Sidenav.S.valikko}</h3>
 		<ul class="menu">
+            <div class="row lang-menu-row">
+                <div class="lang-menu-container">
+                    <ul class="lang-menu">
+                        {#Sidenav.LangSwitcher.langs}
+                            <li><a{?active} class="active"{/active} href="{permalink}">{lang}</a></li>
+                        {/Sidenav.LangSwitcher.langs}
+                    </ul>
+                </div>
+            </div>
 			{#Sidenav.Content}
 			<li class="menu-item{?has_children} menu-item-has-children{/has_children} {current_first}">
 				<a href={url}>{title}{?has_children}<span class="toggler {?current_first}opened{/current_first}"></span>{/has_children}</a>
@@ -30,13 +39,4 @@
 				<input placeholder="Hae aktiviteetteja" id="" class="form-control sidenav-search__input">
 			</div>
 		</div>!}
-		<div class="row lang-menu-row">
-			<div class="lang-menu-container">
-				<ul class="lang-menu">
-					{#Sidenav.LangSwitcher.langs}
-						<li><a{?active} class="active"{/active} href="{permalink}">{lang}</a></li>
-					{/Sidenav.LangSwitcher.langs}
-				</ul>
-			</div>
-		</div>
 	</aside>

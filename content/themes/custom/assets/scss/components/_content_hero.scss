@@ -4,6 +4,7 @@
 
 .content-hero-bg {
 	width: 100%;
+    max-width: 75rem !important;
 	margin: 0 auto;
 	height: 40%;
 	min-height: 14rem;
@@ -60,7 +61,7 @@
 @media #{$medium-up} {
 	.content-hero__heading {
 		font-size: 1.375rem;
-		max-width: 30rem;
+		max-width: 25rem;
 	}
 }
 
