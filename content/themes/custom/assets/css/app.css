@@ -8719,6 +8719,24 @@ body {
   .content-inner .program-container__heading {
     font-size: 1.2rem; } }
 
+.content-inner .taskgroup-sidelogo {
+  float: left;
+  width: 150px;
+  margin: 5px 20px 10px 0; }
+
+.content-inner .float-content {
+  width: calc(100% - 150px);
+  padding-left: 20px;
+  margin-right: 0;
+  margin-left: auto; }
+
+@media only screen and (max-width: 40em) {
+  .content-inner .taskgroup-sidelogo {
+    float: none; }
+  .content-inner .float-content {
+    width: 100%;
+    padding-left: 0; } }
+
 .content-inner .task-group__header {
   position: relative; }
 
@@ -8730,7 +8748,9 @@ body {
 
 .content-inner .task__icons {
   padding-bottom: .5rem;
-  display: table; }
+  display: table;
+  float: left;
+  margin-right: 1rem; }
   .content-inner .task__icons .icon {
     display: table-cell;
     max-width: 1.8625rem;
