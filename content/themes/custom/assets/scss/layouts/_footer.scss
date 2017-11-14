@@ -78,3 +78,19 @@
 	background: transparent;
 	opacity: 0.9;
 }
+
+@media #{$small-only} {
+    .main-footer__logo {
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+
+    .footer__info {
+        display: block;
+        margin-left: 0;
+        p {
+            text-align: center;
+        }
+    }
+}

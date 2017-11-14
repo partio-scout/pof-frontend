@@ -7800,7 +7800,8 @@ body .ui-tooltip {
   .content-inner #comments__list_container .comment__content p {
     font-size: .875rem;
     min-height: -moz-fit-content;
-    min-height: -webkit-fit-content; }
+    min-height: -webkit-fit-content;
+    margin-bottom: 0; }
   .content-inner .tips__list .tip__likes,
   .content-inner #comments__list_container .tip__likes {
     padding-left: .5rem; }
@@ -8618,6 +8619,17 @@ body .ui-tooltip {
   background: transparent;
   opacity: 0.9; }
 
+@media only screen and (max-width: 40em) {
+  .main-footer__logo {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px; }
+  .footer__info {
+    display: block;
+    margin-left: 0; }
+    .footer__info p {
+      text-align: center; } }
+
 body {
   background-color: #253764; }
 
@@ -8650,6 +8662,11 @@ body {
 
 .content-inner h5, .content-inner h6 {
   font-size: 1.125rem; }
+
+.content-inner #jaljet td {
+  font-size: 0.775rem;
+  padding: 0.5625rem 0.525rem;
+  text-align: center; }
 
 .text-content img {
   margin-bottom: 1rem; }

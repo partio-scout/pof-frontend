@@ -14,7 +14,8 @@ class Tips extends \DustPress\Model {
         $tips_args = [
             'post_id'   => get_the_ID(),    // id of the curr page
             'status' => 'approve',
-            'orderby'   => 'comment_date'
+            'orderby'   => 'comment_date',
+            'order'     => 'ASC'
         ];
         $tips = get_comments( $tips_args );
         foreach ($tips as $key => $tip) {

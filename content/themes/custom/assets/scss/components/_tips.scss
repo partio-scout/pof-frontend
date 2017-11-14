@@ -13,7 +13,7 @@
 			padding-right: .5rem;
 			color: $partio_main_color_lighter;
 		}
-		
+
 		i {
 			font-size: .875rem;
 			transition: transform .3s ease;
@@ -99,12 +99,12 @@
 		}
 
 		.tip,
-		.comment {			
+		.comment {
 			background-color: $ghost;
 			border: 1px solid $gainsboro;
 			padding: 1rem;
 			margin-bottom: 1rem;
-			// border-radius: $global-radius;				
+			// border-radius: $global-radius;
 		}
 
 		.tip__header,
@@ -134,7 +134,7 @@
 			background-repeat: no-repeat;
 			background-size: contain;
 			vertical-align: middle;
-			border: 1px solid $gainsboro;			
+			border: 1px solid $gainsboro;
 		}
 
 		.tip__info,
@@ -177,6 +177,7 @@
 				font-size: .875rem;
 				min-height: -moz-fit-content;
 				min-height: -webkit-fit-content;
+                margin-bottom: 0;
 			}
 			//max-height: rem-calc(200);
 		}
@@ -201,24 +202,24 @@
 		.pagination {
 			margin-top: 2rem;
 
-			li {				
+			li {
 				list-style-type: none;
 				display: inline;
 				margin: 0 .5rem;
 				padding: 0;
-				
+
 				a {
-					border-radius: 3px;					
+					border-radius: 3px;
 					padding: .5rem;
 					margin: 0;
 					border: 1px solid $gainsboro;
 					background: $ghost;
 					color: $partio_main_color_lighter;
-					text-decoration: none; 
+					text-decoration: none;
 				}
 
 				&.active {
-					a { 
+					a {
 						background-color: $partio_main_color_lighter;
 						border: 1px solid darken($partio_main_color_lighter, 10%);
 						color: #fff;
@@ -249,10 +250,10 @@
 	.tips__list,
 	.comments__list {
 		.tip,
-		.comment {			
+		.comment {
 			background-color: $partio_main_color_superlight;
 			border: none;
-			
+
 			.tip__avatar,
 			.comment__avatar {
 				.tip__avatar__inner,
@@ -276,8 +277,8 @@
 			}
 
 			.comment__reply {
-				
-				a {							
+
+				a {
 					@extend .button;
 					@extend .radius;
 					margin: 0;
@@ -297,7 +298,7 @@
 				}
 			}
 
-			.comments__form_container {				
+			.comments__form_container {
 				margin: 1rem 0 0;
 				padding: 1rem;
 				background-color: $white;
@@ -361,7 +362,7 @@
 			display: none;
 			position: absolute;
 			left: 0;
-			top: 0;			
+			top: 0;
 			right: 0;
 			bottom: 0;
 			background: rgba(255,255,255,0.75);
@@ -376,19 +377,19 @@
 		#add_image_input {
 			text-decoration: none;
 		}
-		#tips__image_input_container {		
+		#tips__image_input_container {
 			.file_input_container {
 				input {
 					width: 80%;
 					float: left;
-				}		
+				}
 				.delete_image_input {
 					float: right;
 					text-decoration: none;
 				}
 			}
 		}
-	}	
+	}
 }
 
 // .comments {
