@@ -5,7 +5,7 @@ function enqueue_styles_and_scripts(){
 	// replace jquery for front end with a newer version
 	if ( ! is_admin() ) {
 		wp_deregister_script( 'jquery' );
-		wp_register_script( 'jquery', ("http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"), false, '2.1.4' );
+		wp_register_script( 'jquery', ("https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"), false, '2.1.4' );
 	}
 
 	// jquery
