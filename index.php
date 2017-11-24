@@ -38,7 +38,7 @@ $redis = new Predis\Client( $redis_params );
 
 // Init cache vars.
 $domain = $_SERVER['HTTP_HOST'];
-$url    = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+$url    = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 $url    = str_replace( '?r=y', '', $url );
 $url    = str_replace( '?c=y', '', $url );
 $dkey   = md5( $domain );
