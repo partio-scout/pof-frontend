@@ -95,19 +95,6 @@ abbr[title] {
   border-bottom: 1px dotted; }
 
 /**
- * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
- */
-b,
-strong {
-  font-weight: bold; }
-
-/**
- * Address styling not present in Safari and Chrome.
- */
-dfn {
-  font-style: italic; }
-
-/**
  * Address variable `h1` font-size and margin within `section` and `article`
  * contexts in Firefox 4+, Safari, and Chrome.
  */
@@ -333,13 +320,6 @@ legend {
 textarea {
   overflow: auto; }
 
-/**
- * Don't inherit the `font-weight` (applied by a rule above).
- * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
- */
-optgroup {
-  font-weight: bold; }
-
 /* Tables
    ========================================================================== */
 /**
@@ -416,7 +396,7 @@ body {
   background: #fff;
   color: #222;
   cursor: auto;
-  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-family: "PT Sans", sans-serif
   font-style: normal;
   font-weight: normal;
   line-height: 1.5;
@@ -1655,7 +1635,7 @@ button, .button, .comments_demo .tips__list .tip .comment__reply a,
   border-style: solid;
   border-width: 0;
   cursor: pointer;
-  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-family: "PT Sans", sans-serif
   font-weight: normal;
   line-height: normal;
   margin: 0 0 1.25rem;
@@ -1665,8 +1645,8 @@ button, .button, .comments_demo .tips__list .tip .comment__reply a,
   display: inline-block;
   padding: 0.625rem 1.25rem 0.6875rem 1.25rem;
   font-size: 0.875rem;
-  background-color: #689abc;
-  border-color: #487da2;
+  background-color: #28a9e1;
+  border-color: #1a8aba;
   color: #FFFFFF;
   transition: background-color 300ms ease-out; }
   button:hover, button:focus, .button:hover, .comments_demo .tips__list .tip .comment__reply a:hover,
@@ -1698,7 +1678,7 @@ button, .button, .comments_demo .tips__list .tip .comment__reply a,
   #comments__list_container .tips__list .comment .comments__form_container #reply-title small a:focus,
   #comments__list_container .comments__list .tip .comments__form_container #reply-title small a:focus,
   #comments__list_container .comments__list .comment .comments__form_container #reply-title small a:focus {
-    background-color: #487da2; }
+    background-color: #1a8aba; }
   button:hover, button:focus, .button:hover, .comments_demo .tips__list .tip .comment__reply a:hover,
   .comments_demo .tips__list .comment .comment__reply a:hover,
   .comments_demo .comments__list .tip .comment__reply a:hover,
@@ -2283,8 +2263,8 @@ button, .button, .comments_demo .tips__list .tip .comment__reply a,
   #comments__list_container .tips__list .comment .comments__form_container #reply-title small a[disabled],
   #comments__list_container .comments__list .tip .comments__form_container #reply-title small a[disabled],
   #comments__list_container .comments__list .comment .comments__form_container #reply-title small a[disabled] {
-    background-color: #689abc;
-    border-color: #487da2;
+    background-color: #28a9e1;
+    border-color: #1a8aba;
     color: #FFFFFF;
     box-shadow: none;
     cursor: default;
@@ -2346,7 +2326,7 @@ button, .button, .comments_demo .tips__list .tip .comment__reply a,
     #comments__list_container .tips__list .comment .comments__form_container #reply-title small a[disabled]:focus,
     #comments__list_container .comments__list .tip .comments__form_container #reply-title small a[disabled]:focus,
     #comments__list_container .comments__list .comment .comments__form_container #reply-title small a[disabled]:focus {
-      background-color: #487da2; }
+      background-color: #1a8aba; }
     button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .comments_demo .tips__list .tip .comment__reply a.disabled:hover,
     .comments_demo .tips__list .comment .comment__reply a.disabled:hover,
     .comments_demo .comments__list .tip .comment__reply a.disabled:hover,
@@ -2462,7 +2442,7 @@ button, .button, .comments_demo .tips__list .tip .comment__reply a,
     #comments__list_container .tips__list .comment .comments__form_container #reply-title small a[disabled]:focus,
     #comments__list_container .comments__list .tip .comments__form_container #reply-title small a[disabled]:focus,
     #comments__list_container .comments__list .comment .comments__form_container #reply-title small a[disabled]:focus {
-      background-color: #689abc; }
+      background-color: #28a9e1; }
     button.disabled.secondary, button[disabled].secondary, .button.disabled.secondary, .comments_demo .tips__list .tip .comment__reply a.disabled.secondary,
     .comments_demo .tips__list .comment .comment__reply a.disabled.secondary,
     .comments_demo .comments__list .tip .comment__reply a.disabled.secondary,
@@ -4109,7 +4089,6 @@ fieldset {
   padding: 1.25rem; }
   fieldset legend {
     background: #FFFFFF;
-    font-weight: bold;
     margin-left: -0.1875rem;
     margin: 0;
     padding: 0 0.1875rem; }
@@ -4118,7 +4097,6 @@ fieldset {
 [data-abide] .error small.error, [data-abide] .error span.error, [data-abide] span.error, [data-abide] small.error {
   display: block;
   font-size: 0.75rem;
-  font-style: italic;
   font-weight: normal;
   margin-bottom: 1rem;
   margin-top: -1px;
@@ -4132,7 +4110,6 @@ fieldset {
 span.error, small.error {
   display: block;
   font-size: 0.75rem;
-  font-style: italic;
   font-weight: normal;
   margin-bottom: 1rem;
   margin-top: -1px;
@@ -4156,7 +4133,6 @@ span.error, small.error {
 .error small.error {
   display: block;
   font-size: 0.75rem;
-  font-style: italic;
   font-weight: normal;
   margin-bottom: 1rem;
   margin-top: -1px;
@@ -4305,7 +4281,6 @@ label.error {
     color: #AAAAAA;
     cursor: pointer;
     font-size: 2.5rem;
-    font-weight: bold;
     line-height: 1;
     position: absolute;
     top: 0.625rem;
@@ -4319,15 +4294,13 @@ table {
   table caption {
     background: transparent;
     color: #222222;
-    font-size: 1rem;
-    font-weight: bold; }
+    font-size: 1rem; }
   table thead {
     background: #F5F5F5; }
     table thead tr th,
     table thead tr td {
       color: #222222;
       font-size: 0.875rem;
-      font-weight: bold;
       padding: 0.5rem 0.625rem 0.625rem; }
   table tfoot {
     background: #F5F5F5; }
@@ -4335,7 +4308,6 @@ table {
     table tfoot tr td {
       color: #222222;
       font-size: 0.875rem;
-      font-weight: bold;
       padding: 0.5rem 0.625rem 0.625rem; }
   table tr th,
   table tr td {
@@ -4512,13 +4484,12 @@ p {
     line-height: 1.6; }
   p aside {
     font-size: 0.875rem;
-    font-style: italic;
     line-height: 1.35; }
 
 /* Default header styles */
 h1, h2, h3, h4, h5, h6 {
   color: #222222;
-  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-family: "PT Sans", sans-serif
   font-style: normal;
   font-weight: normal;
   line-height: 1.4;
@@ -4583,7 +4554,7 @@ code {
   border-style: solid;
   border-width: 1px;
   color: #333333;
-  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  font-family: monospace;
   font-weight: normal;
   padding: 0.125rem 0.3125rem 0.0625rem; }
 
@@ -4641,8 +4612,7 @@ ol {
 
 /* Definition Lists */
 dl dt {
-  margin-bottom: 0.3rem;
-  font-weight: bold; }
+  margin-bottom: 0.3rem; }
 
 dl dd {
   margin-bottom: 0.75rem; }
@@ -4690,16 +4660,11 @@ blockquote p {
     margin: 0;
     display: block; }
   .vcard .fn {
-    font-weight: bold;
     font-size: 0.9375rem; }
-
-.vevent .summary {
-  font-weight: bold; }
 
 .vevent abbr {
   cursor: default;
   text-decoration: none;
-  font-weight: bold;
   border: none;
   padding: 0 0.0625rem; }
 
@@ -4751,7 +4716,6 @@ blockquote p {
   position: relative; }
   .tab-bar h1, .tab-bar h2, .tab-bar h3, .tab-bar h4, .tab-bar h5, .tab-bar h6 {
     color: #FFFFFF;
-    font-weight: bold;
     line-height: 2.8125rem;
     margin: 0; }
   .tab-bar h1, .tab-bar h2, .tab-bar h3, .tab-bar h4 {
@@ -4874,7 +4838,6 @@ ul.off-canvas-list {
     color: #999999;
     display: block;
     font-size: 0.75rem;
-    font-weight: bold;
     margin: 0;
     padding: 0.3rem 0.9375rem;
     text-transform: uppercase; }
@@ -5063,7 +5026,6 @@ ul.off-canvas-list {
     border-bottom: none;
     border-top: 1px solid #5e5e5e;
     color: #999999;
-    font-weight: bold;
     padding: 0.3rem 0.9375rem;
     text-transform: uppercase;
     margin: 0; }
@@ -5115,7 +5077,6 @@ ul.off-canvas-list {
     border-bottom: none;
     border-top: 1px solid #5e5e5e;
     color: #999999;
-    font-weight: bold;
     padding: 0.3rem 0.9375rem;
     text-transform: uppercase;
     margin: 0; }
@@ -5607,16 +5568,15 @@ th.hide-for-touch {
   float: left; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: Source Sans Pro Black, sans-serif;
-  font-weight: bold; }
+  font-family: Source Sans Pro Black, sans-serif; }
 
 body {
   font-family: PT Sans, sans-serif; }
 
 a {
-  color: #00548e; }
+  color: #253764; }
   a:hover {
-    color: #689abc; }
+    color: #28a9e1; }
   a:focus, a:active {
     color: inherit;
     outline: 0; }
@@ -5624,37 +5584,33 @@ a {
 .tdn {
   text-decoration: none !important; }
 
-.content-inner .tips__heading, #tips__form-container .tips__form-header, .hero__heading--main, .content-inner .content__main-header, .content-inner h1, .content-inner h2, .content-inner h3, .content-inner h4, .content-inner h5, .content-inner h6, .content-inner .ingress {
-  font-family: Source Sans Pro Black, sans-serif;
-  font-weight: bold; }
+.content-inner .tips__heading, #tips__form-container .tips__form-header, .content-inner .content__main-header, .content-inner h1, .content-inner h2, .content-inner h3, .content-inner h4, .content-inner h5, .content-inner h6, .content-inner .ingress {
+  font-family: Source Sans Pro Black, sans-serif; }
 
 .program__heading {
   font-family: Source Sans Pro Black, sans-serif;
-  font-weight: bold;
-  font-style: italic;
   font-weight: normal; }
 
-.menu-wrapper ul li a, .lang-menu-container ul li a, .second-lang-menu-container .second-lang-menu li a, .content-inner .breadcrumbs, .task-info .additional-info select, #tips__form-container .tips__form input, .form-textarea, .search-section__body .input-wrapper label, .back-to-top__link, .footer__info p {
+.menu-wrapper ul li a, .lang-menu-container ul li a, .second-lang-menu-container .second-lang-menu li a, .content-inner .breadcrumbs, .task-info .additional-info select, #tips__form-container .tips__form input, .form-textarea, .search-section__body .input-wrapper label, .hero__heading--main, .back-to-top__link, .footer__info p {
   font-family: PT Sans, sans-serif; }
 
 .search-results__body .search-result .search-result__header .search-result__heading {
-  font-family: Verdana, sans-serif; }
+  font-family: "PT Sans", sans-serif; }
 
 .content-inner .tips__list .tip__heading,
 .content-inner .tips__list .comment__heading,
 .content-inner #comments__list_container .tip__heading,
 .content-inner #comments__list_container .comment__heading, .current-events__heading {
-  font-family: Gill Sans, sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-weight: normal;
   font-style: normal; }
 
 .event__date {
-  font-family: Gill Sans, sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-weight: 700; }
 
 .sidenav-search__input, .content-hero__heading, .search-section__header, .search-section__body__header, .hero__heading--sub, .event__heading, .search__input-lg, .content-inner .program-container__heading, .content__headers .date {
-  font-family: PT Sans, sans-serif;
-  font-style: italic;
+  font-family: "PT Sans", sans-serif;
   font-weight: normal; }
 
 .mt05 {
@@ -5986,7 +5942,6 @@ input.ui-button::-moz-focus-inner, button.ui-button::-moz-focus-inner {
 .ui-datepicker th {
   padding: .7em .3em;
   text-align: center;
-  font-weight: bold;
   border: 0; }
 
 .ui-datepicker td {
@@ -6218,7 +6173,6 @@ input.ui-button::-moz-focus-inner, button.ui-button::-moz-focus-inner {
 
 .ui-selectmenu-menu .ui-menu .ui-selectmenu-optgroup {
   font-size: 1em;
-  font-weight: bold;
   line-height: 1.5;
   padding: 2px 0.4em;
   margin: 0.5em 0 0 0;
@@ -6412,14 +6366,14 @@ body .ui-tooltip {
   border-width: 2px; }
 
 .ui-widget {
-  font-family: Verdana,Arial,sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-size: 1.1em; }
 
 .ui-widget .ui-widget {
   font-size: 1em; }
 
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
-  font-family: Verdana,Arial,sans-serif;
+  font-family: "PT Sans",sans-serif;
   font-size: 1em; }
 
 .ui-widget-content {
@@ -6433,8 +6387,7 @@ body .ui-tooltip {
 .ui-widget-header {
   border: 1px solid #aaa;
   background: #ccc url("images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
-  color: #222;
-  font-weight: bold; }
+  color: #222; }
 
 .ui-widget-header a {
   color: #222; }
@@ -6487,9 +6440,6 @@ body .ui-tooltip {
 
 .ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text {
   color: #cd0a0a; }
-
-.ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary {
-  font-weight: bold; }
 
 .ui-priority-secondary, .ui-widget-content .ui-priority-secondary, .ui-widget-header .ui-priority-secondary {
   opacity: .7;
@@ -7115,7 +7065,7 @@ body .ui-tooltip {
 
 .topnav__link {
   display: block;
-  font-family: Arial, sans-serif;
+  font-family: "PT Sans", sans-serif;
   float: left;
   color: #FFFFFF;
   height: 56px;
@@ -7198,11 +7148,28 @@ body .ui-tooltip {
   .show-menu:hover {
     cursor: pointer; }
 
+.sidenav-mobilelogo {
+  float: right;
+  margin-right: 10px;
+  width: 110px;
+  padding: 5px; }
+
+.header-logodesk {
+  width: 140px;
+  position: absolute;
+  left: 35px;
+  z-index: 9999;
+  top: calc(7rem - 46px); }
+
+@media screen and (max-width: 48.0625em) {
+  .header-logodesk {
+    display: none; } }
+
 .show-menu__icon {
   display: inline-block;
   margin: 0;
   padding: 1rem;
-  background-color: #689abc;
+  background-color: #28a9e1;
   color: #FFFFFF;
   line-height: 1; }
 
@@ -7210,7 +7177,7 @@ body .ui-tooltip {
   display: none;
   margin: 0;
   padding: 1rem;
-  background-color: #689abc;
+  background-color: #28a9e1;
   color: #FFFFFF;
   line-height: 1; }
 
@@ -7288,7 +7255,6 @@ body .ui-tooltip {
         transform: translateX(0);
         transition: transform .2s; }
         .menu-wrapper ul li a .toggler:hover {
-          font-weight: bold;
           transform: translateX(0.2rem); }
     .menu-wrapper ul li ul {
       list-style-type: none;
@@ -7342,7 +7308,7 @@ body .ui-tooltip {
     top: 7px;
     left: 14px; }
     .sidenav-search__inner label i {
-      color: #00548e;
+      color: #253764;
       font-size: 1rem; }
 
 .sidenav-search__input {
@@ -7359,9 +7325,9 @@ body .ui-tooltip {
   border: none;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; }
   .sidenav-search__input:focus {
-    border-color: #00548e;
+    border-color: #253764;
     outline: 0;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #00548e; }
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #253764; }
 
 .lang-menu-row {
   position: relative; }
@@ -7372,7 +7338,9 @@ body .ui-tooltip {
   .lang-menu-container ul {
     list-style-type: none;
     margin: 0;
-    padding: 0 0 0 1rem; }
+    padding: 0 0 0 1rem;
+    padding-left: 6px;
+    padding-bottom: 10px; }
     .lang-menu-container ul li {
       display: inline-block;
       margin: 0;
@@ -7406,7 +7374,7 @@ body .ui-tooltip {
         padding-right: .5rem; }
       .second-lang-menu-container .second-lang-menu li a {
         font-size: 0.625rem;
-        color: #689abc;
+        color: #28a9e1;
         position: relative;
         display: block;
         text-decoration: none;
@@ -7418,7 +7386,7 @@ body .ui-tooltip {
           color: #999999; }
         .second-lang-menu-container .second-lang-menu li a:hover {
           text-decoration: underline;
-          color: #00548e; }
+          color: #253764; }
         .second-lang-menu-container .second-lang-menu li a.active {
           text-decoration: underline; }
           .second-lang-menu-container .second-lang-menu li a.active:after {
@@ -7438,7 +7406,7 @@ body .ui-tooltip {
     position: relative;
     line-height: 1;
     padding: .5rem .5rem 0 0;
-    color: #689abc; }
+    color: #28a9e1; }
     .content-inner .breadcrumbs a:after {
       display: inline-block;
       content: '/';
@@ -7446,7 +7414,7 @@ body .ui-tooltip {
       color: #999999; }
     .content-inner .breadcrumbs a:hover {
       text-decoration: underline;
-      color: #00548e; }
+      color: #253764; }
     .content-inner .breadcrumbs a.current {
       color: #222222; }
       .content-inner .breadcrumbs a.current:hover {
@@ -7455,15 +7423,16 @@ body .ui-tooltip {
       display: none; }
 
 .content-hero-wrapper {
-  background-color: #00548e; }
+  background-color: #253764; }
 
 .content-hero-bg {
   width: 100%;
+  max-width: 75rem !important;
   margin: 0 auto;
   height: 40%;
   min-height: 14rem;
   position: relative;
-  background-color: #00548e;
+  background-color: #253764;
   transition: min-height .3s ease; }
   .content-hero-bg:after {
     content: '';
@@ -7473,7 +7442,7 @@ body .ui-tooltip {
     right: 0;
     bottom: 0;
     display: none;
-    background: linear-gradient(to right, #00548e 0%, transparent 20%, transparent 80%, #00548e 100%); }
+    background: linear-gradient(to right, #253764 0%, transparent 20%, transparent 80%, #253764 100%); }
 
 .content-hero__shade {
   position: absolute;
@@ -7506,7 +7475,7 @@ body .ui-tooltip {
 @media only screen and (min-width: 40.0625em) {
   .content-hero__heading {
     font-size: 1.375rem;
-    max-width: 30rem; } }
+    max-width: 25rem; } }
 
 @media only screen and (min-width: 64.0625em) {
   .content-hero__heading {
@@ -7516,14 +7485,13 @@ body .ui-tooltip {
 .task-info {
   padding: 0 1rem 2rem; }
   .task-info .task-info__heading {
-    color: #FFFFFF;
-    text-shadow: 1px 1px 1px #00548e; }
+    color: #FFFFFF; }
   .task-info .tag-groups {
-    background-color: #9fbfd5;
+    background-color: #28aaff;
     padding-top: 1rem;
     padding-bottom: 1rem; }
   .task-info .additional-info {
-    background-color: #c6dae7;
+    background-color: #87c4e6;
     padding-top: 1rem;
     padding-bottom: 1rem; }
   .task-info .tag-group {
@@ -7554,18 +7522,19 @@ body .ui-tooltip {
     padding-bottom: 1rem; }
     .task-info .additional-info .heading {
       margin-bottom: .25rem;
-      font-size: 0.875rem; }
+      font-size: 0.75rem; }
     .task-info .additional-info a {
       font-size: 0.75rem;
       display: block; }
       .task-info .additional-info a:hover {
         color: #222222; }
     .task-info .additional-info select {
+      font-size: 0.75rem;
       background-color: #FFFFFF;
       border-color: #9fbfd5; }
       .task-info .additional-info select:hover, .task-info .additional-info select:focus {
         outline: 0;
-        border-color: #689abc;
+        border-color: #28a9e1;
         background-color: #FFFFFF; }
       .task-info .additional-info select option.faded {
         color: #DDDDDD; }
@@ -7614,7 +7583,7 @@ body .ui-tooltip {
   animation: scale 0.75s 0s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08); }
 
 .ball-pulse > div {
-  background-color: #689abc;
+  background-color: #28a9e1;
   width: 15px;
   height: 15px;
   border-radius: 100%;
@@ -7643,7 +7612,7 @@ body .ui-tooltip {
     display: inline-block;
     padding-left: .5rem;
     padding-right: .5rem;
-    color: #689abc; }
+    color: #28a9e1; }
   .content-inner .tips__heading i {
     font-size: .875rem;
     transition: transform .3s ease;
@@ -7695,12 +7664,12 @@ body .ui-tooltip {
       color: #222222; }
     .content-inner .tips__list .sort-tips .sort-filter.active,
     .content-inner #comments__list_container .sort-tips .sort-filter.active {
-      color: #689abc;
+      color: #28a9e1;
       text-decoration: underline; }
     .content-inner .tips__list .sort-tips .sort-filter:hover,
     .content-inner #comments__list_container .sort-tips .sort-filter:hover {
       cursor: pointer;
-      color: #00548e;
+      color: #253764;
       text-decoration: underline; }
   .content-inner .tips__list .tip,
   .content-inner .tips__list .comment,
@@ -7757,7 +7726,7 @@ body .ui-tooltip {
   .content-inner .tips__list .comment__heading,
   .content-inner #comments__list_container .tip__heading,
   .content-inner #comments__list_container .comment__heading {
-    color: #689abc;
+    color: #28a9e1;
     text-transform: uppercase;
     font-size: 1rem;
     margin-bottom: 0;
@@ -7777,13 +7746,14 @@ body .ui-tooltip {
   .content-inner #comments__list_container .comment__content p {
     font-size: .875rem;
     min-height: -moz-fit-content;
-    min-height: -webkit-fit-content; }
+    min-height: -webkit-fit-content;
+    margin-bottom: 0; }
   .content-inner .tips__list .tip__likes,
   .content-inner #comments__list_container .tip__likes {
     padding-left: .5rem; }
     .content-inner .tips__list .tip__likes i,
     .content-inner #comments__list_container .tip__likes i {
-      color: #689abc; }
+      color: #28a9e1; }
       .content-inner .tips__list .tip__likes i:hover,
       .content-inner #comments__list_container .tip__likes i:hover {
         color: #CC333F;
@@ -7809,12 +7779,12 @@ body .ui-tooltip {
         margin: 0;
         border: 1px solid #DDDDDD;
         background: #FAFAFA;
-        color: #689abc;
+        color: #28a9e1;
         text-decoration: none; }
       .content-inner .tips__list .pagination li.active a,
       .content-inner #comments__list_container .pagination li.active a {
-        background-color: #689abc;
-        border: 1px solid #4a81a7;
+        background-color: #28a9e1;
+        border: 1px solid #1a8bbc;
         color: #fff; }
 
 .comments_demo .tips__list .tip,
@@ -7893,7 +7863,7 @@ body .ui-tooltip {
   #comments__list_container .comments__list .tip .comment__date,
   #comments__list_container .comments__list .comment .tip__date,
   #comments__list_container .comments__list .comment .comment__date {
-    color: #00548e; }
+    color: #253764; }
   .comments_demo .tips__list .tip .likes-count,
   .comments_demo .tips__list .comment .likes-count,
   .comments_demo .comments__list .tip .likes-count,
@@ -8052,7 +8022,7 @@ body .ui-tooltip {
     font-size: .875rem;
     transition: transform .3s ease;
     -webkit-transition: -webkit-transform .3s ease;
-    color: #00548e;
+    color: #253764;
     padding: 0 .5rem; }
   .search-section__header:hover {
     cursor: pointer; }
@@ -8141,19 +8111,19 @@ body .ui-tooltip {
   font-size: 0.875rem; }
 
 .search-section__body__header {
-  color: #00548e; }
+  color: #253764; }
 
 .button-section {
   text-align: center; }
   .button-section .search-button {
     font-size: 0.875rem !important;
     text-transform: uppercase;
-    background-color: #487da2; }
+    background-color: #1a8aba; }
     .button-section .search-button:hover {
-      background-color: #396481; }
+      background-color: #156e95; }
 
 #sivukartta {
-  background-color: #689abc; }
+  background-color: #28a9e1; }
   #sivukartta h2 {
     color: #FFFFFF;
     border-bottom: 1px solid #9fbfd5; }
@@ -8213,7 +8183,7 @@ body .ui-tooltip {
         position: relative;
         display: block;
         color: #FFFFFF;
-        font-family: arial; }
+        font-family: "PT Sans", sans-serif; }
         #sivukartta ul li a:hover {
           text-decoration: underline; }
       #sivukartta ul li ul {
@@ -8247,6 +8217,19 @@ body .ui-tooltip {
   transition: min-height .3s ease;
   position: relative; }
 
+.front-lang {
+  position: absolute;
+  left: 30px;
+  top: 20px;
+  z-index: 9999; }
+  .front-lang a {
+    font-size: 1rem;
+    color: white;
+    padding: 0 5px;
+    text-transform: uppercase; }
+    .front-lang a:hover {
+      text-decoration: underline; }
+
 .slider, .slick-list, .slick-track {
   height: 100%; }
 
@@ -8254,7 +8237,7 @@ body .ui-tooltip {
   height: 100%;
   background-position: 50% 50%;
   background-size: cover;
-  background-color: #00548e; }
+  background-color: #253764; }
 
 .hero__shade {
   position: absolute;
@@ -8275,7 +8258,7 @@ body .ui-tooltip {
 
 .hero__heading-group-middle {
   position: relative;
-  width: 90%;
+  width: 20%;
   max-width: 48rem;
   margin: 0 auto;
   top: 20%;
@@ -8303,25 +8286,26 @@ body .ui-tooltip {
   margin: 0;
   text-shadow: 1px 1px 0px #000000; }
 
-.hero__heading--main {
-  text-transform: uppercase; }
-  .hero__heading--main p {
-    font-size: 1.5rem; }
-  .hero__heading--main p a {
-    color: #FFFFFF;
-    font-size: 1.5rem;
-    text-decoration: underline; }
-  .hero__heading--main .hero__heading-image {
-    display: inline-block;
-    width: 200px;
-    height: 77px; }
-  .hero__heading--main .hero__heading-title {
-    text-transform: none;
-    padding-left: 3rem;
-    position: relative;
-    top: 1rem;
-    display: inline-block;
-    color: white; }
+.hero__heading--main p {
+  font-size: 1.5rem; }
+
+.hero__heading--main p a {
+  color: #FFFFFF;
+  font-size: 1.5rem;
+  text-decoration: underline; }
+
+.hero__heading--main .hero__heading-image {
+  display: inline-block;
+  width: 200px;
+  height: 77px; }
+
+.hero__heading--main .hero__heading-title {
+  text-transform: none;
+  padding-left: 3rem;
+  position: relative;
+  top: 1rem;
+  display: inline-block;
+  color: white; }
 
 .hero__heading--sub {
   font-size: 1.25rem; }
@@ -8334,7 +8318,7 @@ body .ui-tooltip {
   display: block; }
 
 .current-events {
-  background-color: #689abc;
+  background-color: #28a9e1;
   position: relative; }
 
 .current-events__heading {
@@ -8367,7 +8351,7 @@ body .ui-tooltip {
   color: #FFFFFF; }
 
 .event__date {
-  color: #00548e;
+  color: #253764;
   font-size: .8rem;
   display: inline-block;
   padding-right: .5rem; }
@@ -8435,7 +8419,7 @@ body .ui-tooltip {
 
 .search {
   padding: 2em 0;
-  background: #689abc; }
+  background: #28a9e1; }
   .search label {
     position: absolute;
     top: 13px;
@@ -8454,12 +8438,12 @@ body .ui-tooltip {
   color: #444;
   background-color: #ffffff;
   background-image: none;
-  border: 1px solid #00548e;
+  border: 1px solid #253764;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; }
   .search__input-lg:focus {
-    border-color: #00548e;
+    border-color: #253764;
     outline: 0;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #00548e; }
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #253764; }
 
 @media only screen and (min-width: 40.0625em) {
   .hero {
@@ -8532,8 +8516,7 @@ body .ui-tooltip {
 .back-to-top__link {
   display: inline-block;
   text-transform: uppercase;
-  font-size: .6875rem;
-  padding-bottom: 2rem;
+  font-size: 0.875rem;
   color: #FFFFFF; }
   .back-to-top__link i {
     color: #9fbfd5; }
@@ -8547,13 +8530,15 @@ body .ui-tooltip {
       color: #222222; }
 
 .footer__info {
-  padding-bottom: 1rem; }
+  padding-bottom: 1rem;
+  display: inline-block;
+  margin-left: 30px; }
   .footer__info p {
-    text-transform: uppercase;
     color: #FFFFFF;
-    font-size: .6875rem;
+    font-size: 0.875rem;
     margin: 0;
-    padding-bottom: 1rem; }
+    padding-bottom: 1rem;
+    text-align: left; }
 
 .sivukartta {
   color: #FFFFFF;
@@ -8562,11 +8547,11 @@ body .ui-tooltip {
     text-decoration: underline; }
 
 .main-footer__logo {
-  max-width: 140px;
-  width: 100%;
+  max-width: 120px;
   height: auto;
-  margin: 0 auto;
-  display: block; }
+  margin-left: 10px;
+  display: inline-block;
+  vertical-align: top; }
 
 .partio-spinner {
   display: none;
@@ -8579,8 +8564,19 @@ body .ui-tooltip {
   background: transparent;
   opacity: 0.9; }
 
+@media only screen and (max-width: 40em) {
+  .main-footer__logo {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px; }
+  .footer__info {
+    display: block;
+    margin-left: 0; }
+    .footer__info p {
+      text-align: center; } }
+
 body {
-  background-color: #00548e; }
+  background-color: #253764; }
 
 .content-bg {
   background: linear-gradient(to right, #253764 50%, #FFFFFF 50%, #FFFFFF 100%); }
@@ -8600,7 +8596,7 @@ body {
   text-decoration: underline; }
 
 .content-inner h1, .content-inner h2, .content-inner h3, .content-inner h4, .content-inner h5, .content-inner h6 {
-  color: #689abc;
+  color: #28a9e1;
   margin-top: 0; }
 
 .content-inner h1, .content-inner h2 {
@@ -8611,6 +8607,11 @@ body {
 
 .content-inner h5, .content-inner h6 {
   font-size: 1.125rem; }
+
+.content-inner #jaljet td {
+  font-size: 0.775rem;
+  padding: 0.5625rem 0.525rem;
+  text-align: center; }
 
 .text-content img {
   margin-bottom: 1rem; }
@@ -8680,6 +8681,24 @@ body {
   .content-inner .program-container__heading {
     font-size: 1.2rem; } }
 
+.content-inner .taskgroup-sidelogo {
+  float: left;
+  width: 150px;
+  margin: 5px 20px 10px 0; }
+
+.content-inner .float-content {
+  width: calc(100% - 150px);
+  padding-left: 20px;
+  margin-right: 0;
+  margin-left: auto; }
+
+@media only screen and (max-width: 40em) {
+  .content-inner .taskgroup-sidelogo {
+    float: none; }
+  .content-inner .float-content {
+    width: 100%;
+    padding-left: 0; } }
+
 .content-inner .task-group__header {
   position: relative; }
 
@@ -8691,7 +8710,9 @@ body {
 
 .content-inner .task__icons {
   padding-bottom: .5rem;
-  display: table; }
+  display: table;
+  float: left;
+  margin-right: 1rem; }
   .content-inner .task__icons .icon {
     display: table-cell;
     max-width: 1.8625rem;
@@ -8718,7 +8739,7 @@ body {
     font-size: .875rem;
     transition: transform .3s ease;
     -webkit-transition: -webkit-transform .3s ease;
-    color: #689abc;
+    color: #28a9e1;
     padding: 0 .5rem; }
   .content-inner .tasks__filter-heading:hover {
     cursor: pointer; }
@@ -8772,9 +8793,9 @@ body {
   .print .print-button i {
     padding-right: .5rem;
     font-size: 1rem;
-    color: #00548e; }
+    color: #253764; }
   .print .print-button:hover {
-    color: #689abc; }
+    color: #28a9e1; }
     .print .print-button:hover i {
       color: inherit; }
 
@@ -8801,7 +8822,7 @@ body {
 .content__headers .date {
   font-size: 1rem;
   margin-top: 0;
-  color: #689abc; }
+  color: #28a9e1; }
 
 .content-inner .age-group__logo-container {
   margin-bottom: 1.25rem; }
@@ -8834,7 +8855,7 @@ body {
   color: #222222; }
 
 .search-results__header .result-num {
-  color: #689abc; }
+  color: #28a9e1; }
 
 .search-results__body .search-result {
   display: block;
@@ -8857,7 +8878,7 @@ body {
         color: inherit;
         text-decoration: none; }
         .search-results__body .search-result .search-result__header .search-result__heading a:hover {
-          color: #689abc; }
+          color: #28a9e1; }
   .search-results__body .search-result .search-result__body {
     margin-bottom: 0.875rem; }
     .search-results__body .search-result .search-result__body .post-link {
