@@ -5,6 +5,11 @@
 			{! Slider !}
 			{?Content.fields.featured}
 			<section class="hero">
+                    <div class="front-lang">
+                        {#Languages}
+                            <a href="{url}"> {slug} </a>
+                        {/Languages}
+                    </div>
 				<div class="slider" data-time={SliderTime}>
 					{#Content.fields.featured}
 					<div class="slide" style="background-image:url({featured_image.url})">
@@ -14,7 +19,7 @@
 									<img class="hero__heading-image" src="/content/themes/custom/assets/img/sp-logo-400px.png">
 									<h1 class="hero__heading-title">{WP.name}</h1>
 								</div>
-								
+
 							</div>
 							<div class="hero__heading-group-middle">
 								<div class="hero__divider"></div>

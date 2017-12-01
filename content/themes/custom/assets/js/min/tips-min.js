@@ -79,6 +79,10 @@ window.Tips = ( function( window, document, $ ){
                 }
                 app.$loader.hide();
             },
+            error: function (data) {
+                app.handleError( "Vinkin lähettämisessä tapahtui virhe. Olkaa yhteydessä ylläpitoon: mikko.pori@partio.fi" );
+                app.$loader.hide();
+            },
             cache: false,
             contentType: false,
             processData: false

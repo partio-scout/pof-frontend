@@ -2,4 +2,5 @@
 	<i class="fa fa-bars show-menu__icon"></i>
 	<i class="fa fa-close close-menu__icon"></i>
 	<span class="show-menu__text">Valikko</span>
+    <img class="sidenav-mobilelogo" src="{WP.template_directory}/assets/img/partiologovalk.png" alt="">
 </div>

@@ -4,14 +4,14 @@
 {#Tips}
 
 <section class="tips" id="tips__section" data-page="{ID}">
-									
+
 	{! Vinkkiheader !}
 	<div class="tips__header">
 		<p class="tips__heading opened">
 			{S.vinkit}
 			<span id="tip-count"></span><i class="fa fa-chevron-down"></i></p>
 		<div class="tips__header__border"></div>
-	</div>	
+	</div>
 
 	<div class="tips__body opened">
 
@@ -52,7 +52,7 @@
 									</div>
 								{/fields.attachments.files}
 							</div>
-						{/fields.attachments.files}	
+						{/fields.attachments.files}
 
 						{?fields.attachments.links}
 							<div class="columns small-4">
@@ -63,15 +63,9 @@
 									</div>
 								{/fields.attachments.links}
 							</div>
-						{/fields.attachments.links}														
+						{/fields.attachments.links}
 					</div>
 					{/fields.attachments}
-					<div class="tip__header clearfix">
-						<div class="tip__info">
-							<p class="tip__heading">{comment_author}</p>
-							<p class="tip__date">{@strtodate value=comment_date format="j.n.Y" /}</p>
-						</div>
-					</div>					
 				</div>
 			{/Tips}
 
@@ -84,50 +78,50 @@
 
 		{! Vinkkiform !}
 
-		<div id="tips__form-container">		
+		<div id="tips__form-container">
 
 			<p class="tips__form-header">{S.lisaa_vinkki}</p>
 
 			<div class="alert-box alert radius tips__error" id="tips__general_errors">
-			</div>		
-			
+			</div>
+
 			<form class="tips__form" id="tips__form_data" enctype="multipart/form-data">
-				
+
 				<div class="tips__input_container">
-					<input class="radius" type="text" name="suggestion_name" placeholder="{S.nimi} *" aria-label="Name">
+					<input class="radius" type="text" name="suggestion_name" placeholder="{S.nimi}" aria-label="Name">
 					<small class="error tips__error" id="tips__error_suggestion_name"></small>
 				</div>
-				
+
 				<div class="tips__input_container">
 					<textarea class="radius form-textarea" name="suggestion_content" placeholder="{S.kirjoita_tahan}..."></textarea>
 					<small class="error tips__error" id="tips__error_suggestion_content"></small>
 				</div>
 
 				<div class="clearfix" id="tips__form-images">
-					
+
 					<h4>{S.liite}</h4>
-					
+
 					<div id="tips__image_input_container">
 						<div class="clearfix file_input_container" id="suggestion_file_user_input_container">
 							<input type="file" name="suggestion_file_user" data-file-idx="0" />
 							<small class="error tips__error" id="tips__error_suggestion_file_user"></small>
 						</div>
-					</div>				
+					</div>
 				</div>
-				
+
 				<input type="hidden" name="return_val" value="json">
-				<input type="hidden" name="action" value="tips_controller">		
-				<input type="hidden" name="ctrl" value="save">		
-				<input type="hidden" name="post_guid" value="{PageTask.Content.fields.api_guid}">	
+				<input type="hidden" name="action" value="tips_controller">
+				<input type="hidden" name="ctrl" value="save">
+				<input type="hidden" name="post_guid" value="{PageTask.Content.fields.api_guid}">
 				<input type="hidden" name="lang" value="{PageTask.Content.fields.api_lang}">
-				<input type="hidden" name="sendUrl" value="{Tips.SendUrl}">	
+				<input type="hidden" name="sendUrl" value="{Tips.SendUrl}">
 				<input class="button radius" id="tips__save" name="submit-tip" type="submit" value="{S.laheta}" aria-label="Send">
 
-				<div id="tips__form_loader">					
-					{>"loader"/}				
+				<div id="tips__form_loader">
+					{>"loader"/}
 				</div>
 
-			</form>		
+			</form>
 
 		</div>
 

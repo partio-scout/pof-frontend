@@ -80,6 +80,27 @@ $column-gutter-half: $column-gutter / 2;
 
 }
 
+.sidenav-mobilelogo {
+    float: right;
+    margin-right: 10px;
+    width: 110px;
+    padding: 5px;
+}
+
+.header-logodesk {
+    width: 140px;
+    position: absolute;
+    left: 35px;
+    z-index: 9999;
+    top: calc(7rem - 46px);
+}
+
+@media screen and (max-width: 48.0625em) {
+    .header-logodesk {
+        display: none;
+    }
+}
+
 .show-menu__icon {
 	display: inline-block;
 	margin: 0;
