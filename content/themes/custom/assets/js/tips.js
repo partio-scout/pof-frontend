@@ -64,7 +64,7 @@ window.Tips = ( function( window, document, $ ){
         app.$loader.show();
         var formData = new FormData(app.$tipsForm[0]);
         $.ajax({
-            url: 'http://pof-backend.partio.fi/lisaa-vinkki/',
+            url: pof.ajaxurl,
             type: 'POST',
             data: formData,
             success: function (data) {
