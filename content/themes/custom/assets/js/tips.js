@@ -64,7 +64,7 @@ window.Tips = ( function( window, document, $ ){
         app.$loader.show();
         var formData = new FormData(app.$tipsForm[0]);
         $.ajax({
-            url: pof.ajaxurl,
+            url: pof.tips_url,
             type: 'POST',
             data: formData,
             success: function (data) {
