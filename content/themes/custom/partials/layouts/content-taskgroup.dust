@@ -1,22 +1,24 @@
 {! Otsikko-osio !}
 
 <section class="content__headers">
-	<h1 class="content__main-header">{Content.post_title}</h1>
-	{?Content.fields.api_ingress}
-		<h2 class="ingress">{Content.fields.api_ingress}</h2>
-	{/Content.fields.api_ingress}									
+    {#Content.fields.api_images}
+        <img src="{logo.url}" class="taskgroup-sidelogo hide-for-small-only" alt="{logo.title}">
+    {/Content.fields.api_images}
+    <div class="float-content">
+    	<h1 class="content__main-header">{Content.post_title}</h1>
+        {#Content.fields.api_images}
+            <img src="{logo.url}" class="taskgroup-sidelogo show-for-small-only" alt="{logo.title}">
+        {/Content.fields.api_images}
+    	{?Content.fields.api_ingress}
+    		<h2 class="ingress">{Content.fields.api_ingress}</h2>
+    	{/Content.fields.api_ingress}
+    </div>
 </section>
 
 {! Tekstiosio !}
 
 <section class="task-group__header" data-equalizer data-equalizer-mq="medium-up">
-	
-	{#Content.fields.api_images}
-		<div class="task-group__logo-container" data-equalizer-watch>
-			<a href="{logo.url}"><img src="{logo.thumbnail.url}" alt="{logo.title}"></a>
-			<a href="{main_image.url}"><img src="{main_image.thumbnail.url}" alt="{main_image.title}"></a>
-		</div>
-	{/Content.fields.api_images}
+
 	<div class="task-group__text-container" data-equalizer-watch>
 	{?Content.post_content}
 		{@content data=Content.post_content /}
@@ -40,7 +42,7 @@
 					</h3>
 				</div>
 			</div>
-			<div class="row tasks__body-row opened">										
+			<div class="row tasks__body-row opened">
 				{#Children.mandatory}
 					<div class="columns small-12">
 						{>"shared/task_item.dust" /}
@@ -48,7 +50,7 @@
 							{#children}
 								{?fields.level}
 									<div class="columns large-3 tag-groups">
-										{>"shared/task_item.dust" /}	
+										{>"shared/task_item.dust" /}
 									</div>
 								{/fields.level}
 							{/children}
@@ -56,7 +58,7 @@
 					</div>
 				{/Children.mandatory}
 			</div>
-		{/Children.mandatory}	
+		{/Children.mandatory}
 
 		{?Children.voluntary}
 			<div class="row tasks__heading-row">
@@ -66,7 +68,7 @@
 					</h3>
 				</div>
 			</div>
-			<div class="row tasks__body-row opened">										
+			<div class="row tasks__body-row opened">
 				{#Children.voluntary}
 					<div class="columns small-12">
 						{>"shared/task_item.dust" /}
@@ -74,7 +76,7 @@
 							{#children}
 								{?fields.level}
 									<div class="columns large-3 tag-groups">
-										{>"shared/task_item.dust" /}	
+										{>"shared/task_item.dust" /}
 									</div>
 								{/fields.level}
 							{/children}
@@ -82,7 +84,7 @@
 					</div>
 				{/Children.voluntary}
 			</div>
-		{/Children.voluntary}	
+		{/Children.voluntary}
 </section>
 
 {! Liitteet !}

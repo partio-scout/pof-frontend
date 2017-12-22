@@ -23,18 +23,20 @@ define( 'DB_HOST', getenv( 'DB_HOST' ) );
 // ===============
 switch ( $_SERVER[ 'SERVER_NAME' ] ) {
     case 'partio-ohjelma.fi': // REAL LIVE DOMAIN
-        define( 'WP_HOME', 'http://partio-ohjelma.fi' );
-        define( 'WP_SITEURL', 'http://partio-ohjelma.fi/wp/' );
-        define( 'WP_PUB_SITEURL', 'http://partio-ohjelma.fi' );
-        define( 'WP_CONTENT_BASE_URL', 'http://static.partio-ohjelma.fi' );
-        define( 'WP_ADMIN_URL', 'http://admin.partio-ohjelma.fi' );
+        define( 'WP_HOME', 'https://partio-ohjelma.fi' );
+        define( 'WP_SITEURL', 'https://partio-ohjelma.fi/wp/' );
+        define( 'WP_PUB_SITEURL', 'https://partio-ohjelma.fi' );
+        define( 'WP_CONTENT_BASE_URL', 'https://static.partio-ohjelma.fi' );
+        define( 'WP_ADMIN_URL', 'https://admin.partio-ohjelma.fi' );
+        $_SERVER['HTTPS'] = 'on';
         break;
     case 'admin.partio-ohjelma.fi': // REAL ADMIN DOMAIN
-        define( 'WP_HOME', 'http://admin.partio-ohjelma.fi' );
-        define( 'WP_SITEURL', 'http://admin.partio-ohjelma.fi/wp/' );
-        define( 'WP_PUB_SITEURL', 'http://partio-ohjelma.fi' );
-        define( 'WP_CONTENT_BASE_URL', 'http://static.partio-ohjelma.fi' );
-        define( 'WP_ADMIN_URL', 'http://admin.partio-ohjelma.fi' );
+        define( 'WP_HOME', 'https://admin.partio-ohjelma.fi' );
+        define( 'WP_SITEURL', 'https://admin.partio-ohjelma.fi/wp/' );
+        define( 'WP_PUB_SITEURL', 'https://partio-ohjelma.fi' );
+        define( 'WP_CONTENT_BASE_URL', 'https://static.partio-ohjelma.fi' );
+        define( 'WP_ADMIN_URL', 'https://admin.partio-ohjelma.fi' );
+        $_SERVER['HTTPS'] = 'on';
         break;
     case 'admin.partio.geniem.com': // ADMIN DOMAIN
         define( 'WP_HOME', 'http://admin.partio.geniem.com' );
@@ -81,7 +83,7 @@ define( 'WP_POST_REVISIONS', 2 );
 // Custom Content Directory
 // ========================
 define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . '/content' );
-define( 'WP_CONTENT_URL', 'http://' . $_SERVER[ 'HTTP_HOST' ] . '/content' );
+define( 'WP_CONTENT_URL', 'https://' . $_SERVER[ 'HTTP_HOST' ] . '/content' );
 
 // ==================================
 // REMOVE POLYLANG HOME URL CACHE

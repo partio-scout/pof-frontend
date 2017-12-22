@@ -46,4 +46,13 @@ class PageFrontpage extends \DustPress\Model {
     public function SliderTime() {
         return get_field('slider_time', 'option') * 1000;
     }
+
+    public function Languages() {
+        $langs = pll_the_languages([
+            'echo' => 0,
+            'raw' => 1,
+            'hide_if_no_translation' => 1,
+        ]);
+        return $langs;
+    }
 }

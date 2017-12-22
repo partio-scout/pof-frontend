@@ -42,7 +42,7 @@ $column-gutter-half: $column-gutter / 2;
 		-webkit-transform: translate3d(0,0,0);
 	}
 
-	
+
 }
 
 .content-wrapper {
@@ -57,7 +57,7 @@ $column-gutter-half: $column-gutter / 2;
 	-webkit-transition: -webkit-transform .3s ease;
 
 	backface-visibility: hidden;
-	-webkit-backface-visibility: hidden;	
+	-webkit-backface-visibility: hidden;
 
 	width: 100%;
 
@@ -65,7 +65,7 @@ $column-gutter-half: $column-gutter / 2;
 		transform: translate3d(0,0,0);
 		-webkit-transform: translate3d(0,0,0);
 	}
-	
+
 	background-color: $white;
 
 }
@@ -78,6 +78,27 @@ $column-gutter-half: $column-gutter / 2;
 		cursor: pointer;
 	}
 
+}
+
+.sidenav-mobilelogo {
+    float: right;
+    margin-right: 10px;
+    width: 110px;
+    padding: 5px;
+}
+
+.header-logodesk {
+    width: 140px;
+    position: absolute;
+    left: 35px;
+    z-index: 9999;
+    top: calc(7rem - 46px);
+}
+
+@media screen and (max-width: 48.0625em) {
+    .header-logodesk {
+        display: none;
+    }
 }
 
 .show-menu__icon {
@@ -138,7 +159,7 @@ $column-gutter-half: $column-gutter / 2;
 			margin: 0;
 			padding: .5rem 0;
 
-			// ul li.menu-item-has-children 
+			// ul li.menu-item-has-children
 			&.menu-item-has-children {
 
 				// ul li.menu-item-has-children > a
@@ -202,6 +223,10 @@ $column-gutter-half: $column-gutter / 2;
 
 					}
 				}
+
+                li.current-page > a {
+                    text-decoration: underline;
+                }
 			}
 
 			// menun kaikki linkit
@@ -214,12 +239,24 @@ $column-gutter-half: $column-gutter / 2;
 				&:hover {
 					text-decoration: underline;
 				}
+
+                .toggler {
+                    transform: translateX(0);
+                    transition: transform .2s;
+
+                    &:hover{
+                        font-weight: bold;
+                        transform: translateX(.2rem);
+                    }
+
+                }
+
 			}
 
 			// ul li ul
 			ul {
 				list-style-type: none;
-				padding: .125rem 0 0 .5rem;				
+				padding: .125rem 0 0 .5rem;
 
 				// ul li ul li
 				li {
@@ -230,12 +267,12 @@ $column-gutter-half: $column-gutter / 2;
 						color: $white; //$partio_menu_helper_color;
 					}
 
-					// ul li ul li ul 
+					// ul li ul li ul
 					ul {
 
 						// ul li ul li ul li
 						li {
-							//ul li ul li ul li a 
+							//ul li ul li ul li a
 							a {
 								font-size: .875rem;
 								color: $white;
@@ -276,7 +313,7 @@ $column-gutter-half: $column-gutter / 2;
 
 		transform: translate3d(0,0,0);
 		-webkit-transform: translate3d(0,0,0);
-		
+
 	}
 	.content-wrapper {
 		width: auto;

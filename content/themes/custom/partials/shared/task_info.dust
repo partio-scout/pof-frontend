@@ -1,14 +1,14 @@
 <section class="task-info">
 
 	<div class="task-info__body row" data-equalizer data-equalizer-mq="medium-up">
-		
+
 		<div class="columns medium-6 tag-groups" data-equalizer-watch>
 
 			<header class="task-info__header">
 				<h4 class="task-info__heading">{S.suoritustiedot}</h4>
 			</header>
 
-			{! SUORITUSTIEDOT !}			
+			{! SUORITUSTIEDOT !}
 			{#Content.fields.tags}
 				{@select key=key}
 					<div class="tag-group">
@@ -31,13 +31,13 @@
 									{/eq}
 									{@eq value="valmistelu"}
 										{S.valmistelu}:
-									{/eq}	
+									{/eq}
 									{@eq value="suoritus_valmistelu_kesto"}
 										{S.suoritus_valmistelu_kesto}:
 									{/eq}
 									{@eq value="taitoalueet"}
 										{S.taitoalueet}:
-									{/eq}	
+									{/eq}
 									{@eq value="ryhmakoko"}
 										{S.ryhmakoko}:
 									{/eq}
@@ -49,7 +49,7 @@
 									{/eq}
 									{@eq value="kasvatustavoitteet"}
 										{S.kasvatustavoitteet}:
-									{/eq}																																		
+									{/eq}
 								</span>
 								{#values}
 									<span class="equipment__item">
@@ -83,23 +83,23 @@
 						</div>
 					</div>
 				</div>
-			{/Content.fields.leader_tasks}			
-				
+			{/Content.fields.leader_tasks}
+
 		</div>
-		
+
 		<div class="columns medium-6 additional-info" data-equalizer-watch>
 
 			<header class="task-info__header">
 				<h4 class="task-info__heading">{S.lisatiedot}</h4>
 			</header>
-			
+
 			{?Parent}
 				<div class="current-task-group">
 					<p class="heading">{S.aktiviteettiryhma}</p>
 					<a href="{Parent.permalink}" class="link">{Parent.post_title}</a>
 				</div>
 			{/Parent}
-			
+
 			{?Siblings}
 				<div class="other-tasks-from-current">
 					<p class="heading">{S.ryhman_muut_aktiviteetit}</p>
@@ -113,15 +113,15 @@
 			        </form>
 				</div>
 			{/Siblings}
-			
+
 			{! Kuvat !}
 			{?Content.fields.api_images}
 			<div class="skills">
 				{#Content.fields.api_images}
 					<div class="columns medium-6">
 						<a href="{logo.url}">
-							<img 
-								height="{logo.thumbnail.height}" 
+							<img
+								height="{logo.thumbnail.height}"
 								width="{logo.thumbnail.width}"
 								src="{logo.thumbnail.url}"
 								alt="{logo.title}" />
@@ -129,23 +129,23 @@
 					</div>
 					<div class="columns medium-6">
 						<a href="{main_image.url}">
-							<img 
-								height="{main_image.thumbnail.height}" 
+							<img
+								height="{main_image.thumbnail.height}"
 								width="{main_image.thumbnail.width}"
 								src="{main_image.thumbnail.url}"
 								alt="{main_image.title}" />
 						</a>
-					</div>				
+					</div>
 				{/Content.fields.api_images}
 			</div>
 			{/Content.fields.api_images}
 			{! WP AVAINSANAT !}
-			
+
 			{?wp_tags}
 				<div class="skills keywords">
-					
+
 					<p class="heading">{S.avainsanat}</p>
-					
+
 					{#wp_tags}
 						<a href="" class="keyword">{name}</a>
 					{/wp_tags}

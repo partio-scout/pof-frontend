@@ -1,6 +1,7 @@
 
 	<div class="content-hero-wrapper">
-		<div class="content-hero-bg">
+        <div class="content-hero-bg">
+            <img class="header-logodesk" src="{WP.template_directory}/assets/img/partiologovalk.png" alt="">
 			{?Hero.image}
 				{#Hero.image}
 				<div class="content-hero__shade" alt="{fields.image.title}" title="{fields.image.title}" style="background-image:url({fields.image.url})"></div>

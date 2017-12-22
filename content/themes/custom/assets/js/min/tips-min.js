@@ -64,7 +64,7 @@ window.Tips = ( function( window, document, $ ){
         app.$loader.show();
         var formData = new FormData(app.$tipsForm[0]);
         $.ajax({
-            url: 'http://pof-backend.partio.fi/lisaa-vinkki/',
+            url: pof.tips_url,
             type: 'POST',
             data: formData,
             success: function (data) {
@@ -77,6 +77,10 @@ window.Tips = ( function( window, document, $ ){
                 } else {
                     app.handleSuccess( data.message );
                 }
+                app.$loader.hide();
+            },
+            error: function (data) {
+                app.handleError( "Vinkin lähettämisessä tapahtui virhe. Olkaa yhteydessä ylläpitoon: mikko.pori@partio.fi" );
                 app.$loader.hide();
             },
             cache: false,

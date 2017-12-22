@@ -10,17 +10,16 @@
 
 	.task-info__heading {
 		color: $white;
-		text-shadow: 1px 1px 1px $partio_main_color;
 	}
 
 	.tag-groups {
-		background-color: $partio_main_color_lightest;
+		background-color: #28aaff;
 		padding-top: 1rem;
 		padding-bottom: 1rem;
 	}
 
 	.additional-info {
-		background-color: $partio_main_color_superlight;
+		background-color: #87c4e6;
 		padding-top: 1rem;
 		padding-bottom: 1rem;
 	}
@@ -45,6 +44,10 @@
 		padding-left: .5rem;
 	}
 
+    .equipment__heading {
+        font-weight: bold;
+    }
+
 	.equipment__item {
 		position: relative;
         word-break: break-word;
@@ -67,7 +70,8 @@
 
 		.heading {
 			margin-bottom: .25rem;
-			font-size: rem-calc(14);
+            font-weight: bold;
+			font-size: rem-calc(12);
 		}
 
 		a {
@@ -79,7 +83,7 @@
 		}
 
 		select {
-			// font-size: rem-calc(13);
+			font-size: rem-calc(12);
 			@extend %pt-sans;
 			background-color: $white;
 			&:hover, &:focus {

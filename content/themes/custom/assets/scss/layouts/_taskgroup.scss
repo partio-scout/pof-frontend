@@ -2,7 +2,29 @@
 $task-group-logo-width: rem-calc(100);
 
 .content-inner {
-	
+
+    .taskgroup-sidelogo {
+        float: left;
+        width: 150px;
+        margin: 5px 20px 10px 0;
+    }
+    .float-content {
+        width: calc(100% - 150px);
+        padding-left: 20px;
+        margin-right: 0;
+        margin-left: auto;
+    }
+
+    @media #{$small-only} {
+        .taskgroup-sidelogo {
+            float: none;
+        }
+        .float-content {
+            width: 100%;
+            padding-left: 0;
+        }
+    }
+
 	.task-group__header{
 		position: relative;
 	}
@@ -21,6 +43,8 @@ $task-group-logo-width: rem-calc(100);
 	.task__icons {
 		padding-bottom: .5rem;
     	display: table;
+        float: left;
+        margin-right: 1rem;
 
     	.icon {
     		display: table-cell;
