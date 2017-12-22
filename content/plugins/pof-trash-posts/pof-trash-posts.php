@@ -7,23 +7,36 @@ Version: 1.0.0
 Author: Anttoni Lahtinen
 */
 
-register_activation_hook(   __FILE__, array( 'POF_Trash_Posts', 'activate' ) );
+register_activation_hook( __FILE__, array( 'POF_Trash_Posts', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'POF_Trash_Posts', 'deactivate' ) );
 
+/**
+ * Class POF_Trash_Posts
+ *
+ * This plugin reads feed like https://pof-backend.partio.fi/json-trash/
+ * and removes posts based on guids in their postmeta.
+ */
 class POF_Trash_Posts {
 
-
-    // Setup cronjob for importer daily automatic execution
+    /**
+     * Setup cronjob for importer daily automatic execution
+     */
     public static function activate() {
-        //wp_schedule_event( time(), 'hourly', 'daily_cron' );
-    }
-    public static function deactivate() {
-       //wp_clear_scheduled_hook('daily_cron');
+        wp_schedule_event( time(), 'hourly', 'daily_cron' );
     }
 
+    /**
+     * Remove cron hook after deactivating.
+     */
+    public static function deactivate() {
+        wp_clear_scheduled_hook( 'daily_cron' );
+    }
+
+    /**
+     * Execute importer
+     */
     public static function init() {
-        //add_action( 'daily_cron',  array( 'POF_Trash_Posts', 'importer_cron' ) );
-        //add_action( 'admin_menu', array( 'POF_Trash_Posts', 'pof_menu_init') );
+        add_action( 'daily_cron',  array( 'POF_Trash_Posts', 'execute' ) );
     }
 
     /**
@@ -32,23 +45,33 @@ class POF_Trash_Posts {
      * @return bool
      */
     public static function execute() {
-        $url   = 'https://pof-backend-staging.partio.fi/json-trash/';
+        $url = get_field( 'trash-json', 'option' );
+        if ( empty( $url ) ) {
+            $log['error'] = 'API url not found!';
+            self::keep_log( $log );
+            return false;
+        }
+        echo 'Url is ' . $url . PHP_EOL;
+        echo 'Fetching data...' . PHP_EOL;
         $data  = self::fetch_data( $url );
+        echo 'Data fetched.' . PHP_EOL;
+        echo 'Extracting guids.. ' . PHP_EOL;
         $guids = self::extract_guids( $data );
         // No need to continue this further if we have no posts to trash.
         if ( empty( $guids ) ) {
+            $log['error'] = 'No guids given';
+            self::keep_log( $log );
             return false;
         }
-
-        $guids = array(
-            '1bcaa35ef3a97c5c18c6417bbe26384e',
-            'bbcdbe44135b53597166e2ea255eb7f9',
-            '1262148fe42ab7662adeebe458037404',
-        );
-
+        echo 'Guids extracted.' . PHP_EOL;
+        var_dump( $guids );
+        echo 'Get ids.' . PHP_EOL;
         $ids = self::get_post_ids_by_guid( $guids );
-
+        echo 'Got ids.' . PHP_EOL;
+        var_dump( $ids );
+        echo 'Trashing posts...' . PHP_EOL;
         $trashed_posts = self::trash_posts( $ids );
+        echo 'Trashed posts. Run completed' . PHP_EOL;
     }
 
     /**
@@ -63,6 +86,8 @@ class POF_Trash_Posts {
         $request = wp_remote_get( $url );
 
         if ( is_wp_error( $request ) ) {
+            $log['error'] = 'Data fetching contains error';
+            self::keep_log( $log );
             return false;
         }
 
@@ -70,6 +95,8 @@ class POF_Trash_Posts {
         $json = json_decode( $body, true );
         // Validate json and return null
         if ( json_last_error() !== JSON_ERROR_NONE ) {
+            $log['error'] = 'JSON error: ' . json_last_error_msg();
+            self::keep_log( $log );
             return false;
         }
         return $json;
@@ -80,7 +107,7 @@ class POF_Trash_Posts {
      * Retrieves post id's based on list of guids.
      *
      * @param array $guids Array of guids.
-     * @return array $ids Array of WordPress post ids.
+     * @return array|bool $ids Array of WordPress post ids or false
      */
     public static function get_post_ids_by_guid( $guids ) {
 
@@ -88,14 +115,16 @@ class POF_Trash_Posts {
 
         global $wpdb;
         // Prefix postmeta
-        $tablename     = $wpdb->prefix . 'postmeta';
-        $key           = 'api_guid';
-        $cache_key     = 'pof_trash_posts_cache/' . date( 'm-Y' );
-        $monthly_cache = get_transient( $cache_key ) ?: array();
+        $tablename = $wpdb->prefix . 'postmeta';
+        $key       = 'api_guid';
+        // Cache variables
+        $cache_key      = 'pof_trash_posts_cache/' . date( 'm-Y' );
+        $monthly_cache  = get_transient( $cache_key ) ?: array();
+        $guids_to_cache = array();
 
         // Loop through all guids.
         foreach ( $guids as $guid ) {
-            if ( in_array( $guid, $monthly_cache, true ) ) {
+            if ( ! in_array( $guid, $monthly_cache, true ) ) {
                 // Prepare SQL Query
                 $sql = $wpdb->prepare( "SELECT post_id FROM $tablename WHERE meta_key=%s AND meta_value=%s;", $key, $guid );
                 // Find post_ids where api_guid matches the given guid.
@@ -106,11 +135,20 @@ class POF_Trash_Posts {
                         $ids[] = $post['post_id'];
                     }
                     $guids_to_cache[] = $guid;
+                } else {
+                    $log['error'] = 'No posts found.';
+                    self::keep_log( $log );
+                    return false;
                 }
+            } else {
+                $log['error'] = 'Guid: ' . $guid . ' in cache.';
+                self::keep_log( $log );
+                return false;
             }
         }
 
         $to_be_cached = array_merge( $monthly_cache, $guids_to_cache );
+
         set_transient( $cache_key, $to_be_cached, MONTH_IN_SECONDS );
 
         return $ids;
@@ -174,13 +212,31 @@ class POF_Trash_Posts {
                 $log['trashed_posts'][] = $id;
             }
         }
+
+        self::keep_log( $log );
+    }
+
+    /**
+     * Read cache from log add stuff and store it back.
+     *
+     * Contains timestamped array containing arrays:
+     *  - trashed_posts     | Array of trashed posts
+     *  - already_in_trash  | Post already in trash
+     *  - not_found         | Post not found
+     *  - error             | Error message
+     *
+     * @param array $log Log.
+     */
+    public static function keep_log( $log ) {
+        echo 'Saving log...' . PHP_EOL;
         // Get current cache that stores all operations for debugging purposes.
         $pof_log = get_transient( 'pof_trash_posts_log' );
         // Add current log to cache.
         $pof_log[ time() ] = $log;
+        var_dump($pof_log);
         // Save data back.
-        set_transient( $pof_log, 'pof_trash_posts_log', YEAR_IN_SECONDS );
-        return $log;
+        set_transient( 'pof_trash_posts_log', $pof_log,  YEAR_IN_SECONDS );
+        echo 'Log saved.' . PHP_EOL;
     }
 
 }
