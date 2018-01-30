@@ -2,7 +2,7 @@
 /*
 Plugin Name: POF Trash Posts
 Plugin URI: http://www.geniem.com
-Description: Imports data from POF-API
+Description: Delete posts deleted from backend with cron.
 Version: 1.0.0
 Author: Anttoni Lahtinen
 */
