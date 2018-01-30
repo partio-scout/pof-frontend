@@ -2,7 +2,7 @@
 /*
 Plugin Name: POF Trash Posts
 Plugin URI: http://www.geniem.com
-Description: Imports data from POF-API
+Description: Delete posts deleted from backend with cron.
 Version: 1.0.0
 Author: Anttoni Lahtinen
 */
@@ -93,6 +93,29 @@ class POF_Trash_Posts {
     }
 
     /**
+     * Extracts guids from data.
+     *
+     * @param array $data Contains arrays that have guids to extract.
+     *
+     * @return array $guids Array containing extracted guids.
+     */
+    public static function extract_guids( $data ) {
+        $guids = array();
+
+        // Check that data is valid.
+        if ( ! empty( $data ) && is_array( $data ) ) {
+
+            foreach ( $data as $post ) {
+                // We don't want empty guids.
+                if ( array_key_exists( 'guid', $post ) && ! empty( $post['guid'] ) ) {
+                    $guids[] = $post['guid'];
+                }
+            }
+        }
+        return $guids;
+    }
+
+    /**
      * Retrieves post id's based on list of guids.
      *
      * @param array $guids Array of guids.
@@ -106,7 +129,7 @@ class POF_Trash_Posts {
         // Prefix postmeta
         $tablename = $wpdb->prefix . 'postmeta';
         $key       = 'api_guid';
-        // Cache variables
+        //  Keep transient cache for already used guids. No point deleting same post again.
         $cache_key      = 'pof_trash_posts_cache/' . date( 'm-Y' );
         $monthly_cache  = get_transient( $cache_key ) ?: array();
         $guids_to_cache = array();
@@ -143,29 +166,6 @@ class POF_Trash_Posts {
         return $ids;
     }
 
-
-    /**
-     * Extracts guids from data.
-     *
-     * @param array $data Contains arrays that have guids to extract.
-     *
-     * @return array $guids Array containing extracted guids.
-     */
-    public static function extract_guids( $data ) {
-        $guids = array();
-
-        // Check that data is valid.
-        if ( ! empty( $data ) && is_array( $data ) ) {
-
-            foreach ( $data as $post ) {
-                // We don't want empty guids.
-                if ( array_key_exists( 'guid', $post ) && ! empty( $post['guid'] ) ) {
-                    $guids[] = $post['guid'];
-                }
-            }
-        }
-        return $guids;
-    }
 
     /**
      * Trashes posts with id and logs the process.
