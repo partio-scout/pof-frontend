@@ -147,6 +147,22 @@
             "placeholder": ""
         },
         {
+            "key": "trash-json",
+            "label": "Roskakori-JSON",
+            "name": "trash-json",
+            "type": "url",
+            "instructions": "Url kohteeseen: Poistettu sisältö, JSON, kaikki.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "http:\/\/pof-backend.partio.fi\/json-trash",
+            "placeholder": ""
+        },
+        {
             "key": "field_57c66abf9293b",
             "label": "Vinkkien l\u00e4hetysosoite",
             "name": "tips-send-url",
@@ -259,5 +275,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1473088210
+    "modified": 1473088211
 }
