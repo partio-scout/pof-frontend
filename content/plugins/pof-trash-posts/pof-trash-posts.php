@@ -23,6 +23,7 @@ class POF_Trash_Posts {
      */
     public static function activate() {
         wp_schedule_event( time(), 'hourly', 'daily_cron' );
+        add_action( 'daily_cron',  array( 'POF_Trash_Posts', 'execute' ) );
     }
 
     /**
@@ -32,12 +33,6 @@ class POF_Trash_Posts {
         wp_clear_scheduled_hook( 'daily_cron' );
     }
 
-    /**
-     * Execute importer
-     */
-    public static function init() {
-        add_action( 'daily_cron',  array( 'POF_Trash_Posts', 'execute' ) );
-    }
 
     /**
      * Get data from Partio backend and trashs some posts.
@@ -51,11 +46,7 @@ class POF_Trash_Posts {
             self::keep_log( $log );
             return false;
         }
-        echo 'Url is ' . $url . PHP_EOL;
-        echo 'Fetching data...' . PHP_EOL;
         $data  = self::fetch_data( $url );
-        echo 'Data fetched.' . PHP_EOL;
-        echo 'Extracting guids.. ' . PHP_EOL;
         $guids = self::extract_guids( $data );
         // No need to continue this further if we have no posts to trash.
         if ( empty( $guids ) ) {
@@ -63,15 +54,8 @@ class POF_Trash_Posts {
             self::keep_log( $log );
             return false;
         }
-        echo 'Guids extracted.' . PHP_EOL;
-        var_dump( $guids );
-        echo 'Get ids.' . PHP_EOL;
-        $ids = self::get_post_ids_by_guid( $guids );
-        echo 'Got ids.' . PHP_EOL;
-        var_dump( $ids );
-        echo 'Trashing posts...' . PHP_EOL;
+        $ids           = self::get_post_ids_by_guid( $guids );
         $trashed_posts = self::trash_posts( $ids );
-        echo 'Trashed posts. Run completed' . PHP_EOL;
     }
 
     /**
@@ -195,6 +179,7 @@ class POF_Trash_Posts {
             foreach ( $ids as $id ) {
 
                 $post = get_post( $id );
+
                 if ( empty( $post ) ) {
                     // Post does not exist.
                     $log['not_found'][] = $id;
@@ -208,11 +193,15 @@ class POF_Trash_Posts {
                 // Post exists and not in trash. Trash it.
                 // This function does the above checks but
                 // This way the code is clearer.
-                wp_trash_post( $id );
+                // We do not actually trash any posts yet. Just for testing.
+                // wp_trash_post( $id );
                 $log['trashed_posts'][] = $id;
             }
+        } else {
+            $log['error'] = 'No ids given';
+            self::keep_log( $log );
+            return false;
         }
-
         self::keep_log( $log );
     }
 
@@ -228,17 +217,11 @@ class POF_Trash_Posts {
      * @param array $log Log.
      */
     public static function keep_log( $log ) {
-        echo 'Saving log...' . PHP_EOL;
         // Get current cache that stores all operations for debugging purposes.
         $pof_log = get_transient( 'pof_trash_posts_log' );
         // Add current log to cache.
         $pof_log[ time() ] = $log;
-        var_dump($pof_log);
         // Save data back.
         set_transient( 'pof_trash_posts_log', $pof_log,  YEAR_IN_SECONDS );
-        echo 'Log saved.' . PHP_EOL;
     }
-
 }
-
-POF_Trash_Posts::init();
