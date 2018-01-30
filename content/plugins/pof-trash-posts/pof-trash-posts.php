@@ -22,17 +22,22 @@ class POF_Trash_Posts {
      * Setup cronjob for importer daily automatic execution
      */
     public static function activate() {
-        wp_schedule_event( time(), 'hourly', 'daily_cron' );
-        add_action( 'daily_cron',  array( 'POF_Trash_Posts', 'execute' ) );
+        wp_schedule_event( time(), 'hourly', 'pof-trash-posts' );
     }
 
     /**
      * Remove cron hook after deactivating.
      */
     public static function deactivate() {
-        wp_clear_scheduled_hook( 'daily_cron' );
+        wp_clear_scheduled_hook( 'pof-trash-posts' );
     }
 
+    /**
+     * Add action for cron to execute.
+     */
+    public static function init() {
+        add_action( 'pof-trash-posts',  array( 'POF_Trash_Posts', 'execute' ) );
+    }
 
     /**
      * Get data from Partio backend and trashs some posts.
@@ -225,3 +230,5 @@ class POF_Trash_Posts {
         set_transient( 'pof_trash_posts_log', $pof_log,  YEAR_IN_SECONDS );
     }
 }
+
+POF_Trash_Posts::init();
