@@ -53,7 +53,7 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "maxlength": 2,
+                    "maxlength": 3,
                     "readonly": 0,
                     "disabled": 0
                 }
