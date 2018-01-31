@@ -166,14 +166,12 @@ class POF_Trash_Posts {
                     }
                     $guids_to_cache[] = $guid;
                 } else {
-                    $log['error'] = 'No posts found.';
+                    $log['error'] = 'No posts found with guid: ' . $guid;
                     self::keep_log( $log );
-                    return false;
                 }
             } else {
                 $log['error'] = 'Guid: ' . $guid . ' in cache.';
                 self::keep_log( $log );
-                continue;
             }
         }
 
@@ -183,7 +181,7 @@ class POF_Trash_Posts {
 
         return $ids;
     }
-    
+
     /**
      * Trashes posts with id and logs the process.
      *
