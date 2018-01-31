@@ -408,8 +408,7 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit; }
 
-html,
-body {
+html, body {
   font-size: 100%; }
 
 body {
@@ -3730,7 +3729,7 @@ form .row textarea.columns {
 
 /* Label Styles */
 label {
-  color: #4d4d4d;
+  color: #4d4c4c;
   cursor: pointer;
   display: block;
   font-size: 0.875rem;
@@ -4074,7 +4073,7 @@ select {
   select.radius {
     border-radius: 3px; }
   select:hover {
-    background-color: #f3f3f3;
+    background-color: #f3f2f2;
     border-color: #9fbfd5; }
   select:disabled {
     background-color: #DDDDDD;
@@ -4762,7 +4761,7 @@ blockquote p {
   position: absolute;
   top: 0;
   width: 2.8125rem;
-  border-right: solid 1px #1a1a1a;
+  border-right: solid 1px #1a1919;
   left: 0; }
 
 .right-small {
@@ -4770,7 +4769,7 @@ blockquote p {
   position: absolute;
   top: 0;
   width: 2.8125rem;
-  border-left: solid 1px #1a1a1a;
+  border-left: solid 1px #1a1919;
   right: 0; }
 
 .tab-bar-section {
@@ -4813,7 +4812,7 @@ blockquote p {
     box-shadow: 0 0 0 1px #FFFFFF, 0 7px 0 1px #FFFFFF, 0 14px 0 1px #FFFFFF;
     width: 1rem; }
   .tab-bar .menu-icon span:hover:after {
-    box-shadow: 0 0 0 1px #b3b3b3, 0 7px 0 1px #b3b3b3, 0 14px 0 1px #b3b3b3; }
+    box-shadow: 0 0 0 1px #b3b2b2, 0 7px 0 1px #b3b2b2, 0 14px 0 1px #b3b2b2; }
 
 .left-off-canvas-menu {
   -webkit-backface-visibility: hidden;
@@ -5606,12 +5605,20 @@ th.hide-for-touch {
 .columns + .columns:last-child {
   float: left; }
 
+@font-face {
+  font-family: "Pt Sans";
+  src: url("../fonts/pt-sans.woff") format("woff"), url("../fonts/pt-sans.ttf") format("ttf"); }
+
+@font-face {
+  font-family: "Source Sans Pro Black";
+  src: url("../fonts/source-sans.woff") format("woff"), url("../fonts/source-sans.woff2") format("woff2"); }
+
 h1, h2, h3, h4, h5, h6 {
   font-family: Source Sans Pro Black, sans-serif;
   font-weight: bold; }
 
 body {
-  font-family: PT Sans, sans-serif; }
+  font-family: "PT Sans", sans-serif; }
 
 a {
   color: #253764; }
@@ -5635,7 +5642,7 @@ a {
   font-weight: normal; }
 
 .menu-wrapper ul li a, .lang-menu-container ul li a, .second-lang-menu-container .second-lang-menu li a, .content-inner .breadcrumbs, .task-info .additional-info select, #tips__form-container .tips__form input, .form-textarea, .search-section__body .input-wrapper label, .hero__heading--main, .back-to-top__link, .footer__info p {
-  font-family: PT Sans, sans-serif; }
+  font-family: "PT Sans", sans-serif; }
 
 .search-results__body .search-result .search-result__header .search-result__heading {
   font-family: Verdana, sans-serif; }
@@ -5653,7 +5660,7 @@ a {
   font-weight: 700; }
 
 .sidenav-search__input, .content-hero__heading, .search-section__header, .search-section__body__header, .hero__heading--sub, .event__heading, .search__input-lg, .content-inner .program-container__heading, .content__headers .date {
-  font-family: PT Sans, sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-style: italic;
   font-weight: normal; }
 
@@ -6412,14 +6419,14 @@ body .ui-tooltip {
   border-width: 2px; }
 
 .ui-widget {
-  font-family: Verdana,Arial,sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-size: 1.1em; }
 
 .ui-widget .ui-widget {
   font-size: 1em; }
 
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
-  font-family: Verdana,Arial,sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-size: 1em; }
 
 .ui-widget-content {
@@ -7115,7 +7122,7 @@ body .ui-tooltip {
 
 .topnav__link {
   display: block;
-  font-family: Arial, sans-serif;
+  font-family: "PT Sans", sans-serif;
   float: left;
   color: #FFFFFF;
   height: 56px;
@@ -8237,7 +8244,7 @@ body .ui-tooltip {
         position: relative;
         display: block;
         color: #FFFFFF;
-        font-family: arial; }
+        font-family: "PT Sans", sans-serif; }
         #sivukartta ul li a:hover {
           text-decoration: underline; }
       #sivukartta ul li ul {

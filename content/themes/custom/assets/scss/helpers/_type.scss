@@ -1,96 +1,107 @@
+@font-face {
+    font-family: "Pt Sans";
+    src: url("../fonts/pt-sans.woff") format("woff"),
+    url("../fonts/pt-sans.ttf") format("ttf");
+}
+
+@font-face {
+    font-family: "Source Sans Pro Black";
+    src: url("../fonts/source-sans.woff") format("woff"),
+    url("../fonts/source-sans.woff2") format("woff2");
+}
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: Source Sans Pro Black, sans-serif;
-	font-weight: bold;
+    font-family: Source Sans Pro Black, sans-serif;
+    font-weight: bold;
 }
 
 body {
-	font-family: PT Sans, sans-serif;
+    font-family: "PT Sans", sans-serif;
 }
 
 a {
-	color: $partio_main_color;
-	&:hover {
-		color: $partio_main_color_lighter;
-	}
-	&:focus, &:active {
-		color: inherit;
-		outline: 0;
-	}
+    color: $partio_main_color;
+    &:hover {
+        color: $partio_main_color_lighter;
+    }
+    &:focus, &:active {
+        color: inherit;
+        outline: 0;
+    }
 }
 
 .tdn {
-	text-decoration: none !important;
+    text-decoration: none !important;
 }
 
 %source_sans-pro {
-	font-family: Source Sans Pro Black, sans-serif;
-	font-weight: bold;
+    font-family: Source Sans Pro Black, sans-serif;
+    font-weight: bold;
 }
 
 %source_sans-pro-italic {
-	font-family: Source Sans Pro Black, sans-serif;
-	font-weight: bold;
-	font-style: italic;
-	font-weight: normal;	
+    font-family: Source Sans Pro Black, sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-weight: normal;
 }
 
 %pt-sans {
-	font-family: PT Sans, sans-serif;
+    font-family: "PT Sans", sans-serif;
 }
 
 %verdana {
-	font-family: Verdana, sans-serif;
+    font-family: Verdana, sans-serif;
 }
 
 %arial {
-	font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;	
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 %gill_sans-reg {
-	font-family: Gill Sans, sans-serif;
-	font-weight: normal;
-	font-style: normal;
+    font-family: Gill Sans, sans-serif;
+    font-weight: normal;
+    font-style: normal;
 }
 
 %gill_sans-light {
-	font-family: Gill Sans, sans-serif;
-	font-weight: 300;
+    font-family: Gill Sans, sans-serif;
+    font-weight: 300;
 }
 
 %gill_sans-bold {
-	font-family: Gill Sans, sans-serif;
-	font-weight: 700;
+    font-family: Gill Sans, sans-serif;
+    font-weight: 700;
 }
 
 %gill_sans-italic {
-	font-family: Gill Sans, sans-serif;
-	font-style: italic;
+    font-family: Gill Sans, sans-serif;
+    font-style: italic;
 }
 
 %gill_sans-bold-italic {
-	font-family: Gill Sans, sans-serif;
-	font-style: italic;
-	font-weight: 700;
+    font-family: Gill Sans, sans-serif;
+    font-style: italic;
+    font-weight: 700;
 }
 
 %garamond-reg {
-	font-family: Garamond, serif;
-	font-weight: normal;
+    font-family: Garamond, serif;
+    font-weight: normal;
 }
 
 %garamond-italic {
-	font-family: PT Sans, sans-serif;
-	font-style: italic;
-	font-weight: normal;
+    font-family: "PT Sans", sans-serif;
+    font-style: italic;
+    font-weight: normal;
 }
 
 %verdana-reg {
-	font-family: verdana, sans-serif;
-	font-weight: normal;
+    font-family: verdana, sans-serif;
+    font-weight: normal;
 }
 
 %verdana-bold {
-	font-family: verdana, sans-serif;
-	font-weight: 700;
+    font-family: verdana, sans-serif;
+    font-weight: 700;
 }
