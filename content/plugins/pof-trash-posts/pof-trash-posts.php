@@ -46,20 +46,38 @@ class POF_Trash_Posts {
      */
     public static function execute() {
         $url = get_field( 'trash-json', 'option' );
+
+        // No need to continue this further if we have no url.
         if ( empty( $url ) ) {
             $log['error'] = 'API url not found!';
             self::keep_log( $log );
             return false;
         }
-        $data  = self::fetch_data( $url );
+
+        $data = self::fetch_data( $url );
+
+        // No need to continue this further if we have no data.
+        // Error logging is done in fetch data.
+        if ( empty( $data ) ) {
+            return false;
+        }
+
         $guids = self::extract_guids( $data );
+
         // No need to continue this further if we have no posts to trash.
         if ( empty( $guids ) ) {
             $log['error'] = 'No guids given';
             self::keep_log( $log );
             return false;
         }
-        $ids           = self::get_post_ids_by_guid( $guids );
+        $ids = self::get_post_ids_by_guid( $guids );
+
+        // No need to continue this further if we have no new ids.
+        if ( empty( $ids ) ) {
+            $log['error'] = 'No ids given';
+            self::keep_log( $log );
+            return false;
+        }
         $trashed_posts = self::trash_posts( $ids );
     }
 
@@ -129,7 +147,7 @@ class POF_Trash_Posts {
         // Prefix postmeta
         $tablename = $wpdb->prefix . 'postmeta';
         $key       = 'api_guid';
-        //  Keep transient cache for already used guids. No point deleting same post again.
+        // Keep transient cache for already used guids. No point deleting same post again.
         $cache_key      = 'pof_trash_posts_cache/' . date( 'm-Y' );
         $monthly_cache  = get_transient( $cache_key ) ?: array();
         $guids_to_cache = array();
@@ -148,14 +166,12 @@ class POF_Trash_Posts {
                     }
                     $guids_to_cache[] = $guid;
                 } else {
-                    $log['error'] = 'No posts found.';
+                    $log['error'] = 'No posts found with guid: ' . $guid;
                     self::keep_log( $log );
-                    return false;
                 }
             } else {
                 $log['error'] = 'Guid: ' . $guid . ' in cache.';
                 self::keep_log( $log );
-                return false;
             }
         }
 
@@ -165,7 +181,6 @@ class POF_Trash_Posts {
 
         return $ids;
     }
-
 
     /**
      * Trashes posts with id and logs the process.
@@ -184,7 +199,6 @@ class POF_Trash_Posts {
             foreach ( $ids as $id ) {
 
                 $post = get_post( $id );
-
                 if ( empty( $post ) ) {
                     // Post does not exist.
                     $log['not_found'][] = $id;
@@ -202,12 +216,8 @@ class POF_Trash_Posts {
                 // wp_trash_post( $id );
                 $log['trashed_posts'][] = $id;
             }
-        } else {
-            $log['error'] = 'No ids given';
             self::keep_log( $log );
-            return false;
         }
-        self::keep_log( $log );
     }
 
     /**
