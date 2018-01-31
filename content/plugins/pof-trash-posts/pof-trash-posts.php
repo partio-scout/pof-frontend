@@ -2,7 +2,7 @@
 /*
 Plugin Name: POF Trash Posts
 Plugin URI: http://www.geniem.com
-Description: Imports data from POF-API
+Description: Delete posts deleted from backend with cron.
 Version: 1.0.0
 Author: Anttoni Lahtinen
 */
@@ -46,20 +46,38 @@ class POF_Trash_Posts {
      */
     public static function execute() {
         $url = get_field( 'trash-json', 'option' );
+
+        // No need to continue this further if we have no url.
         if ( empty( $url ) ) {
             $log['error'] = 'API url not found!';
             self::keep_log( $log );
             return false;
         }
-        $data  = self::fetch_data( $url );
+
+        $data = self::fetch_data( $url );
+
+        // No need to continue this further if we have no data.
+        // Error logging is done in fetch data.
+        if ( empty( $data ) ) {
+            return false;
+        }
+
         $guids = self::extract_guids( $data );
+
         // No need to continue this further if we have no posts to trash.
         if ( empty( $guids ) ) {
             $log['error'] = 'No guids given';
             self::keep_log( $log );
             return false;
         }
-        $ids           = self::get_post_ids_by_guid( $guids );
+        $ids = self::get_post_ids_by_guid( $guids );
+
+        // No need to continue this further if we have no new ids.
+        if ( empty( $ids ) ) {
+            $log['error'] = 'No ids given';
+            self::keep_log( $log );
+            return false;
+        }
         $trashed_posts = self::trash_posts( $ids );
     }
 
@@ -93,58 +111,6 @@ class POF_Trash_Posts {
     }
 
     /**
-     * Retrieves post id's based on list of guids.
-     *
-     * @param array $guids Array of guids.
-     * @return array|bool $ids Array of WordPress post ids or false
-     */
-    public static function get_post_ids_by_guid( $guids ) {
-
-        $ids = array();
-
-        global $wpdb;
-        // Prefix postmeta
-        $tablename = $wpdb->prefix . 'postmeta';
-        $key       = 'api_guid';
-        // Cache variables
-        $cache_key      = 'pof_trash_posts_cache/' . date( 'm-Y' );
-        $monthly_cache  = get_transient( $cache_key ) ?: array();
-        $guids_to_cache = array();
-
-        // Loop through all guids.
-        foreach ( $guids as $guid ) {
-            if ( ! in_array( $guid, $monthly_cache, true ) ) {
-                // Prepare SQL Query
-                $sql = $wpdb->prepare( "SELECT post_id FROM $tablename WHERE meta_key=%s AND meta_value=%s;", $key, $guid );
-                // Find post_ids where api_guid matches the given guid.
-                $posts = $wpdb->get_results( $sql , ARRAY_A );
-                if ( ! empty( $posts ) ) {
-                    // Get posts from array.
-                    foreach ( $posts as $post ) {
-                        $ids[] = $post['post_id'];
-                    }
-                    $guids_to_cache[] = $guid;
-                } else {
-                    $log['error'] = 'No posts found.';
-                    self::keep_log( $log );
-                    return false;
-                }
-            } else {
-                $log['error'] = 'Guid: ' . $guid . ' in cache.';
-                self::keep_log( $log );
-                return false;
-            }
-        }
-
-        $to_be_cached = array_merge( $monthly_cache, $guids_to_cache );
-
-        set_transient( $cache_key, $to_be_cached, MONTH_IN_SECONDS );
-
-        return $ids;
-    }
-
-
-    /**
      * Extracts guids from data.
      *
      * @param array $data Contains arrays that have guids to extract.
@@ -168,6 +134,55 @@ class POF_Trash_Posts {
     }
 
     /**
+     * Retrieves post id's based on list of guids.
+     *
+     * @param array $guids Array of guids.
+     * @return array|bool $ids Array of WordPress post ids or false
+     */
+    public static function get_post_ids_by_guid( $guids ) {
+
+        $ids = array();
+
+        global $wpdb;
+        // Prefix postmeta
+        $tablename = $wpdb->prefix . 'postmeta';
+        $key       = 'api_guid';
+        // Keep transient cache for already used guids. No point deleting same post again.
+        $cache_key      = 'pof_trash_posts_cache/' . date( 'm-Y' );
+        $monthly_cache  = get_transient( $cache_key ) ?: array();
+        $guids_to_cache = array();
+
+        // Loop through all guids.
+        foreach ( $guids as $guid ) {
+            if ( ! in_array( $guid, $monthly_cache, true ) ) {
+                // Prepare SQL Query
+                $sql = $wpdb->prepare( "SELECT post_id FROM $tablename WHERE meta_key=%s AND meta_value=%s;", $key, $guid );
+                // Find post_ids where api_guid matches the given guid.
+                $posts = $wpdb->get_results( $sql , ARRAY_A );
+                if ( ! empty( $posts ) ) {
+                    // Get posts from array.
+                    foreach ( $posts as $post ) {
+                        $ids[] = $post['post_id'];
+                    }
+                    $guids_to_cache[] = $guid;
+                } else {
+                    $log['error'] = 'No posts found with guid: ' . $guid;
+                    self::keep_log( $log );
+                }
+            } else {
+                $log['error'] = 'Guid: ' . $guid . ' in cache.';
+                self::keep_log( $log );
+            }
+        }
+
+        $to_be_cached = array_merge( $monthly_cache, $guids_to_cache );
+
+        set_transient( $cache_key, $to_be_cached, MONTH_IN_SECONDS );
+
+        return $ids;
+    }
+
+    /**
      * Trashes posts with id and logs the process.
      *
      * @param array $ids Post ids to trash.
@@ -184,7 +199,6 @@ class POF_Trash_Posts {
             foreach ( $ids as $id ) {
 
                 $post = get_post( $id );
-
                 if ( empty( $post ) ) {
                     // Post does not exist.
                     $log['not_found'][] = $id;
@@ -202,12 +216,8 @@ class POF_Trash_Posts {
                 // wp_trash_post( $id );
                 $log['trashed_posts'][] = $id;
             }
-        } else {
-            $log['error'] = 'No ids given';
             self::keep_log( $log );
-            return false;
         }
-        self::keep_log( $log );
     }
 
     /**

@@ -23,7 +23,7 @@
             "label": "Kielet",
             "name": "kielet",
             "type": "repeater",
-            "instructions": "Lis\u00e4\u00e4 t\u00e4h\u00e4n sivuston p\u00e4\u00e4kielet. Kirjoita kielen kaksikirjaiminen lyhenne isoilla kirjaimilla, esimerkiksi 'FI'.",
+            "instructions": "Lis\u00e4\u00e4 t\u00e4h\u00e4n sivuston p\u00e4\u00e4kielet. Kirjoita kielen lyhenne isoilla kirjaimilla, esimerkiksi 'FI'.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -53,7 +53,7 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "maxlength": 2,
+                    "maxlength": 3,
                     "readonly": 0,
                     "disabled": 0
                 }
