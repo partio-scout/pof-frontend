@@ -79,7 +79,6 @@ class POF_Trash_Posts {
             return false;
         }
         $trashed_posts = self::trash_posts( $ids );
-        self::store_log( $ );
     }
 
     /**
