@@ -322,6 +322,7 @@ class POF_Importer {
         if ( is_array( $this->data ) ) {
             foreach ( $this->data as $guid => $items ) {
                 $polyLangs = array();
+                $redirect_cache = array();
                 foreach ( $items as $item ) {
                     $args = array();
 
@@ -331,7 +332,16 @@ class POF_Importer {
 
                         $args['ID']         = $page->ID;
                         $args['menu_order'] = $page->menu_order;
-                        $args['post_name']  = wp_unique_post_slug( sanitize_title( $item['title'] ), $page->ID, 'publish', 'page', $parent_id );
+                        $slug = wp_unique_post_slug( sanitize_title( $item['title'] ), $page->ID, 'publish', 'page', $parent_id );
+                        $args['post_name']  = $slug;
+
+                        $post = get_post( $page->ID );
+                        $old_slug = $post->post_name;
+                        if ( $slug !== $old_slug ) {
+                            // Post is being updated, save new slug for redirects.
+                            $redirect_cache['ID'] = $slug;
+                        }
+
 
                     } else {
                         $args['post_name'] = wp_unique_post_slug( sanitize_title( $item['title'] ), $post_id, 'publish', 'page', $parent_id );
@@ -366,6 +376,18 @@ class POF_Importer {
 
                     isset($args['ID']) ? $this->updated++ : $this->created++;
                 }
+
+                // Redirect changes have been made, update cache.
+                if( ! empty ( $redirect_cache ) ) {
+                    $current_redirect_cache = get_option( 'pof_redirect_cache' );
+                    $current_redirect_cache['updated'] = time();
+
+                    if ( $current_redirect_cache ) {
+                        $new_redirect_cache = array_merge( $current_redirect_cache, $redirect_cache );
+                        update_option( 'pof_redirect_cache', $new_redirect_cache );
+                    }
+                }
+
             }
             // Link program page different languages for polylang
             if (!empty($polyLangs)) {
