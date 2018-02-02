@@ -204,7 +204,7 @@ class POF_Trash_Posts {
                     $log['not_found'][] = $id;
                     continue;
                 }
-                if ( $post['post_status'] === 'trash' ) {
+                if ( $post->post_status === 'trash' ) {
                     // Post already trashed, but not in cache.
                     $log['already_in_trash'][] = $id;
                     continue;
