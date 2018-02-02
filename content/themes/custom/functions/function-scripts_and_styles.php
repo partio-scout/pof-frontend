@@ -41,6 +41,13 @@ function enqueue_styles_and_scripts(){
 	// main styles
 	wp_enqueue_style( 'app', get_template_directory_uri().'/assets/css/app.css', false, "1.0.5", all );
 
+    // Localize data for javascript to use.
+    $localized_data = array(
+        // Contains titles for search
+        'tips_url'   => get_field( 'tips-send-url', 'option' ),
+    );
+    \wp_localize_script( 'app', 'pof', $localized_data );
+
 }
 
 add_action( 'wp_enqueue_scripts', 'enqueue_styles_and_scripts' );
