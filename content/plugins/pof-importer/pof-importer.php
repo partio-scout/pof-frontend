@@ -332,16 +332,9 @@ class POF_Importer {
 
                         $args['ID']         = $page->ID;
                         $args['menu_order'] = $page->menu_order;
-                        $slug = wp_unique_post_slug( sanitize_title( $item['title'] ), $page->ID, 'publish', 'page', $parent_id );
-                        $args['post_name']  = $slug;
-
-                        $post = get_post( $page->ID );
-                        $old_slug = $post->post_name;
-                        if ( $slug !== $old_slug ) {
-                            // Post is being updated, save new slug for redirects.
-                            $redirect_cache['ID'] = $slug;
-                        }
-
+                        $args['post_name']  = wp_unique_post_slug( sanitize_title( $item['title'] ), $page->ID, 'publish', 'page', $parent_id );
+                        // Get current page relative url
+                        $old_slug = wp_make_link_relative( get_permalink( $page->ID ));
 
                     } else {
                         $args['post_name'] = wp_unique_post_slug( sanitize_title( $item['title'] ), $post_id, 'publish', 'page', $parent_id );
@@ -363,8 +356,18 @@ class POF_Importer {
                     $args['post_content']  = isset($item['content']) ? $item['content'] : '';
                     $args['page_template'] = 'models/page-' . $item['type'] . '.php';
 
+                    
                     // Create the post
                     $post_id = wp_insert_post( $args );
+
+                    if ( ! is_wp_error( $post_id ) && $post_id !== 0 && isset( $old_slug ) ) {
+                        $new_slug = wp_make_link_relative( get_permalink( $post_id ));
+                        if ( $new_slug !== $old_slug ) {
+                            $redirect_cache[ $old_slug ] = $new_slug;
+                        }
+                    }
+
+
 
                     $this->update_page_meta( $post_id, $guid, $item );
                     if (in_array(strtolower($item['lang']), $this->site_languages)) {
@@ -379,13 +382,7 @@ class POF_Importer {
 
                 // Redirect changes have been made, update cache.
                 if( ! empty ( $redirect_cache ) ) {
-                    $current_redirect_cache = get_option( 'pof_redirect_cache' );
-                    $current_redirect_cache['updated'] = time();
-
-                    if ( $current_redirect_cache ) {
-                        $new_redirect_cache = array_merge( $current_redirect_cache, $redirect_cache );
-                        update_option( 'pof_redirect_cache', $new_redirect_cache );
-                    }
+                    POF_Redirect::update_cache( $redirect_cache );
                 }
 
             }
@@ -780,3 +777,8 @@ class POF_Importer {
 }
 
 $importer = new POF_Importer();
+
+// Require redirect handler
+require 'pof-redirect-handler.php';
+// Initialize redirect handler
+POF_Redirect::initialize();
