@@ -38,12 +38,11 @@ class POF_Redirect {
      * @param array $redirect_cache Cache to store.
      */
     public static function update_cache( $redirect_cache = array() ) {
-        $current_redirect_cache            = get_option( 'pof_redirect_cache' );
+        $current_redirect_cache    = get_option( 'pof_redirect_cache' ) ?: array();
         $redirect_cache['updated'] = time();
 
-        if ( $current_redirect_cache ) {
-            $new_redirect_cache = array_merge( $current_redirect_cache, $redirect_cache );
-            update_option( 'pof_redirect_cache', $new_redirect_cache );
-        }
+        $new_redirect_cache = array_merge( $current_redirect_cache, $redirect_cache );
+        update_option( 'pof_redirect_cache', $new_redirect_cache );
+
     }
 }
