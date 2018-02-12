@@ -20,7 +20,6 @@ class POF_Redirect {
         if ( is_404() ) {
             $cache      = get_option( 'pof_redirect_cache' );
             $broken_url = $_SERVER['REQUEST_URI'];
-            $broken_url = substr( $broken_url, 1 );
 
             if ( is_array( $cache ) && array_key_exists( $broken_url, $cache ) ) {
 				$slug = $cache[ $broken_url ];
@@ -40,7 +39,7 @@ class POF_Redirect {
      */
     public static function update_cache( $redirect_cache = array() ) {
         $current_redirect_cache            = get_option( 'pof_redirect_cache' );
-        $current_redirect_cache['updated'] = time();
+        $redirect_cache['updated'] = time();
 
         if ( $current_redirect_cache ) {
             $new_redirect_cache = array_merge( $current_redirect_cache, $redirect_cache );
