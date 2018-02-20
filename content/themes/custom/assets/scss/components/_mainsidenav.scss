@@ -18,8 +18,13 @@ $column-gutter-half: $column-gutter / 2;
 
 	.off-canvas-wrap .inner-wrap {
 
-		.tab-bar {
+		/*.show-main_menu {
 			position: absolute;
+			border: 1px solid #1748c5;
+		}*/
+
+		.tab-bar {
+			position: fixed;
 			top: 0;
 			left: 0;
 			display:block;
@@ -64,26 +69,22 @@ $column-gutter-half: $column-gutter / 2;
 
 .show-main_menu__icon {
 	display: inline-block;
-	margin: 0;
-	margin-top: 1.45rem;
-	margin-left: 1rem;
-	padding: 0;
+	margin-top: 0.45rem;
+	padding: 1rem;
 	background-color: transparent;
 	color: $white;
 	line-height: 1;
-	z-index: 9999;
+	//z-index: 9999;
 }
 
 .close-main_menu__icon {
 	display: none;
-	margin: 0;
-	margin-top: 1.45rem;
-	margin-left: 1rem;
-	padding: 0;
+	margin-top: 0.45rem;
+	padding: 1rem;
 	background-color: transparent;
 	color: $white;
 	line-height: 1;
-	z-index: 9999;
+	//z-index: 9999;
 }
 
 
@@ -328,17 +329,29 @@ $column-gutter-half: $column-gutter / 2;
 }
 
 
-// remove the inner shadow
+// Disable ie. override Foundation 5's standard Off Canvas menu the inner shadow
 .move-right .exit-off-canvas, .move-left .exit-off-canvas { 
-	box-shadow:none; 
+	box-shadow:none !important;
 }
 
+// Disable ie. override Foundation 5's standard Off Canvas menu hover
 .main-wrapper .off-canvas-wrap.move-right .inner-wrap aside.left-off-canvas-menu:hover
 { 
-	background-color:transparent;
+	background-color:transparent !important;
 }
 
-// Disable ie. override Off Canvas Back-Link Overlay 
+// Disable ie. override Foundation 5's standard Off Canvas Back-Link Overlay 
 .move-right .exit-off-canvas {
-	background: rgba(255, 255, 255, 0)	!important;
+	background: rgba(255, 255, 255, 0) !important;
+}
+
+
+.show-main_menu {
+	// https://stackoverflow.com/questions/18894400/fixed-position-div-scrollable
+	position: fixed;
+	z-index: 99999;		// must be the top element!
+
+	&:hover {
+		cursor: pointer;
+	}
 }

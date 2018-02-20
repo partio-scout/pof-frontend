@@ -16,6 +16,8 @@ window.Partio = ( function( window, document, $ ){
         app.$spinner            = $('.partio-spinner');
         app.$menu_has_children  = $('.menu-item-has-children');
         app.$menu_has_children_toggler = $('.menu-item-has-children > a > .toggler');
+        app.$offcanvas          = $('.off-canvas-wrap');
+        app.$showmainmenu       = $('.show-main_menu');
         app.$showmenu           = $('.show-menu');
         app.menuheight          = app.$menu.outerHeight();
         app.contentheight       = app.$content.outerHeight();
@@ -68,6 +70,15 @@ window.Partio = ( function( window, document, $ ){
         $(function() {
             FastClick.attach(document.body);
         });
+
+
+        // mainmenu auki
+        app.$showmainmenu.on('click',function(){
+            app.$offcanvas.toggleClass('move-right');
+            // lisää tähän onSroll eventin catchaaminen ja self-releaseminen jos ollaan menu auki
+            //app.$content.toggleClass('move-right');
+        });
+
 
         //menu auki
         app.$showmenu.on('click',function(){

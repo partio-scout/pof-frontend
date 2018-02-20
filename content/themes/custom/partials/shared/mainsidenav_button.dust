@@ -1,9 +1,6 @@
-<nav class="tab-bar">
-	<section class="left-small">
-		{! <a class="left-off-canvas-toggle menu-icon" href="#"></a><span></span></a> !}
-		<a class="left-off-canvas-toggle menu-icon" href="#">
-			<i class="fa fa-bars show-main_menu__icon"></i>
-			<i class="fa fa-close close-main_menu__icon"></i>
-		</a>
-	</section>
-</nav>
+<div class="show-main_menu not-printable">
+	<a class="left-off-canvas-toggle menu-icon" href="#">
+		<i class="fa fa-bars show-main_menu__icon"></i>
+		<i class="fa fa-close close-main_menu__icon"></i>
+	</a>
+</div>

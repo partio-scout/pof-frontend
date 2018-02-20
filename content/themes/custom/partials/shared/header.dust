@@ -20,7 +20,7 @@
 				{! check if we are in frontpage and only render the offcanvas mainmenu if we are !}
 				{?PageFrontpage}
 
-					<div class="off-canvas-wrap" data-offcanvas>	{! off-canvas-wrap div !}
+					<div class="off-canvas-wrap">	{! off-canvas-wrap div - move-right class is added to this div when click'd !}
 
 							<div class="inner-wrap">	{! inner-wrap !}
 						
