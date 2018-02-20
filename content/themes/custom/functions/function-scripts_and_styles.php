@@ -12,6 +12,7 @@ function enqueue_styles_and_scripts(){
 	wp_enqueue_script( 'jquery' );
 	// foundation
 	wp_enqueue_script( 'foundation', get_template_directory_uri().'/bower_components/foundation/js/foundation/foundation.js', array('jquery'), null, true);
+	wp_enqueue_script( 'foundation-offcanvas', get_template_directory_uri().'/bower_components/foundation/js/foundation/foundation.offcanvas.js', array('foundation'), null, true);
 	wp_enqueue_script( 'foundation-equalizer', get_template_directory_uri().'/bower_components/foundation/js/foundation/foundation.equalizer.js', array('foundation'), null, true);
 	wp_enqueue_script( 'foundation-reveal', get_template_directory_uri().'/bower_components/foundation/js/foundation/foundation.reveal.js', array('foundation'), null, true);
 	// modernizr
