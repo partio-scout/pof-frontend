@@ -33,7 +33,23 @@
 
 			{@wpfooter /}
 
-		</div> {! end wrapper !}
+
+			{! check if we are in frontpage and only render the offcanvas mainmenu if we are !}
+			{?PageFrontpage}	
+
+			{!<a class="exit-off-canvas"></a>		 off-canvas exit link !}
+
+			</div> 	{! end inner-wrap !}
+		
+		</div>	{! end off-canvas-wrap !}
+
+	{/PageFrontpage}
+	{! end check if we are in frontpage... !}
+
+	
+	
+</div>	<!-- /main-wrapper --> {! end main-wrapper !}
+
 		<div class="partio-spinner">
 		 	<i class="fa fa-spinner fa-pulse fa-3x fa-align-center" aria-hidden="true"></i>
 		</div>
