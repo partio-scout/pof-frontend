@@ -16,55 +16,27 @@ $column-gutter-half: $column-gutter / 2;
 		background-color: #253764;
 	}
 
-	.off-canvas-wrap .inner-wrap {
-
-		/*.show-main_menu {
-			position: absolute;
-			border: 1px solid #1748c5;
-		}*/
-
-		.tab-bar {
+	.off-canvas-wrap .inner-wrap, 
+	.off-canvas-wrap.move-right .inner-wrap
+	{
+		.show-main_menu,
+		.show-main_menu.not-printable
+		{
 			position: fixed;
-			top: 0;
-			left: 0;
-			display:block;
-			background: transparent;
-			color: $white;
-			z-index: 9999;
-		}
-		
-		.left-small {
-			position: absolute;
-			top: 0;
-			left: 0;
-			border:none;
-			z-index: 9999;
+			top:0;
+			z-index: 9999;		// must be the top element!
 
-			.left-off-canvas-toggle.menu-icon {
-				background:transparent;
-				color: $white;
-				text-indent: 0;
+			&:hover {
+				cursor: pointer;
 			}
 		}
 	}
-
-
-	.off-canvas-wrap.move-right {
-
-		&.inner-wrap {
-			transform: translate3d($menu_width, 0, 0);
-			-webkit-transform: translate3d($menu_width, 0, 0);
-		}
-	}
-
 
 	// Only for print
 	@media print {
 		overflow-x: visible;
 	}
 }
-
-
 
 
 .show-main_menu__icon {
@@ -74,7 +46,6 @@ $column-gutter-half: $column-gutter / 2;
 	background-color: transparent;
 	color: $white;
 	line-height: 1;
-	//z-index: 9999;
 }
 
 .close-main_menu__icon {
@@ -84,9 +55,7 @@ $column-gutter-half: $column-gutter / 2;
 	background-color: transparent;
 	color: $white;
 	line-height: 1;
-	//z-index: 9999;
 }
-
 
 
 .off-canvas-wrap {
@@ -96,10 +65,10 @@ $column-gutter-half: $column-gutter / 2;
 		}
 		.close-main_menu__icon {
 			display: inline-block;
-
 		}
 	}
 }
+
 
 
 // valikon itemien tyylit	(copied mostly from sidenav.scss)
@@ -262,6 +231,25 @@ $column-gutter-half: $column-gutter / 2;
 }
 
 
+// Disable ie. override Foundation 5's standard Off Canvas menu the inner shadow
+.move-right .exit-off-canvas, .move-left .exit-off-canvas { 
+	box-shadow:none !important;
+}
+
+// Disable ie. override Foundation 5's standard Off Canvas menu hover
+.main-wrapper .off-canvas-wrap.move-right .inner-wrap aside.left-off-canvas-menu:hover
+{ 
+	background-color:transparent !important;
+}
+
+// Disable ie. override Foundation 5's standard Off Canvas Back-Link Overlay 
+.move-right .exit-off-canvas {
+	background: rgba(255, 255, 255, 0) !important;
+}
+
+
+//
+
 
 // responsive styles
 @media #{$tablet-up} {
@@ -269,27 +257,12 @@ $column-gutter-half: $column-gutter / 2;
 	.main-wrapper {
 		height:100%;
 
-		.off-canvas-wrap .move-right {
-			height:100%;
-			width: $menu_width_wider;
-			background-color: #253764;
-		}
-
 		.off-canvas-wrap .inner-wrap .left-off-canvas-menu
 		{
 			height:100%;
 			width: $menu_width_wider;
-			background-color: #253764;
+			//background-color: #253764;
 		}
-
-		.off-canvas-wrap.move-right {
-		
-			&.inner-wrap {
-				transform: translate3d($menu_width, 0, 0);
-				-webkit-transform: translate3d($menu_width, 0, 0);
-			}
-		}
-
 	}
 
 	.main_menu-wrapper {
@@ -326,32 +299,4 @@ $column-gutter-half: $column-gutter / 2;
 
 @media #{$large-up} {
 
-}
-
-
-// Disable ie. override Foundation 5's standard Off Canvas menu the inner shadow
-.move-right .exit-off-canvas, .move-left .exit-off-canvas { 
-	box-shadow:none !important;
-}
-
-// Disable ie. override Foundation 5's standard Off Canvas menu hover
-.main-wrapper .off-canvas-wrap.move-right .inner-wrap aside.left-off-canvas-menu:hover
-{ 
-	background-color:transparent !important;
-}
-
-// Disable ie. override Foundation 5's standard Off Canvas Back-Link Overlay 
-.move-right .exit-off-canvas {
-	background: rgba(255, 255, 255, 0) !important;
-}
-
-
-.show-main_menu {
-	// https://stackoverflow.com/questions/18894400/fixed-position-div-scrollable
-	position: fixed;
-	z-index: 99999;		// must be the top element!
-
-	&:hover {
-		cursor: pointer;
-	}
 }

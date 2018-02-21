@@ -75,8 +75,6 @@ window.Partio = ( function( window, document, $ ){
         // mainmenu auki
         app.$showmainmenu.on('click',function(){
             app.$offcanvas.toggleClass('move-right');
-            // lisää tähän onSroll eventin catchaaminen ja self-releaseminen jos ollaan menu auki
-            //app.$content.toggleClass('move-right');
         });
 
 
