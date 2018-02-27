@@ -161,10 +161,10 @@ $column-gutter-half: $column-gutter / 2;
 
 			// ul li.menu-item-has-children
 			&.menu-item-has-children {
-				padding-right: 1rem;
 
 				// ul li.menu-item-has-children > a
 				& > a {
+
 					position: relative;
 					& .toggler {
 						display: block;
@@ -236,6 +236,9 @@ $column-gutter-half: $column-gutter / 2;
 				display: block;
 				color: $white;
 				@extend %pt-sans;
+				padding-right: 1.5rem;	// this fixes the long text links bug!
+				-ms-word-break: break-all;
+				word-break: break-all;
 				// font-size: .875rem;
 				&:hover {
 					text-decoration: underline;
