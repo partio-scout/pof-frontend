@@ -7265,44 +7265,46 @@ body .ui-tooltip {
     display: block;
     margin: 0;
     padding: .5rem 0; }
-    .menu-wrapper ul li.menu-item-has-children > a {
-      position: relative; }
-      .menu-wrapper ul li.menu-item-has-children > a .toggler {
-        display: block;
-        text-align: center;
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 30px;
-        height: 100%;
-        color: inherit; }
-        .menu-wrapper ul li.menu-item-has-children > a .toggler:after {
-          content: '>';
+    .menu-wrapper ul li.menu-item-has-children {
+      padding-right: 1rem; }
+      .menu-wrapper ul li.menu-item-has-children > a {
+        position: relative; }
+        .menu-wrapper ul li.menu-item-has-children > a .toggler {
           display: block;
+          text-align: center;
           position: absolute;
           top: 0;
-          left: 0;
-          width: 100%;
+          right: 0;
+          width: 30px;
           height: 100%;
           color: inherit; }
-        .menu-wrapper ul li.menu-item-has-children > a .toggler.opened:after {
-          content: 'v'; }
-    .menu-wrapper ul li.menu-item-has-children > .sub-menu {
-      height: 0;
-      transform: scale3d(0.9, 0.9, 1);
-      -webkit-transform: scale3d(0.9, 0.9, 1);
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      opacity: 0; }
-    .menu-wrapper ul li.menu-item-has-children.opened > .sub-menu {
-      height: auto;
-      opacity: 1;
-      transform: scale3d(1, 1, 1);
-      -webkit-transform: scale3d(1, 1, 1);
-      transition: opacity .3s ease, transform .3s ease;
-      -webkit-transition: opacity .3s ease, -webkit-transform .3s ease; }
-    .menu-wrapper ul li.menu-item-has-children li.current-page > a {
-      text-decoration: underline; }
+          .menu-wrapper ul li.menu-item-has-children > a .toggler:after {
+            content: '>';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: inherit; }
+          .menu-wrapper ul li.menu-item-has-children > a .toggler.opened:after {
+            content: 'v'; }
+      .menu-wrapper ul li.menu-item-has-children > .sub-menu {
+        height: 0;
+        transform: scale3d(0.9, 0.9, 1);
+        -webkit-transform: scale3d(0.9, 0.9, 1);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        opacity: 0; }
+      .menu-wrapper ul li.menu-item-has-children.opened > .sub-menu {
+        height: auto;
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
+        -webkit-transform: scale3d(1, 1, 1);
+        transition: opacity .3s ease, transform .3s ease;
+        -webkit-transition: opacity .3s ease, -webkit-transform .3s ease; }
+      .menu-wrapper ul li.menu-item-has-children li.current-page > a {
+        text-decoration: underline; }
     .menu-wrapper ul li a {
       position: relative;
       display: block;

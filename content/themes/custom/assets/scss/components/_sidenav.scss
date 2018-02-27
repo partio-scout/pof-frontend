@@ -161,6 +161,7 @@ $column-gutter-half: $column-gutter / 2;
 
 			// ul li.menu-item-has-children
 			&.menu-item-has-children {
+				padding-right: 1rem;
 
 				// ul li.menu-item-has-children > a
 				& > a {
