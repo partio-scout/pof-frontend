@@ -6,7 +6,6 @@ class Category extends \DustPress\Model {
 
         $this->bind_sub("Header");
         $this->bind_sub("Footer");
-        $this->bind_sub("Sidenav");
     }
 
     public function Content() {

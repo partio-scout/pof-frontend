@@ -16,7 +16,12 @@ window.Partio = ( function( window, document, $ ){
         app.$spinner            = $('.partio-spinner');
         app.$menu_has_children  = $('.menu-item-has-children');
         app.$menu_has_children_toggler = $('.menu-item-has-children > a > .toggler');
-        app.$offcanvas          = $('.off-canvas-wrap');
+
+        app.$mainmenu           = $('.main_menu-wrapper');
+        app.$hero               = $('.hero');
+        app.$programs           = $('.programs');
+        app.$mainFooter         = $('.main-footer');
+        
         app.$showmainmenu       = $('.show-main_menu');
         app.$showmenu           = $('.show-menu');
         app.menuheight          = app.$menu.outerHeight();
@@ -74,7 +79,11 @@ window.Partio = ( function( window, document, $ ){
 
         // mainmenu auki
         app.$showmainmenu.on('click',function(){
-            app.$offcanvas.toggleClass('move-right');
+            app.$showmainmenu.toggleClass('move-right');
+            app.$mainmenu.toggleClass('move-right');
+            app.$hero.toggleClass('move-right');
+            app.$programs.toggleClass('move-right');
+            app.$mainFooter.toggleClass('move-right');
         });
 
 

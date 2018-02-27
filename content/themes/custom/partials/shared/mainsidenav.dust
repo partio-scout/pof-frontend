@@ -1,5 +1,5 @@
-<aside class="left-off-canvas-menu">
-	<div class="main_menu-wrapper">
+
+	<aside class="main_menu-wrapper">
 		<h3 class="main_menu-heading">{S.valikko}</h3>
 		<ul class="menu">
 			<div class="row lang-menu-row">
@@ -12,7 +12,7 @@
 				</div>
 			</div>
 
-			{#MainMenu}
+			{#Header.Content}
 			<li class="menu-item{?has_children} menu-item-has-children{/has_children} {current_first}">
 				<a href={url}>{title}{?has_children}<span class="toggler {?current_first}opened{/current_first}"></span>{/has_children}</a>
 			{?has_children}
@@ -32,7 +32,7 @@
 				</ul>
 			{/has_children}
 			</li>
-			{/MainMenu}
+			{/Header.Content}
 		</ul>
-	</div>
-</aside>
+	</aside>
+

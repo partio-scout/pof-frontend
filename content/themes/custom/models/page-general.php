@@ -13,7 +13,6 @@ class PageGeneral extends \DustPress\Model {
         $this->bind_sub("Header");
         $this->bind_sub("Footer");
         $this->bind_sub("Breadcrumbs");
-        $this->bind_sub("Sidenav");
         $this->bind_sub("ProgramLangnav");
     }
 

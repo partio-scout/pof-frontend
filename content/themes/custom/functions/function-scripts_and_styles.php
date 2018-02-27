@@ -12,7 +12,6 @@ function enqueue_styles_and_scripts(){
 	wp_enqueue_script( 'jquery' );
 	// foundation
 	wp_enqueue_script( 'foundation', get_template_directory_uri().'/bower_components/foundation/js/foundation/foundation.js', array('jquery'), null, true);
-	wp_enqueue_script( 'foundation-offcanvas', get_template_directory_uri().'/bower_components/foundation/js/foundation/foundation.offcanvas.js', array('foundation'), null, true);
 	wp_enqueue_script( 'foundation-equalizer', get_template_directory_uri().'/bower_components/foundation/js/foundation/foundation.equalizer.js', array('foundation'), null, true);
 	wp_enqueue_script( 'foundation-reveal', get_template_directory_uri().'/bower_components/foundation/js/foundation/foundation.reveal.js', array('foundation'), null, true);
 	// modernizr
@@ -40,7 +39,7 @@ function enqueue_styles_and_scripts(){
 	wp_enqueue_style( 'slick', get_template_directory_uri().'/bower_components/slick.js/slick/slick.css', false, 1, all );
 	wp_enqueue_style( 'slick', get_template_directory_uri().'/bower_components/slick.js/slick/slick-theme.css', false, 1, all );
 	// main styles
-	wp_enqueue_style( 'app', get_template_directory_uri().'/assets/css/app.css', false, "1.0.5", all );
+	wp_enqueue_style( 'app', get_template_directory_uri().'/assets/css/app.css', false, "1.0.6", all );
 
     // Localize data for javascript to use.
     $localized_data = array(

@@ -1,7 +1,5 @@
 <div class="show-main_menu not-printable">
-	<a class="left-off-canvas-toggle menu-icon" href="#">
-		<i class="fa fa-bars show-main_menu__icon"></i>
-		<i class="fa fa-close close-main_menu__icon"></i>
-	</a>
+	<i class="fa fa-bars show-main_menu__icon"></i>
+	<i class="fa fa-close close-main_menu__icon"></i>
 </div>
 

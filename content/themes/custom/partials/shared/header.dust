@@ -20,13 +20,11 @@
 				{! check if we are in frontpage and only render the offcanvas mainmenu if we are !}
 				{?PageFrontpage}
 
-					<div class="off-canvas-wrap">	{! off-canvas-wrap div - move-right class is added to this div when click'd !}
-
-							<div class="inner-wrap">	{! inner-wrap !}
 						
-								{>"mainsidenav_button" /}
+					{>"mainsidenav_button" /}
 
-								{>"mainsidenav" /}
+					{>"mainsidenav" /}
+
 				
 				{/PageFrontpage}
 				{! end check if we are in frontpage... !}
