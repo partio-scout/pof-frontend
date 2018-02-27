@@ -202,6 +202,8 @@ $column-gutter-half: $column-gutter / 2;
 				display: block;
 				color: $white;
 				@extend %pt-sans;
+				padding-right: 1.5rem;	// this fixes the long text links bug!
+				word-break: break-word;
 				// font-size: .875rem;
 				&:hover {
 					text-decoration: underline;

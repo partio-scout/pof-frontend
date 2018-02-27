@@ -7308,8 +7308,7 @@ body .ui-tooltip {
       display: block;
       color: #FFFFFF;
       padding-right: 1.5rem;
-      -ms-word-break: break-all;
-      word-break: break-all; }
+      word-break: break-word; }
       .menu-wrapper ul li a:hover {
         text-decoration: underline; }
       .menu-wrapper ul li a .toggler {
@@ -7514,7 +7513,9 @@ body .ui-tooltip {
       .main_menu-wrapper ul li a {
         position: relative;
         display: block;
-        color: #FFFFFF; }
+        color: #FFFFFF;
+        padding-right: 1.5rem;
+        word-break: break-word; }
         .main_menu-wrapper ul li a:hover {
           text-decoration: underline; }
         .main_menu-wrapper ul li a .toggler {
