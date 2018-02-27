@@ -29,7 +29,7 @@ function enqueue_styles_and_scripts(){
 	// tips
 	wp_enqueue_script( 'tips', get_template_directory_uri().'/assets/js/min/tips-min.js', array('jquery', 'list-js'), null, true);
 	// app scripts
-	wp_enqueue_script( 'app', get_template_directory_uri().'/assets/js/min/app-min.js', array('jquery'), null, true);
+	wp_enqueue_script( 'app', get_template_directory_uri().'/assets/js/min/app-min.js', array('jquery'), '1.0.8', true);
 
 	// fontawesome text fonts
 	wp_enqueue_style( 'fontawesome', get_template_directory_uri().'/bower_components/fontawesome/css/font-awesome.min.css', false, 1, all );
