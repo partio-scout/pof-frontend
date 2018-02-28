@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8da3b4ad8c696f6b84688a1476c864a0",
-    "content-hash": "b74b6ef644402ef7803b784d0c24bb70",
+    "content-hash": "0c80eb77fd00c842bfb93d65679e1d7e",
     "packages": [
         {
             "name": "composer/installers",
@@ -273,6 +272,29 @@
                 "wordpress"
             ],
             "time": "2017-10-04 12:10:25"
+        },
+        {
+            "name": "devgeniem/ext-relevanssi-premium",
+            "version": "1.14.9.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:devgeniem/ext-relevanssi-premium.git",
+                "reference": "722bd0281e84ec3f9447e9a3d9ad54bd3bd3e41d"
+            },
+            "type": "wordpress-plugin",
+            "extra": {
+                "installer-name": "relevanssi-premium"
+            },
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "msaari"
+                }
+            ],
+            "description": "Relevanssi Premium replaces the default search with a partial-match search that sorts results by relevance. It also indexes comments and shortcode content.",
+            "time": "2017-03-29T11:27:04+00:00"
         },
         {
             "name": "johnpbloch/wordpress",
