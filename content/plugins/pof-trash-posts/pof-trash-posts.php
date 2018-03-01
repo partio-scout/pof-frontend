@@ -213,7 +213,7 @@ class POF_Trash_Posts {
                 // This function does the above checks but
                 // This way the code is clearer.
                 // We do not actually trash any posts yet. Just for testing.
-                // wp_trash_post( $id );
+                wp_trash_post( $id );
                 $log['trashed_posts'][] = $id;
             }
             self::keep_log( $log );
