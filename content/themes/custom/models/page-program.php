@@ -19,7 +19,6 @@ class PageProgram extends \DustPress\Model {
         $this->bind_sub("Footer");
         $this->bind_sub("Breadcrumbs");
         $this->bind_sub( 'ProgramLangnav', [ 'model' => 'PageProgram' ] );
-        $this->bind_sub("Sidenav");
     }
 
     public function Content() {

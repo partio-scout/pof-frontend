@@ -3,6 +3,8 @@
  * WORDPRESS CONFIGURATIONS
  */
 
+// define( 'CONCATENATE_SCRIPTS', false );
+
 // Run setup on admin side.
 if ( ! defined( 'SETUP_DONE' ) ) {
     require_once( dirname( __FILE__ ) . '/setup.php' );
@@ -50,6 +52,13 @@ switch ( $_SERVER[ 'SERVER_NAME' ] ) {
         define( 'WP_CONTENT_BASE_URL', 'http://partio.cdn.geniem.com' );
         define( 'WP_ADMIN_URL', 'http://admin.partio.geniem.com' );
         break;
+    case 'partio-ohjelma.test': // LOCAL DEV DOMAIN
+        define( 'WP_HOME', 'http://partio-ohjelma.test' );
+        define( 'WP_SITEURL', 'http://partio-ohjelma.test/wp/' );
+        define( 'WP_PUB_SITEURL', 'http://partio-ohjelma.test' );
+        define( 'WP_CONTENT_BASE_URL', 'http://partio-ohjelma.test' );
+        define( 'WP_ADMIN_URL', 'http://partio-ohjelma.test' );
+        break;        
     case 'partio-ohjelma.dev': // LOCAL DEV DOMAIN
         define( 'WP_HOME', 'http://partio-ohjelma.dev' );
         define( 'WP_SITEURL', 'http://partio-ohjelma.dev/wp/' );
