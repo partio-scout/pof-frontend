@@ -40,8 +40,18 @@ class ProgramLangnav extends \DustPress\Model {
         // Get the parent model name.
         $model_args     = $this->get_args();
         $parent_model   = $model_args['model'];
+        // Iterator for non-top-level-languages
+        $exist_extra_langs = 0;
 
-        foreach ($pages as $key => $page) {
+        foreach ($pages as $page) {
+            // Force api created pages to right lang order, ksort below before return languages
+            $key = array_search( strtolower( $page->fields['api_lang'] ), $languages );
+
+            // If page is not top level language, generate key after bae languages
+            if ($key === false) {
+                $key = count($languages) + $exist_extra_langs;
+                $exist_extra_langs++;
+            }
             $lang['langs'][$key]['id']          = $page->ID;
             $lang['langs'][$key]['lang']        = $page->fields['api_lang'];
             $lang['langs'][$key]['permalink']   = $page->permalink;
@@ -61,6 +71,7 @@ class ProgramLangnav extends \DustPress\Model {
 
             trim( $lang['langs'][$key]['class'] );
         }
+        ksort($lang['langs']);
         return $lang;
     }
 
