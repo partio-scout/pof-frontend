@@ -78,7 +78,7 @@ $column-gutter-half: $column-gutter / 2;
 
 
 .show-main_menu {
-	position: fixed;
+	position: absolute;
 	display:inline-block;
 	z-index:19999;
 
@@ -294,7 +294,7 @@ $column-gutter-half: $column-gutter / 2;
 
 
 	.show-main_menu {
-		position: fixed;
+		position: absolute;
 		display:inline-block;
 		z-index:19999;
 	
