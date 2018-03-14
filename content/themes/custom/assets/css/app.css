@@ -7407,9 +7407,11 @@ body .ui-tooltip {
   background-color: #253764;
   transform: translate3d(-15rem, 0, 0);
   -webkit-transform: translate3d(-15rem, 0, 0);
-  -webkit-transition: all 0.3s ease !important;
-  -o-transition: all 0.3s ease !important;
-  transition: all 0.3s ease !important;
+  transition: transform .3s ease;
+  -webkit-transition: -webkit-transform .3s ease;
+  /*-webkit-transition: all 0.3s ease !important;
+    -o-transition: all 0.3s ease !important;
+	transition: all 0.3s ease !important;*/
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   z-index: 10000; }
@@ -7420,9 +7422,12 @@ body .ui-tooltip {
 .hero,
 .programs,
 .main-footer {
-  -webkit-transition: all 0.3s ease !important;
-  -o-transition: all 0.3s ease !important;
-  transition: all 0.3s ease !important; }
+  transition: transform .3s ease;
+  -webkit-transition: -webkit-transform .3s ease;
+  /*
+	-webkit-transition: all 0.3s ease !important;
+    -o-transition: all 0.3s ease !important;
+	transition: all 0.3s ease !important;*/ }
 
 .show-main_menu__icon {
   display: inline-block;
@@ -7442,11 +7447,13 @@ body .ui-tooltip {
 
 .show-main_menu {
   position: absolute;
-  display: block;
+  display: inline-block;
   z-index: 19999;
-  -webkit-transition: all 0.3s ease !important;
-  -o-transition: all 0.3s ease !important;
-  transition: all 0.3s ease !important; }
+  transition: transform .3s ease;
+  -webkit-transition: -webkit-transform .3s ease;
+  /*-webkit-transition: all 0.3s ease !important;
+    -o-transition: all 0.3s ease !important;
+	transition: all 0.3s ease !important;*/ }
   .show-main_menu:hover {
     cursor: pointer; }
   .show-main_menu.move-right {
@@ -7554,6 +7561,7 @@ body .ui-tooltip {
     transform: translate3d(-17.5rem, 0, 0);
     -webkit-transform: translate3d(-17.5rem, 0, 0); }
   .show-main_menu {
+    position: absolute;
     display: inline-block;
     z-index: 19999; }
     .show-main_menu.move-right {

@@ -5,7 +5,6 @@ $menu_width_wider: rem-calc(280);
 
 $column-gutter-half: $column-gutter / 2;
 
-
 .main-wrapper {
 	position: relative;
 	width: auto;
@@ -31,9 +30,12 @@ $column-gutter-half: $column-gutter / 2;
 	transform: translate3d(-$menu_width,0,0);
 	-webkit-transform: translate3d(-$menu_width,0,0);
 
-	-webkit-transition: all 0.3s ease !important;
+	transition: transform .3s ease;
+	-webkit-transition: -webkit-transform .3s ease;
+
+	/*-webkit-transition: all 0.3s ease !important;
     -o-transition: all 0.3s ease !important;
-	transition: all 0.3s ease !important;
+	transition: all 0.3s ease !important;*/
 
 
 	backface-visibility: hidden;
@@ -52,9 +54,12 @@ $column-gutter-half: $column-gutter / 2;
 .programs,
 .main-footer
 {
+	transition: transform .3s ease;
+	-webkit-transition: -webkit-transform .3s ease;
+	/*
 	-webkit-transition: all 0.3s ease !important;
     -o-transition: all 0.3s ease !important;
-	transition: all 0.3s ease !important;
+	transition: all 0.3s ease !important;*/
 }
 
 
@@ -82,9 +87,12 @@ $column-gutter-half: $column-gutter / 2;
 	display:inline-block;
 	z-index:19999;
 
-	-webkit-transition: all 0.3s ease !important;
+	transition: transform .3s ease;
+	-webkit-transition: -webkit-transform .3s ease;
+
+	/*-webkit-transition: all 0.3s ease !important;
     -o-transition: all 0.3s ease !important;
-	transition: all 0.3s ease !important;
+	transition: all 0.3s ease !important;*/
 
 
 	&:hover {
