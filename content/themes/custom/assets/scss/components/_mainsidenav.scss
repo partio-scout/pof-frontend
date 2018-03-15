@@ -241,9 +241,6 @@ $column-gutter-half: $column-gutter / 2;
 	}
 
 	&.move-right {
-		transform: translate3d($menu_width,0,0);
-		-webkit-transform: translate3d($menu_width,0,0);
-
 		.show-main_menu__icon {
 			display: none;
 		}
@@ -275,12 +272,5 @@ $column-gutter-half: $column-gutter / 2;
 
 		transform: translate3d(-$menu_width_wider,0,0);
 		-webkit-transform: translate3d(-$menu_width_wider,0,0);
-	}
-
-	.show-main_menu {	
-		&.move-right {
-			transform: translate3d($menu_width_wider,0,0);
-			-webkit-transform: translate3d($menu_width_wider,0,0);
-		}
 	}
 }

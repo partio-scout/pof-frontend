@@ -7528,13 +7528,10 @@ body .ui-tooltip {
   -webkit-transition: -webkit-transform .3s ease; }
   .show-main_menu:hover {
     cursor: pointer; }
-  .show-main_menu.move-right {
-    transform: translate3d(15rem, 0, 0);
-    -webkit-transform: translate3d(15rem, 0, 0); }
-    .show-main_menu.move-right .show-main_menu__icon {
-      display: none; }
-    .show-main_menu.move-right .close-main_menu__icon {
-      display: inline-block; }
+  .show-main_menu.move-right .show-main_menu__icon {
+    display: none; }
+  .show-main_menu.move-right .close-main_menu__icon {
+    display: inline-block; }
 
 .main_menu-heading {
   color: #FFFFFF;
@@ -7549,10 +7546,7 @@ body .ui-tooltip {
   .main_menu-wrapper {
     width: 17.5rem;
     transform: translate3d(-17.5rem, 0, 0);
-    -webkit-transform: translate3d(-17.5rem, 0, 0); }
-  .show-main_menu.move-right {
-    transform: translate3d(17.5rem, 0, 0);
-    -webkit-transform: translate3d(17.5rem, 0, 0); } }
+    -webkit-transform: translate3d(-17.5rem, 0, 0); } }
 
 .lang-menu-row {
   position: relative; }

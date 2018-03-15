@@ -1,10 +1,14 @@
 {#PageFrontpage}
 	{>"shared/header" /}
+			
+	{>"mainsidenav" /}
+		
 	<main class="frontpage-content-wrapper">
 	{#Content}
 		{! Slider !}
 			{?Content.fields.featured}
 			<section class="hero">
+				{>"mainsidenav_button" /}
 	            <div class="front-lang">
 	                {#Languages}
 	                    <a href="{url}"> {slug} </a>

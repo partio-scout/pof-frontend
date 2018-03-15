@@ -16,19 +16,4 @@
 
 		<body class="{#WP.body_class}{.}{@sep} {/sep}{/WP.body_class}" data-lang="{WP.body_class.lang}">
 			<div class="main-wrapper">
-
-				{! check if we are in frontpage and only render the offcanvas mainmenu if we are !}
-				{!
-				{?PageFrontpage}
-
-						
-					{>"mainsidenav_button" /}
-
-					{>"mainsidenav" /}
-
-				
-				{/PageFrontpage}
-				!}
-				{! end check if we are in frontpage... !}
-
 {/Header}
