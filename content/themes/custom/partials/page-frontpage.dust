@@ -1,6 +1,6 @@
 {#PageFrontpage}
 	{>"shared/header" /}
-	<section class="frontpage-content-wrapper">
+	<main class="frontpage-content-wrapper">
 	{#Content}
 		{! Slider !}
 			{?Content.fields.featured}
@@ -73,5 +73,5 @@
 	{/Content}
 
 	{>"shared/footer" /}
-	</section>
+	</main>
 {/PageFrontpage}
