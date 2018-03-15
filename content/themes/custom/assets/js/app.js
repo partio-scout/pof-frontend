@@ -18,9 +18,7 @@ window.Partio = ( function( window, document, $ ){
         app.$menu_has_children_toggler = $('.menu-item-has-children > a > .toggler');
 
         app.$mainmenu           = $('.main_menu-wrapper');
-        app.$hero               = $('.hero');
-        app.$programs           = $('.programs');
-        app.$mainFooter         = $('.main-footer');
+        app.$frontpageContent   = $('.frontpage-content-wrapper')
         
         app.$showmainmenu       = $('.show-main_menu');
         app.$showmenu           = $('.show-menu');
@@ -81,9 +79,7 @@ window.Partio = ( function( window, document, $ ){
         app.$showmainmenu.on('click',function(){
             app.$showmainmenu.toggleClass('move-right');
             app.$mainmenu.toggleClass('move-right');
-            app.$hero.toggleClass('move-right');
-            app.$programs.toggleClass('move-right');
-            app.$mainFooter.toggleClass('move-right');
+            app.$frontpageContent.toggleClass('move-right');
         });
 
 

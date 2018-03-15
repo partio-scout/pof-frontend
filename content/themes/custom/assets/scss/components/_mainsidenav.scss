@@ -33,16 +33,8 @@ $column-gutter-half: $column-gutter / 2;
 	transition: transform .3s ease;
 	-webkit-transition: -webkit-transform .3s ease;
 
-	/*-webkit-transition: all 0.3s ease !important;
-    -o-transition: all 0.3s ease !important;
-	transition: all 0.3s ease !important;*/
-
-
 	backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
-
-	z-index:10000;
-
 
 	&.move-right {
 		transform: translate3d(0,0,0);
@@ -50,16 +42,10 @@ $column-gutter-half: $column-gutter / 2;
 	}
 }
 
-.hero,
-.programs,
-.main-footer
+.frontpage-content-wrapper
 {
 	transition: transform .3s ease;
 	-webkit-transition: -webkit-transform .3s ease;
-	/*
-	-webkit-transition: all 0.3s ease !important;
-    -o-transition: all 0.3s ease !important;
-	transition: all 0.3s ease !important;*/
 }
 
 
@@ -89,11 +75,6 @@ $column-gutter-half: $column-gutter / 2;
 
 	transition: transform .3s ease;
 	-webkit-transition: -webkit-transform .3s ease;
-
-	/*-webkit-transition: all 0.3s ease !important;
-    -o-transition: all 0.3s ease !important;
-	transition: all 0.3s ease !important;*/
-
 
 	&:hover {
 		cursor: pointer;

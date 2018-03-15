@@ -7409,25 +7409,15 @@ body .ui-tooltip {
   -webkit-transform: translate3d(-15rem, 0, 0);
   transition: transform .3s ease;
   -webkit-transition: -webkit-transform .3s ease;
-  /*-webkit-transition: all 0.3s ease !important;
-    -o-transition: all 0.3s ease !important;
-	transition: all 0.3s ease !important;*/
   backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  z-index: 10000; }
+  -webkit-backface-visibility: hidden; }
   .main_menu-wrapper.move-right {
     transform: translate3d(0, 0, 0);
     -webkit-transform: translate3d(0, 0, 0); }
 
-.hero,
-.programs,
-.main-footer {
+.frontpage-content-wrapper {
   transition: transform .3s ease;
-  -webkit-transition: -webkit-transform .3s ease;
-  /*
-	-webkit-transition: all 0.3s ease !important;
-    -o-transition: all 0.3s ease !important;
-	transition: all 0.3s ease !important;*/ }
+  -webkit-transition: -webkit-transform .3s ease; }
 
 .show-main_menu__icon {
   display: inline-block;
@@ -7450,10 +7440,7 @@ body .ui-tooltip {
   display: inline-block;
   z-index: 19999;
   transition: transform .3s ease;
-  -webkit-transition: -webkit-transform .3s ease;
-  /*-webkit-transition: all 0.3s ease !important;
-    -o-transition: all 0.3s ease !important;
-	transition: all 0.3s ease !important;*/ }
+  -webkit-transition: -webkit-transform .3s ease; }
   .show-main_menu:hover {
     cursor: pointer; }
   .show-main_menu.move-right {
@@ -8459,6 +8446,9 @@ body .ui-tooltip {
     padding: .25rem 0; }
   #sivukartta ul li ul li {
     padding: .0625rem 0; } }
+
+.frontpage-content-wrapper {
+  height: 100%; }
 
 .hero {
   height: 40%;
