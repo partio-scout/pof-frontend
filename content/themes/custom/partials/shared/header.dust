@@ -18,6 +18,7 @@
 			<div class="main-wrapper">
 
 				{! check if we are in frontpage and only render the offcanvas mainmenu if we are !}
+				{!
 				{?PageFrontpage}
 
 						
@@ -27,6 +28,7 @@
 
 				
 				{/PageFrontpage}
+				!}
 				{! end check if we are in frontpage... !}
 
 {/Header}
