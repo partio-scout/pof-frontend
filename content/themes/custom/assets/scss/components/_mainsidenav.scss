@@ -14,17 +14,6 @@ $column-gutter-half: $column-gutter / 2;
 	}
 }
 
-.main-wrapper {
-	position: relative;
-	width: auto;
-	overflow-x: hidden;
-
-	// Only for print
-	@media print {
-		overflow-x: visible;
-	}
-}
-
 .frontpage-content-wrapper {
 	transition: transform .3s ease;
 	-webkit-transition: -webkit-transform .3s ease;
