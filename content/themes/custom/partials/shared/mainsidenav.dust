@@ -1,13 +1,13 @@
 
 	<aside class="main_menu-wrapper">
-		<h3 class="main_menu-heading">{S.valikko}</h3>
+		<h3 class="main_menu-heading">{Header.S.valikko}</h3>
 		<ul class="menu">
 			<div class="row lang-menu-row">
 				<div class="lang-menu-container">
 					<ul class="lang-menu">
-						{#LangSwitcher.langs}
+						{#Header.LangSwitcher.langs}
 							<li><a{?active} class="active"{/active} href="{permalink}">{lang}</a></li>
-						{/LangSwitcher.langs}
+						{/Header.LangSwitcher.langs}
 					</ul>
 				</div>
 			</div>

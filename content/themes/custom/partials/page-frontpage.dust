@@ -1,15 +1,19 @@
 {#PageFrontpage}
 	{>"shared/header" /}
-
+			
+	{>"mainsidenav" /}
+		
+	<main class="frontpage-content-wrapper">
 	{#Content}
-			{! Slider !}
+		{! Slider !}
 			{?Content.fields.featured}
 			<section class="hero">
-                    <div class="front-lang">
-                        {#Languages}
-                            <a href="{url}"> {slug} </a>
-                        {/Languages}
-                    </div>
+				{>"mainsidenav_button" /}
+	            <div class="front-lang">
+	                {#Languages}
+	                    <a href="{url}"> {slug} </a>
+	                {/Languages}
+	            </div>
 				<div class="slider" data-time={SliderTime}>
 					{#Content.fields.featured}
 					<div class="slide" style="background-image:url({featured_image.url})">
@@ -43,11 +47,11 @@
 						{#Children}
 						<a href={permalink} class="program">
 							<div class="program__logo-container">
-                                {#fields.api_images}
-                                    {#logo}
-                                        <img src="{thumbnail.url}" width="{thumbnail.width}" height="{thumbnail.height}" alt="{title}">
-                                    {/logo}
-                                {/fields.api_images}
+	                            {#fields.api_images}
+	                                {#logo}
+	                                    <img src="{thumbnail.url}" width="{thumbnail.width}" height="{thumbnail.height}" alt="{title}">
+	                                {/logo}
+	                            {/fields.api_images}
 								<div class="program__divider"></div>
 								<h3 class="program__heading">{post_title}</h3>
 							</div>
@@ -55,10 +59,8 @@
 						{/Children}
 					</div>
 				</div>
-
 			</section>
 			{/Program}
-
 			{! Haku (hide temporarily for release before implementation) !}
 
 			{!<section class="search">
@@ -72,8 +74,8 @@
 				</div>
 
 			</section>!}
-
 	{/Content}
 
 	{>"shared/footer" /}
+	</main>
 {/PageFrontpage}

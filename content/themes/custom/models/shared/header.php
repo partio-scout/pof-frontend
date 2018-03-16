@@ -12,8 +12,7 @@ class Header extends \DustPress\Model {
     // ];
 
     public function Content() {
-        $menuLocation = get_nav_menu_locations();
-        $menu = wp_get_nav_menu_items( $menuLocation['main-menu'] );
+        $menu = wp_get_nav_menu_items( 'Main Menu' );
         
 
         $args = [
