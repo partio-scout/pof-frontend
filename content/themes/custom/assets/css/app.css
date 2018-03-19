@@ -7555,8 +7555,9 @@ body .ui-tooltip {
     .lang-menu-container ul li {
       display: inline-block;
       margin: 0;
-      padding: 0 .125rem; }
+      padding: 0 .1rem; }
       .lang-menu-container ul li a {
+        padding-right: 1rem;
         text-transform: uppercase;
         font-size: .875rem;
         color: #FFFFFF; }
