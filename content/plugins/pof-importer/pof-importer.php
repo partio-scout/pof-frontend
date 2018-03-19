@@ -329,7 +329,7 @@ class POF_Importer {
                     // Langversion found, add existing page specific args
                     if (isset($this->queried[$guid][$item['lang']])) {
                         $page = $this->queried[$guid][$item['lang']];
-
+                        die(var_dump($item));
                         $args['ID']         = $page->ID;
                         $args['menu_order'] = $page->menu_order;
                         $args['post_name']  = wp_unique_post_slug( sanitize_title( $item['title'] ), $page->ID, 'publish', 'page', $parent_id );
