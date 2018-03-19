@@ -16,8 +16,9 @@
 		li {
 			display: inline-block;
 			margin: 0;
-			padding: 0 .125rem;
+			padding: 0 .1rem;
 			a {
+				padding-right: 1rem;
 				text-transform: uppercase;
 				font-size: .875rem;
 				color: $white;
