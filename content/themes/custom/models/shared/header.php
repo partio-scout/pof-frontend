@@ -3,7 +3,7 @@
 class Header extends \DustPress\Model {
 
     public function Analytics() {
-    	return get_field('google_analytics', 'option');
+        return get_field('google_analytics', 'option');
     }
 
 
@@ -12,8 +12,8 @@ class Header extends \DustPress\Model {
     // ];
 
     public function Content() {
-        $menu = wp_get_nav_menu_items( 'Main Menu' );
-        
+        $menuLocation = get_nav_menu_locations();
+        $menu = wp_get_nav_menu_items( $menuLocation['main-menu'] );
 
         $args = [
             'posts_per_page'    => -1,

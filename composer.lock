@@ -300,6 +300,29 @@
             "time": "2017-03-29T11:27:04+00:00"
         },
         {
+            "name": "devgeniem/ext-relevanssi-premium",
+            "version": "1.14.9.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:devgeniem/ext-relevanssi-premium.git",
+                "reference": "722bd0281e84ec3f9447e9a3d9ad54bd3bd3e41d"
+            },
+            "type": "wordpress-plugin",
+            "extra": {
+                "installer-name": "relevanssi-premium"
+            },
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "msaari"
+                }
+            ],
+            "description": "Relevanssi Premium replaces the default search with a partial-match search that sorts results by relevance. It also indexes comments and shortcode content.",
+            "time": "2017-03-29T11:27:04+00:00"
+        },
+        {
             "name": "johnpbloch/wordpress",
             "version": "4.9.4",
             "source": {
