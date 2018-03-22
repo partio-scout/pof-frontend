@@ -1,54 +1,72 @@
 {#PageSearch}
-
 	{>"shared/header" /}
 
 	{>"shared/content_hero" /}
+	
+	{#Content}
 
-		{#Content}
+		<div class="content-bg">
 
-			<div class="content-bg">
+			<div class="row">
 
-				<div class="row">
+				<div class="page-wrapper clearfix">
 
-					<div class="page-wrapper clearfix">
+					{>"shared/sidenav" /}
 
-						{>"shared/sidenavsearch" /}
+					<main class="content-wrapper">					
 
-						<main class="content-wrapper clearfix">					
+						<div class="content-inner">
 
-							<div class="content-inner">
+							{>"shared/sidenav_button" /}
 
-								{>"shared/sidenav_button_search" /}
+							{>"shared/breadcrumbs" /}
 
-								{>"shared/breadcrumbs_haku" /}
+							{>"shared/program-langnav" /}
 
-								{! Otsikko-osio !}
+							<div id="program-content">
 
-								<section class="content__headers">
-									<h1 class="content__main-header">Aktiviteettihaku</h1>
-								</section>
+								{>"shared/search-section" /}
 
+								<section class="search-results">
+						            {?Results.posts}
+						                {! We insert notification for screen reader here when more results are loaded. !}
+						                <span class="sr-only" aria-live="polite" id="results-message"></span>
+						                <div class="row small-up-1" id="search-results-container">
+						                    {>"search-results-list" /}
+						                </div>
+						            {:else}
+						                    <div class="row">
+						                        <div class="small-12 columns text-center">
+						                            <h2>Ei hakutuloksia hakusanoilla <i>"{Term}"</i>.</h2>
+						                        </div>
+						                    </div>
+						            {/Results.posts}
+						            {@gt key=Results.max_num_pages value=Results.page}
+						                <div class="row">
+						                    <div class="small-12 text-center">
+						                        <button
+						                        	id="search-results-loadmore"
+						                        	data-maxpages="{Results.max_num_pages}"
+						                        	data-page="{Results.page}">
+						                        	Lataa lisää
+						                        </button>
+						                    </div>
+						                </div>
+						            {/gt}
+						        </section>
+							</div>
 
-								<section class="search-results__header">
-									<h3>Haullasi löytyi <span class="result-num">6</span> tulosta.</h3>
-								</section>
+						</div>
 
-								<section class="search-results__body">
-
-									{>"shared/searchresult.dust" /}
-
-								</section>
-
-
-						</main>
-
-					</div>
+					</main>
 
 				</div>
 
 			</div>
 
-		{/Content}
+		</div>
+
+	{/Content}
 
 	{>"shared/footer" /}
 {/PageSearch}

@@ -1,0 +1,19 @@
+{! Search section !}
+<section class="search-box">
+    <div class="row">
+        <div class="small-12 columns align-center">
+            <form id="hero-search" class="search-box__form" method="get" action="/">
+                <div class="row collapse align-center">
+                    <div class="small-9 medium-8 large-7 columns">
+                        <input type="search" name="s" id="search" value="{Term}" placeholder="Kerro, mitä etsit.."  title="Etsi sivulta">
+                    </div>
+                    <div class="small-3 medium-2 large-2 columns">
+                        <button id="js-search-button" type="submit">
+                            Hae
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

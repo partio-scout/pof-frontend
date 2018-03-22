@@ -1,16 +1,87 @@
 <?php
-/*
- Template name: Haku
-*/
+/**
+ * Search page
+ */
+/**
+ * Class Search
+ */
+class Search extends \DustPress\Model {
+    /**
+     * Enable these methods for DustPress.js.
+     *
+     * @var array
+     */
+    protected $api = [
+        'Results'
+    ];
 
-class PageSearch extends \DustPress\Model {
-
-	public function Submodules() {
-
-		$this->bind_sub("Header");
-		$this->bind_sub("Sidenavsearch");
-		$this->bind_sub("Footer");
-
-	}
-
+    public function Submodules() {
+        $this->bind_sub( 'ProgramLangnav', [ 'model' => 'Search' ] );
+        $this->bind_sub( 'Attachments' );
+        $this->bind_sub( 'Header' );
+        $this->bind_sub( 'Footer' );
+        $this->bind_sub( 'Breadcrumbs' );
+    }    
+    /**
+     *  Get search term.
+     */
+    public function Term() {
+        $term = get_query_var( 's' );
+        return $term;
+    }
+    /**
+     *  Get search results.
+     */
+    public function Results() {
+        $per_page   = get_option( 'posts_per_page' );
+        $page       = (int) get_query_var( 'paged' );
+        $page       = $page ? $page : 1; // Force page value
+        $displaying = $per_page * $page;
+        $search_term = get_query_var( 's' );
+        // Do not execute if no search term - relevanssi doesn't like it.
+        if ( empty( $search_term ) ) {
+            return false;
+        }
+        else {
+            // Remove - from search_term. Else the word after - will be excluded from query.
+            $search_term = str_replace( '-', ' ', $search_term );
+            // Args for search.
+            $args = array(
+                's'                      => $search_term,
+                'post_type'              => array( 'page' ),
+                'post_status'            => 'publish',
+            );
+            // Check if executed with ajax and set offset if true.
+            if ( wp_doing_ajax() ) {
+                $args['posts_per_page'] = $per_page;
+                $args['offset']         = $displaying;
+            }
+            // Else show posts without offset.
+            else {
+                $args['posts_per_page'] = $displaying;
+            }
+            $query = new WP_Query( $args );
+            if ( function_exists( 'relevanssi_do_query' ) ) {
+                // Make relevanssi search.
+                $results = relevanssi_do_query( $query );
+            }
+            else {
+                $error = [
+                    'message' => 'Relevanssi is not activated!',
+                ];
+                return $error;
+            }
+            // Build object to be returned.
+            $data                = new stdClass();
+            $data->posts         = $results;
+            $data->max_num_pages = $query->max_num_pages;
+            $data->page          = $page;
+            // Modify every post
+            foreach ( $data->posts as &$post ) {
+                // Get permalink
+                $post->url = get_permalink( $post->ID );
+            } // End foreach().
+            return $data;
+        } // End if().
+    }
 }
