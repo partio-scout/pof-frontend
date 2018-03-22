@@ -158,7 +158,6 @@ class POF_Importer {
     *
     */
     public function import_data( $branch, $parent = 0 ) {
-
         // create or update current page of branch
         $success = $this->get_items( $branch, $parent );
         // an error occured
@@ -224,8 +223,11 @@ class POF_Importer {
 
         // loop languages and get the item data
         foreach ( $branch['languages'] as $item ) {
-
-            $languages[strtoupper($item['lang'])] = [ 'url' => $item['details'], 'modified' => $item['lastModified'] ];
+            $languages[strtoupper($item['lang'])] = [ 
+                'order' => isset($branch['order']) ? $branch['order'] : 0,
+                'url' => $item['details'],
+                'modified' => $item['lastModified']
+            ];
         }
 
         // query page by api guid
@@ -280,7 +282,7 @@ class POF_Importer {
                 }
 
                 $d['url'] = $leaf['url']; // store url
-
+                $d['order'] = $leaf['order']; // get menu order from main tree
                 $details[$lang] = $d;
                 $count++;
 
@@ -336,7 +338,7 @@ class POF_Importer {
                         $old_slug = wp_make_link_relative( get_permalink( $page->ID ));
 
                     } else {
-                        $args['menu_order'] = isset($item['order']) ? $item['order'] : $page->menu_order;
+                        $args['menu_order'] = isset($item['order']) ? $item['order'] : 0;
                         $args['post_name'] = wp_unique_post_slug( sanitize_title( $item['title'] ), $post_id, 'publish', 'page', $parent_id );
                     }
 
