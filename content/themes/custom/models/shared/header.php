@@ -26,7 +26,7 @@ class Header extends \DustPress\Model {
             // Gets current page ID and the current page parent
             $curpage = get_the_ID();
             $curpageparent = wp_get_post_parent_id($curpage);
-
+            $curpageparentsparent = wp_get_post_parent_id($curpageparent);
             $args['post_parent'] = $item->object_id;
             $children = \DustPress\Query::get_posts( $args );
 
@@ -37,12 +37,14 @@ class Header extends \DustPress\Model {
 
                 // Keeps sidemenu open if on a page that is listed in the menu
                 if ( $curpageparent === (int) $menu[ $key ]->object_id ) {
+                    $firstparent = true;
                     $menu[ $key ]->current_first = 'opened';
                     $menu[ $key ]->current_id = $curpage;
                 }
 
                 // Loop through childrens
                 foreach ( $menu[ $key ]->children as $child_key => $children ) {
+                    $firstparent = false;
                     $args['post_parent'] = $children->ID;
                     $sub_children = \DustPress\Query::get_posts( $args );
 
@@ -53,10 +55,18 @@ class Header extends \DustPress\Model {
 
                         // Keeps sidemenu open if on a page that is listed in the menu
                         if ( $curpageparent ===  $menu[ $key ]->children[ $child_key ]->ID ) {
+                            $firstparent = true;
                             $menu[ $key ]->current_first = 'opened';
                             $menu[ $key ]->children[ $child_key ]->current_second = 'opened';
                             $menu[ $key ]->children[ $child_key ]->current_id = $curpage;
                         }
+
+                        // Keeps menu open even if we are level that won't occur in menu
+                        if ( $firstparent === false && $curpageparentsparent === $menu[ $key ]->children[ $child_key ]->ID ) {
+                            $menu[ $key ]->current_first = 'opened';
+                            $menu[ $key ]->children[ $child_key ]->current_second = 'opened';
+                            $menu[ $key ]->current_id = $curpageparent;
+                        }                        
                     }
                 }
             }
