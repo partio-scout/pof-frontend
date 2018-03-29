@@ -472,6 +472,7 @@ class POF_Importer {
         update_field( 'field_559a2d91a18a1', $item['lang'], $post_id ); // api_lang
         update_field( 'field_559a2db2a18a2', $guid, $post_id ); // api_guid
         update_field( 'field_559e4a50b1f42', $item['url'], $post_id ); // api_url
+        update_field( 'field_5abca09542839', json_encode( $item['parents'] ), $post_id ); // api_path
         update_post_meta($post_id, 'ag_'.$guid, 'true');
 
         // images (acf repeater)
