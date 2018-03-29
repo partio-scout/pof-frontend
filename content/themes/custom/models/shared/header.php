@@ -22,11 +22,14 @@ class Header extends \DustPress\Model {
             'orderby'           => 'menu_order title',
             'order'             => 'ASC',
         ];
+        //TODO: Make this dynamically and open as many parents element have, not manually defined amount
         foreach ( $menu as $key => $item ) {
-            // Gets current page ID and the current page parent
+            // Gets current page ID and the current page parent (3 levels)
             $curpage = get_the_ID();
             $curpageparent = wp_get_post_parent_id($curpage);
             $curpageparentsparent = wp_get_post_parent_id($curpageparent);
+            $curpagethirdparent = wp_get_post_parent_id($curpageparentsparent);
+
             $args['post_parent'] = $item->object_id;
             $children = \DustPress\Query::get_posts( $args );
 
@@ -62,11 +65,14 @@ class Header extends \DustPress\Model {
                         }
 
                         // Keeps menu open even if we are level that won't occur in menu
-                        if ( $firstparent === false && $curpageparentsparent === $menu[ $key ]->children[ $child_key ]->ID ) {
+                        if ( $firstparent === false &&
+                            ( $curpageparentsparent === $menu[ $key ]->children[ $child_key ]->ID ||
+                              $curpagethirdparent === $menu[ $key ]->children[ $child_key ]->ID )
+                        ) {
                             $menu[ $key ]->current_first = 'opened';
                             $menu[ $key ]->children[ $child_key ]->current_second = 'opened';
                             $menu[ $key ]->current_id = $curpageparent;
-                        }                        
+                        }                         
                     }
                 }
             }
