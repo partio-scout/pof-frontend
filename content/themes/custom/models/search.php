@@ -1,7 +1,10 @@
 <?php
-/*
- Template name: Hakusivu
-*/
+/**
+ * Search page
+ */
+/**
+ * Class Search
+ */
 
 class Search extends \DustPress\Model {
     /**

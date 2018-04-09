@@ -1,0 +1,26 @@
+{! We use here 'double' context because ajax loadmore returns Search { Results { data } }  !}
+{#Search.Results.posts}
+    <div class="column">
+        <a href="{url}">
+            <h2 class="search-results__title">
+                {post_title}
+            </h2>
+            <span class="search-results__date">{@strtodate value=post_date format="d.m.Y" /}</span>
+            <p class="search-results__desc">
+                {?post_excerpt}
+                    {@excerpt string=post_excerpt length=160 /}
+                {:else}
+                    {@excerpt string=post_content length=160 /}
+                {/post_excerpt}
+            </p>
+            {?breadcrumb}
+                <p class="search-results__breadcrumb">
+                    {#breadcrumb}
+                        <a class="search-results__breadcrumb-link" href="{url}" >{title}</a>
+                        <i class="icon ion-ios-arrow-forward"></i>
+                    {/breadcrumb}
+                </p>
+            {/breadcrumb}
+        </a>
+    </div>
+{/Search.Results.posts}

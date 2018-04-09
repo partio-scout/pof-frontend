@@ -3,8 +3,6 @@
 
 	{>"shared/content_hero" /}
 	
-	{#Content}
-
 		<div class="content-bg">
 
 			<div class="row">
@@ -65,8 +63,6 @@
 			</div>
 
 		</div>
-
-	{/Content}
 
 	{>"shared/footer" /}
 {/Search}
