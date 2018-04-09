@@ -51,6 +51,25 @@ function map_api_tags( &$repeater ) {
     }
 }
 
+// binds parents into a more dust-friendly array
+function map_api_parents( &$parents ) {
+    $parent_arr = [];
+    if ( is_array ( $parents ) ) {
+        foreach ( $parents as $key => $parent) {
+            if ( $parent->type !== 'program' ) {
+                $details = get_details_by_guid( array( 'guid' => $parent->guid ) );
+                $parent_arr[$key]['guid'] = $parent->guid;
+                $parent_arr[$key]['title'] = $parent->title;
+                $parent_arr[$key]['url'] = $details['url'];
+                if ( $parent->type === 'agegroup' ) {
+                    $parent_arr[$key]['logo'] = $details['logo'];
+                }
+            }
+        }
+        return $parent_arr;
+    }
+}
+
 // loads all children of a page in a tree format
 function get_child_page_tree( $post_id, $helper, $grandchildren = true  ) {
 
@@ -155,6 +174,35 @@ function pofapilink_shortcode( $atts  ) {
     return $link;
 }
 add_shortcode( 'pofapilink', 'pofapilink_shortcode' );
+
+// get post details by guid
+function get_details_by_guid( $atts  ) {
+    $guid = $atts['guid'];
+    if ($guid) {
+        $data = [];
+        $lang = isset($atts['lang']) ? $atts['lang'] : 'FI';
+        $args = [
+            'posts_per_page'    => -1,
+            'post_type'         => 'page',
+            'post_status'       => 'publish',
+            'meta_query'        => array(
+                                    array('key' => 'api_guid', 'value' => $guid),
+                                    array('key' => 'api_lang', 'value' => $lang)
+                                )
+        ];
+        $pages  = \DustPress\Query::get_acf_posts( $args );
+        if (count($pages) === 1) {
+            $data['url'] = $pages[0]->permalink;
+            if ( $pages[0]->fields['api_type'] === 'agegroup' ) {
+                map_api_images( $pages[0]->fields['api_images'] );
+                $data['logo'] = $pages[0]->fields['api_images'][0]['logo'];
+            }
+            return $data;
+        }
+    }
+
+    return null;
+}
 
 // Get hero args
 function get_hero_args() {

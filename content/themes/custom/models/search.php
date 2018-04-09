@@ -56,9 +56,22 @@ class Search extends \DustPress\Model {
             $search_term = str_replace( '-', ' ', $search_term );
             // Args for search.
             $args = array(
-                's'                      => $search_term,
-                'post_type'              => array( 'page' ),
-                'post_status'            => 'publish',
+                's'             => $search_term,
+                'post_type'     => array( 'page' ),
+                'post_status'   => 'publish',
+                'meta_query'    => array(
+                    'relation' => 'OR',
+                    array(
+                        'key'     => 'api_type',
+                        'value'   => 'task',
+                        'compare' => '=',
+                    ),
+                    array(
+                        'key'     => 'api_type',
+                        'value'   => 'taskgroup',
+                        'compare' => '=',
+                    )
+                )
             );
             // Check if executed with ajax and set offset if true.
             if ( wp_doing_ajax() ) {
@@ -83,14 +96,29 @@ class Search extends \DustPress\Model {
             // Build object to be returned.
             $data                = new stdClass();
             $data->posts         = $results;
+            $data->count         = count($results);
             $data->max_num_pages = $query->max_num_pages;
             $data->page          = $page;
             // Modify every post
             foreach ( $data->posts as &$post ) {
+                // Get parents
+                $acf_post = \DustPress\Query::get_acf_post( $post->ID );
+                $post->ingress = $acf_post->fields['api_ingress'];
+                $post->search_type = $acf_post->fields['api_type'];
+                $post->parents = map_api_parents( json_decode_pof( $acf_post->fields['api_path'] ) );
                 // Get permalink
                 $post->url = get_permalink( $post->ID );
             } // End foreach().
             return $data;
         } // End if().
     }
+
+    // Bind translated strings.
+    public function S() {
+        $s = [
+            'aktiviteettiryhma'             => __( 'Task group', 'pof' ),
+        ];
+        return $s;
+    }     
+    
 }

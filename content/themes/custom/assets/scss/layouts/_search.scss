@@ -2,74 +2,36 @@
 $search_fontsize: rem-calc(14);
 $search_fontsize_smaller: rem-calc(12);
 
-.search-results__header {
-	h3 {
-		color: $jet;
+.search-block {
+	padding-top: 1.5rem;
+	border-bottom: 1px solid #dddddd;
+	.basic-details {
+		width: 75%;
+		overflow: visible;
+		border-bottom: 1px dashed #dddddd;
+		margin-bottom: 0.2rem;
+		.search-results__title {
+			.divider {
+				color: #253764;
+			}
+			.page_type {
+				text-transform: uppercase;
+				color: #253764;
+				font-size: 0.9rem;
+			}
+		}
 	}
-	.result-num {
-		color: $partio_main_color_lighter;
-	}
-}
-
-.search-results__body {
-
-	.search-result {
-
-		display: block;
-		background-color: $ghost;
-		border: 1px solid $silver;
-		padding: $search_fontsize_smaller;
-		font-size: $search_fontsize;
-
-		.search-result__breadcrumbs {
-			.breadcrumbs {
-				border-bottom: none;
-				margin-bottom: 0;
-				padding-top: 0;
-				padding-bottom: $search_fontsize_smaller;
-			}
+	.search-results__breadcrumb {
+		.search-results__breadcrumb-link {
+			font-size: 0.85rem;
+			font-weight: bold;
+			color: #253764;
+			text-decoration: none;
 		}
-
-		.search-result__header {
-			margin-bottom: $search_fontsize;
-			.search-result__heading {
-				@extend %verdana;
-				font-size: rem-calc(16);
-				color: $jet;
-				font-style: normal;
-
-				a {
-					color: inherit;
-					text-decoration: none;
-					&:hover {
-						color: $partio_main_color_lighter;
-					}
-				}
-			}
-		}
-
-
-
-		.search-result__body {
-			.post-link {
-				display: block;
-				color: inherit;
-				text-decoration: none;
-				&:hover {
-					text-decoration: underline;
-				}
-			}
-			p {
-				margin: 0;
-				font-size: $search_fontsize;
-			}
-			margin-bottom: $search_fontsize;
-		}
-
-		.search-result__skills {
-			font-size: $search_fontsize_smaller;
-			margin-bottom: $search_fontsize_smaller/2;
-			&.keywords { margin-bottom: 0; }
+		.breadcrumb-divider {
+			font-size: 0.65rem;
+			color: #28a9e1;
+			padding: 0 .5rem;
 		}
 	}
 }
