@@ -1,10 +1,8 @@
 <?php
-/**
- * Search page
- */
-/**
- * Class Search
- */
+/*
+ Template name: Hakusivu
+*/
+
 class Search extends \DustPress\Model {
     /**
      * Enable these methods for DustPress.js.
@@ -21,7 +19,15 @@ class Search extends \DustPress\Model {
         $this->bind_sub( 'Header' );
         $this->bind_sub( 'Footer' );
         $this->bind_sub( 'Breadcrumbs' );
-    }    
+    }
+    
+    /**
+     *  Content section
+     */
+    public function Content() {
+        return true;
+    }
+
     /**
      *  Get search term.
      */

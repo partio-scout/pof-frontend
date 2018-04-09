@@ -1,4 +1,4 @@
-{#PageSearch}
+{#Search}
 	{>"shared/header" /}
 
 	{>"shared/content_hero" /}
@@ -69,4 +69,4 @@
 	{/Content}
 
 	{>"shared/footer" /}
-{/PageSearch}
+{/Search}
