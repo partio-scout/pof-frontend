@@ -96,17 +96,20 @@ class Search extends \DustPress\Model {
             // Build object to be returned.
             $data                = new stdClass();
             $data->posts         = $results;
-            $data->count         = count($results);
+            $data->count         = $query->found_posts;
             $data->max_num_pages = $query->max_num_pages;
             $data->page          = $page;
             // Modify every post
             foreach ( $data->posts as &$post ) {
-                // Get parents
+                // Get details
                 $acf_post = \DustPress\Query::get_acf_post( $post->ID );
                 $post->ingress = $acf_post->fields['api_ingress'];
                 $post->search_type = $acf_post->fields['api_type'];
+                map_api_images( $acf_post->fields['api_images'] );
+                if ( is_array( $acf_post->fields['api_images'] ) ) {
+                    $post->image = $acf_post->fields['api_images'][0]['logo'];
+                }
                 $post->parents = map_api_parents( json_decode_pof( $acf_post->fields['api_path'] ) );
-                // Get permalink
                 $post->url = get_permalink( $post->ID );
             } // End foreach().
             return $data;

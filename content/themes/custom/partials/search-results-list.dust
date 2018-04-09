@@ -4,21 +4,32 @@
 </div>
 {#Search.Results.posts}
     <div class="column search-block">
-        <div class="basic-details">
-            <a class="task" href="{url}">
-                <div class="search-results__title">
-                    <h5 class="task__heading">
-                        <span class="page_title">{post_title}</span>
-                        <span class="divider">|</span>
-                        <span class="page_type"> {search_type}</span>
-                    </h5>
+        <div class="basic-details clearfix">
+            <div class="search-results__title">
+                {?image}
+                    <img
+                        class="taskgroup-sidelogo search-sidelogo hide-for-small-only"
+                        src="{image.thumbnail.url}" 
+                        width="{image.thumbnail.width}"
+                        height="{image.thumbnail.height}"
+                        alt="{post_title}"
+                    />
+                {/image}
+                <div class="{?image}float-content clearfix{/image}">
+                    <span class="left clearfix">
+                        <a href="{url}">
+                            <h5 class="page_title left">{post_title}</h5>
+                        </a>
+                    </span>
+                    <span class="divider">|</span>
+                    <span class="page_type"> {search_type}</span>
+                    {?ingress}
+                        <p class="page_ingress">
+                            {@excerpt string=ingress length=160 /}
+                        </p>
+                    {/ingress}
                 </div>
-                {?ingress}
-                <p class="search-results__desc">
-                    {@excerpt string=ingress length=160 /}
-                {/ingress}
-                </p>
-            </a>
+            </div>
         </div>
         {?parents}
             <p class="search-results__breadcrumb">

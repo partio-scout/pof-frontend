@@ -2,6 +2,10 @@
 $search_fontsize: rem-calc(14);
 $search_fontsize_smaller: rem-calc(12);
 
+.search-box {
+	margin-top: 1.5rem;
+}
+
 .search-block {
 	padding-top: 1.5rem;
 	border-bottom: 1px solid #dddddd;
@@ -11,13 +15,38 @@ $search_fontsize_smaller: rem-calc(12);
 		border-bottom: 1px dashed #dddddd;
 		margin-bottom: 0.2rem;
 		.search-results__title {
+			.search-sidelogo {
+				width: 75px;
+				margin-left: 40px;
+			}
+			.float-content {
+				width: calc(100% - 75px);
+			}
+			@media #{$small-only} {
+				.float-content {
+					width: 100%;
+				}
+			}
+			.page_title {
+				text-decoration: none;
+				margin-bottom: 0;
+			}
+			.page_title:hover {
+				text-decoration:underline;
+			}
 			.divider {
 				color: #253764;
+				line-height: 150%;
+				padding: .05rem .4rem 0 .4rem;
 			}
 			.page_type {
 				text-transform: uppercase;
 				color: #253764;
 				font-size: 0.9rem;
+				line-height: 200%;
+			}
+			.page_ingress {
+				text-align: left;
 			}
 		}
 	}
@@ -34,4 +63,8 @@ $search_fontsize_smaller: rem-calc(12);
 			padding: 0 .5rem;
 		}
 	}
+}
+
+.load-more-button {
+	margin-top: 1rem;
 }

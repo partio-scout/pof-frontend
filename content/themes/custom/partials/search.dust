@@ -17,9 +17,9 @@
 
 							{>"shared/sidenav_button" /}
 
-							{>"shared/breadcrumbs" /}
+							{!>"shared/breadcrumbs" /!}
 
-							{>"shared/program-langnav" /}
+							{!>"shared/program-langnav" /!}
 
 							<div id="program-content">
 
@@ -41,13 +41,14 @@
 						            {/Results.posts}
 						            {@gt key=Results.max_num_pages value=Results.page}
 						                <div class="row">
-						                    <div class="small-12 text-center">
-						                        <button
-						                        	id="search-results-loadmore"
-						                        	data-maxpages="{Results.max_num_pages}"
-						                        	data-page="{Results.page}">
-						                        	Lataa lisää
-						                        </button>
+						                    <div class="small-12 text-center column">
+												<button
+													class="load-more-button"
+													id="search-results-loadmore"
+													data-maxpages="{Results.max_num_pages}"
+													data-page="{Results.page}">
+													Lataa lisää
+												</button>
 						                    </div>
 						                </div>
 						            {/gt}
