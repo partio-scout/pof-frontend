@@ -28,6 +28,8 @@ function enqueue_styles_and_scripts(){
 	wp_enqueue_script( 'dotdotdot', get_template_directory_uri().'/bower_components/jquery.dotdotdot/src/js/jquery.dotdotdot.min.js', array('jquery'), null, true);
 	// tips
 	wp_enqueue_script( 'tips', get_template_directory_uri().'/assets/js/min/tips-min.js', array('jquery', 'list-js'), null, true);
+	// search
+	wp_enqueue_script( 'search', get_template_directory_uri().'/assets/js/min/search-min.js', array('jquery'), null, true);
 	// app scripts
 	wp_enqueue_script( 'app', get_template_directory_uri().'/assets/js/min/app-min.js', array('jquery'), null, true);
 
