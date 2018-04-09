@@ -5944,7 +5944,7 @@ a {
   font-family: Gill Sans, sans-serif;
   font-weight: 700; }
 
-.sidenav-search__input, .content-hero__heading, .search-section__header, .search-section__body__header, .hero__heading--sub, .event__heading, .search__input-lg, .content-inner .program-container__heading, .content__headers .date {
+.sidenav-search__input, .content-hero__heading, .search-section__header, .search-section__body__header, .hero__heading--sub, .event__heading, .content-inner .program-container__heading, .content__headers .date {
   font-family: "PT Sans", sans-serif;
   font-style: italic;
   font-weight: normal; }
@@ -8900,34 +8900,6 @@ body .ui-tooltip {
 .program__heading {
   font-size: 1.125rem;
   color: #FFFFFF; }
-
-.search {
-  padding: 2em 0;
-  background: #28a9e1; }
-  .search label {
-    position: absolute;
-    top: 13px;
-    left: 34px; }
-    .search label i {
-      font-size: 1.4rem; }
-
-.search__input-lg {
-  display: block;
-  width: 100%;
-  height: 50px;
-  padding-left: 3.2rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: 2rem;
-  color: #444;
-  background-color: #ffffff;
-  background-image: none;
-  border: 1px solid #253764;
-  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; }
-  .search__input-lg:focus {
-    border-color: #253764;
-    outline: 0;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #253764; }
 
 @media only screen and (min-width: 40.0625em) {
   .hero {
