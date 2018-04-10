@@ -444,6 +444,7 @@ class POF_Importer {
                     }
                     if ($comment_id) {
                         update_comment_meta( $comment_id, 'ag_'.$tip['guid'].'_'.$tip['lang'], 'true' );
+                        update_comment_meta( $comment_id, 'guid', $tip['guid'] );
                         update_comment_meta( $comment_id, 'title', $tip['title'] );
                         if (!empty( $tip['additional_content'] )) {
                             update_comment_meta( $comment_id, 'attachments', json_encode($tip['additional_content']) );
