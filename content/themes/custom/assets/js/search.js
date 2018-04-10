@@ -33,7 +33,6 @@ window.Search = ( function( window, document, $ ){
     app.loadMore = function(){
         app.$loadMoreButton.disabled = true;
         app.$loadMoreButton.addClass('loading');
-        //app.$loadMoreButton.innerHTML = LocalData.translations.loading;
         dp('Search/Results', {
             partial: 'search-results-list',
             success: function(data) {
@@ -53,16 +52,21 @@ window.Search = ( function( window, document, $ ){
         var newPage = app.$page++;
         app.$loadMoreButton.data('page', newPage);
         // Add returned HTML to container
-        app.$resultsContainer.innerHTML += ( data );
+        var newHTML = app.$resultsContainer.html() + data;
+        app.$resultsContainer.html(newHTML);
         // After we load more stuff, add notification for screen reader.
         if ( app.$page > 1) {
-            app.$resultMessageContainer.innerHTML = 'Ladattiin lisää tapahtumia';
+            app.$resultMessageContainer.html('Ladattiin lisää tapahtumia');
         }
+        console.log('sivulla:', app.$page, 'maxpages:', app.$maxPages);
         // If max pages has not been reached reset the load more button
         if (app.$page < app.$maxPages ) {
+            console.log('MENTIINKÖ TÄNNE');
             app.$loadMoreButton.disabled = false;
-            app.$loadMoreButton.innerHTML = 'Lataa lisää';
+            app.$loadMoreButton.html('Lataa lisää');
             app.$loadMoreButton.removeClass('loading');
+        } else {
+            app.$loadMoreButton.hide();
         }
         // Check if history is supported in browser.
         if (window.history) {
