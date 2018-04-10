@@ -1,7 +1,4 @@
 {! We use here 'double' context because ajax loadmore returns Search { Results { data } }  !}
-<div class="column search-block">
-    <p class="search-results__breadcrumb">{Search.Results.count} hakutulosta</p>
-</div>
 {#Search.Results.posts}
     <div class="column search-block">
         <div class="basic-details clearfix">

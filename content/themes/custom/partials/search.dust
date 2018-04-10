@@ -28,7 +28,10 @@
 								<section class="search-results">
 						            {?Results.posts}
 						                {! We insert notification for screen reader here when more results are loaded. !}
-						                <span class="sr-only" aria-live="polite" id="results-message"></span>
+										<span class="sr-only" aria-live="polite" id="results-message"></span>
+										<div class="column search-block">
+											<p class="search-results__breadcrumb">{Results.count} hakutulosta</p>
+										</div>
 						                <div class="row small-up-1" id="search-results-container">
 						                    {>"search-results-list" /}
 						                </div>

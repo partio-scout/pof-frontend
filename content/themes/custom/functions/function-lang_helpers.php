@@ -22,5 +22,8 @@ function pof_theme_setup() {
     if ( is_readable( $locale_file ) ) {
         require_once( $locale_file );
     }
+    
+    // Enable HTML5 markup support
+    add_theme_support( 'html5', [ 'caption', 'comment-form', 'comment-list', 'gallery', 'search-form' ] );
 }
 add_action( 'after_setup_theme', 'pof_theme_setup' );

@@ -45,6 +45,9 @@ include_once( 'functions/function-lang_helpers.php' );
 // Menu functions
 include_once( 'functions/function-menus.php' );
 
+// Search functions
+include_once( 'functions/function-search.php' );
+
 // Dustpress helpers
 include_once( 'functions/function-dustpress-helpers.php' );
 

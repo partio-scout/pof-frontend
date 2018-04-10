@@ -44,6 +44,8 @@ class Search extends \DustPress\Model {
     public function Results() {
         $per_page   = get_option( 'posts_per_page' );
         $page       = (int) get_query_var( 'paged' );
+        //global $wp_query;
+        //die(var_dump($wp_query->query_vars));
         $page       = $page ? $page : 1; // Force page value
         $displaying = $per_page * $page;
         $search_term = get_query_var( 's' );

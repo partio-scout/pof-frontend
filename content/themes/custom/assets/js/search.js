@@ -3,22 +3,16 @@ window.Search = ( function( window, document, $ ){
     var app = {};
 
     app.cache = function() {
-        app.$loadMoreButton        = $("#search-results-loadmore");
-        app.$resultsContainer      = $("#search-results-container");
-        app.$searchInput           = $("#search");
+        app.queryString             = '';
+        app.$loadMoreButton         = $("#search-results-loadmore");
+        app.$resultsContainer       = $("#search-results-container");
+        app.$searchInput            = $("#search");
         app.$searchForm             = $("#hero-search");
         app.$resultMessageContainer = $("#results-message");
-        app.$maxPages       = app.$loadMoreButton.data('maxpages');
-        app.$page           = app.$loadMoreButton.data('page');
+        app.$maxPages               = app.$loadMoreButton.data('maxpages');
+        app.$page                   = app.$loadMoreButton.data('page');
         
-
-        //app.refresh();
     };
-
-    /*app.refresh = function() {
-        app.$errors         = app.$section.find(".tips__error");
-        app.$generalErr     = app.$section.find("#tips__general_errors");
-    };*/
 
     app.init = function(){
         // crawl the DOM
@@ -40,7 +34,7 @@ window.Search = ( function( window, document, $ ){
         app.$loadMoreButton.disabled = true;
         app.$loadMoreButton.addClass('loading');
         //app.$loadMoreButton.innerHTML = LocalData.translations.loading;
-        DustPress.ajax('Search/Results', {
+        dp('Search/Results', {
             partial: 'search-results-list',
             success: function(data) {
                 app.loadSuccess( data );
@@ -56,10 +50,10 @@ window.Search = ( function( window, document, $ ){
      * @param data
      */
     app.loadSuccess = function( data ) {
-        app.$page++;
+        var newPage = app.$page++;
+        app.$loadMoreButton.data('page', newPage);
         // Add returned HTML to container
         app.$resultsContainer.innerHTML += ( data );
-        // After we load more stuff, add notification for screen reader.
         // After we load more stuff, add notification for screen reader.
         if ( app.$page > 1) {
             app.$resultMessageContainer.innerHTML = 'Ladattiin lisää tapahtumia';
@@ -68,7 +62,7 @@ window.Search = ( function( window, document, $ ){
         if (app.$page < app.$maxPages ) {
             app.$loadMoreButton.disabled = false;
             app.$loadMoreButton.innerHTML = 'Lataa lisää';
-            app.$loadMoreButton.classList.remove('loading');
+            app.$loadMoreButton.removeClass('loading');
         }
         // Check if history is supported in browser.
         if (window.history) {
