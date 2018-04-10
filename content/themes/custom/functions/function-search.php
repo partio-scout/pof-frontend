@@ -41,6 +41,6 @@ function search_redirect() {
 add_filter( 'query_vars', 'add_query_vars_filter' );
 function add_query_vars_filter( $vars ){
     $vars[] = "guid";
-    $vars[] = "langinkoski";
+    $vars[] = "lang";
     return $vars;
 }
