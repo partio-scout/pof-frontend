@@ -6,7 +6,7 @@
 */
 
 class PageGeneral extends \DustPress\Model {
-	private $post;
+    private $post;
 
     public function Submodules() {
 
