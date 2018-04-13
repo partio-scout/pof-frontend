@@ -7,11 +7,11 @@ window.Search = ( function( window, document, $ ){
         app.$loadMoreButton         = $("#search-results-loadmore");
         app.$resultsContainer       = $("#search-results-container");
         app.$searchInput            = $("#search");
+        app.$searchIcon             = $("#search-icon");
         app.$searchForm             = $("#hero-search");
         app.$resultMessageContainer = $("#results-message");
         app.$maxPages               = app.$loadMoreButton.data('maxpages');
-        app.$page                   = app.$loadMoreButton.data('page');
-        
+        app.$page                   = app.$loadMoreButton.data('page');        
     };
 
     app.init = function(){
@@ -23,8 +23,41 @@ window.Search = ( function( window, document, $ ){
             app.stop(e);
             app.loadMore(e);
         });
+        
+        
+        app.$searchInput.on('keyup', function(e) {
+            if (event.key === "Enter") {
+                app.stop(e);
+                return false;
+                //TODO: Use ajax for this search after you get somehow rid of non-ajax enter event of input field
+                //app.doSearch(e);
+            }
+        });
+   
+        app.$searchIcon.on('click', function() {
+            app.doSearch();
+        });
     };
 
+    /**
+     * Fires search query
+     * fetches search results
+     */
+    app.doSearch = function() {
+        dp('Search/Results', {
+            args: {
+                's': app.$searchInput.val()
+            },
+            partial: 'search-results-list',
+            success: function(data) {
+                app.doSearchSuccess( data );
+            },
+            error: function(error) {
+                var newHTML = app.$resultsContainer.html() + '<h2>' + error + '</h2>';
+                app.$resultsContainer.html(newHTML);
+            },
+        });
+    };
     /**
      * Fires on load more click on the search-results page.
      * Fetches more search-results results for the initial search query.
@@ -34,21 +67,36 @@ window.Search = ( function( window, document, $ ){
         app.$loadMoreButton.disabled = true;
         app.$loadMoreButton.addClass('loading');
         dp('Search/Results', {
+            args: {
+                'load_more': true
+            },
             partial: 'search-results-list',
             success: function(data) {
-                app.loadSuccess( data );
+                app.loadMoreSuccess( data );
             },
             error: function(error) {
-                app.$resultsContainer.innerHTML += '<h2>' + error + '</h2>';
+                var newHTML = app.$resultsContainer.html() + '<h2>' + error + '</h2>';
+                app.$resultsContainer.html(newHTML);
             },
         });
+    };
+
+    /**
+     * 
+     */
+    app.doSearchSuccess = function( data ) {
+        app.$loadMoreButton.data('page', 1);
+        app.$resultsContainer.html( data );
+        if (window.history) {
+            window.history.pushState({}, 'Haku', location.origin + '/haku/' + app.$searchInput.val());
+        }
     };
 
     /**
      * Executed upon DustPress.JS success
      * @param data
      */
-    app.loadSuccess = function( data ) {
+    app.loadMoreSuccess = function( data ) {
         var newPage = app.$page++;
         app.$loadMoreButton.data('page', newPage);
         // Add returned HTML to container
@@ -58,10 +106,8 @@ window.Search = ( function( window, document, $ ){
         if ( app.$page > 1) {
             app.$resultMessageContainer.html('Ladattiin lisää tapahtumia');
         }
-        console.log('sivulla:', app.$page, 'maxpages:', app.$maxPages);
         // If max pages has not been reached reset the load more button
         if (app.$page < app.$maxPages ) {
-            console.log('MENTIINKÖ TÄNNE');
             app.$loadMoreButton.disabled = false;
             app.$loadMoreButton.html('Lataa lisää');
             app.$loadMoreButton.removeClass('loading');

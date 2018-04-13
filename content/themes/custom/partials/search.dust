@@ -26,21 +26,20 @@
 								{>"shared/search-section" /}
 
 								<section class="search-results">
-						            {?Results.posts}
-						                {! We insert notification for screen reader here when more results are loaded. !}
+									{?Results.posts}
 										<span class="sr-only" aria-live="polite" id="results-message"></span>
 										<div class="column search-block">
 											<p class="search-results__breadcrumb">{Results.count} hakutulosta</p>
 										</div>
-						                <div class="row small-up-1" id="search-results-container">
-						                    {>"search-results-list" /}
-						                </div>
+										<div class="row small-up-1" id="search-results-container">
+											{>"search-results-list" /}
+										</div>
 						            {:else}
-						                    <div class="row">
-						                        <div class="small-12 columns text-center">
-						                            <h2>Ei hakutuloksia hakusanoilla <i>"{Term}"</i>.</h2>
-						                        </div>
-						                    </div>
+										<div class="row">
+											<div class="small-12 columns text-center">
+												<h2>Ei hakutuloksia hakusanoilla <i>"{Term}"</i>.</h2>
+											</div>
+										</div>
 						            {/Results.posts}
 						            {@gt key=Results.max_num_pages value=Results.page}
 						                <div class="row">
@@ -49,7 +48,8 @@
 													class="load-more-button"
 													id="search-results-loadmore"
 													data-maxpages="{Results.max_num_pages}"
-													data-page="{Results.page}">
+													data-page="{Results.page}"
+													data-postcount="{Results.count}">
 													Lataa lisää
 												</button>
 						                    </div>

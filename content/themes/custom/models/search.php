@@ -42,11 +42,15 @@ class Search extends \DustPress\Model {
      *  Get search results.
      */
     public function Results() {
+        if ( wp_doing_ajax() ) {
+            $ajax_args = $this->get_args();
+        }
+
         $per_page   = get_option( 'posts_per_page' );
         $page       = (int) get_query_var( 'paged' );
         $page       = $page ? $page : 1; // Force page value
         $displaying = $per_page * $page;
-        $search_term = get_query_var( 's' );
+        $search_term = wp_doing_ajax() ? $ajax_args->s : get_query_var( 's' );
         // Do not execute if no search term - relevanssi doesn't like it.
         if ( empty( $search_term ) ) {
             return false;
@@ -76,13 +80,15 @@ class Search extends \DustPress\Model {
             // Check if executed with ajax and set offset if true.
             if ( wp_doing_ajax() ) {
                 $args['posts_per_page'] = $per_page;
-                $args['offset']         = $displaying;
+                $args['offset']         = $ajax_args->load_more ? $displaying : 0;
             }
             // Else show posts without offset.
             else {
                 $args['posts_per_page'] = $displaying;
             }
+ 
             $query = new WP_Query( $args );
+
             if ( function_exists( 'relevanssi_do_query' ) ) {
                 // Make relevanssi search.
                 $results = relevanssi_do_query( $query );

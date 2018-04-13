@@ -4,6 +4,16 @@ $search_fontsize_smaller: rem-calc(12);
 
 .search-box {
 	margin-top: 1.5rem;
+	.search-icon {
+		position: relative;
+		z-index: 1;
+		//font-size: 1.5rem;
+		left: -30px;
+		top: 7px;
+		color: $partio_main_color_lighter;
+		cursor:pointer;
+		width: 0;
+	}
 }
 
 .search-block {
@@ -35,13 +45,13 @@ $search_fontsize_smaller: rem-calc(12);
 				text-decoration:underline;
 			}
 			.divider {
-				color: #253764;
+				color: $partio_main_color;
 				line-height: 150%;
 				padding: .05rem .4rem 0 .4rem;
 			}
 			.page_type {
 				text-transform: uppercase;
-				color: #253764;
+				color: $partio_main_color;
 				font-size: 0.9rem;
 				line-height: 200%;
 			}
@@ -54,12 +64,12 @@ $search_fontsize_smaller: rem-calc(12);
 		.search-results__breadcrumb-link {
 			font-size: 0.85rem;
 			font-weight: bold;
-			color: #253764;
+			color: $partio_main_color;
 			text-decoration: none;
 		}
 		.breadcrumb-divider {
 			font-size: 0.65rem;
-			color: #28a9e1;
+			color: $partio_main_color_lighter;
 			padding: 0 .5rem;
 		}
 	}

@@ -9290,6 +9290,14 @@ body {
     padding-bottom: 0; } }
 .search-box {
   margin-top: 1.5rem; }
+  .search-box .search-icon {
+    position: relative;
+    z-index: 1;
+    left: -30px;
+    top: 7px;
+    color: #28a9e1;
+    cursor: pointer;
+    width: 0; }
 
 .search-block {
   padding-top: 1.5rem;
