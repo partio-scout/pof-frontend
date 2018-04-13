@@ -4,10 +4,10 @@
         <div class="small-12 columns align-center">
             <form id="hero-search" class="search-box__form" method="get" action="/">
                 <div class="row collapse align-center">
-                    <div class="small-9 medium-8 large-7 columns">
+                    <div class="small-11 columns">
                         <input type="search" name="s" id="search" value="{Term}" placeholder="Kerro, mitä etsit.."  title="Etsi sivulta">
                     </div>
-                    <div class="small-3 medium-2 large-2 columns">
+                    <div class="small-1 columns">
                         <i id="search-icon" class="fa fa-search search-icon"></i>
                     </div>
                 </div>

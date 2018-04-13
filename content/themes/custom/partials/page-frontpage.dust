@@ -33,6 +33,9 @@
 									{featured_content|s}
 								</div>
 							</div>
+							<div class="hero__heading-group-search">
+								{>"shared/search-section" /}
+							</div>
 						</div>
 					</div>
 					{/Content.fields.featured}

@@ -8755,10 +8755,20 @@ body .ui-tooltip {
 .hero__heading-group-bottom {
   position: relative;
   width: 90%;
+  min-height: 150px;
   max-width: 48rem;
   margin: 0 auto;
   top: 30%;
   text-align: center;
+  transition: top .3s ease; }
+
+.hero__heading-group-search {
+  position: relative;
+  width: 50%;
+  min-width: 48rem;
+  margin: 0 auto;
+  top: 40%;
+  left: 25px;
   transition: top .3s ease; }
 
 .hero__divider {
@@ -8962,7 +8972,11 @@ body .ui-tooltip {
     top: 15%; }
 
   .hero__heading-group-bottom {
-    top: 20%; } }
+    top: 20%; }
+
+  .hero__heading-group-search {
+    top: 30%;
+    min-width: 40rem; } }
 @media only screen and (max-width: 40em) {
   .hero__heading--main p {
     font-size: 1rem; }
@@ -8973,7 +8987,13 @@ body .ui-tooltip {
     top: 15%; }
 
   .hero__heading-group-bottom {
-    top: 20%; } }
+    top: 20%;
+    min-height: 100px; }
+
+  .hero__heading-group-search {
+    top: 25%;
+    left: 0;
+    min-width: 27rem; } }
 .main-footer {
   padding: 2rem 0;
   background-color: #28a9e1;
