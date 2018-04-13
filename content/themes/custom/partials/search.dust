@@ -22,8 +22,9 @@
 							{!>"shared/program-langnav" /!}
 
 							<div id="program-content">
-
-								{>"shared/search-section" /}
+								<div class="small-10 columns">
+									{>"shared/search-section" /}
+								</div>
 
 								<section class="search-results">
 									{?Results.posts}

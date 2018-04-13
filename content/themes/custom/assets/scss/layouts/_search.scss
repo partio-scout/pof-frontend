@@ -78,3 +78,16 @@ $search_fontsize_smaller: rem-calc(12);
 .load-more-button {
 	margin-top: 1rem;
 }
+
+.menu-search-block {
+	background-color: $partio_main_color_lighter;
+	margin-right: -$column-gutter-half;
+	//padding-top: 2em;
+	.menu-heading {
+		border-bottom: 0;
+		margin-bottom: 0;
+	}
+	.search-box {
+		margin-left: 1em;
+	}
+}

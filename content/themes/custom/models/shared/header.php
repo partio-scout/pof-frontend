@@ -162,7 +162,8 @@ class Header extends \DustPress\Model {
     // Bind translated strings.
     public function S() {
         $s = [
-            'valikko' => __('Main Menu', 'pof')
+            'valikko' => __('Main Menu', 'pof'),
+            'haku'    => __('Search', 'pof')
         ];
         return $s;
     }

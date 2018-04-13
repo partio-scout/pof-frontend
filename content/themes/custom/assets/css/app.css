@@ -5944,7 +5944,7 @@ a {
   font-family: Gill Sans, sans-serif;
   font-weight: 700; }
 
-.sidenav-search__input, .content-hero__heading, .search-section__header, .search-section__body__header, .hero__heading--sub, .event__heading, .content-inner .program-container__heading, .content__headers .date {
+.content-hero__heading, .search-section__header, .search-section__body__header, .hero__heading--sub, .event__heading, .content-inner .program-container__heading, .content__headers .date {
   font-family: "PT Sans", sans-serif;
   font-style: italic;
   font-weight: normal; }
@@ -7456,7 +7456,7 @@ body .ui-tooltip {
   top: 0;
   left: 0;
   min-height: 100%;
-  padding: 2rem 0.9375rem;
+  padding: 0 0.9375rem;
   background-color: #253764;
   transform: translate3d(-15rem, 0, 0);
   -webkit-transform: translate3d(-15rem, 0, 0);
@@ -7642,40 +7642,6 @@ body .ui-tooltip {
 
   .menu-wrapper ul li ul li {
     padding: .0625rem 0; } }
-.sidenav-search {
-  margin: 1rem 0 0;
-  padding: 1.25rem 0;
-  border-top: 1px solid #9fbfd5;
-  border-bottom: 1px solid #9fbfd5; }
-
-.sidenav-search__inner {
-  position: relative; }
-  .sidenav-search__inner label {
-    position: absolute;
-    top: 7px;
-    left: 14px; }
-    .sidenav-search__inner label i {
-      color: #253764;
-      font-size: 1rem; }
-
-.sidenav-search__input {
-  display: block;
-  width: 100%;
-  height: 35px;
-  padding-left: 2.125rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: 2rem;
-  color: #444;
-  background-color: #ffffff;
-  background-image: none;
-  border: none;
-  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; }
-  .sidenav-search__input:focus {
-    border-color: #253764;
-    outline: 0;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #253764; }
-
 .frontpage-content-wrapper {
   width: 100%;
   height: 100%; }
@@ -9363,6 +9329,15 @@ body {
 
 .load-more-button {
   margin-top: 1rem; }
+
+.menu-search-block {
+  background-color: #28a9e1;
+  margin-right: -0.9375rem; }
+  .menu-search-block .menu-heading {
+    border-bottom: 0;
+    margin-bottom: 0; }
+  .menu-search-block .search-box {
+    margin-left: 1em; }
 
 @media print {
   .not-printable {
