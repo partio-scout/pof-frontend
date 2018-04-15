@@ -83,7 +83,7 @@
 	width: 50%;
 	min-width: 48rem;
 	margin: 0 auto;
-	top: 40%;
+	top: 25%;
 	left: 25px;
 	transition: top .3s ease;
 }
@@ -379,7 +379,7 @@
 	}
 
 	.hero__heading-group-search {
-		top: 30%;
+		top: 15%;
 		min-width: 40rem;
 	}
 }
@@ -395,6 +395,9 @@
 	}
 	.hero__heading-group-middle {
 		top: 15%;
+		.hero__divider {
+			 margin: .2rem auto;
+		}
 	}
 
 	.hero__heading-group-bottom {
@@ -403,7 +406,7 @@
 	}
 
 	.hero__heading-group-search {
-		top: 25%;
+		top: 16%;
 		left: 0;
 		min-width: 27rem;
 	}

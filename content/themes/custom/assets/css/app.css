@@ -8733,7 +8733,7 @@ body .ui-tooltip {
   width: 50%;
   min-width: 48rem;
   margin: 0 auto;
-  top: 40%;
+  top: 25%;
   left: 25px;
   transition: top .3s ease; }
 
@@ -8941,7 +8941,7 @@ body .ui-tooltip {
     top: 20%; }
 
   .hero__heading-group-search {
-    top: 30%;
+    top: 15%;
     min-width: 40rem; } }
 @media only screen and (max-width: 40em) {
   .hero__heading--main p {
@@ -8951,13 +8951,15 @@ body .ui-tooltip {
 
   .hero__heading-group-middle {
     top: 15%; }
+    .hero__heading-group-middle .hero__divider {
+      margin: .2rem auto; }
 
   .hero__heading-group-bottom {
     top: 20%;
     min-height: 100px; }
 
   .hero__heading-group-search {
-    top: 25%;
+    top: 16%;
     left: 0;
     min-width: 27rem; } }
 .main-footer {
