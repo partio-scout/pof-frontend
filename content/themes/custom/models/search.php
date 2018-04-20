@@ -110,7 +110,7 @@ class Search extends \DustPress\Model {
             foreach ( $data->posts as &$post ) {
                 // Get details
                 $acf_post = \DustPress\Query::get_acf_post( $post->ID );
-                $post->ingress = $acf_post->fields['api_ingress'];
+                $post->ingress = $post->post_excerpt;
                 $post->search_type = $acf_post->fields['api_type'];
                 map_api_images( $acf_post->fields['api_images'] );
                 if ( is_array( $acf_post->fields['api_images'] ) ) {

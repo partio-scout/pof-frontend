@@ -20,11 +20,11 @@
                     </span>
                     <span class="divider">|</span>
                     <span class="page_type"> {search_type}</span>
-                    {?ingress}
+                    {?post_excerpt}
                         <p class="page_ingress">
-                            {@excerpt string=ingress length=160 /}
+                            {post_excerpt|s}
                         </p>
-                    {/ingress}
+                    {/post_excerpt}
                 </div>
             </div>
         </div>
