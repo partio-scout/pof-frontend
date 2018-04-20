@@ -24,6 +24,13 @@ class Tips extends \DustPress\Model {
         $query = new WP_Query( $args );
         $tips = $query->posts;
 
+        if( $query->found_posts > 0 ) {
+            foreach ( $tips as &$tip ) {
+                $tip->guid = get_post_meta(  $tip->ID, 'pof_tip_guid' );
+            }
+        }
+        unset( $tip );
+
         return $tips;
     }
 
