@@ -49,7 +49,7 @@ include_once( 'functions/function-menus.php' );
 include_once( 'functions/function-search.php' );
 
 // Dustpress helpers
-include_once( 'functions/function-dustpress-helpers.php' );
+//include_once( 'functions/function-dustpress-helpers.php' );
 
 
 

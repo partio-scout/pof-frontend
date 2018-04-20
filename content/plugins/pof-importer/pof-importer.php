@@ -399,60 +399,59 @@ class POF_Importer {
 
     private function update_tips($data) {
 
-        $tips = array();
         $tips_data = $this->fetch_data( $this->tips_url );
 
-        if ( !$tips_data ) {
+        if ( ! $tips_data ) {
             $this->error = __('An error occured while fetching tips from backend.', 'pof_importer');
         } else {
+
             foreach ($tips_data as $id => $tip) {
                 $parent = $data[$tip['post']['guid']][$tip['lang']];
                 $comment_id = null;
-                if (isset($parent)) {
+                if ( isset ( $parent ) ) {
+
                     // Data for new import
-                    $comment_data = array(
-                        'comment_post_ID'   => $parent->ID,
-                        'comment_author'    => $tip['publisher']['nickname'],
-                        'comment_content'   => $tip['content'],
-                        'user_id'           => $parent->post_author,
-                        'comment_date'      => $tip['modified'],
-                        'comment_approved'  => 1,
-                    );
-
-                    // Check if comment exists
                     $args = array(
-                        'meta_key' => 'ag_'.$tip['guid'].'_'.$tip['lang'],
-                        'meta_value' => 'true',
+                        'post_title' => $tip['guid'],
+                        'post_content' => $tip['content'],
+                        'post_date' => $tip['modified'],
+                        'post_date_gmt' => $tip['modified'],
+                        'post_type' => 'pof_tip',
+                        'post_status' => 'publish',
                     );
-                    $comments = get_comments( $args );
 
-                    if (count($comments) > 0) {
-                        if ( $tip['modified'] > $comments[0]->comment_date ) {
-                            $comment_id = $comments[0]->comment_ID;
-                            $comment_data['comment_ID'] = $comment_id;
-                            wp_update_comment( $comment_data );
-                            $this->data['updated'][] = $tip;
-                            $this->updated++;
-                        }
+                    error_log( 'creating post: ' . $tip['guid'] );
+
+                    $post_id = post_exists( $args['post_title'], $args['post_content'], $args['post_date']);
+                    if ( $post_id !== 0 ) {
+                        error_log('post exists with id: ' . $post_id );
+                        $args['ID'] = $post_id;
+                        $this->updated++;
                     } else {
-                        $comment_id = wp_new_comment( $comment_data );
-                        // Force update after insert because looks like inserting won't auto approve tip
-                        $comment_data['comment_ID'] = $comment_id;
-                        wp_update_comment( $comment_data );
-                        $this->data['created'][] = $tip;
                         $this->created++;
                     }
-                    if ($comment_id) {
-                        update_comment_meta( $comment_id, 'ag_'.$tip['guid'].'_'.$tip['lang'], 'true' );
-                        update_comment_meta( $comment_id, 'guid', $tip['guid'] );
-                        update_comment_meta( $comment_id, 'title', $tip['title'] );
-                        if (!empty( $tip['additional_content'] )) {
-                            update_comment_meta( $comment_id, 'attachments', json_encode($tip['additional_content']) );
-                        }
+                    error_log( 'updating post ');
+                    $post_id = wp_insert_post( $args );
+                    if ( is_wp_error( $post_id ) ) { continue;
+                        error_log('wp error!');
                     }
+                    error_log( 'updating post meta ');
+
+                    $meta = array(
+                        'pof_tip_nickname' => $tip['publisher']['nickname'],
+                        'pof_tip_parent' => $parent->ID,
+                        'pof_tip_guid'   => $tip['guid'],
+                    );
+
+                    foreach( $meta as $meta_key => $meta_value ) {
+                        update_post_meta( $post_id, $meta_key, $meta_value );
+                    }
+
+                    error_log( 'done');
+
                 }
                 else {
-
+                    error_log('no parent data');
                     // TODO: Errorlog, if some tips not importet
                 }
             }
