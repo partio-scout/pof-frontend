@@ -11,31 +11,19 @@ class Tips extends \DustPress\Model {
             $this->validate_tip( $args );
             return;
         }
-        $tips_args = [
-            'post_id'   => get_the_ID(),    // id of the curr page
-            'status' => 'approve',
-            'orderby'   => 'comment_date',
-            'order'     => 'ASC'
-        ];
-        $tips = get_comments( $tips_args );
-        foreach ($tips as $key => $tip) {
-            $i++;
-            $tips[$key]->comment_content = nl2br($tips[$key]->comment_content);
-            $tips[$key]->fields = get_comment_meta($tip->comment_ID);
 
-            if (isset($tips[$key]->fields['attachments'])) {
-                $j++;
-                $tips[$key]->fields['attachments'] = json_decode_pof($tips[$key]->fields['attachments'][0]);
+        $args = array(
+            'post_per_page' => 100,
+            'post_type' => 'pof_tip',
+            'post_status' => 'publish',
+            'meta_key' => 'pof_tip_parent',
+            'meta_compare' => '=',
+            'meta_value' => get_the_ID(),
+        );
 
-                foreach ($tips[$key]->fields['attachments'] as $type => $attachment) {
-                    if ($type == 'files') {
-                        foreach ($attachment as $attachment_key => $file) {
-                            $tips[$key]->fields['attachments']->{$type}[$attachment_key]->icon = get_template_directory_uri() . '/assets/img/file_'.substr($file->url, -3).'.png';
-                        }
-                    }
-                }
-            }
-        }
+        $query = new WP_Query( $args );
+        $tips = $query->posts;
+
         return $tips;
     }
 

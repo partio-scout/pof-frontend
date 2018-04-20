@@ -27,12 +27,12 @@
 			<div class="list">
 			{#Tips}
 				{! Ankkurilinkki vinkille !}
-				{?fields.guid}
-					<a name="{fields.guid}"></a>
-				{/fields.guid}	
+				{?guid}
+					<a name="{guid}"></a>
+				{/guid}
 				<div class="tip">			
 					<div class="tip__content">
-						<p>{comment_content|s}</p>
+						<p>{post_content|s}</p>
 					</div>
 					{?fields.attachments}
 					<div class="row tasks__body-row opened">
