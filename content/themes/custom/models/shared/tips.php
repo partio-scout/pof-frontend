@@ -26,7 +26,7 @@ class Tips extends \DustPress\Model {
 
         if( $query->found_posts > 0 ) {
             foreach ( $tips as &$tip ) {
-                $tip->meta = get_post_meta( 'pof_tip_guid', $tip->ID );
+                $tip->guid = get_post_meta(  $tip->ID, 'pof_tip_guid' );
             }
         }
         unset( $tip );
