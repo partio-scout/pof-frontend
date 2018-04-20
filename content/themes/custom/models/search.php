@@ -61,7 +61,7 @@ class Search extends \DustPress\Model {
             // Args for search.
             $args = array(
                 's'             => $search_term,
-                'post_type'     => 'page',
+                'post_type'     => array('page', 'pof_tip'),
                 'post_status'   => 'publish',
                 'meta_query'    => array(
                     'relation' => 'OR',
@@ -73,6 +73,11 @@ class Search extends \DustPress\Model {
                     array(
                         'key'     => 'api_type',
                         'value'   => 'taskgroup',
+                        'compare' => '=',
+                    ),
+                    array(
+                        'key'     => 'api_type',
+                        'value'   => '',
                         'compare' => '=',
                     )
                 )
@@ -111,14 +116,26 @@ class Search extends \DustPress\Model {
                 // Get details
                 $acf_post = \DustPress\Query::get_acf_post( $post->ID );
                 $post->ingress = $post->post_excerpt;
-                $post->search_type = $acf_post->fields['api_type'];
-                map_api_images( $acf_post->fields['api_images'] );
-                if ( is_array( $acf_post->fields['api_images'] ) ) {
-                    $post->image = $acf_post->fields['api_images'][0]['logo'];
+
+                if( $post->post_type === 'pof_tip') {
+                    $link = $post->guid;
+                    $guid = get_post_meta( $post->ID, 'pof_tip_guid', true);
+                    $post->url = $link . '#' . $guid;
+                    $post->search_type = $post->post_type;
+                    $post->title = get_the_title( $parent_id );
+
+                } else {
+                    $post->search_type = $acf_post->fields['api_type'];
+                    map_api_images( $acf_post->fields['api_images'] );
+                    if ( is_array( $acf_post->fields['api_images'] ) ) {
+                        $post->image = $acf_post->fields['api_images'][0]['logo'];
+                    }
+                    $post->parents = map_api_parents( json_decode_pof( $acf_post->fields['api_path'] ) );
+                    $post->url = get_permalink( $post->ID );
                 }
-                $post->parents = map_api_parents( json_decode_pof( $acf_post->fields['api_path'] ) );
-                $post->url = get_permalink( $post->ID );
+
             } // End foreach().
+            unset( $post );
             return $data;
         } // End if().
     }

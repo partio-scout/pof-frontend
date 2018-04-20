@@ -441,6 +441,7 @@ class POF_Importer {
                         'pof_tip_nickname' => $tip['publisher']['nickname'],
                         'pof_tip_parent' => $parent->ID,
                         'pof_tip_guid'   => $tip['guid'],
+                        'api_type'      => 'pof_tip',
                     );
 
                     foreach( $meta as $meta_key => $meta_value ) {
