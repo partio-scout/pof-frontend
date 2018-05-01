@@ -369,8 +369,6 @@ class POF_Importer {
                         }
                     }
 
-
-
                     $this->update_page_meta( $post_id, $guid, $item );
                     if (in_array(strtolower($item['lang']), $this->site_languages)) {
                         if (function_exists('pll_set_post_language')) {
@@ -446,6 +444,10 @@ class POF_Importer {
 
                     foreach( $meta as $meta_key => $meta_value ) {
                         update_post_meta( $post_id, $meta_key, $meta_value );
+                    }
+
+                    if ( function_exists('pll_set_post_language' ) ) {
+                        pll_set_post_language( $post_id, strtolower( $tip['lang'] ) );
                     }
 
                     error_log( 'done');

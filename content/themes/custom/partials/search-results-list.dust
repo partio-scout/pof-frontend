@@ -15,7 +15,7 @@
                 <div class="{?image}float-content clearfix{/image}">
                     <span class="left clearfix">
                         <a href="{url}">
-                            <h5 class="page_title left">{post_title}</h5>
+                            <h5 class="page_title left">{post_title|s}</h5>
                         </a>
                     </span>
                     <span class="divider">|</span>

@@ -61,7 +61,7 @@ class Search extends \DustPress\Model {
             // Args for search.
             $args = array(
                 's'             => $search_term,
-                'post_type'     => array('page', 'pof_tip'),
+                'post_type' => array('page', 'pof_tip'),
                 'post_status'   => 'publish',
                 'meta_query'    => array(
                     'relation' => 'OR',
@@ -77,7 +77,7 @@ class Search extends \DustPress\Model {
                     ),
                     array(
                         'key'     => 'api_type',
-                        'value'   => '',
+                        'value'   => 'pof_tip',
                         'compare' => '=',
                     )
                 )
@@ -118,11 +118,13 @@ class Search extends \DustPress\Model {
                 $post->ingress = $post->post_excerpt;
 
                 if( $post->post_type === 'pof_tip') {
-                    $link = $post->guid;
-                    $guid = get_post_meta( $post->ID, 'pof_tip_guid', true);
-                    $post->url = $link . '#' . $guid;
+                    $parent_id = get_post_meta( $post->ID, 'pof_tip_parent', true );
+                    $parent_link = get_permalink( $parent_id );
+                    $guid = get_post_meta( $post->ID, 'pof_tip_guid', true );
+                    $post->url = $parent_link . '#' . $guid;
                     $post->search_type = $post->post_type;
-                    $post->title = get_the_title( $parent_id );
+                    $parent_title = get_the_title( $parent_id );
+                    $post->post_title =  __( 'Tip in task ', 'pof' ) . '<i>' . $parent_title . '</i>';
 
                 } else {
                     $post->search_type = $acf_post->fields['api_type'];
