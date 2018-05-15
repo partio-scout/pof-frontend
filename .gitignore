@@ -17,3 +17,4 @@
 .env
 content/themes/custom/config.codekit3
 content/plugins/relevanssi-premium/
+node_modules
