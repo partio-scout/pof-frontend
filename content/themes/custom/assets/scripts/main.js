@@ -8,6 +8,7 @@ import 'foundation-sites/js/foundation/foundation.equalizer';
 import 'foundation-sites/js/foundation/foundation.reveal';
 import 'enquire.js';
 import 'dotdotdot';
+import 'jquery-serializejson';
 
 // Local scripts
 import './app';
