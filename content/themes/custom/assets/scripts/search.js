@@ -21,7 +21,9 @@ window.Search = ( function( window, document, $ ){
         // event listeners
         app.$loadMoreButton.on('click', function(e) {
             app.stop(e);
-            app.loadMore(e);
+            if ( ! app.$loadMoreButton.disabled ) {
+                app.loadMore(e);
+            }
         });
         
         
@@ -68,7 +70,8 @@ window.Search = ( function( window, document, $ ){
         app.$loadMoreButton.addClass('loading');
         dp('Search/Results', {
             args: {
-                'load_more': true
+                'load_more': true,
+                's': app.$searchInput.val()
             },
             partial: 'search-results-list',
             success: function(data) {
