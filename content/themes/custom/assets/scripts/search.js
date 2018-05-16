@@ -1,184 +1,219 @@
 import _ from 'lodash';
 
-window.Search = ( function( window, document, $ ){
+const $ = jQuery;
 
-    var app = {};
+class Search {
 
-    app.cache = function() {
-        app.$loadMoreButton         = $("#search-results-loadmore");
-        app.$resultsContainer       = $("#search-results-container");
-        app.$searchInput            = $("#search");
-        app.$searchIcon             = $(".search-icon");
-        app.$searchForm             = $(".search-box__form");
-        app.$searchInput            = app.$searchForm.find( 'input[name="s"]');
-        app.$resultMessageContainer = $("#results-message");
-        app.$resultsCount           = $( '#results-count' );
-        app.$loadmoreContainer      = $( '.loadmore-container' );
-        app.$maxPages               = app.$loadMoreButton.data('maxpages');
-        app.$page                   = app.$loadMoreButton.data('page');        
+    /**
+     * Used to run class init function on document ready
+     */
+    constructor() {
+        $( () => this.init() );
+    }
+
+    /**
+     * Cache relevant dom elements
+     */
+    cache() {
+        this.$loadMoreButton         = $( '#search-results-loadmore' );
+        this.$resultsContainer       = $( '#search-results-container' );
+        this.$searchInput            = $( '#search' );
+        this.$searchIcon             = $( '.search-icon' );
+        this.$searchForm             = $( '.search-box__form' );
+        this.$searchInput            = this.$searchForm.find( 'input[name="s"]' );
+        this.$resultMessageContainer = $( '#results-message' );
+        this.$resultsCount           = $( '#results-count' );
+        this.$loadmoreContainer      = $( '.loadmore-container' );
+        this.$maxPages               = this.$loadMoreButton.data( 'maxpages' );
+        this.$page                   = this.$loadMoreButton.data( 'page' );
     };
 
-    app.handleMetadata = ( data ) => {
+    /**
+     * Handle search metadata
+     *
+     * @param {object} data A dp.js data result
+     */
+    handleMetadata( data ) {
+
         // Get new response data or set defaults if no response
         const metadata = _.get( data, 'Search.Results', {
-            max_num_pages: 0,
-            count: 0,
-            page: 1
+            'max_num_pages': 0,
+            'count': 0,
+            'page': 1
         });
 
-        app.$maxPages = metadata.max_num_pages;
-        app.$page = metadata.page;
+        this.$maxPages = metadata.max_num_pages;
+        this.$page = metadata.page;
 
-        app.$loadMoreButton
+        this.$loadMoreButton
             .data( 'page', metadata.page )
             .data( 'maxpages', metadata.max_num_pages )
             .data( 'postcount', metadata.count );
 
-        app.$resultsCount.text( metadata.count );
+        this.$resultsCount.text( metadata.count );
 
         if ( metadata.max_num_pages > 1 ) {
-            app.$loadmoreContainer.removeClass( 'hidden' );
-            app.$loadMoreButton.show();
-        }
-        else {
-            app.$loadMoreButton.hide();
+            this.$loadmoreContainer.removeClass( 'hidden' );
+            this.$loadMoreButton.show();
+        } else {
+            this.$loadMoreButton.hide();
         }
     }
 
-    app.init = function(){
+    /**
+     * Called after document ready to initialize the class
+     */
+    init() {
+
         // Only execute this script on the search page
         if ( document.body.classList.contains( 'search' ) ) {
 
             // crawl the DOM
-            app.cache();
+            this.cache();
 
-            if ( app.$maxPages > 1 ) {
-                app.$loadmoreContainer.removeClass( 'hidden' );
+            if ( this.$maxPages > 1 ) {
+                this.$loadmoreContainer.removeClass( 'hidden' );
             }
 
             // event listeners
-            app.$loadMoreButton.on( 'click', ( e ) => app.loadMore( e ) );
-            app.$searchForm.on( 'submit', ( e ) => app.doSearch( e ) );
-            app.$searchIcon.on( 'click', ( e ) => app.doSearch( e ) );
+            this.$loadMoreButton.on( 'click', ( e ) => this.loadMore( e ) );
+            this.$searchForm.on( 'submit', ( e ) => this.doSearch( e ) );
+            this.$searchIcon.on( 'click', ( e ) => this.doSearch( e ) );
         }
 
     };
 
     /**
-     * Fires search query
-     * fetches search results
+     * Do an ajax search
+     *
+     * @param {object} e Event that initialized this function call.
      */
-    app.doSearch = function( e ) {
-        app.stop( e );
+    doSearch( e ) {
+        this.stop( e );
 
         // Collect args from the form that was submitted either via click or submit event
         const args = e.type === 'submit' ? $( e.currentTarget ).serializeJSON() : $( e.currentTarget ).closest( 'form' ).serializeJSON();
 
         // Duplicate search value across both forms
-        app.$searchInput.val( args.s );
+        this.$searchInput.val( args.s );
 
-        dp('Search/Results', {
+        dp( 'Search/Results', {
             args,
             partial: 'search-results-list',
             data: true,
             success: ( html, data ) => {
-                app.doSearchSuccess( html, data, args );
+                this.doSearchSuccess( html, data, args );
             },
             error: ( error ) => {
-                var newHTML = app.$resultsContainer.html() + '<h2>' + error + '</h2>';
-                app.$resultsContainer.html(newHTML);
-            },
+                const newHTML = this.$resultsContainer.html() + '<h2>' + error + '</h2>';
+                this.$resultsContainer.html( newHTML );
+            }
         });
     };
+
     /**
-     * Fires on load more click on the search-results page.
-     * Fetches more search-results results for the initial search query.
+     * Load more results from initial query
      *
+     * @param  {object} e Click event.
      */
-    app.loadMore = ( e ) => {
-        app.stop(e);
-        if ( ! app.$loadMoreButton.disabled ) {
-            app.$loadMoreButton.disabled = true;
-            app.$loadMoreButton.addClass('loading');
-            dp('Search/Results', {
+    loadMore( e ) {
+        this.stop( e );
+        if ( ! this.$loadMoreButton.disabled ) {
+            this.$loadMoreButton.disabled = true;
+            this.$loadMoreButton.addClass( 'loading' );
+            dp( 'Search/Results', {
                 args: {
                     'load_more': true,
-                    's': app.$searchInput.val()
+                    's': this.$searchInput.val()
                 },
                 partial: 'search-results-list',
-                success: function(data) {
-                    app.loadMoreSuccess( data );
+                success: ( data ) => {
+                    this.loadMoreSuccess( data );
                 },
-                error: function(error) {
-                    var newHTML = app.$resultsContainer.html() + '<h2>' + error + '</h2>';
-                    app.$resultsContainer.html(newHTML);
-                },
+                error: ( error ) => {
+                    const newHTML = this.$resultsContainer.html() + '<h2>' + error + '</h2>';
+                    this.$resultsContainer.html( newHTML );
+                }
             });
         }
     };
 
     /**
-     * 
+     * Handle succesful search call
+     *
+     * @param {string} html Rendered html result of query.
+     * @param {object} data Data that was used to render the html.
+     * @param {obejct} args Data that was used to make the ajax call.
      */
-    app.doSearchSuccess = function( html, data, args ) {
-        // Get new response data or set defaults if no response
-        app.handleMetadata( data );
+    doSearchSuccess( html, data, args ) {
 
-        app.$resultsContainer.html( html );
-        if (window.history) {
-            window.history.pushState( {}, 'Haku', location.origin + '/haku/' + args.s );
+        // Get new response data or set defaults if no response
+        this.handleMetadata( data );
+
+        this.$resultsContainer.html( html );
+
+        // Change url and add the query to the history
+        if ( window.history ) {
+            window.history.pushState({}, 'Haku', location.origin + '/haku/' + args.s );
         }
     };
 
     /**
-     * Executed upon DustPress.JS success
-     * @param data
+     * Handle succesful load more call
+     *
+     * @param {string} data Rendered html result of query.
      */
-    app.loadMoreSuccess = function( data ) {
-        var newPage = app.$page++;
-        app.$loadMoreButton.data('page', newPage);
+    loadMoreSuccess( data ) {
+        const newPage = this.$page++;
+        this.$loadMoreButton.data( 'page', newPage );
+
         // Add returned HTML to container
-        var newHTML = app.$resultsContainer.html() + data;
-        app.$resultsContainer.html(newHTML);
+        const newHTML = this.$resultsContainer.html() + data;
+        this.$resultsContainer.html( newHTML );
+
         // After we load more stuff, add notification for screen reader.
-        if ( app.$page > 1) {
-            app.$resultMessageContainer.html('Ladattiin lisää tapahtumia');
+        if ( this.$page > 1 ) {
+            this.$resultMessageContainer.html( 'Ladattiin lisää tapahtumia' );
         }
+
         // If max pages has not been reached reset the load more button
-        if (app.$page < app.$maxPages ) {
-            app.$loadMoreButton.disabled = false;
-            app.$loadMoreButton.html('Lataa lisää');
-            app.$loadMoreButton.removeClass('loading');
+        if ( this.$page < this.$maxPages ) {
+            this.$loadMoreButton.disabled = false;
+            this.$loadMoreButton.html( 'Lataa lisää' );
+            this.$loadMoreButton.removeClass( 'loading' );
         } else {
-            app.$loadMoreButton.hide();
+            this.$loadMoreButton.hide();
         }
+
         // Check if history is supported in browser.
-        if (window.history) {
+        if ( window.history ) {
 
             // The url contains a page
-            if (/sivu/.test(location.pathname)) {
+            if ( /sivu/.test( location.pathname ) ) {
 
                 // Replace the current location with the new state.
-                var path = location.pathname.replace(/sivu\/(\d+)/, 'sivu/' + app.$page);
+                const path = location.pathname.replace( /sivu\/(\d+)/, 'sivu/' + this.$page );
 
                 // Push and change the full location path.
-                window.history.pushState({}, 'Sivu', path);
+                window.history.pushState({}, 'Sivu', path );
             } else {
 
                 // Push the state to the end of the current location.
-                var url = 'sivu/' + app.$page + '/';
+                const url = 'sivu/' + this.$page + '/';
                 window.history.pushState({}, 'Sivu', url );
             }
         }
     };
 
-    app.stop = function(e) {
+    /**
+     * Stop an event from executing its default functionality
+     *
+     * @param {object} e Event object.
+     */
+    stop( e ) {
         e.stopPropagation();
         e.preventDefault();
     };
+}
 
-    $(document).ready( app.init );
-
-    return app;
-
-})( window, document, jQuery );
+export default new Search();
