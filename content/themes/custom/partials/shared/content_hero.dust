@@ -4,7 +4,7 @@
             <img class="header-logodesk" src="{WP.template_directory}/assets/img/partiologovalk.png" alt="">
 			{?Hero.image}
 				{#Hero.image}
-				<div class="content-hero__shade" alt="{fields.image.title}" title="{fields.image.title}" style="background-image:url({fields.image.url})"></div>
+				<div class="content-hero__shade js-dp-bg-img" alt="{fields.image_title}" title="{fields.image_title}" {@bgimage id=fields.image /}></div>
 				{/Hero.image}
 			{/Hero.image}
 			{?Hero.slogan}

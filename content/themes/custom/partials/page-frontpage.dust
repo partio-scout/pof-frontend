@@ -16,7 +16,7 @@
 	            </div>
 				<div class="slider" data-time={SliderTime}>
 					{#Content.fields.featured}
-					<div class="slide" style="background-image:url({featured_image.url})">
+					<div class="slide js-dp-bg-img" {@bgimage id=featured_image /}>
 						<div class="hero__shade">
 							<div class="hero__heading-group-top">
 								<div class="hero__heading--main">

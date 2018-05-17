@@ -24,7 +24,8 @@
         "vlucas/phpdotenv": "^2.4",
         "composer/installers": "^1.3",
         "predis/predis": "^1.1",
-        "wpackagist-plugin/user-switching": "^1.0"
+        "wpackagist-plugin/user-switching": "^1.0",
+        "devgeniem/dustpress-responsive-background-image": "^0.0.3"
     },
     "extra": {
         "wordpress-install-dir": "wp",
@@ -42,6 +43,10 @@
         "2": {
             "type": "composer",
             "url": "https://wpackagist.org"
+        },
+        "devgeniem/dustpress-responsive-background-image": {
+            "type": "git",
+            "url": "git@github.com:devgeniem/dustpress-responsive-background-image.git"
         }
     }
 }
