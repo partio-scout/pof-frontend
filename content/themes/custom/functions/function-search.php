@@ -28,7 +28,7 @@ function search_redirect() {
     }
     $search_parameter = filter_input( INPUT_GET, 's', FILTER_SANITIZE_URL );
     if ( is_search() && ! is_admin() && ! empty( $search_parameter ) ) {
-        wp_safe_redirect( get_search_link() );
+        wp_safe_redirect( generate_search_url( $search_parameter ) );
         exit();
     }
 }
