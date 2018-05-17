@@ -6,6 +6,14 @@ class Header extends \DustPress\Model {
         return get_field('google_analytics', 'option');
     }
 
+    /**
+     * Get the slug for current language
+     */
+    public function LangSlug() {
+        $slug = pll_current_language();
+        return $slug;
+    }
+
 
     // public $ttl = [
     //     'Content' => 3600
@@ -98,6 +106,25 @@ class Header extends \DustPress\Model {
                 $lang['langs'][$key]['permalink']   = $value['url'];
                 if($value['current_lang']) $lang['langs'][$key]['class']   = 'active ';
 
+            }
+            return $lang;
+        }
+
+        // If this is a search page we should return translation urls for this search
+        if ( is_search() ) {
+            $langs = pll_the_languages([
+                'echo'                   => false,
+                'raw'                    => true,
+                'hide_if_no_translation' => false,
+            ]);
+            foreach ( $langs as $key => $value ) {
+                $lang['langs'][ $key ]['lang']      = strtoupper( $value['slug'] );
+
+                // Construct a correctly formatted search url link and remove language slug from the url if it is the main language
+                $lang['langs'][ $key ]['permalink'] = '/' . ( $value['order'] !== 0 ? $value['slug'] . '/' : '' ) . search_base( $value['slug'] ) . '/' . get_query_var( 's' );
+                if ( $value['current_lang'] ) {
+                    $lang['langs'][ $key ]['class'] = 'active ';
+                }
             }
             return $lang;
         }

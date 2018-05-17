@@ -21,6 +21,13 @@ function enqueue_styles_and_scripts(){
         'tips_url'   => get_field( 'tips-send-url', 'option' ),
     );
     wp_localize_script( 'main-js', 'pof', $localized_data );
+
+    $lang_slug = pll_current_language();
+    wp_localize_script( 'main-js', 'pof_lang', [
+        'slug'            => $lang_slug,
+        'search_base'     => search_base( $lang_slug ),
+        'pagination_base' => pagination_base( $lang_slug ),
+    ]);
     wp_enqueue_script( 'main-js' );
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_styles_and_scripts' );

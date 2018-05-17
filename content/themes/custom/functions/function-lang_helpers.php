@@ -27,3 +27,23 @@ function pof_theme_setup() {
     add_theme_support( 'html5', [ 'caption', 'comment-form', 'comment-list', 'gallery', 'search-form' ] );
 }
 add_action( 'after_setup_theme', 'pof_theme_setup' );
+
+function search_base( $lang = null ) {
+    $base = [
+        'fi' => 'haku',
+        'en' => 'search',
+        'sv' => 'sök',
+    ];
+
+    return $lang ? $base[ $lang ] : $base;
+}
+
+function pagination_base( $lang = null ) {
+    $base = [
+        'fi' => 'sivu',
+        'en' => 'page',
+        'sv' => 'sida',
+    ];
+
+    return $lang ? $base[ $lang ] : $base;
+}

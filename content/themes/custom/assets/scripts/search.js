@@ -26,6 +26,7 @@ class Search {
         this.$loadmoreContainer      = $( '.loadmore-container' );
         this.$maxPages               = this.$loadMoreButton.data( 'maxpages' );
         this.$page                   = this.$loadMoreButton.data( 'page' );
+        this.lastSearch              = this.$searchInput.val();
     };
 
     /**
@@ -153,8 +154,10 @@ class Search {
         this.$resultsContainer.html( html );
 
         // Change url and add the query to the history
-        if ( window.history ) {
-            window.history.pushState({}, 'Haku', location.origin + '/haku/' + args.s );
+        if ( window.history && typeof pof_lang !== 'undefined' ) {
+            const newUrl = location.toString().replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + args.s );
+            window.history.pushState( {}, 'Haku', newUrl );
+            this.lastSearch = args.s;
         }
     };
 
@@ -186,22 +189,17 @@ class Search {
         }
 
         // Check if history is supported in browser.
-        if ( window.history ) {
-
-            // The url contains a page
-            if ( /sivu/.test( location.pathname ) ) {
-
-                // Replace the current location with the new state.
-                const path = location.pathname.replace( /sivu\/(\d+)/, 'sivu/' + this.$page );
-
-                // Push and change the full location path.
-                window.history.pushState({}, 'Sivu', path );
-            } else {
-
-                // Push the state to the end of the current location.
-                const url = 'sivu/' + this.$page + '/';
-                window.history.pushState({}, 'Sivu', url );
+        if ( window.history && typeof pof_lang !== 'undefined' ) {
+            let newUrl;
+            if ( location.toString().includes( pof_lang.pagination_base ) ) {
+                newUrl = location.toString().replace( new RegExp( pof_lang.pagination_base + '\/.+', 'g' ), pof_lang.pagination_base + '/' + newPage );
             }
+            else {
+                newUrl = location.toString().replace( /\/$/, '' ) + '/' + pof_lang.pagination_base + '/' + newPage;
+            }
+
+            // Push and change the full location path.
+            window.history.pushState( {}, 'Sivu', newUrl );
         }
     };
 
