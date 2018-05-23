@@ -51,6 +51,9 @@ include_once( 'functions/function-search.php' );
 // Dustpress helpers
 include_once( 'functions/function-dustpress-helpers.php' );
 
+// Dustpress apiimage helper & filter
+include_once( 'functions/function-api_image_helper.php' );
+
 
 
 /*
