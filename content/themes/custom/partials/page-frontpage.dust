@@ -49,7 +49,7 @@
 							<div class="program__logo-container">
 	                            {#fields.api_images}
 	                                {#logo}
-	                                    <img src="{thumbnail.url}" width="{thumbnail.width}" height="{thumbnail.height}" alt="{title}">
+	                                	{@apiimage id=id /}
 	                                {/logo}
 	                            {/fields.api_images}
 								<div class="program__divider"></div>

@@ -2,12 +2,12 @@
 
 <section class="content__headers">
     {#Content.fields.api_images}
-        <img src="{logo.url}" class="taskgroup-sidelogo hide-for-small-only" alt="{logo.title}">
+        {@apiimage id=logo.id class="taskgroup-sidelogo hide-for-small-only" /}
     {/Content.fields.api_images}
     <div class="float-content">
     	<h1 class="content__main-header">{Content.post_title}</h1>
         {#Content.fields.api_images}
-            <img src="{logo.url}" class="taskgroup-sidelogo show-for-small-only" alt="{logo.title}">
+        	{@apiimage id=logo.id class="taskgroup-sidelogo show-for-small-only" /}
         {/Content.fields.api_images}
     	{?Content.fields.api_ingress}
     		<h2 class="ingress">{Content.fields.api_ingress}</h2>

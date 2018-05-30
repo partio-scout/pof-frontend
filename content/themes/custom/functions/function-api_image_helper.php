@@ -16,7 +16,15 @@ class ApiImage extends Helper {
      * @return mixed
      */
     public function output() {
-        return get_api_media( $this->params->id );
+        $image = get_api_media( $this->params->id );
+
+        // Add any custom classes to the already existing class parameter
+        if ( $this->params->class ) {
+            $regex = '/class="(.*)"/';
+            $image = preg_replace( $regex, 'class="$1 ' . $this->params->class . '"', $image );
+        }
+
+        return $image;
     }
 }
 

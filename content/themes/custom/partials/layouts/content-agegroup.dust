@@ -10,8 +10,8 @@
 <section class="task-group__header" data-equalizer data-equalizer-mq="medium-up">
 	{#Content.fields.api_images}
 		<div class="task-group__logo-container" data-equalizer-watch>
-			<a href="{logo.url}"><img src="{logo.thumbnail.url}" alt="{logo.title}"></a>
-			<a href="{main_image.url}"><img src="{main_image.thumbnail.url}" alt="{main_image.title}"></a>
+			<a href="{logo.url}">{@apiimage id=logo.id /}</a>
+			<a href="{main_image.url}">{@apiimage id=main_image.id /}</a>
 		</div>
 	{/Content.fields.api_images}
 	{! Tekstiosio !}

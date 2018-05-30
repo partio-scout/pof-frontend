@@ -120,20 +120,12 @@
 				{#Content.fields.api_images}
 					<div class="columns medium-6">
 						<a href="{logo.url}">
-							<img
-								height="{logo.thumbnail.height}"
-								width="{logo.thumbnail.width}"
-								src="{logo.thumbnail.url}"
-								alt="{logo.title}" />
+        					{@apiimage id=logo.id /}
 						</a>
 					</div>
 					<div class="columns medium-6">
 						<a href="{main_image.url}">
-							<img
-								height="{main_image.thumbnail.height}"
-								width="{main_image.thumbnail.width}"
-								src="{main_image.thumbnail.url}"
-								alt="{main_image.title}" />
+        					{@apiimage id=main_image.id /}
 						</a>
 					</div>
 				{/Content.fields.api_images}
