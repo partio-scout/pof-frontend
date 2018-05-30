@@ -51,6 +51,8 @@ include_once( 'functions/function-search.php' );
 // Dustpress helpers
 //include_once( 'functions/function-dustpress-helpers.php' );
 
+// Api call helper class
+include_once( 'functions/class-api.php' );
 
 
 /*

@@ -2,17 +2,31 @@
 $search_fontsize: rem-calc(14);
 $search_fontsize_smaller: rem-calc(12);
 
-.search-box {
-	margin-top: 1.5rem;
-	.search-icon {
-		position: relative;
-		z-index: 1;
-		//font-size: 1.5rem;
-		left: -30px;
-		top: 7px;
-		color: $partio_main_color_lighter;
-		cursor:pointer;
-		width: 0;
+.search-heading {
+	color: $white;
+	display: none;
+	font-size: 2rem;
+	margin-left: 0;
+
+	.menu-search-block & {
+		display: block;
+	}
+	.columns > & {
+		color: $black;
+		display: block;
+	}
+}
+
+.advanced-search-link {
+	color: white;
+	font-size: .8rem;
+	margin-bottom: 1.5rem;
+
+	.search-box & {
+		display: none;
+	}
+	.menu-search-block & {
+		display: block;
 	}
 }
 
@@ -82,12 +96,262 @@ $search_fontsize_smaller: rem-calc(12);
 .menu-search-block {
 	background-color: $partio_main_color_lighter;
 	margin-right: -$column-gutter-half;
+	margin-bottom: $column-gutter;
+	padding: 0 $column-gutter;
 	//padding-top: 2em;
 	.menu-heading {
 		border-bottom: 0;
 		margin-bottom: 0;
 	}
-	.search-box {
-		margin-left: 1em;
+}
+
+.search-filter {
+	background-color: $partio_main_color;
+	color: $white;
+	margin-right: -$column-gutter;
+	padding: $column-gutter;
+
+	.fa-filter {
+		color: $partio_main_color_lighter;
 	}
+
+	h3 {
+		color: inherit;
+		margin-bottom: 2rem;
+	}
+
+	label {
+		color: inherit;
+	}
+
+	.search-input-container {
+		.search-icon {
+			top: 70%;
+		}
+	}
+}
+
+.search-input-container {
+	position: relative;
+
+	.search-icon {
+		color: $partio_main_color_lighter;
+		cursor: pointer;
+		position: absolute;
+		right: 30px;
+		top: 50%;
+		transform: translateY(-100%);
+		width: 0;
+	}
+}
+
+.search-and-or {
+	background-color: $partio_main_color_darker;
+	display: flex;
+	margin-bottom: 1rem;
+	padding: .5rem;
+	text-transform: uppercase;
+
+	input {
+		display: none;
+
+		&:checked + .and-or-indicator .indicator::after {
+			transform: translateX(130%);
+		}
+	}
+
+	p {
+		flex: 1;
+		margin-bottom: 0;
+	}
+
+	.and-or-indicator {
+		align-items: center;
+		color: $partio_main_color_lighter;
+		display: flex;
+		font-weight: bold;
+		letter-spacing: -1px;
+
+		.indicator {
+			$size: 1.5rem;
+			background-color: $partio_main_color_lighter;
+			border-radius: $size;
+			display: inline-block;
+			height: $size;
+			margin: 0 .5rem;
+			position: relative;
+			width: $size * 2;
+
+			&::after {
+				$spacing: .2rem;
+				background-color: $white;
+				border-radius: 100%;
+				content: '';
+				display: block;
+				height: $size - $spacing * 2;
+				margin: $spacing;
+				position: absolute;
+				transition: 100ms;
+				width: $size - $spacing * 2;
+				transform: translateX(0);
+    			transition: transform 100ms ease-in-out;
+			}
+		}
+	}
+}
+
+.filter-opener {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+
+	input {
+		margin: 0;
+		text-align: left;
+	}
+
+	.collapse-toggle {
+		text-align: right;
+	}
+
+	p {
+		flex: 1;
+		margin: 0;
+
+		// Only add margin if after an input
+		input + & {
+			margin: 0 .7rem;
+		}
+	}
+}
+
+
+.custom {
+	appearance: none;
+	border: 0;
+	cursor: pointer;
+	display: block;
+	font-size: 1.5rem;
+	width: 1.5rem;
+	text-align: center;
+
+	&.checkbox,
+	&.radio {
+		&::before {
+			font-family: FontAwesome;
+		}
+	}
+	&.checkbox {
+		&::before {
+			content: '\f096';
+		}
+
+		&:checked {
+			&::before {
+				content: '\f14a';
+			}
+		}
+	}
+
+	&.radio {
+		&::before {
+			content: '\f10c';
+		}
+
+		&:checked {
+			&::before {
+				content: '\f058';
+			}
+		}
+	}
+}
+
+.custom-radio {
+	appearance: none;
+	border: 0;
+	cursor: pointer;
+	display: block;
+	font-size: 1.5rem;
+	width: 1.5rem;
+	text-align: center;
+}
+
+.collapse-toggle {
+    padding: .5rem 0 .5rem .5rem;
+    text-align: right;
+    font-size: 1rem;
+
+    &:focus {
+        border: 0;
+        outline: none;
+    }
+
+    &::before {
+    	display: none;
+    }
+
+    &::after {
+        content: '\f067';
+        font-family: FontAwesome;
+        position: relative;
+        display: block;
+    }
+
+    &:checked {
+        & ~ .collapsed {
+            height: auto;
+            .collapsed-content {
+                display: block;
+                height: auto;
+                transform: translateY(0);
+            }
+        }
+
+        &::after {
+        	content: '\f068';
+        }
+    }
+}
+
+.collapsed {
+	border-top: .1rem solid $partio_main_color_lighter;
+    flex-basis: 100%;
+    margin-top: .3rem;
+    margin-bottom: .5rem;
+    overflow-y: hidden;
+    height: 0;
+
+    .collapsed-content {
+    	padding: .5rem 0;
+        height: 0;
+        transform: translateY(-100%);
+        transform-origin: 50% 0;
+
+        &.radio,
+        &.checkbox {
+        	label {
+        		display: flex;
+        		align-items: center;
+        	}
+        }
+
+        &.min-max {
+        	.min-max-input-container {
+	        	display: flex;
+
+	        	label {
+	        		&:first-child {
+	        			padding-right: $column-gutter-half;
+	        		}
+	        		&:last-child {
+	        			padding-left: $column-gutter-half;
+	        		}
+	        	}
+
+	        	p {
+	        		margin: 0;
+	        	}
+        	}
+        }
+    }
 }

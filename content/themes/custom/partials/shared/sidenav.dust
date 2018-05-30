@@ -1,7 +1,6 @@
 	<aside class="menu-wrapper">
 		<div class="menu-search-block">
-			<h3 class="menu-heading">{Header.S.haku}</h3>
-			{>"search-section" /}
+			{>"search-section" small="true" /}
 		</div>
 		<h3 class="menu-heading show-for-medium-up">{Header.S.valikko}</h3>
 		<ul class="menu">

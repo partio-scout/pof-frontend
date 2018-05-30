@@ -23,12 +23,30 @@ class Search extends \DustPress\Model {
         $this->bind_sub( 'Footer' );
         $this->bind_sub( 'Breadcrumbs' );
     }
-    
+
     /**
      *  Content section
      */
     public function Content() {
         return true;
+    }
+
+    /**
+     * Get search terms and translations from api
+     */
+    public static function ApiSearchTerms() {
+        $haku_json    = get_field( 'haku-json', 'option' );
+        $kaannos_json = get_field( 'kaannos-json', 'option' );
+
+        $search_terms = \POF\Api::get( $haku_json );
+        $translations = POF\Api::get( $kaannos_json );
+
+        $result = (object) [
+            'search_terms' => $search_terms,
+            'translations' => $translations,
+        ];
+
+        return $result;
     }
 
     /**

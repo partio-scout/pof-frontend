@@ -1,0 +1,11 @@
+{?field}
+    <label class="search-and-or">
+        <p>Rajaustapa</p>
+        <input type="checkbox" name="and-or[{field}]">
+        <span class="and-or-indicator">
+            <span class="and">Ja</span>
+            <span class="indicator"></span>
+            <span class="or">Tai</span>
+        </span>
+    </label>
+{/field}
