@@ -17,6 +17,6 @@
 
         <p>Muut rajausvaihtoehdot</p>
 
-        {>"filters" /}
+        {>"filters" prefix="global" /}
     </form>
 {/ApiSearchTerms}

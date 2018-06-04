@@ -48,6 +48,9 @@ class Search extends \DustPress\Model {
 
         // Parse age groups
         $age_groups = $program['program'][0]['agegroups'];
+        usort( $age_groups, function( $a, $b ) {
+            return $a['order'] - $b['order'];
+        });
 
         // Remove invalid field types
         $search_terms = array_filter( $search_terms, function( $field ) {
@@ -111,7 +114,7 @@ class Search extends \DustPress\Model {
         $page       = (int) get_query_var( 'paged' );
         $page       = $page ? $page : 1; // Force page value
         $displaying = $per_page * $page;
-        $search_term = wp_doing_ajax() ? $ajax_args->s : get_query_var( 's' );
+        $search_term = wp_doing_ajax() ? $ajax_args->search->s : get_query_var( 's' );
         // Do not execute if no search term - relevanssi doesn't like it.
         if ( empty( $search_term ) ) {
             return false;

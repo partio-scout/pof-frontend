@@ -358,6 +358,10 @@ $search_fontsize_smaller: rem-calc(12);
 }
 
 .field-list {
+	&.agegroups {
+		margin-bottom: $column-gutter;
+	}
+
 	.field-list {
 		padding-left: $column-gutter-half;
 	}

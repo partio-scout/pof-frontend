@@ -26,6 +26,7 @@ class Search {
         this.$loadmoreContainer      = $( '.loadmore-container' );
         this.$maxPages               = this.$loadMoreButton.data( 'maxpages' );
         this.$page                   = this.$loadMoreButton.data( 'page' );
+        this.$filterForm             = $( '.search-filter' );
     };
 
     /**
@@ -79,10 +80,18 @@ class Search {
             this.$loadMoreButton.on( 'click', ( e ) => this.loadMore( e ) );
             this.$searchForm.on( 'submit', ( e ) => this.doSearch( e ) );
             this.$searchIcon.on( 'click', ( e ) => this.doSearch( e ) );
-
-            $( '.search-filter' ).on( 'submit', ( e ) => this.filter( e ) );
+            this.$filterForm.on( 'submit', ( e ) => this.filter( e ) );
         }
     };
+
+    getArgs() {
+        const args = {
+            search: this.$searchForm.serializeJSON(),
+            filter: this.$filterForm.serializeJSON()
+        };
+
+        return args;
+    }
 
     /**
      * Do a new search query with filters
@@ -91,7 +100,7 @@ class Search {
      */
     filter( e ) {
         e.preventDefault();
-        const args = $( e.currentTarget ).serializeJSON();
+        const args = this.getArgs();
         console.log( 'args', args );
     }
 
@@ -104,10 +113,10 @@ class Search {
         this.stop( e );
 
         // Collect args from the form that was submitted either via click or submit event
-        const args = e.type === 'submit' ? $( e.currentTarget ).serializeJSON() : $( e.currentTarget ).closest( 'form' ).serializeJSON();
+        const args = this.getArgs();
 
         // Duplicate search value across both forms
-        this.$searchInput.val( args.s );
+        this.$searchInput.val( args.search.s );
 
         dp( 'Search/Results', {
             args,
@@ -133,11 +142,11 @@ class Search {
         if ( ! this.$loadMoreButton.disabled ) {
             this.$loadMoreButton.disabled = true;
             this.$loadMoreButton.addClass( 'loading' );
+
+            const args = this.getArgs();
+            args.load_more = true;
             dp( 'Search/Results', {
-                args: {
-                    'load_more': true,
-                    's': this.$searchInput.val()
-                },
+                args,
                 partial: 'search-results-list',
                 success: ( data ) => {
                     this.loadMoreSuccess( data );
@@ -166,7 +175,7 @@ class Search {
 
         // Change url and add the query to the history
         if ( window.history ) {
-            window.history.pushState({}, 'Haku', location.origin + '/haku/' + args.s );
+            window.history.pushState({}, 'Haku', location.origin + '/haku/' + args.search.s );
         }
     };
 
