@@ -1,75 +1,22 @@
-<section class="search-filter">
-	<h3>
-		<i class="fa fa-filter" aria-hidden="true"></i>
-		Rajaa hakutuloksia
-	</h3>
+{#ApiSearchTerms}
+    <form class="search-filter">
+        <h3>
+            <i class="fa fa-filter" aria-hidden="true"></i>
+            Rajaa hakutuloksia
+        </h3>
 
-	<label>
-		<p>Ikäkauden mukaan</p>
-		<div class="search-input-container">
-		    <input type="search" name="s" id="search" value="" placeholder="Etsi"  title="Etsi sivulta">
-		    <i id="search-icon" class="fa fa-search search-icon"></i>
-		</div>
-	</label>
+        <label>
+            <p>Ikäkauden mukaan</p>
+            <div class="search-input-container">
+                <input type="search" name="s" id="search" value="" placeholder="Etsi"  title="Etsi sivulta">
+                <i id="search-icon" class="fa fa-search search-icon"></i>
+            </div>
+        </label>
 
-	{>"search-and-or" field="agegroup" /}
+        {>"agegroup-filters" /}
 
-	<p>Muut rajausvaihtoehdot</p>
+        <p>Muut rajausvaihtoehdot</p>
 
-	<div class="field-list">
-		<div class="filter-opener">
-			<input type="checkbox" class="custom checkbox">
-			<p>Ryhmäkoko</p>
-			<input type="checkbox" role="button" class="collapse-toggle custom checkbox">
-			<div class="collapsed">
-				<div class="collapsed-content checkbox">
-					{>"search-and-or" field="ryhmakoko" /}
-
-					<label>
-						<input type="checkbox" class="custom checkbox">
-						<p>Aktiviteettiryhmä</p>
-					</label>
-					<label>
-						<input type="checkbox" class="custom checkbox">
-						<p>Aktiviteetti</p>
-					</label>
-				</div>
-			</div>
-		</div>
-		<div class="filter-opener">
-			<input type="checkbox" class="custom checkbox">
-			<p>Ryhmäkoko</p>
-			<input type="checkbox" role="button" class="collapse-toggle custom checkbox">
-			<div class="collapsed">
-				<div class="collapsed-content min-max">
-					<div class="min-max-input-container">
-						<label>
-							<p>Minimi</p>
-							<input type="number" name="">
-						</label>
-						<label>
-							<p>Maksimi</p>
-							<input type="number" name="">
-						</label>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="filter-opener">
-			<p>Ryhmäkoko</p>
-			<input type="checkbox" role="button" class="collapse-toggle custom checkbox">
-			<div class="collapsed">
-				<div class="collapsed-content radio">
-					<label>
-						<input type="radio" class="custom radio">
-						<p>Pakollinen</p>
-					</label>
-					<label>
-						<input type="radio" class="custom radio">
-						<p>Ei pakollinen</p>
-					</label>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
+        {>"filters" /}
+    </form>
+{/ApiSearchTerms}

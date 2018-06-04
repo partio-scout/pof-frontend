@@ -1,0 +1,20 @@
+{>"search-and-or" field="age_groups" /}
+
+<div class="field-list agegroups">
+    {#age_groups}
+        <div class="filter-opener">
+            <input type="checkbox" class="custom checkbox" name="age_groups[]" value="{guid}">
+            {#languages}
+                {@eq key=lang value=WP.language}
+                    <p>{title}s</p>
+                {/eq}
+            {/languages}
+            <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
+            <div class="collapsed">
+                <div class="collapsed-content">
+                    {>"filters" /}
+                </div>
+            </div>
+        </div>
+    {/age_groups}
+</div>

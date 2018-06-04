@@ -1,0 +1,56 @@
+<div class="field-list">
+    {#search_terms}
+        {@set key="fieldname" value=$idx /}
+        <div class="filter-opener">
+            <input type="checkbox" class="custom checkbox" name="enabled[]" value="{fieldname}">
+            <p>{fieldname}</p>
+            <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
+            <div class="collapsed">
+                <div class="collapsed-content {type}">
+                    {@select key=type}
+                        {@eq value="dropdown"}
+                            <select name="filters[{fieldname}]">
+                                {#fields}
+                                    <option value="{key}">{value}</option>
+                                {/fields}
+                            </select>
+                        {/eq}
+
+                        {@eq value="checkbox"}
+                            {>"search-and-or" field="{fieldname}" /}
+
+                            {#fields}
+                                <label>
+                                    <input type="checkbox" class="custom checkbox" name="filters[{fieldname}][]" value="{key}">
+                                    <p>{value}</p>
+                                </label>
+                            {/fields}
+                        {/eq}
+
+                        {@eq value="radiobutton"}
+                            {#fields}
+                                <label>
+                                    <input type="radio" class="custom radio" name="filters[{fieldname}]" value="{key}">
+                                    <p>{value}</p>
+                                </label>
+                            {/fields}
+                        {/eq}
+
+                        {@eq value="min-max-input"}
+                            <div class="min-max-input-container">
+                                <label>
+                                    <p>Minimi</p>
+                                    <input type="number" name="filters[{fieldname}][min]:number">
+                                </label>
+                                <label>
+                                    <p>Maksimi</p>
+                                    <input type="number" name="filters[{fieldname}][max]:number">
+                                </label>
+                            </div>
+                        {/eq}
+                    {/select}
+                </div>
+            </div>
+        </div>
+    {/search_terms}
+</div>

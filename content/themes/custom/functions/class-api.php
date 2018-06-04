@@ -13,10 +13,11 @@ class Api {
     /**
      * Get json data from url
      *
-     * @param  string $url Api url.
-     * @return mixed       Api data or null.
+     * @param  string  $url         Api url.
+     * @param  boolean $assoc_array Should the json be cast into an associative array.
+     * @return mixed                Api data or null.
      */
-    public static function get( $url ) {
+    public static function get( $url, $assoc_array = false ) {
         $cache_key = 'api_call/' . $url;
 
         // Try to get the translations first from cache
@@ -28,7 +29,7 @@ class Api {
             ]);
 
             // Get data from response
-            $data = static::parse_request_json( $request );
+            $data = static::parse_request_json( $request, $assoc_array );
 
             // Store the translations to cache
             wp_cache_set( $cache_key, $data, null, HOUR_IN_SECONDS );

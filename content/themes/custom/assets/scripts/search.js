@@ -79,9 +79,21 @@ class Search {
             this.$loadMoreButton.on( 'click', ( e ) => this.loadMore( e ) );
             this.$searchForm.on( 'submit', ( e ) => this.doSearch( e ) );
             this.$searchIcon.on( 'click', ( e ) => this.doSearch( e ) );
-        }
 
+            $( '.search-filter' ).on( 'submit', ( e ) => this.filter( e ) );
+        }
     };
+
+    /**
+     * Do a new search query with filters
+     *
+     * @param  {object} e Submit event.
+     */
+    filter( e ) {
+        e.preventDefault();
+        const args = $( e.currentTarget ).serializeJSON();
+        console.log( 'args', args );
+    }
 
     /**
      * Do an ajax search

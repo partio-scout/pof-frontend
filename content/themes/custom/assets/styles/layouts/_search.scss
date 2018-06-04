@@ -110,6 +110,7 @@ $search_fontsize_smaller: rem-calc(12);
 	color: $white;
 	margin-right: -$column-gutter;
 	padding: $column-gutter;
+	text-transform: capitalize;
 
 	.fa-filter {
 		color: $partio_main_color_lighter;
@@ -327,7 +328,7 @@ $search_fontsize_smaller: rem-calc(12);
         transform: translateY(-100%);
         transform-origin: 50% 0;
 
-        &.radio,
+        &.radiobutton,
         &.checkbox {
         	label {
         		display: flex;
@@ -335,7 +336,7 @@ $search_fontsize_smaller: rem-calc(12);
         	}
         }
 
-        &.min-max {
+        &.min-max-input {
         	.min-max-input-container {
 	        	display: flex;
 
@@ -354,4 +355,10 @@ $search_fontsize_smaller: rem-calc(12);
         	}
         }
     }
+}
+
+.field-list {
+	.field-list {
+		padding-left: $column-gutter-half;
+	}
 }

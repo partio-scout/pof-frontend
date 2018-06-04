@@ -35,15 +35,58 @@ class Search extends \DustPress\Model {
      * Get search terms and translations from api
      */
     public static function ApiSearchTerms() {
+        // Get local data
         $haku_json    = get_field( 'haku-json', 'option' );
         $kaannos_json = get_field( 'kaannos-json', 'option' );
+        $ohjelma_json = get_field( 'ohjelma-json', 'option' );
+        $locale       = get_locale();
 
-        $search_terms = \POF\Api::get( $haku_json );
-        $translations = POF\Api::get( $kaannos_json );
+        // Get remote data
+        $program      = \POF\Api::get( $ohjelma_json, true );
+        $search_terms = \POF\Api::get( $haku_json, true );
+        $translations = \POF\Api::get( $kaannos_json, true );
+
+        // Parse age groups
+        $age_groups = $program['program'][0]['agegroups'];
+
+        // Remove invalid field types
+        $search_terms = array_filter( $search_terms, function( $field ) {
+            return ! empty( $field['type'] );
+        });
+
+        // Combine the search terms and translations
+        foreach ( $search_terms as $field_name => &$field_data ) {
+
+            // Get each field translation
+            foreach ( $field_data['fields'] as &$field ) {
+
+                // Get translations for correct field
+                foreach ( $translations as $translation_field_name => $field_translations ) {
+                    if ( $translation_field_name === $field_name ) {
+
+                        // Get correct language translations
+                        foreach ( $field_translations as $translation_data ) {
+                            if ( $translation_data['lang'] === $locale ) {
+
+                                foreach ( $translation_data['items'] as $translation ) {
+                                    if ( $translation['key'] === $field ) {
+                                        // Transform the field to an object for better dust handling
+                                        $field = (object) $translation;
+                                        // Break all the way to the $field_data['fields'] loop
+                                        // to handle the next field value
+                                        break 3;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         $result = (object) [
             'search_terms' => $search_terms,
-            'translations' => $translations,
+            'age_groups'   => $age_groups,
         ];
 
         return $result;
