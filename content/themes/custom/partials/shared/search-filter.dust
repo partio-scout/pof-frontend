@@ -13,6 +13,8 @@
             </div>
         </label>
 
+        {>"search-and-or" name="base_relation" /}
+
         {>"agegroup-filters" /}
 
         <p>Muut rajausvaihtoehdot</p>

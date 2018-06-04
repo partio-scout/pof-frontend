@@ -1,7 +1,7 @@
 {?name}
     <label class="search-and-or">
         <p>Rajaustapa</p>
-        <input type="checkbox" name="{name}" data-unchecked-value="and" value="or">
+        <input type="checkbox" name="{name}" data-unchecked-value="AND" value="OR">
         <span class="and-or-indicator">
             <span class="and">Ja</span>
             <span class="indicator"></span>

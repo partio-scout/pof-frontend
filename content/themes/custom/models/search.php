@@ -122,30 +122,64 @@ class Search extends \DustPress\Model {
         else {
             // Remove - from search_term. Else the word after - will be excluded from query.
             $search_term = str_replace( '-', ' ', $search_term );
+
             // Args for search.
-            $args = array(
-                's'             => $search_term,
-                'post_type' => array('page', 'pof_tip'),
-                'post_status'   => 'publish',
-                'meta_query'    => array(
+            $filter_query = [];
+
+            // This technically works as is but must be changed into a raw sql query
+            // as it generates a far too slow of a query (over 2 minutes with only 1 parameter).
+            // So it is disabled for now.
+            if ( false && wp_doing_ajax() ) {
+                $filter_query['relation'] = $ajax_args->filter->base_relation;
+
+                // First handle global filters
+                $global_args    = $ajax_args->filter->global;
+                $global_filters = $this->handle_filters( $global_args );
+                $filter_query  += $global_filters;
+
+                // Now handle each invidual age group filter
+                foreach ( $ajax_args->filter->enabled_age_groups as $guid ) {
+                    $agegroup_args    = $ajax_args->filter->agegroups->{ $guid };
+                    $agegroup_filters = $this->handle_filters( $agegroup_args );
+                    $filter_query[]   = [
+                        'relation' => 'AND',
+                        [
+                            'key'     => 'api_path',
+                            'compare' => 'LIKE',
+                            'value'   => $guid,
+                        ],
+                        [
+                            $agegroup_filters,
+                        ],
+                    ];
+                }
+            }
+
+            $args = [
+                's'           => $search_term,
+                'post_type'   => [ 'page', 'pof_tip' ],
+                'post_status' => 'publish',
+                'meta_query'  => [
                     'relation' => 'OR',
-                    array(
+                    [
                         'key'     => 'api_type',
                         'value'   => 'task',
                         'compare' => '=',
-                    ),
-                    array(
+                    ],
+                    [
                         'key'     => 'api_type',
                         'value'   => 'taskgroup',
                         'compare' => '=',
-                    ),
-                    array(
+                    ],
+                    [
                         'key'     => 'api_type',
                         'value'   => 'pof_tip',
                         'compare' => '=',
-                    )
-                )
-            );
+                    ],
+                    $filter_query,
+                ],
+            ];
+
             // Check if executed with ajax and set offset if true.
             if ( wp_doing_ajax() ) {
                 $args['posts_per_page'] = $per_page;
@@ -206,12 +240,95 @@ class Search extends \DustPress\Model {
         } // End if().
     }
 
-    // Bind translated strings.
+    /**
+     * Transform filter args into a part of a meta query
+     *
+     * @param  stdClass $filters Filters to handle.
+     * @return array             Transformed filter args.
+     */
+    protected function handle_filters( $filters ) {
+        $result = [];
+        foreach ( $filters->enabled as $field_key ) {
+            $field_value = $filters->filters->{ $field_key };
+            if ( is_string( $field_value ) ) {
+                // Select/Radio field
+                $field_query = [
+                    'relation' => 'AND',
+                    [
+                        'key'          => '^tags_[0-9]_group_[0-9]_group_key$',
+                        '_key_compare' => 'REGEXP',
+                        'compare'      => '=',
+                        'value'        => $field_key,
+                    ],
+                    [
+                        'key'          => '^tags_[0-9]_group_[0-9]_slug$',
+                        '_key_compare' => 'REGEXP',
+                        'compare'      => '=',
+                        'value'        => $field_value,
+                    ],
+                ];
+            }
+            elseif ( is_array( $field_value ) ) {
+                // Checkbox field
+                $relation = $filters->and_or->{ $field_key };
+
+                $field_query = [
+                    'relation' => $relation,
+                ];
+                foreach ( $field_value as $value ) {
+                    $field_query[] = [
+                        'relation' => 'AND',
+                        [
+                            'key'          => '^tags_[0-9]_group_[0-9]_group_key$',
+                            '_key_compare' => 'REGEXP',
+                            'compare'      => '=',
+                            'value'        => $field_key,
+                        ],
+                        [
+                            'key'          => '^tags_[0-9]_group_[0-9]_slug$',
+                            '_key_compare' => 'REGEXP',
+                            'compare'      => '=',
+                            'value'        => $value,
+                        ],
+                    ];
+                }
+            }
+            elseif ( is_object( $field_value ) ) {
+                // Min max field
+                $field_query = [
+                    'relation' => 'AND',
+                    [
+                        'key'          => '^tags_[0-9]_group_[0-9]_group_key$',
+                        '_key_compare' => 'REGEXP',
+                        'compare'      => '=',
+                        'value'        => $field_key,
+                    ],
+                    [
+                        'key'     => '^tags_[0-9]_group_[0-9]_slug$',
+                        'compare' => '>=',
+                        'value'   => $field_value->min,
+                    ],
+                    [
+                        'key'     => '^tags_[0-9]_group_[0-9]_slug$',
+                        'compare' => '<=',
+                        'value'   => $field_value->max,
+                    ],
+                ];
+            }
+
+            $result[] = $field_query;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Bind translated strings.
+     */
     public function S() {
         $s = [
-            'aktiviteettiryhma'             => __( 'Task group', 'pof' ),
+            'aktiviteettiryhma' => __( 'Task group', 'pof' ),
         ];
         return $s;
-    }     
-    
+    }
 }

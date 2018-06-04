@@ -17,7 +17,7 @@
                         {/eq}
 
                         {@eq value="checkbox"}
-                            {>"search-and-or" name="{prefix}[and-or][{fieldname}]" /}
+                            {>"search-and-or" name="{prefix}[and_or][{fieldname}]" /}
 
                             {#fields}
                                 <label>
