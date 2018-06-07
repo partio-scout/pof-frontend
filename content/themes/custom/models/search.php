@@ -129,8 +129,7 @@ class Search extends \DustPress\Model {
             // This technically works as is but must be changed into a raw sql query
             // as it generates a far too slow of a query (over 2 minutes with only 1 parameter).
             // So it is disabled for now.
-            if ( false && wp_doing_ajax() ) {
-                $filter_query['relation'] = $ajax_args->filter->base_relation;
+            if ( wp_doing_ajax() ) {
 
                 // First handle global filters
                 $global_args    = $ajax_args->filter->global;
@@ -153,32 +152,55 @@ class Search extends \DustPress\Model {
                         ],
                     ];
                 }
+
+                // Only add relation param if more than 1 filter
+                if ( count( $filter_query ) > 1 ) {
+                    $filter_query['relation'] = $ajax_args->filter->base_relation;
+                }
+            }
+
+            $api_type_query = [
+                'relation' => 'OR',
+                [
+                    'key'     => 'api_type',
+                    'value'   => 'task',
+                    'compare' => '=',
+                ],
+                [
+                    'key'     => 'api_type',
+                    'value'   => 'taskgroup',
+                    'compare' => '=',
+                ],
+                [
+                    'key'     => 'api_type',
+                    'value'   => 'pof_tip',
+                    'compare' => '=',
+                ],
+            ];
+
+            if ( ! empty( $filter_query ) ) {
+                $meta_query = [
+                    'relation' => 'AND',
+                    $api_type_query,
+                    $filter_query,
+                ];
+            }
+            else {
+                $meta_query = $api_type_query;
             }
 
             $args = [
                 's'           => $search_term,
                 'post_type'   => [ 'page', 'pof_tip' ],
                 'post_status' => 'publish',
-                'meta_query'  => [
-                    'relation' => 'OR',
-                    [
-                        'key'     => 'api_type',
-                        'value'   => 'task',
-                        'compare' => '=',
-                    ],
-                    [
-                        'key'     => 'api_type',
-                        'value'   => 'taskgroup',
-                        'compare' => '=',
-                    ],
-                    [
-                        'key'     => 'api_type',
-                        'value'   => 'pof_tip',
-                        'compare' => '=',
-                    ],
-                    $filter_query,
-                ],
+                'meta_query'  => $meta_query,
             ];
+
+            // Modify meta key query
+            add_filter('posts_where', function( $where ) {
+                $where = str_replace( "meta_key = 'tags_\$_group_\$_", "meta_key LIKE 'tags_%_group_%_", $where );
+                return $where;
+            });
 
             // Check if executed with ajax and set offset if true.
             if ( wp_doing_ajax() ) {
@@ -189,8 +211,6 @@ class Search extends \DustPress\Model {
             else {
                 $args['posts_per_page'] = $displaying;
             }
- 
-            $query = new WP_Query( $args );
 
             if ( function_exists( 'relevanssi_do_query' ) ) {
                 // Make relevanssi search.
@@ -255,42 +275,38 @@ class Search extends \DustPress\Model {
                 $field_query = [
                     'relation' => 'AND',
                     [
-                        'key'          => '^tags_[0-9]_group_[0-9]_group_key$',
-                        '_key_compare' => 'REGEXP',
-                        'compare'      => '=',
-                        'value'        => $field_key,
+                        'key'     => 'tags_$_group_$_group_key',
+                        'compare' => '=',
+                        'value'   => $field_key,
                     ],
                     [
-                        'key'          => '^tags_[0-9]_group_[0-9]_slug$',
-                        '_key_compare' => 'REGEXP',
-                        'compare'      => '=',
-                        'value'        => $field_value,
+                        'key'     => 'tags_$_group_$_slug',
+                        'compare' => '=',
+                        'value'   => $field_value,
                     ],
                 ];
             }
             elseif ( is_array( $field_value ) ) {
                 // Checkbox field
-                $relation = $filters->and_or->{ $field_key };
-
-                $field_query = [
-                    'relation' => $relation,
-                ];
+                $field_query = [];
                 foreach ( $field_value as $value ) {
                     $field_query[] = [
                         'relation' => 'AND',
                         [
-                            'key'          => '^tags_[0-9]_group_[0-9]_group_key$',
-                            '_key_compare' => 'REGEXP',
-                            'compare'      => '=',
-                            'value'        => $field_key,
+                            'key'     => 'tags_$_group_$_group_key',
+                            'compare' => '=',
+                            'value'   => $field_key,
                         ],
                         [
-                            'key'          => '^tags_[0-9]_group_[0-9]_slug$',
-                            '_key_compare' => 'REGEXP',
-                            'compare'      => '=',
-                            'value'        => $value,
+                            'key'     => 'tags_$_group_$_slug',
+                            'compare' => '=',
+                            'value'   => $value,
                         ],
                     ];
+                }
+
+                if ( count( $field_query ) > 1 ) {
+                    $field_query['relation'] = $filters->and_or->{ $field_key };
                 }
             }
             elseif ( is_object( $field_value ) ) {
@@ -298,18 +314,17 @@ class Search extends \DustPress\Model {
                 $field_query = [
                     'relation' => 'AND',
                     [
-                        'key'          => '^tags_[0-9]_group_[0-9]_group_key$',
-                        '_key_compare' => 'REGEXP',
-                        'compare'      => '=',
-                        'value'        => $field_key,
+                        'key'     => 'tags_$_group_$_group_key',
+                        'compare' => '=',
+                        'value'   => $field_key,
                     ],
                     [
-                        'key'     => '^tags_[0-9]_group_[0-9]_slug$',
+                        'key'     => 'tags_$_group_$_slug',
                         'compare' => '>=',
                         'value'   => $field_value->min,
                     ],
                     [
-                        'key'     => '^tags_[0-9]_group_[0-9]_slug$',
+                        'key'     => 'tags_$_group_$_slug',
                         'compare' => '<=',
                         'value'   => $field_value->max,
                     ],
