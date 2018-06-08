@@ -1,11 +1,13 @@
 @font-face {
     font-family: "PT Sans", sans-serif;
+    font-display: swap;
     src: url("../fonts/pt-sans.woff") format("woff"),
     url("../fonts/pt-sans.ttf") format("ttf");
 }
 
 @font-face {
     font-family: "Source Sans Pro Black", sans-serif;
+    font-display: swap;
     src: url("../fonts/source-sans.woff") format("woff"),
     url("../fonts/source-sans.woff2") format("woff2");
 }
