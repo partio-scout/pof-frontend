@@ -51,6 +51,12 @@ include_once( 'functions/function-search.php' );
 // Dustpress helpers
 include_once( 'functions/function-dustpress-helpers.php' );
 
+// manifest.json handler
+include_once( 'functions/function-manifest.php' );
+
+// Post seo description generation
+include_once( 'functions/function-post-description.php' );
+
 
 
 /*
