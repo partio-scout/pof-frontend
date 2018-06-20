@@ -25,7 +25,9 @@
         "vlucas/phpdotenv": "^2.4",
         "composer/installers": "^1.3",
         "predis/predis": "^1.1",
-        "wpackagist-plugin/user-switching": "^1.0"
+        "wpackagist-plugin/user-switching": "^1.0",
+        "devgeniem/wp-redis-object-cache-dropin": "1.3.4.1",
+        "wpackagist-plugin/redis-cache": "1.3.0"
     },
     "extra": {
         "wordpress-install-dir": "wp",
@@ -33,6 +35,11 @@
             "content/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
             "content/plugins/{$name}/": ["type:wordpress-plugin"],
             "content/themes/{$name}/": ["type:wordpress-theme"]
+        },
+        "dropin-paths": {
+            "content/": [
+                "type:wordpress-dropin"
+            ]
         }
     },
     "repositories": {
@@ -47,6 +54,10 @@
         "relevanssi" : {
             "type": "git",
             "url": "git@github.com:devgeniem/ext-relevanssi-premium.git"
-        }        
+        },
+        "devgeniem/wp-redis-object-cache-dropin": {
+            "type": "git",
+            "url": "git@github.com:devgeniem/wp-redis-object-cache-dropin.git"
+        }      
     }
 }

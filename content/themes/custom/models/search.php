@@ -102,239 +102,300 @@ class Search extends \DustPress\Model {
         $term = get_query_var( 's' );
         return $term;
     }
+
     /**
      *  Get search results.
      */
     public function Results() {
-        if ( wp_doing_ajax() ) {
-            $ajax_args = $this->get_args();
-        }
+        $ajax_args   = $this->get_args();
+        $per_page    = absint( get_option( 'posts_per_page' ), 10 );
+        $page        = absint( $ajax_args->page ?? get_query_var( 'paged', 1 ) ?: 1 );
+        $displaying  = $per_page * $page;
+        $search_term = $ajax_args->search->s ?? get_query_var( 's' );
+        // Remove - from search_term. Else the word after - will be excluded from query.
+        $search_term = str_replace( '-', ' ', $search_term );
 
-        $per_page   = get_option( 'posts_per_page' );
-        $page       = (int) get_query_var( 'paged' );
-        $page       = $page ? $page : 1; // Force page value
-        $displaying = $per_page * $page;
-        $search_term = wp_doing_ajax() ? $ajax_args->search->s : get_query_var( 's' );
-        // Do not execute if no search term - relevanssi doesn't like it.
-        if ( empty( $search_term ) ) {
-            return false;
-        }
-        else {
-            // Remove - from search_term. Else the word after - will be excluded from query.
-            $search_term = str_replace( '-', ' ', $search_term );
+        $params = (object) [
+            'ajax_args'   => $ajax_args,
+            'per_page'    => $per_page,
+            'page'        => $page,
+            'displaying'  => $displaying,
+            'search_term' => $search_term,
+        ];
 
-            // Args for search.
-            $filter_query = [];
+        $results = $this->get_results( $params );
 
-            // This technically works as is but must be changed into a raw sql query
-            // as it generates a far too slow of a query (over 2 minutes with only 1 parameter).
-            // So it is disabled for now.
-            if ( wp_doing_ajax() ) {
-
-                // First handle global filters
-                $global_args    = $ajax_args->filter->global;
-                $global_filters = $this->handle_filters( $global_args );
-                $filter_query  += $global_filters;
-
-                // Now handle each invidual age group filter
-                foreach ( $ajax_args->filter->enabled_age_groups as $guid ) {
-                    $agegroup_args    = $ajax_args->filter->agegroups->{ $guid };
-                    $agegroup_filters = $this->handle_filters( $agegroup_args );
-                    $filter_query[]   = [
-                        'relation' => 'AND',
-                        [
-                            'key'     => 'api_path',
-                            'compare' => 'LIKE',
-                            'value'   => $guid,
-                        ],
-                        [
-                            $agegroup_filters,
-                        ],
-                    ];
-                }
-
-                // Only add relation param if more than 1 filter
-                if ( count( $filter_query ) > 1 ) {
-                    $filter_query['relation'] = $ajax_args->filter->base_relation;
-                }
-            }
-
-            $api_type_query = [
-                'relation' => 'OR',
-                [
-                    'key'     => 'api_type',
-                    'value'   => 'task',
-                    'compare' => '=',
-                ],
-                [
-                    'key'     => 'api_type',
-                    'value'   => 'taskgroup',
-                    'compare' => '=',
-                ],
-                [
-                    'key'     => 'api_type',
-                    'value'   => 'pof_tip',
-                    'compare' => '=',
-                ],
-            ];
-
-            if ( ! empty( $filter_query ) ) {
-                $meta_query = [
-                    'relation' => 'AND',
-                    $api_type_query,
-                    $filter_query,
-                ];
-            }
-            else {
-                $meta_query = $api_type_query;
-            }
-
-            $args = [
-                's'           => $search_term,
-                'post_type'   => [ 'page', 'pof_tip' ],
-                'post_status' => 'publish',
-                'meta_query'  => $meta_query,
-            ];
-
-            // Modify meta key query
-            add_filter('posts_where', function( $where ) {
-                $where = str_replace( "meta_key = 'tags_\$_group_\$_", "meta_key LIKE 'tags_%_group_%_", $where );
-                return $where;
-            });
-
-            // Check if executed with ajax and set offset if true.
-            if ( wp_doing_ajax() ) {
-                $args['posts_per_page'] = $per_page;
-                $args['offset']         = $ajax_args->load_more ? $displaying : 0;
-            }
-            // Else show posts without offset.
-            else {
-                $args['posts_per_page'] = $displaying;
-            }
-
-            if ( function_exists( 'relevanssi_do_query' ) ) {
-                // Make relevanssi search.
-                $results = relevanssi_do_query( $query );
-            }
-            else {
-                $error = [
-                    'message' => 'Relevanssi is not activated!',
-                ];
-                return $error;
-            }
-
-            // Build object to be returned.
-            $data                = new stdClass();
-            $data->posts         = $results;
-            $data->count         = $query->found_posts;
-            $data->max_num_pages = $query->max_num_pages;
-            $data->page          = $page;
-            // Modify every post
-            foreach ( $data->posts as &$post ) {
-                // Get details
-                $acf_post = \DustPress\Query::get_acf_post( $post->ID );
-                $post->ingress = $post->post_excerpt;
-
-                if( $post->post_type === 'pof_tip') {
-                    $parent_id = get_post_meta( $post->ID, 'pof_tip_parent', true );
-                    $parent_link = get_permalink( $parent_id );
-                    $guid = get_post_meta( $post->ID, 'pof_tip_guid', true );
-                    $post->url = $parent_link . '#' . $guid;
-                    $post->search_type = $post->post_type;
-                    $parent_title = get_the_title( $parent_id );
-                    $post->post_title =  __( 'Tip in task ', 'pof' ) . '<i>' . $parent_title . '</i>';
-
-                } else {
-                    $post->search_type = $acf_post->fields['api_type'];
-                    map_api_images( $acf_post->fields['api_images'] );
-                    if ( is_array( $acf_post->fields['api_images'] ) ) {
-                        $post->image = $acf_post->fields['api_images'][0]['logo'];
-                    }
-                    $post->parents = map_api_parents( json_decode_pof( $acf_post->fields['api_path'] ) );
-                    $post->url = get_permalink( $post->ID );
-                }
-
-            } // End foreach().
-            unset( $post );
-            return $data;
-        } // End if().
+        return $results;
     }
 
     /**
-     * Transform filter args into a part of a meta query
+     * Get results from params
      *
-     * @param  stdClass $filters Filters to handle.
-     * @return array             Transformed filter args.
+     * @param  stdClass $params Params to use for searching.
+     * @return stdClass         Object containing metadata for request and post list.
      */
-    protected function handle_filters( $filters ) {
-        $result = [];
-        foreach ( $filters->enabled as $field_key ) {
-            $field_value = $filters->filters->{ $field_key };
-            if ( is_string( $field_value ) ) {
-                // Select/Radio field
-                $field_query = [
-                    'relation' => 'AND',
+    protected function get_results( stdClass $params ) {
+        $posts_start = microtime( true );
+        $posts_key = 'search/' . esc_sql( wp_json_encode( $params ) );
+        $posts     = wp_cache_get( $posts_key );
+        if ( empty( $posts ) ) {
+            $args = [
+                's'              => $params->search_term,
+                'post_type'      => [ 'page', 'pof_tip' ],
+                'post_status'    => 'publish',
+                'posts_per_page' => -1, //phpcs:ignore
+                'meta_query'     => [
+                    'relation' => 'OR',
                     [
-                        'key'     => 'tags_$_group_$_group_key',
+                        'key'     => 'api_type',
+                        'value'   => 'task',
                         'compare' => '=',
-                        'value'   => $field_key,
                     ],
                     [
-                        'key'     => 'tags_$_group_$_slug',
+                        'key'     => 'api_type',
+                        'value'   => 'taskgroup',
                         'compare' => '=',
-                        'value'   => $field_value,
                     ],
-                ];
-            }
-            elseif ( is_array( $field_value ) ) {
-                // Checkbox field
-                $field_query = [];
-                foreach ( $field_value as $value ) {
-                    $field_query[] = [
-                        'relation' => 'AND',
-                        [
-                            'key'     => 'tags_$_group_$_group_key',
-                            'compare' => '=',
-                            'value'   => $field_key,
-                        ],
-                        [
-                            'key'     => 'tags_$_group_$_slug',
-                            'compare' => '=',
-                            'value'   => $value,
-                        ],
-                    ];
-                }
+                    [
+                        'key'     => 'api_type',
+                        'value'   => 'pof_tip',
+                        'compare' => '=',
+                    ],
+                ],
+            ];
 
-                if ( count( $field_query ) > 1 ) {
-                    $field_query['relation'] = $filters->and_or->{ $field_key };
-                }
-            }
-            elseif ( is_object( $field_value ) ) {
-                // Min max field
-                $field_query = [
-                    'relation' => 'AND',
-                    [
-                        'key'     => 'tags_$_group_$_group_key',
-                        'compare' => '=',
-                        'value'   => $field_key,
-                    ],
-                    [
-                        'key'     => 'tags_$_group_$_slug',
-                        'compare' => '>=',
-                        'value'   => $field_value->min,
-                    ],
-                    [
-                        'key'     => 'tags_$_group_$_slug',
-                        'compare' => '<=',
-                        'value'   => $field_value->max,
-                    ],
-                ];
-            }
+            // Get all posts with query
+            $query = new WP_Query( $args );
+            $posts = relevanssi_do_query( $query );
 
-            $result[] = $field_query;
+            wp_cache_set( $posts_key, $posts, null, HOUR_IN_SECONDS );
+        }
+        header( 'x-posts-time: ' . round( microtime( true ) - $posts_start, 4 ) );
+
+        // Get extra post data for each post
+        $posts = $this->get_post_data( $posts );
+
+        // Filter the posts
+        if ( ! empty( $params->ajax_args ) ) {
+            $posts = $this->filter_posts( $posts, $params->ajax_args );
         }
 
-        return $result;
+        // Do pagination in php since we do the filtering in php as well
+        $pagination_start = microtime( true );
+        $offset = $params->page > 1 ? $params->page * $params->per_page : 0;
+        $result = array_slice( $posts, $offset, $params->per_page );
+        header( 'x-pagination-time: ' . round( microtime( true ) - $pagination_start, 4 ) );
+
+        $data = (object) [
+            'posts'         => $result,
+            'count'         => count( $posts ),
+            'max_num_pages' => ceil( count( $posts ) / $params->per_page ),
+            'page'          => $params->page,
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Get each post data
+     *
+     * @param  array $posts An array of \WP_Post objects.
+     * @return array        Modified $posts.
+     */
+    protected function get_post_data( array $posts ) {
+        $post_data_start = microtime( true );
+        foreach ( $posts as &$post ) {
+            $post_key = 'postdata/' . $post->ID;
+            $new_post = wp_cache_get( $post_key );
+            if ( empty( $new_post ) ) {
+                // Add fields
+                $new_post = \DustPress\Query::get_acf_post( $post->ID );
+
+                // Add other custom data
+                $new_post->ingress = $new_post->post_excerpt;
+                if ( $new_post->post_type === 'pof_tip' ) {
+                    $new_post->search_type = $new_post->post_type;
+                    $parent_id             = get_post_meta( $new_post->ID, 'pof_tip_parent', true );
+                    $guid                  = get_post_meta( $new_post->ID, 'pof_tip_guid', true );
+                    $parent_link           = get_permalink( $parent_id );
+                    $parent_title          = get_the_title( $parent_id );
+                    $new_post->url         = $parent_link . '#' . $guid;
+                    $new_post->post_title  = __( 'Tip in task ', 'pof' ) . '<i>' . $parent_title . '</i>';
+                }
+                else {
+                    $new_post->search_type = $new_post->fields['api_type'];
+                    $new_post->url         = get_permalink( $new_post->ID );
+                    $new_post->parents     = map_api_parents( json_decode_pof( $new_post->fields['api_path'] ) );
+                    map_api_images( $new_post->fields['api_images'] );
+                    if ( is_array( $new_post->fields['api_images'] ) ) {
+                        $new_post->image = $new_post->fields['api_images'][0]['logo'];
+                    }
+                }
+
+                wp_cache_set( $post_key, $new_post, null, HOUR_IN_SECONDS );
+            }
+
+            // Replace $post but keep the excerpt
+            $excerpt            = $post->post_excerpt;
+            $post               = $new_post;
+            $post->post_excerpt = $excerpt;
+        }
+        header( 'x-post_data-time: ' . round( microtime( true ) - $post_data_start, 4 ) );
+
+        return $posts;
+    }
+
+    /**
+     * Filter the posts
+     *
+     * @param  array    $posts Posts to filter.
+     * @param  stdClass $args  Args to filter by.
+     * @return array           Filtered $posts.
+     */
+    protected function filter_posts( array $posts, stdClass $args ) {
+        // Filter inside php as this is way faster than the query generated by WP_Query
+        if ( ! empty( $args->filter ) ) {
+            $filter_start = microtime( true );
+            $filters = $args->filter;
+            $model = $this;
+            $posts   = array_filter( $posts, function( $post ) use ( $filters, $model ) {
+                $base_relation = $filters->base_relation;
+
+                // Collect all items to check into single array
+                $filters_to_check = [
+                    'global' => $filters->global,
+                ];
+                foreach ( (array) $filters->enabled_age_groups as $guid ) {
+                    $filters_to_check[ $guid ] = $filters->agegroups->{ $guid };
+                }
+
+                // Check all filters
+                $success = 0;
+                foreach ( $filters_to_check as $guid => $filter ) {
+                    $result = $model->single_group_filter( $post, $filter, $guid );
+
+                    // If base relation is in OR mode succeed with only one success
+                    if ( $base_relation === 'OR' && $result ) {
+                        return true;
+                    }
+                    // Otherwise check all
+                    elseif ( $result ) {
+                        $success++;
+                    }
+                    // Otherwise fail immediately
+                    else {
+                        return false;
+                    }
+
+                }
+
+                // If we are in AND mode and all were succesful
+                if ( $success === count( $filters_to_check ) ) {
+                    return true;
+                }
+
+                // Finally if we are in AND more and not all were successful fail
+                return false;
+            });
+            header( 'x-filter-time: ' . round( microtime( true ) - $filter_start, 4 ) );
+        }
+
+        return $posts;
+    }
+
+    /**
+     * Check a set of filters against a post to filter it
+     *
+     * @param  mixed  $post    Post to check.
+     * @param  mixed  $filters Filters to check.
+     * @param  string $guid    Agegroup guid or 'global'.
+     * @return bool            True or false depending on if post filter was succesful.
+     */
+    protected function single_group_filter( $post, $filters, string $guid ) {
+        // First of all check agegroups
+        if ( $guid !== 'global' ) {
+            if ( empty( $post->parents ) ) {
+                return false;
+            }
+
+            $parent_success = false;
+            foreach ( $post->parents as $post_parent ) {
+                if ( $post_parent['guid'] === $guid ) {
+                    $parent_success = true;
+                    break;
+                }
+            }
+
+            if ( ! $parent_success ) {
+                return false;
+            }
+        }
+        // Now check filters
+        if ( ! empty( $filters->enabled ) ) {
+            foreach ( (array) $filters->enabled as $field_key ) {
+                $relation = $filters->and_or->{ $field_key } ?? null;
+                $filter   = $filters->filters->{ $field_key };
+                $success  = ( $relation === 'AND' ) ? 0 : false;
+
+                foreach ( $post->fields['tags'] as $tag ) {
+                    foreach ( $tag['group'] as $group ) {
+                        if ( $group['group_key'] === $field_key ) {
+                            // MinMax
+                            if ( is_object( $filter ) ) {
+                                if (
+                                    (
+                                        $filter->max &&
+                                        $filter->max <= absint( $group['slug'] )
+                                    ) ||
+                                    (
+                                        $filter->min &&
+                                        $filter->min >= absint( $group['slug'] )
+                                    )
+                                ) {
+                                    $success = true;
+                                    continue 2;
+                                }
+                            }
+                            // AND/OR
+                            elseif ( is_array( $filter ) ) {
+                                if ( $relation === 'AND' ) {
+                                    if ( in_array( $group['slug'], $filter, true ) ) {
+                                        $success++;
+                                    }
+                                }
+                                else {
+                                    if ( in_array( $group['slug'], $filter, true ) ) {
+                                        $success = true;
+                                        continue 2;
+                                    }
+                                }
+                            }
+                            // Single selection
+                            elseif ( is_string( $filter ) ) {
+                                if ( $filter === $group['slug'] ) {
+                                    $success = true;
+                                    continue 2;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (
+                    // Success was set to false
+                    ! $success ||
+                    (
+                        // Not all AND relations were met
+                        is_int( $success ) &&
+                        $success !== count( $filter )
+                    )
+                ) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**

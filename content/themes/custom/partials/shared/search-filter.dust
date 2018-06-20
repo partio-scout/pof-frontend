@@ -1,5 +1,19 @@
 {#ApiSearchTerms}
-    <form class="search-filter">
+    {?embed}
+        <div class="search-filter embed-filter">
+    {:else}
+        <form class="search-filter">
+    {/embed}
+
+    {?embed}
+        <label>
+            <p>Rajaa ikäkauden mukaan</p>
+            <div class="search-input-container">
+                <input type="search" name="s" value="" placeholder="Etsi" title="Etsi sivulta">
+                <i class="fa fa-search search-icon"></i>
+            </div>
+        </label>
+    {:else}
         <h3>
             <i class="fa fa-filter" aria-hidden="true"></i>
             Rajaa hakutuloksia
@@ -8,17 +22,30 @@
         <label>
             <p>Ikäkauden mukaan</p>
             <div class="search-input-container">
-                <input type="search" name="s" id="search" value="" placeholder="Etsi"  title="Etsi sivulta">
-                <i id="search-icon" class="fa fa-search search-icon"></i>
+                <input type="search" name="s" value="" placeholder="Etsi" title="Etsi sivulta">
+                <i class="fa fa-search search-icon"></i>
             </div>
         </label>
+    {/embed}
 
-        {>"search-and-or" name="base_relation" /}
+    {>"search-and-or" name="base_relation" /}
 
-        {>"agegroup-filters" /}
+    {>"agegroup-filters" embed="false" /}
 
+    {?embed}
+        <button class="toggle-global-filters">
+            <i class="fa fa-cog"></i>
+            Lisää rajausvaihtoehtoja
+        </button>
+    {:else}
         <p>Muut rajausvaihtoehdot</p>
+    {/embed}
 
-        {>"filters" prefix="global" /}
-    </form>
+    {>"filters" prefix="global" /}
+
+    {?embed}
+        </div>
+    {:else}
+        </form>
+    {/embed}
 {/ApiSearchTerms}

@@ -17,7 +17,6 @@ class Search {
     cache() {
         this.$loadMoreButton         = $( '#search-results-loadmore' );
         this.$resultsContainer       = $( '#search-results-container' );
-        this.$searchInput            = $( '#search' );
         this.$searchIcon             = $( '.search-icon' );
         this.$searchForm             = $( '.search-box__form' );
         this.$searchInput            = this.$searchForm.find( 'input[name="s"]' );
@@ -27,7 +26,15 @@ class Search {
         this.$maxPages               = this.$loadMoreButton.data( 'maxpages' );
         this.$page                   = this.$loadMoreButton.data( 'page' );
         this.$filterForm             = $( '.search-filter' );
+        this.$filterBtn              = this.$searchForm.find( '.filter-icon' );
+        this.$filterMoreBtn          = this.$filterForm.find( '.toggle-global-filters' );
+        this.$filterInputs           = this.$filterForm.find( 'input[name]:not([type="text"])' );
     };
+
+    toggleSelfActive( e ) {
+        e.preventDefault();
+        $( e.currentTarget ).toggleClass( 'active' );
+    }
 
     /**
      * Handle search metadata
@@ -80,28 +87,20 @@ class Search {
             this.$loadMoreButton.on( 'click', ( e ) => this.loadMore( e ) );
             this.$searchForm.on( 'submit', ( e ) => this.doSearch( e ) );
             this.$searchIcon.on( 'click', ( e ) => this.doSearch( e ) );
-            this.$filterForm.on( 'submit', ( e ) => this.filter( e ) );
+            this.$filterForm.on( 'submit', ( e ) => this.doSearch( e ) );
+            this.$filterBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
+            this.$filterMoreBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
+            this.$filterInputs.on( 'change', ( e ) => this.doSearch( e ) );
         }
     };
 
     getArgs() {
         const args = {
             search: this.$searchForm.serializeJSON(),
-            filter: this.$filterForm.serializeJSON()
+            filter: this.$filterForm.filter( ':visible' ).serializeJSON()
         };
 
         return args;
-    }
-
-    /**
-     * Do a new search query with filters
-     *
-     * @param  {object} e Submit event.
-     */
-    filter( e ) {
-        e.preventDefault();
-        const args = this.getArgs();
-        console.log( 'args', args );
     }
 
     /**
@@ -110,15 +109,25 @@ class Search {
      * @param {object} e Event that initialized this function call.
      */
     doSearch( e ) {
-        this.stop( e );
+        if ( e.type !== 'change' ) {
+            this.stop( e );
+        }
 
         // Collect args from the form that was submitted either via click or submit event
         const args = this.getArgs();
 
         // Duplicate search value across both forms
-        this.$searchInput.val( args.search.s );
+        if ( args.search.s ) {
+            this.$searchInput.val( args.search.s );
+        } else {
+            args.search.s = this.$searchInput.val();
+        }
 
-        dp( 'Search/Results', {
+        // Abort any existing calls
+        if ( this.xhr ) {
+            this.xhr.abort();
+        }
+        this.xhr = dp( 'Search/Results', {
             args,
             partial: 'search-results-list',
             data: true,
@@ -126,8 +135,7 @@ class Search {
                 this.doSearchSuccess( html, data, args );
             },
             error: ( error ) => {
-                const newHTML = this.$resultsContainer.html() + '<h2>' + error + '</h2>';
-                this.$resultsContainer.html( newHTML );
+                console.log( 'error', error );
             }
         });
     };
@@ -144,16 +152,20 @@ class Search {
             this.$loadMoreButton.addClass( 'loading' );
 
             const args = this.getArgs();
-            args.load_more = true;
-            dp( 'Search/Results', {
+            args.page = this.$page + 1;
+
+            // Abort any existing calls
+            if ( this.xhr ) {
+                this.xhr.abort();
+            }
+            this.xhr = dp( 'Search/Results', {
                 args,
                 partial: 'search-results-list',
                 success: ( data ) => {
                     this.loadMoreSuccess( data );
                 },
                 error: ( error ) => {
-                    const newHTML = this.$resultsContainer.html() + '<h2>' + error + '</h2>';
-                    this.$resultsContainer.html( newHTML );
+                    console.log( 'error', error );
                 }
             });
         }

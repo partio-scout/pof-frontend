@@ -111,6 +111,43 @@ $search_fontsize_smaller: rem-calc(12);
 	margin-right: -$column-gutter;
 	padding: $column-gutter;
 	text-transform: capitalize;
+	display: none;
+
+	&.embed-filter {
+		max-width: 100%;
+		position: absolute;
+		right: $column-gutter;
+		top: 2.4375rem; // Input height
+		width: 20rem;
+		z-index: 10;
+
+		// Notch
+		&::after {
+			background-color: white;
+			content: '';
+			height: 1rem;
+			position: absolute;
+			right: .8rem;
+			top: 0;
+			transform: translateY(-50%) rotate(45deg);
+			width: 1rem;
+		}
+	}
+
+	.toggle-global-filters {
+		background: none;
+		font-size: 1.2rem;
+		color: $partio_main_color_lighter;
+		padding: 0;
+
+		.fa-cog {
+			margin-right: .5rem;
+		}
+
+		&.active + .field-list {
+			display: block;
+		}
+	}
 
 	.fa-filter {
 		color: $partio_main_color_lighter;
@@ -125,9 +162,11 @@ $search_fontsize_smaller: rem-calc(12);
 		color: inherit;
 	}
 
-	.search-input-container {
-		.search-icon {
-			top: 70%;
+	@media ( min-width: $small-breakpoint ) {
+		display: block;
+
+		.search-box & {
+			display: none;
 		}
 	}
 }
@@ -135,20 +174,59 @@ $search_fontsize_smaller: rem-calc(12);
 .search-input-container {
 	position: relative;
 
-	.search-icon {
+	.search-icon,
+	.filter-icon {
 		color: $partio_main_color_lighter;
 		cursor: pointer;
 		position: absolute;
-		right: 30px;
-		top: 50%;
-		transform: translateY(-100%);
+		top: 0;
+		transform: translateY(50%);
 		width: 0;
+		font-size: 1.3rem;
+		@media ( min-width: $small-breakpoint ) {
+			font-size: 1rem;
+			transform: translateY(75%);
+		}
+	}
+
+	.search-icon {
+		margin-right: .5rem;
+		right: 3.75rem;
+
+		.menu-wrapper &,
+		.search-filter & {
+			right: 1.875rem;
+		}
+
+		@media ( min-width: $small-breakpoint ) {
+			margin-right: 0;
+			right: 1.875rem;
+		}
+	}
+
+	.filter-icon {
+		border-left: .0625rem solid lightgray;
+		padding-left: .5rem;
+		right: 1.875rem;
+
+		.menu-wrapper & {
+			display: none;
+		}
+
+		@media ( min-width: $small-breakpoint ) {
+			display: none;
+		}
+
+		&.active + .embed-filter {
+			display: block;
+		}
 	}
 }
 
 .search-and-or {
 	background-color: $partio_main_color_darker;
 	display: flex;
+	flex-wrap: wrap;
 	margin-bottom: 1rem;
 	padding: .5rem;
 	text-transform: uppercase;
@@ -364,5 +442,11 @@ $search_fontsize_smaller: rem-calc(12);
 
 	.field-list {
 		padding-left: $column-gutter-half;
+	}
+}
+
+.embed-filter {
+	& > .embed {
+		display: none;
 	}
 }
