@@ -1,7 +1,7 @@
 <section class="tips comments" id="comments-section" data-page="{ID}">	
 
 	<div class="tips__header not-printable">
-		<p class="tips__heading opened">{S.kommentit}<span class="tip-count" id="comments_count"></span><i class="fa fa-chevron-down"></i></p>
+		<p class="tips__heading opened">{S.kommentit}<span class="tip-count" id="comments_count"></span><i class="icon-chevron-down"></i></p>
 		<div class="tips__header__border"></div>
 	</div>
 

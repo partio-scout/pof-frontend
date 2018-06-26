@@ -8,14 +8,14 @@
 			<div class="search-section__body--always-open">
 				<h5 class="search-section__body__header">Sanahaku</h5>
 				<div class="sidenav-search__inner">
-					<label><i class="fa fa-search"></i></label>
+					<label><i class="icon-search"></i></label>
 					<input placeholder="Hakusanat" id="" class="form-control sidenav-search__input">
 				</div>
 			</div>
 		</section>
 
 		<section class="search-section">
-			<h4 class="search-section__header section-filter">Ikäkaudet<i class="fa fa-chevron-down"></i></h4>
+			<h4 class="search-section__header section-filter">Ikäkaudet<i class="icon-chevron-down"></i></h4>
 			<div class="search-section__body">
 
 				<h5 class="search-section__body__header">Ikäkausi</h5>
@@ -31,7 +31,7 @@
 		</section>
 
 		<section class="search-section">
-			<h4 class="search-section__header section-filter">Ominaisuudet<i class="fa fa-chevron-down"></i></h4>
+			<h4 class="search-section__header section-filter">Ominaisuudet<i class="icon-chevron-down"></i></h4>
 			<div class="search-section__body">
 
 				<h5 class="search-section__body__header">Pakollisuus</h5>
@@ -131,7 +131,7 @@
 		</section>
 
 		<section class="search-section">
-			<h4 class="search-section__header section-filter">Taitoalueet<i class="fa fa-chevron-down"></i></h4>
+			<h4 class="search-section__header section-filter">Taitoalueet<i class="icon-chevron-down"></i></h4>
 			<div class="search-section__body">
 				<h5 class="search-section__body__header">Taitoalue</h5>
 				<fieldset>
@@ -161,7 +161,7 @@
 		</section>
 
 		<section class="search-section">
-			<h4 class="search-section__header section-filter">Avainsanat<i class="fa fa-chevron-down"></i></h4>
+			<h4 class="search-section__header section-filter">Avainsanat<i class="icon-chevron-down"></i></h4>
 			<div class="search-section__body">
 				<h5 class="search-section__body__header">Taitoalue</h5>
 				<div class="input-wrapper"><input id="checkbox1" type="checkbox"><label for="checkbox1"><span></span>Sudenpennut</label></div>

@@ -63,7 +63,7 @@
 
 									<div class="row tasks__heading-row">
 										<div class="columns small-12">
-											<h3 class="tasks__filter-heading opened">Aloitus<i class="fa fa-chevron-down"></i></h3>
+											<h3 class="tasks__filter-heading opened">Aloitus<i class="icon-chevron-down"></i></h3>
 										</div>
 									</div>
 									<div class="row tasks__body-row opened">
@@ -76,7 +76,7 @@
 
 									<div class="row tasks__heading-row">
 										<div class="columns small-12">
-											<h3 class="tasks__filter-heading opened">Suhde itseen<i class="fa fa-chevron-down"></i></h3>
+											<h3 class="tasks__filter-heading opened">Suhde itseen<i class="icon-chevron-down"></i></h3>
 										</div>
 									</div>
 									<div class="row tasks__body-row opened">
@@ -93,102 +93,6 @@
 										<div class="columns medium-6">
 											{>"shared/taskgroup_item_demo.dust" /}
 										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-									</div>
-
-									{! Osio vaihtuu !}
-
-									<div class="row tasks__heading-row">
-										<div class="columns small-12">
-											<h3 class="tasks__filter-heading opened">Suhde toiseen<i class="fa fa-chevron-down"></i></h3>
-										</div>
-									</div>
-									<div class="row tasks__body-row opened">
-
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-									</div>
-
-									{! Osio vaihtuu !}
-
-									<div class="row tasks__heading-row">
-										<div class="columns small-12">
-											<h3 class="tasks__filter-heading opened">Suhde toiseen<i class="fa fa-chevron-down"></i></h3>
-										</div>
-									</div>
-									<div class="row tasks__body-row opened">
-
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-										<div class="columns medium-6">
-											{>"shared/taskgroup_item_demo.dust" /}
-										</div>
-									</div>
-
-									{! Osio vaihtuu !}
-
-									<div class="row tasks__heading-row">
-										<div class="columns small-12">
-											<h3 class="tasks__filter-heading opened">Suhde yhteiskuntaan<i class="fa fa-chevron-down"></i></h3>
-										</div>
-									</div>
-									<div class="row tasks__body-row opened">
-
 										<div class="columns medium-6">
 											{>"shared/taskgroup_item_demo.dust" /}
 										</div>
@@ -225,7 +129,103 @@
 
 									<div class="row tasks__heading-row">
 										<div class="columns small-12">
-											<h3 class="tasks__filter-heading opened">Siirtymä seikkailijoihin<i class="fa fa-chevron-down"></i></h3>
+											<h3 class="tasks__filter-heading opened">Suhde toiseen<i class="icon-chevron-down"></i></h3>
+										</div>
+									</div>
+									<div class="row tasks__body-row opened">
+
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+									</div>
+
+									{! Osio vaihtuu !}
+
+									<div class="row tasks__heading-row">
+										<div class="columns small-12">
+											<h3 class="tasks__filter-heading opened">Suhde toiseen<i class="icon-chevron-down"></i></h3>
+										</div>
+									</div>
+									<div class="row tasks__body-row opened">
+
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+									</div>
+
+									{! Osio vaihtuu !}
+
+									<div class="row tasks__heading-row">
+										<div class="columns small-12">
+											<h3 class="tasks__filter-heading opened">Suhde yhteiskuntaan<i class="icon-chevron-down"></i></h3>
+										</div>
+									</div>
+									<div class="row tasks__body-row opened">
+
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+										<div class="columns medium-6">
+											{>"shared/taskgroup_item_demo.dust" /}
+										</div>
+									</div>
+
+									{! Osio vaihtuu !}
+
+									<div class="row tasks__heading-row">
+										<div class="columns small-12">
+											<h3 class="tasks__filter-heading opened">Siirtymä seikkailijoihin<i class="icon-chevron-down"></i></h3>
 										</div>
 									</div>
 									<div class="row tasks__body-row opened">

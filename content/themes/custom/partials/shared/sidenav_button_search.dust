@@ -1,5 +1,5 @@
 <div class="show-menu hide-for-tablet-up not-printable">
-	<i class="fa fa-search show-menu__icon"></i>
-	<i class="fa fa-close close-menu__icon"></i>
+	<i class="icon-search show-menu__icon"></i>
+	<i class="icon-close close-menu__icon"></i>
 	<span class="show-menu__text">Haku</span>
 </div>
