@@ -140,7 +140,7 @@ $search_fontsize_smaller: rem-calc(12);
 		color: $partio_main_color_lighter;
 		padding: 0;
 
-		.fa-cog {
+		.icon-cog {
 			margin-right: .5rem;
 		}
 
@@ -149,7 +149,7 @@ $search_fontsize_smaller: rem-calc(12);
 		}
 	}
 
-	.fa-filter {
+	.icon-filter {
 		color: $partio_main_color_lighter;
 	}
 
@@ -317,29 +317,29 @@ $search_fontsize_smaller: rem-calc(12);
 	&.checkbox,
 	&.radio {
 		&::before {
-			font-family: FontAwesome;
+			font-family: icomoon;
 		}
 	}
 	&.checkbox {
 		&::before {
-			content: '\f096';
+			content: $icon-square-o;
 		}
 
 		&:checked {
 			&::before {
-				content: '\f14a';
+				content: $icon-check-square;
 			}
 		}
 	}
 
 	&.radio {
 		&::before {
-			content: '\f10c';
+			content: $icon-circle-o;
 		}
 
 		&:checked {
 			&::before {
-				content: '\f058';
+				content: $icon-check-circle;
 			}
 		}
 	}
@@ -370,8 +370,8 @@ $search_fontsize_smaller: rem-calc(12);
     }
 
     &::after {
-        content: '\f067';
-        font-family: FontAwesome;
+        content: $icon-plus;
+        font-family: icomoon;
         position: relative;
         display: block;
     }
@@ -387,7 +387,7 @@ $search_fontsize_smaller: rem-calc(12);
         }
 
         &::after {
-        	content: '\f068';
+        	content: $icon-minus;
         }
     }
 }

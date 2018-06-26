@@ -33,7 +33,7 @@
                 {#parents}
                     {@first}<img src="{logo.thumbnail.url}" width="23" height="24" alt="{title}" />{/first}
                     <a class="search-results__breadcrumb-link" href="{url}" >{title}</a>
-                    {@sep}<i class="fa fa-chevron-right breadcrumb-divider"></i>{/sep}
+                    {@sep}<i class="icon-chevron-right breadcrumb-divider"></i>{/sep}
                 {/parents}
             </p>
         {/parents}

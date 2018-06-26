@@ -4,6 +4,11 @@
 @import 'helpers/colors';
 @import 'helpers/settings';
 
+
+// Icons
+@import '../icomoon/style.css';
+@import '../icomoon/variables';
+
 // FOUNDATION DISABLED COMPONENTS
 // @import 'foundation/components/accordion';
 // @import 'foundation/components/breadcrumbs';
@@ -78,6 +83,3 @@
 
 // PRINT
 @import 'layouts/print';
-
-// Icons
-@import '../icomoon/style.css';
