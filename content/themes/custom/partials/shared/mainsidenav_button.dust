@@ -1,5 +1,5 @@
 <div class="show-main_menu not-printable">
-	<i class="fa fa-bars show-main_menu__icon"></i>
-	<i class="fa fa-close close-main_menu__icon"></i>
+	<i class="icon-bars show-main_menu__icon"></i>
+	<i class="icon-close close-main_menu__icon"></i>
 </div>
 

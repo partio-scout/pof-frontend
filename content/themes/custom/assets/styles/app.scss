@@ -34,22 +34,22 @@
 
 // FOUNDATION ENABLED COMPONENTS
 @import '~foundation-sites/scss/foundation/components/grid';
-@import '~foundation-sites/scss/foundation/components/alert-boxes';
+// @import '~foundation-sites/scss/foundation/components/alert-boxes';
 @import '~foundation-sites/scss/foundation/components/block-grid';
 @import '~foundation-sites/scss/foundation/components/buttons';
-@import '~foundation-sites/scss/foundation/components/clearing';
-@import '~foundation-sites/scss/foundation/components/forms';
+// @import '~foundation-sites/scss/foundation/components/clearing';
+// @import '~foundation-sites/scss/foundation/components/forms';
 @import '~foundation-sites/scss/foundation/components/reveal';
-@import '~foundation-sites/scss/foundation/components/tables';
-@import '~foundation-sites/scss/foundation/components/type';
-@import '~foundation-sites/scss/foundation/components/offcanvas';
-@import '~foundation-sites/scss/foundation/components/visibility';
+// @import '~foundation-sites/scss/foundation/components/tables';
+// @import '~foundation-sites/scss/foundation/components/type';
+// @import '~foundation-sites/scss/foundation/components/offcanvas';
+// @import '~foundation-sites/scss/foundation/components/visibility';
 
 // CUSTOM STYLES
 @import 'helpers/defaults';
 @import 'helpers/type';
 @import 'helpers/margins_and_paddings';
-@import '~jquery-ui/themes/base/all.css';
+// @import '~jquery-ui/themes/base/all.css';
 
 // COMPONENTS
 @import 'components/topnav';
@@ -79,5 +79,5 @@
 // PRINT
 @import 'layouts/print';
 
-// Font awesome
-@import '~font-awesome/css/font-awesome.css';
+// Icons
+@import '../icomoon/style.css';

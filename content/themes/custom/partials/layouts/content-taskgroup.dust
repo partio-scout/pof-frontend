@@ -38,7 +38,7 @@
 			<div class="row tasks__heading-row">
 				<div class="columns small-12">
 					<h3 class="tasks__filter-heading opened">
-						{S.pakolliset} {Content.subtaskgroup_term.plural}<i class="fa fa-chevron-down"></i>
+						{S.pakolliset} {Content.subtaskgroup_term.plural}<i class="icon-chevron-down"></i>
 					</h3>
 				</div>
 			</div>
@@ -64,7 +64,7 @@
 			<div class="row tasks__heading-row">
 				<div class="columns small-12">
 					<h3 class="tasks__filter-heading opened">
-						{S.valinnaiset} {Content.subtaskgroup_term.plural}<i class="fa fa-chevron-down"></i>
+						{S.valinnaiset} {Content.subtaskgroup_term.plural}<i class="icon-chevron-down"></i>
 					</h3>
 				</div>
 			</div>

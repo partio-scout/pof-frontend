@@ -70,7 +70,7 @@
 
 				<div class="row">
 					<div class="small-12 medium-10 medium-centered columns">
-						<label><i class="fa fa-search"></i></label>
+						<label><i class="icon-search"></i></label>
 						<input placeholder="Hae aktiviteetteja" id="" class="form-control search__input-lg">
 						<a class="search__advanced-link">Tarkennettu haku &raquo;</a>
 					</div>
