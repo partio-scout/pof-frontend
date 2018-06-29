@@ -16,6 +16,14 @@ class Search extends \DustPress\Model {
         'Results'
     ];
 
+    public function SearchBase() {
+        return search_base( pll_current_language() );
+    }
+
+    public function PaginationBase() {
+        return pagination_base( pll_current_language() );
+    }
+
     public function Submodules() {
         $this->bind_sub( 'ProgramLangnav', [ 'model' => 'Search' ] );
         $this->bind_sub( 'Attachments' );

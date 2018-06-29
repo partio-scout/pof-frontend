@@ -6,6 +6,14 @@ class Header extends \DustPress\Model {
         return get_field('google_analytics', 'option');
     }
 
+    /**
+     * Get the slug for current language
+     */
+    public function LangSlug() {
+        $slug = pll_current_language();
+        return $slug;
+    }
+
 
     // public $ttl = [
     //     'Content' => 3600
@@ -84,10 +92,30 @@ class Header extends \DustPress\Model {
 
 
     public function LangSwitcher() {
-       $post = \DustPress\Query::get_acf_post( get_the_ID() );
+
+        // If this is a search page we should return translation urls for this search
+        if ( is_search() ) {
+            $langs = pll_the_languages([
+                'echo'                   => false,
+                'raw'                    => true,
+                'hide_if_no_translation' => false,
+            ]);
+            foreach ( $langs as $key => $value ) {
+                $lang['langs'][ $key ]['lang'] = strtoupper( $value['slug'] );
+
+                // Construct a correctly formatted search url link and remove language slug from the url if it is the main language
+                $lang['langs'][ $key ]['permalink'] = generate_search_url( get_query_var( 's' ), $value['slug'] );
+                if ( $value['current_lang'] ) {
+                    $lang['langs'][ $key ]['class'] = 'active ';
+                }
+            }
+            return $lang;
+        }
+
+        $post = \DustPress\Query::get_acf_post( get_the_ID() );
 
         // If the post is not created by the api, we have to get the translations otherway.
-       if (empty($post->fields['api_guid'])) {
+        if (empty($post->fields['api_guid'])) {
             $langs = pll_the_languages([
                 'echo' => 0,
                 'raw' => 1,

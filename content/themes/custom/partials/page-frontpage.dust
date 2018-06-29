@@ -34,7 +34,11 @@
 								</div>
 							</div>
 							<div class="hero__heading-group-search">
-								{>"shared/search-section" /}
+								{#Languages}
+									{?current_lang}
+										{>"shared/search-section" /}
+									{/current_lang}
+								{/Languages}
 							</div>
 						</div>
 					</div>

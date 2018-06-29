@@ -2,7 +2,7 @@
 <section class="search-box">
     <div class="row">
         <div class="small-12 columns align-center">
-            <form id="hero-search" class="search-box__form" method="get" action="/">
+            <form id="hero-search" class="search-box__form" method="get" action="/{Header.LangSlug}/">
                 <h3 class="search-heading">{Header.S.haku}</h3>
                 <div class="row collapse align-center">
                     <div class="small-12 columns search-input-container">

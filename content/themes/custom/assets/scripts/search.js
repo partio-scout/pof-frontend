@@ -30,6 +30,8 @@ class Search {
         this.$filterBtn              = this.$searchForm.find( '.filter-icon' );
         this.$filterMoreBtn          = this.$filterForm.find( '.toggle-global-filters' );
         this.$filterInputs           = this.$filterForm.find( 'input[name]:not([type="text"])' );
+        this.lastSearch              = this.$searchInput.val();
+        this.$langMenu               = $( '#second-lang-menu' );
     };
 
     toggleSelfActive( e ) {
@@ -133,10 +135,13 @@ class Search {
         }, 2 * 1000 );
     }
 
-    getArgs() {
+    getArgs( searchForm = null ) {
+        const search = ( searchForm || this.$searchForm ).serializeJSON();
+        const filter = this.$filterForm.filter( ':visible' ).serializeJSON();
+
         const args = {
-            search: this.$searchForm.serializeJSON(),
-            filter: this.$filterForm.filter( ':visible' ).serializeJSON()
+            search,
+            filter
         };
 
         return args;
@@ -153,7 +158,7 @@ class Search {
         }
 
         // Collect args from the form that was submitted either via click or submit event
-        const args = this.getArgs();
+        const args = this.getArgs( $( e.currentTarget ).closest( 'form' ) );
 
         // Duplicate search value across both forms
         if ( args.search.s ) {
@@ -225,8 +230,16 @@ class Search {
         this.$resultsContainer.html( html );
 
         // Change url and add the query to the history
-        if ( window.history ) {
-            window.history.pushState({}, 'Haku', location.origin + '/haku/' + args.search.s );
+        if ( window.history && typeof pof_lang !== 'undefined' ) {
+            const newUrl = location.toString().replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + args.search.s );
+            window.history.pushState({}, 'Haku', newUrl );
+
+            this.$langMenu.find( 'a' ).each( ( i, el ) => {
+                el.href = el.href.replace( this.lastSearch, args.search.s );
+            });
+
+            this.lastSearch = args.search.s;
+
         }
     };
 
@@ -258,22 +271,17 @@ class Search {
         }
 
         // Check if history is supported in browser.
-        if ( window.history ) {
-
-            // The url contains a page
-            if ( /sivu/.test( location.pathname ) ) {
-
-                // Replace the current location with the new state.
-                const path = location.pathname.replace( /sivu\/(\d+)/, 'sivu/' + this.$page );
-
-                // Push and change the full location path.
-                window.history.pushState({}, 'Sivu', path );
-            } else {
-
-                // Push the state to the end of the current location.
-                const url = 'sivu/' + this.$page + '/';
-                window.history.pushState({}, 'Sivu', url );
+        if ( window.history && typeof pof_lang !== 'undefined' ) {
+            let newUrl;
+            if ( location.toString().includes( pof_lang.pagination_base ) ) {
+                newUrl = location.toString().replace( new RegExp( pof_lang.pagination_base + '\/.+', 'g' ), pof_lang.pagination_base + '/' + newPage );
             }
+            else {
+                newUrl = location.toString().replace( /\/$/, '' ) + '/' + pof_lang.pagination_base + '/' + newPage;
+            }
+
+            // Push and change the full location path.
+            window.history.pushState( {}, 'Sivu', newUrl );
         }
     };
 

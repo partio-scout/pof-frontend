@@ -27,9 +27,19 @@ class ProgramLangnav extends \DustPress\Model {
        if ( is_search() || empty( $post->fields['api_guid'] ) ) {
             $lang = [
                 'langs' => array_map(function( $lang ) {
-                        // Modify pll_the_languages result by adding some different keys
-                        $lang['lang']      = strtoupper( $lang['slug'] );
+                        // Modify pll_the_languages result
+                        $lang['lang'] = strtoupper( $lang['slug'] );
+
+                        if ( is_search() ) {
+                            $current = rawurlencode( search_base( pll_current_language() ) );
+                            $default = rawurlencode( search_base( 'fi' ) );
+
+                            $lang['url'] = str_replace( $current, rawurlencode( search_base( $lang['slug'] ) ), $lang['url'] );
+                            $lang['url'] = str_replace( $default, rawurlencode( search_base( $lang['slug'] ) ), $lang['url'] );
+                        }
+
                         $lang['permalink'] = $lang['url'];
+
                         if ( $lang['current_lang'] ) {
                             $lang['class'] = 'active ';
                         }

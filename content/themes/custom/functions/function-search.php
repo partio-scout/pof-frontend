@@ -4,11 +4,6 @@ add_action( 'init', 'page_rewrite', 999, 0 );
  * Rewrite the loadmore
  */
 function page_rewrite() {
-    global $wp_rewrite;
-    // This rule matches /haku/{search clause}(/sivu/{page number}/)
-    add_rewrite_rule( '^haku/([^/]+)(/sivu/([^/]+))?(/)?$', 'index.php?s=$matches[1]&paged=$matches[2]', 'top' );
-    
-    // This rule matches /guid/{post guid}/)
     add_rewrite_rule( 'guid/(.+)', 'index.php?pagename=guid&guid=$matches[1]', 'top' );
 }
 add_action( 'init', 'translate_base_rewrite', 999, 0 );
@@ -17,8 +12,8 @@ add_action( 'init', 'translate_base_rewrite', 999, 0 );
  */
 function translate_base_rewrite() {
     global $wp_rewrite;
-    $wp_rewrite->pagination_base = 'sivu';
-    $wp_rewrite->search_base     = 'haku';
+    $wp_rewrite->pagination_base = '(?:' . implode( pagination_base(), '|' ) . ')';
+    $wp_rewrite->search_base     = '(?:' . implode( search_base(), '|' ) . ')';
 }
 add_action( 'template_redirect', 'search_redirect' );
 /**
@@ -33,7 +28,7 @@ function search_redirect() {
     }
     $search_parameter = filter_input( INPUT_GET, 's', FILTER_SANITIZE_URL );
     if ( is_search() && ! is_admin() && ! empty( $search_parameter ) ) {
-        wp_safe_redirect( get_search_link() );
+        wp_safe_redirect( generate_search_url( $search_parameter ) );
         exit();
     }
 }
