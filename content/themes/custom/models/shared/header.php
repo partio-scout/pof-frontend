@@ -189,11 +189,28 @@ class Header extends \DustPress\Model {
     }
 
 
-    // Bind translated strings.
+    /**
+     * Bind translated strings.
+     *
+     * @return array An associative array of translations.
+     */
     public function S() {
         $s = [
-            'valikko' => __('Main Menu', 'pof'),
-            'haku'    => __('Search', 'pof')
+            'valikko'        => __( 'Main Menu', 'pof' ),
+            'haku'           => __( 'Search', 'pof' ),
+            'use_adv_search' => __( 'Use the advanced search', 'pof' ),
+            'filter_search'  => __( 'Filter the results', 'pof' ),
+            'filter_by_age'  => __( 'Filter by agegroup', 'pof' ),
+            'by_agegroup'    => __( 'By agegroup', 'pof' ),
+            'more_filter'    => __( 'More filters', 'pof' ),
+            'other_filters'  => __( 'Other filters', 'pof' ),
+            'filter_type'    => __( 'Filter type', 'pof' ),
+            'and'            => __( 'And', 'pof' ),
+            'or'             => __( 'Or', 'pof' ),
+            'loadmore'       => __( 'Load more', 'pof' ),
+            'results_found'  => __( 'results found', 'pof' ),
+            'frontpage'      => __( 'Frontpage', 'pof' ),
+            'search_results' => __( 'Search results', 'pof' ),
         ];
         return $s;
     }

@@ -1,4 +1,4 @@
 <nav class="breadcrumbs">
-	<a href="{WP.home}/etusivu">Etusivu</a>
-	<a href="" class="current">Hakutulokset</a>
+	<a href="{WP.home}/">{Header.S.frontpage}</a>
+	<a href="" class="current">{Header.S.search_results}</a>
 </nav>

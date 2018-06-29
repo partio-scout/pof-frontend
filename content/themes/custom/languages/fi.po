@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Partio-ohjelma Theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-28 19:11+0300\n"
-"PO-Revision-Date: 2017-11-14 11:08+0200\n"
+"POT-Creation-Date: 2018-06-29 16:05+0300\n"
+"PO-Revision-Date: 2018-06-29 16:08+0300\n"
 "Last-Translator: partioadmin <ville.siltala@geniem.com>\n"
 "Language-Team: Finnish\n"
 "Language: fi\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.8.12\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: style.css\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Sivuston asetukset"
 msgstr ""
 
-#: functions/function-menus.php:3 models/shared/sidenav.php:47
+#: functions/function-menus.php:3 models/shared/header.php:199
 msgid "Main Menu"
 msgstr "Päävalikko"
 
@@ -79,100 +79,215 @@ msgstr "Ei otsakekuvia"
 msgid "No header images in trash"
 msgstr "Ei otsakekuvia roskakorissa"
 
-#: models/page-agegroup.php:56 models/page-taskgroup.php:102
-msgid "Selectable"
-msgstr "Valinnaiset"
+#: functions/function-post_types.php:34
+msgctxt "Post Type General Name"
+msgid "Vinkit"
+msgstr ""
 
-#: models/page-agegroup.php:57 models/page-task.php:108
-#: models/page-taskgroup.php:103
-msgid "Obligatory"
-msgstr "Pakolliset"
+#: functions/function-post_types.php:35
+msgctxt "Post Type Singular Name"
+msgid "Vinkki"
+msgstr ""
 
-#: models/page-task.php:93
-msgid "Execution and goals"
-msgstr "Toteutus ja tavoitteet"
-
-#: models/page-task.php:94
-msgid "Additional information"
-msgstr "Lisätiedot"
-
-#: models/page-task.php:95
-msgid "Equipment"
-msgstr "Tarvikkeet"
-
-#: models/page-task.php:96
-msgid "Task group"
-msgstr "Aktiviteettiryhmä"
-
-#: models/page-task.php:97
-msgid "Paraller"
-msgstr "Rinnakkaiset"
-
-#: models/page-task.php:98
-msgid "Choose"
-msgstr "Valitse"
-
-#: models/page-task.php:99
-msgid "Skill areas"
-msgstr "Taitoalueet"
-
-#: models/page-task.php:100 models/shared/tips.php:47
+#: functions/function-post_types.php:36 functions/function-post_types.php:37
+#: models/page-task.php:99 models/shared/tips.php:50
 msgid "Tips"
 msgstr "Vinkit"
 
-#: models/page-task.php:101
+#: functions/function-post_types.php:38
+msgid "Tip Archives"
+msgstr ""
+
+#: functions/function-post_types.php:39
+msgid "Tip Attributes"
+msgstr ""
+
+#: functions/function-post_types.php:40
+msgid "Parent Tip:"
+msgstr ""
+
+#: functions/function-post_types.php:41
+msgid "All Tips"
+msgstr "Vinkit"
+
+#: functions/function-post_types.php:42
+msgid "Add New Tip"
+msgstr "Lisää vinkki"
+
+#: functions/function-post_types.php:43
+msgid "Add New"
+msgstr "Lisää uusi"
+
+#: functions/function-post_types.php:44
+msgid "New Tip"
+msgstr ""
+
+#: functions/function-post_types.php:45
+msgid "Edit Tip"
+msgstr ""
+
+#: functions/function-post_types.php:46
+msgid "Update Tip"
+msgstr ""
+
+#: functions/function-post_types.php:47
+msgid "View Tip"
+msgstr ""
+
+#: functions/function-post_types.php:48
+msgid "View Tips"
+msgstr "Vinkit"
+
+#: functions/function-post_types.php:49
+msgid "Search Tip"
+msgstr ""
+
+#: functions/function-post_types.php:50
+msgid "Not found"
+msgstr ""
+
+#: functions/function-post_types.php:51
+msgid "Not found in Trash"
+msgstr ""
+
+#: functions/function-post_types.php:52
+msgid "Featured Image"
+msgstr "Otsakekuva"
+
+#: functions/function-post_types.php:53
+msgid "Set featured image"
+msgstr "Uusi otsakekuva"
+
+#: functions/function-post_types.php:54
+msgid "Remove featured image"
+msgstr ""
+
+#: functions/function-post_types.php:55
+msgid "Use as featured image"
+msgstr "Otsakekuva"
+
+#: functions/function-post_types.php:56
+msgid "Insert into item"
+msgstr ""
+
+#: functions/function-post_types.php:57
+msgid "Uploaded to this item"
+msgstr ""
+
+#: functions/function-post_types.php:58
+msgid "Tips list"
+msgstr "Vinkit"
+
+#: functions/function-post_types.php:59
+msgid "Tips list navigation"
+msgstr ""
+
+#: functions/function-post_types.php:60
+msgid "Filter items list"
+msgstr ""
+
+#: functions/function-post_types.php:63
+msgid "Vinkki"
+msgstr ""
+
+#: functions/function-post_types.php:64
+msgid "Post Type Description"
+msgstr "Kuvaus"
+
+#: models/page-agegroup.php:55 models/page-taskgroup.php:76
+msgid "Selectable"
+msgstr "Valinnaiset"
+
+#: models/page-agegroup.php:56 models/page-task.php:107
+#: models/page-taskgroup.php:77
+msgid "Obligatory"
+msgstr "Pakolliset"
+
+#: models/page-task.php:92
+msgid "Execution and goals"
+msgstr "Toteutus ja tavoitteet"
+
+#: models/page-task.php:93
+msgid "Additional information"
+msgstr "Lisätiedot"
+
+#: models/page-task.php:94
+msgid "Equipment"
+msgstr "Tarvikkeet"
+
+#: models/page-task.php:95 models/search.php:414
+msgid "Task group"
+msgstr "Aktiviteettiryhmä"
+
+#: models/page-task.php:96
+msgid "Paraller"
+msgstr "Rinnakkaiset"
+
+#: models/page-task.php:97
+msgid "Choose"
+msgstr "Valitse"
+
+#: models/page-task.php:98
+msgid "Skill areas"
+msgstr "Taitoalueet"
+
+#: models/page-task.php:100
 msgid "Comments"
 msgstr "Kommentit"
 
-#: models/page-task.php:102
+#: models/page-task.php:101
 msgid "Keywords"
 msgstr "Avainsanat"
 
-#: models/page-task.php:103
+#: models/page-task.php:102
 msgid "Preparation"
 msgstr "Valmistelu"
 
-#: models/page-task.php:104
+#: models/page-task.php:103
 msgid "Length"
 msgstr "Kesto"
 
-#: models/page-task.php:105
+#: models/page-task.php:104
 msgid "Level"
 msgstr "Taso"
 
-#: models/page-task.php:106
+#: models/page-task.php:105
 msgid "Leaders task"
 msgstr "Johtajan tehtävä"
 
-#: models/page-task.php:107
+#: models/page-task.php:106
 msgid "Leadership skills"
 msgstr "Johtamistaito"
 
-#: models/page-task.php:109
+#: models/page-task.php:108
 msgid "Group size"
 msgstr "Ryhmäkoko"
 
-#: models/page-task.php:110
+#: models/page-task.php:109
 msgid "Place"
 msgstr "Paikka"
 
-#: models/page-task.php:111
+#: models/page-task.php:110
 msgid "Educational goals"
 msgstr "Kasvatustavoitteet"
 
-#: models/page-task.php:112
+#: models/page-task.php:111
 msgid "Goal"
 msgstr "Tavoite"
 
-#: models/page-task.php:113
+#: models/page-task.php:112
 msgid "Description"
 msgstr "Kuvaus"
+
+#: models/search.php:231
+msgid "Tip in task "
+msgstr ""
 
 #: models/shared/attachments.php:9
 msgid "Attachments"
 msgstr "Liitteet"
 
-#: models/shared/attachments.php:10 models/shared/tips.php:53
+#: models/shared/attachments.php:10 models/shared/tips.php:56
 msgid "Pictures"
 msgstr "Kuvat"
 
@@ -184,7 +299,7 @@ msgstr "Tiedostot"
 msgid "Links"
 msgstr "Linkit"
 
-#: models/shared/breadcrumbs.php:30
+#: models/shared/breadcrumbs.php:46
 msgid "Front page"
 msgstr "Etusivu"
 
@@ -196,53 +311,101 @@ msgstr "Takaisin ylös"
 msgid "Sitemap"
 msgstr "Sivukartta"
 
-#: models/shared/tips.php:48
+#: models/shared/header.php:200
+msgid "Search"
+msgstr "Haku"
+
+#: models/shared/header.php:201
+msgid "Use the advanced search"
+msgstr "Käytä tarkempaa hakua"
+
+#: models/shared/header.php:202
+msgid "Filter the results"
+msgstr "Rajaa Hakutuloksia"
+
+#: models/shared/header.php:203
+msgid "Filter by agegroup"
+msgstr "Rajaa ikäkauden mukaan"
+
+#: models/shared/header.php:204
+msgid "By agegroup"
+msgstr "Ikäkauden mukaan"
+
+#: models/shared/header.php:205
+msgid "More filters"
+msgstr "Lisää rajausvaihtoehtoja"
+
+#: models/shared/header.php:206
+msgid "Other filters"
+msgstr "Muut Rajausvaihtoehdot"
+
+#: models/shared/header.php:207
+msgid "Filter type"
+msgstr "Rajaustapa"
+
+#: models/shared/header.php:208
+msgid "And"
+msgstr "Ja"
+
+#: models/shared/header.php:209
+msgid "Or"
+msgstr "Tai"
+
+#: models/shared/header.php:210
+msgid "Load more"
+msgstr "Lataa lisää"
+
+#: models/shared/header.php:211
+msgid "results found"
+msgstr "hakutuloksia"
+
+#: models/shared/header.php:212
+msgid "Frontpage"
+msgstr "Etusivu"
+
+#: models/shared/header.php:213
+msgid "Search results"
+msgstr "Hakutulokset"
+
+#: models/shared/tips.php:51
 msgid "Order"
 msgstr "Järjestys"
 
-#: models/shared/tips.php:49
+#: models/shared/tips.php:52
 msgid "Latest"
 msgstr "Uusimmat"
 
-#: models/shared/tips.php:50
+#: models/shared/tips.php:53
 msgid "Most popular"
 msgstr "Suosituimmat"
 
-#: models/shared/tips.php:51
+#: models/shared/tips.php:54
 msgid "Show more"
 msgstr "Näytä lisää"
 
-#: models/shared/tips.php:52
+#: models/shared/tips.php:55
 msgid "Add a tip"
 msgstr "Lisää vinkki"
 
-#: models/shared/tips.php:54
+#: models/shared/tips.php:57
 msgid "Send"
 msgstr "Lähetä"
 
-#: models/shared/tips.php:55
+#: models/shared/tips.php:58
 msgid "Name"
 msgstr "Vinkin lähettäjän nimi"
 
-#: models/shared/tips.php:56
+#: models/shared/tips.php:59
 msgid "Title"
 msgstr "Otsikko"
 
-#: models/shared/tips.php:57
+#: models/shared/tips.php:60
 msgid "Write your tips here"
 msgstr "Kirjoita vinkkisi tähän"
 
-#: models/shared/tips.php:58
+#: models/shared/tips.php:61
 msgid "Add an attachment"
 msgstr "Lisää liite"
-
-#. Theme Name of the plugin/theme
-msgid "Partio-ohjelma Theme"
-msgstr ""
-
-#. Author of the plugin/theme
-msgid "Geniem Oy"
-msgstr ""
 
 #~ msgid "Activity group"
 #~ msgstr "Aktiviteettiryhmä"

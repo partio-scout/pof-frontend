@@ -31,7 +31,7 @@
 									<section class="search-results">
 										<span class="sr-only" aria-live="polite" id="results-message"></span>
 										<div class="column search-block">
-											<p class="search-results__breadcrumb"><span id="results-count">{Results.count}</span> hakutulosta</p>
+											<p class="search-results__breadcrumb"><span id="results-count">{Results.count}</span> {Header.S.results_found}</p>
 										</div>
 										<div class="row small-up-1" id="search-results-container">
 											{>"search-results-list" /}
@@ -44,7 +44,7 @@
 													data-maxpages="{Results.max_num_pages}"
 													data-page="{Results.page}"
 													data-postcount="{Results.count}">
-													Lataa lisää
+													{Header.S.loadmore}
 												</button>
 						                    </div>
 						                </div>

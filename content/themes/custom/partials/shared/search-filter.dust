@@ -7,7 +7,7 @@
 
     {?embed}
         <label>
-            <p>Rajaa ikäkauden mukaan</p>
+            <p>{Header.S.filter_by_age}</p>
             <div class="search-input-container">
                 <input type="search" name="s" value="" placeholder="Etsi" title="Etsi sivulta">
                 <i class="icon-search search-icon"></i>
@@ -16,11 +16,11 @@
     {:else}
         <h3>
             <i class="icon-filter" aria-hidden="true"></i>
-            Rajaa hakutuloksia
+            {Header.S.filter_search}
         </h3>
 
         <label>
-            <p>Ikäkauden mukaan</p>
+            <p>{Header.S.by_agegroup}</p>
             <div class="search-input-container">
                 <input type="search" name="s" value="" placeholder="Etsi" title="Etsi sivulta">
                 <i class="icon-search search-icon"></i>
@@ -35,10 +35,10 @@
     {?embed}
         <button class="toggle-global-filters">
             <i class="icon-cog"></i>
-            Lisää rajausvaihtoehtoja
+            {Header.S.more_filters}
         </button>
     {:else}
-        <p>Muut rajausvaihtoehdot</p>
+        <p>{Header.S.other_filters}</p>
     {/embed}
 
     {>"filters" prefix="global" /}
