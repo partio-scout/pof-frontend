@@ -136,8 +136,8 @@ class Search extends \DustPress\Model {
      */
     protected function get_results( stdClass $params ) {
         $posts_start = microtime( true );
-        $posts_key = 'search/' . esc_sql( wp_json_encode( $params ) );
-        $posts     = wp_cache_get( $posts_key );
+        $posts_key   = 'search/' . esc_sql( wp_json_encode( $params ) ) . '/' . get_locale();
+        $posts       = wp_cache_get( $posts_key );
         if ( empty( $posts ) ) {
             $args = [
                 's'              => $params->search_term,
