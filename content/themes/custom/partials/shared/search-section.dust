@@ -9,7 +9,9 @@
                         <input type="search" name="s" id="search" value="{Term}" placeholder="Kerro, mitä etsit.."  title="Etsi sivulta">
                         <i id="search-icon" class="icon-search search-icon"></i>
                         <i id="search-filter" class="icon-filter filter-icon"></i>
-                        {>"shared/search-filter" embed="true" /}
+                        {^small}
+                            {>"shared/search-filter" embed="true" /}
+                        {/small}
                     </div>
                     <a href="#" class="advanced-search-link">
                         Käytä tarkempaa hakua

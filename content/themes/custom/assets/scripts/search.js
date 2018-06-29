@@ -20,6 +20,7 @@ class Search {
         this.$searchIcon             = $( '.search-icon' );
         this.$searchForm             = $( '.search-box__form' );
         this.$searchInput            = this.$searchForm.find( 'input[name="s"]' );
+        this.$advSearchLink          = this.$searchForm.find( '.advanced-search-link' );
         this.$resultMessageContainer = $( '#results-message' );
         this.$resultsCount           = $( '#results-count' );
         this.$loadmoreContainer      = $( '.loadmore-container' );
@@ -91,8 +92,46 @@ class Search {
             this.$filterBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
             this.$filterMoreBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
             this.$filterInputs.on( 'change', ( e ) => this.doSearch( e ) );
+            this.$advSearchLink.on( 'click', ( e ) => this.highLightFilter( e ) );
         }
     };
+
+    /**
+     * Hightlight the filterform and move focus to it
+     *
+     * @param  {object} e Event that triggered this
+     */
+    highLightFilter( e = null ) {
+        if ( e ) {
+            e.preventDefault();
+        }
+
+        // If we are on mobile hide the menu and show the filter form
+        if ( this.$filterBtn.is( ':visible' ) ) {
+
+            // Hide menu
+            window.Partio.$menu.removeClass( 'move-right' );
+            window.Partio.$content.removeClass( 'move-right' );
+
+            // Show filterform
+            this.$filterBtn.addClass( 'active' );
+        }
+
+        // Focus the filterform input
+        this.$filterForm.find( 'input[name="s"]' ).focus();
+
+        // Clear any current timeouts
+        if ( this.filterAnimation ) {
+            clearTimeout( this.filterAnimation );
+            this.$filterForm.removeClass( 'highlight' );
+        }
+
+        // Hightlight the form and add a timeout to clear the highlight class
+        this.$filterForm.addClass( 'highlight' );
+        this.filterAnimation = setTimeout( () => {
+            this.$filterForm.removeClass( 'highlight' );
+        }, 2 * 1000 );
+    }
 
     getArgs() {
         const args = {

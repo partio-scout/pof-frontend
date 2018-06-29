@@ -22,6 +22,10 @@ $search_fontsize_smaller: rem-calc(12);
 	font-size: .8rem;
 	margin-bottom: 1.5rem;
 
+	&:hover {
+		color: $partio_main_color_darker;
+	}
+
 	.search-box & {
 		display: none;
 	}
