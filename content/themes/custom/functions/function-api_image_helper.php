@@ -20,8 +20,15 @@ class ApiImage extends Helper {
 
         // Add any custom classes to the already existing class parameter
         if ( $this->params->class ) {
-            $regex = '/class="(.*)"/';
+            $regex = '/class="(.+?)"/';
             $image = preg_replace( $regex, 'class="$1 ' . $this->params->class . '"', $image );
+        }
+        // Only get the image tag
+        if ( $this->params->img_only ) {
+            $regex   = '/(<img.*?>)/';
+            $matches = [];
+            preg_match( $regex, $image, $matches );
+            $image = $matches[0];
         }
 
         return $image;
