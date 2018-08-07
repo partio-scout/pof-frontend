@@ -48,8 +48,14 @@ include_once( 'functions/function-menus.php' );
 // Search functions
 include_once( 'functions/function-search.php' );
 
-// Dustpress helpers
-include_once( 'functions/function-dustpress-helpers.php' );
+// Dustpress apiimage helper & filter
+include_once( 'functions/function-api_image_helper.php' );
+
+// Post seo description generation
+include_once( 'functions/function-post-description.php' );
+
+// manifest.json handler
+include_once( 'functions/function-manifest.php' );
 
 
 

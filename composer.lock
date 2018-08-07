@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b74b6ef644402ef7803b784d0c24bb70",
+    "content-hash": "3460813c59a0f0e5fffdbc3ecb104b01",
     "packages": [
         {
             "name": "composer/installers",
@@ -125,16 +125,16 @@
         },
         {
             "name": "devgeniem/dustpress",
-            "version": "1.9.0",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devgeniem/dustpress.git",
-                "reference": "7fcd2b8b711e01c7cbd97ac545f8dedcd77a6c7d"
+                "reference": "1db385b1d9446bc824ea5b82d286d7f7ec49973b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devgeniem/dustpress/zipball/7fcd2b8b711e01c7cbd97ac545f8dedcd77a6c7d",
-                "reference": "7fcd2b8b711e01c7cbd97ac545f8dedcd77a6c7d",
+                "url": "https://api.github.com/repos/devgeniem/dustpress/zipball/1db385b1d9446bc824ea5b82d286d7f7ec49973b",
+                "reference": "1db385b1d9446bc824ea5b82d286d7f7ec49973b",
                 "shasum": ""
             },
             "type": "library",
@@ -170,7 +170,7 @@
                 "theme",
                 "wordpress"
             ],
-            "time": "2017-12-18T14:59:49+00:00"
+            "time": "2018-05-09T10:18:19+00:00"
         },
         {
             "name": "devgeniem/dustpress-debugger",
@@ -272,6 +272,45 @@
                 "wordpress"
             ],
             "time": "2017-10-04T12:10:25+00:00"
+        },
+        {
+            "name": "devgeniem/dustpress-responsive-background-image",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:devgeniem/dustpress-responsive-background-image.git",
+                "reference": "7fa44e046ee62196322b612d4d1a40b224283daa"
+            },
+            "require": {
+                "composer/installers": "^1.0.12",
+                "php": ">=5.4"
+            },
+            "type": "wordpress-plugin",
+            "autoload": {
+                "psr-4": {
+                    "DustPress\\ResponsiveBackgroundImage\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Mats Tuovinen",
+                    "email": "mats.tuovinen@geniem.com",
+                    "homepage": "http://geniem.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A WordPress plugin that enables using responsive background images on elements for DustPress based themes.",
+            "keywords": [
+                "dustpress",
+                "images",
+                "plugin",
+                "responsive",
+                "wordpress"
+            ],
+            "time": "2018-02-22T07:52:11+00:00"
         },
         {
             "name": "johnpbloch/wordpress",

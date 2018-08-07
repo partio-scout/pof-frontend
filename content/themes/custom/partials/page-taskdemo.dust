@@ -40,7 +40,7 @@
 								{! Tähän toinen text-content, joka on wp:stä tuleva rikastussisältö !}
 
 								<section class="print not-printable">
-									<a class="print-button"><i class="fa fa-print"></i>Tulosta sivu</a>
+									<a class="print-button"><i class="icon-print"></i>Tulosta sivu</a>
 								</section>
 
 								{>"shared/task_info_demo" /}

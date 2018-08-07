@@ -16,7 +16,7 @@
 	            </div>
 				<div class="slider" data-time={SliderTime}>
 					{#Content.fields.featured}
-					<div class="slide" style="background-image:url({featured_image.url})">
+					<div class="slide js-dp-bg-img" {@bgimage id=featured_image /}>
 						<div class="hero__shade">
 							<div class="hero__heading-group-top">
 								<div class="hero__heading--main">
@@ -49,7 +49,15 @@
 							<div class="program__logo-container">
 	                            {#fields.api_images}
 	                                {#logo}
-	                                    <img src="{thumbnail.url}" width="{thumbnail.width}" height="{thumbnail.height}" alt="{title}">
+	                                	{?id}
+    	                            	   {@apiimage id=id class="program__logo" img_only="true" /}
+    	                                {:else}
+    	                                    {?medium.url}
+    	                                        <img src="{medium.url}" alt="{title}" class="program__logo">
+    	                                    {:else}
+    	                                        <img src="{url}" alt="{title}" class="program__logo">
+    	                                    {/medium.url}
+	                                	{/id}
 	                                {/logo}
 	                            {/fields.api_images}
 								<div class="program__divider"></div>
@@ -67,7 +75,7 @@
 
 				<div class="row">
 					<div class="small-12 medium-10 medium-centered columns">
-						<label><i class="fa fa-search"></i></label>
+						<label><i class="icon-search"></i></label>
 						<input placeholder="Hae aktiviteetteja" id="" class="form-control search__input-lg">
 						<a class="search__advanced-link">Tarkennettu haku &raquo;</a>
 					</div>

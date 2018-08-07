@@ -35,7 +35,7 @@
 		{! Search elements hide before implementation
 		<div class="sidenav-search">
 			<div class="sidenav-search__inner">
-				<label><i class="fa fa-search"></i></label>
+				<label><i class="icon-search"></i></label>
 				<input placeholder="Hae aktiviteetteja" id="" class="form-control sidenav-search__input">
 			</div>
 		</div>!}
