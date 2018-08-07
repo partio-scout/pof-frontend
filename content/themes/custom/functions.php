@@ -51,6 +51,9 @@ include_once( 'functions/function-search.php' );
 // Dustpress apiimage helper & filter
 include_once( 'functions/function-api_image_helper.php' );
 
+// Post seo description generation
+include_once( 'functions/function-post-description.php' );
+
 
 
 /*
