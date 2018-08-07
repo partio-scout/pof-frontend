@@ -31,6 +31,13 @@
 	height: 100%;
 }
 
+.slick-slide {
+	&,
+	& > div {
+		height: 100%;
+	}
+}
+
 .slide {
 	height: 100%;
 	background-position: 50% 50%;
