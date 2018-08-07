@@ -16,7 +16,11 @@
                     <a href="{permalink}" class="program-container clearfix">
                         {#fields.api_images}
                             {#logo}
-                                <img src="{medium.url}" alt="{title}" class="program-container__logo">
+                                {?medium.url}
+                                    <img src="{medium.url}" alt="{title}" class="program-container__logo">
+                                {:else}
+                                    <img src="{url}" alt="{title}" class="program-container__logo">
+                                {/medium.url}
                             {/logo}
                         {/fields.api_images}
 						<div class="program-container__divider"></div>
