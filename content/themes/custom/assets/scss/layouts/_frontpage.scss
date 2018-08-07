@@ -259,10 +259,14 @@
 	}
 }
 
-.program__logo-container {
-	height: 100%;
-	text-align: center;
-	padding-top: 2rem;
+.program__logo {
+	max-height: 9.375rem;
+
+	&-container {
+		height: 100%;
+		text-align: center;
+		padding-top: 2rem;
+	}
 }
 
 .program__divider {
