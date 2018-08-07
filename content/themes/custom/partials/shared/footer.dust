@@ -6,7 +6,7 @@
 
         			{! <div class="back-to-top">
         				<a href="#" class="back-to-top__link">
-        					<i class="fa fa-arrow-up bef"></i>{S.takaisinylos}<i class="fa fa-arrow-up aft"></i>
+        					<i class="icon-arrow-up bef"></i>{S.takaisinylos}<i class="icon-arrow-up aft"></i>
         				</a>
         			</div> !}
 
@@ -36,7 +36,7 @@
 		</div>	<!-- /main-wrapper --> {! end main-wrapper !}
 
 		<div class="partio-spinner">
-		 	<i class="fa fa-spinner fa-pulse fa-3x fa-align-center" aria-hidden="true"></i>
+		 	<i class="icon-spinner fa-pulse fa-3x fa-align-center" aria-hidden="true"></i>
 		</div>
 		</body>
 	</html>

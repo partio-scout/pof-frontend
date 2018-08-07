@@ -7,7 +7,7 @@
 
 	<div class="tips__header">
 
-		<p class="tips__heading">Toteutusvinkit<span class="tip-count">(8kpl)</span><i class="fa fa-chevron-down"></i></p>
+		<p class="tips__heading">Toteutusvinkit<span class="tip-count">(8kpl)</span><i class="icon-chevron-down"></i></p>
 		<div class="tips__header__border"></div>
 	</div>
 
@@ -39,7 +39,7 @@
 					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore ut distinctio magni labore, voluptatem laboriosam praesentium voluptatibus, rerum obcaecati voluptas ratione impedit. Corporis nesciunt quasi aliquid officia, fugit, voluptatibus alias! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla repudiandae aspernatur vel deserunt, exercitationem voluptatum accusamus iste adipisci consequatur molestias, fugiat, rem ab sint expedita repellendus deleniti, alias accusantium hic.</p>
 				</div>
 				<div class="tip__likes">
-					<i class="fa fa-heart"></i>
+					<i class="icon-heart"></i>
 					<span class="likes-count">3</span>
 				</div>
 			</div>
@@ -55,13 +55,13 @@
 					<p>Tämä on mallivinkki. Lopullisessa versiossa tähän voidaan liittää helposti kuvia tai esimerkiksi videoita Youtubesta.</p>
 				</div>
 				<div class="tip__likes">
-					<i class="fa fa-heart"></i>
+					<i class="icon-heart"></i>
 					<span class="likes-count">3</span>
 				</div>
 			</div>
 
 			<div class="show-more text-center not-printable">
-				<a href="#" class="show-more__link">Näytä lisää<i class="fa fa-arrow-down"></i></a>
+				<a href="#" class="show-more__link">Näytä lisää<i class="icon-arrow-down"></i></a>
 			</div>
 
 		</div>
