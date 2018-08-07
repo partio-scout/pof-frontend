@@ -335,8 +335,6 @@ class POF_Importer {
                 $polyLangs = array();
                 $redirect_cache = array();
                 foreach ( $items as $item ) {
-                    var_dump( $item );
-                    exit;
                     $args = array();
 
                     // Langversion found, add existing page specific args
