@@ -93,10 +93,23 @@ class Search {
             this.$filterForm.on( 'submit', ( e ) => this.doSearch( e ) );
             this.$filterBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
             this.$filterMoreBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
-            this.$filterInputs.on( 'change', ( e ) => this.doSearch( e ) );
+            this.$filterInputs.on( 'change', ( e ) => this.filterInputChange( e ) );
             this.$advSearchLink.on( 'click', ( e ) => this.highLightFilter( e ) );
         }
     };
+
+    /**
+     * Handle change event on filter inputs
+     *
+     * @param {object} e Change event.
+     */
+    filterInputChange( e ) {
+        const $input = $( e.currentTarget );
+        const $children = $input.parent().find( 'input[type="checkbox"][name].checkbox' );
+        $children.prop( 'checked', $input.is( ':checked' ) );
+
+        this.doSearch( e );
+    }
 
     /**
      * Hightlight the filterform and move focus to it
@@ -231,12 +244,11 @@ class Search {
 
         // Change url and add the query to the history
         if ( window.history && typeof pof_lang !== 'undefined' ) {
-            const oldUrl = location.toString();
-            const newUrl = oldUrl.replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + args.search.s );
-            if ( newUrl !== oldUrl ) {
+            const newUrl = location.toString().replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + args.search.s );
+            if ( newUrl.includes( args.search.s ) ) {
                 window.history.pushState({}, 'Haku', newUrl );
             } else {
-                window.history.pushState({}, 'Haku', oldUrl + args.search.s );
+                window.history.pushState({}, 'Haku', newUrl + args.search.s );
             }
 
             this.$langMenu.find( 'a' ).each( ( i, el ) => {
