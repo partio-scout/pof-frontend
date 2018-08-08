@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fc40ed23ff903c01dd17bfdc2918b19",
+    "content-hash": "43c8b53009d21f3ead36702c4fd0f920",
     "packages": [
         {
             "name": "composer/installers",
@@ -228,21 +228,21 @@
         },
         {
             "name": "devgeniem/dustpress-js",
-            "version": "2.3.3",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devgeniem/dustpress-js.git",
-                "reference": "42efecb6b1e0b292e2d83e0eb597e5c25775ee7c"
+                "reference": "ee41bcfb34798e1b7fed9783bcf6ec85a81d398a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devgeniem/dustpress-js/zipball/42efecb6b1e0b292e2d83e0eb597e5c25775ee7c",
-                "reference": "42efecb6b1e0b292e2d83e0eb597e5c25775ee7c",
+                "url": "https://api.github.com/repos/devgeniem/dustpress-js/zipball/ee41bcfb34798e1b7fed9783bcf6ec85a81d398a",
+                "reference": "ee41bcfb34798e1b7fed9783bcf6ec85a81d398a",
                 "shasum": ""
             },
             "require": {
                 "composer/installers": "^1.0.12",
-                "devgeniem/dustpress": ">=1.7.0",
+                "devgeniem/dustpress": ">=1.16.1",
                 "php": ">=7.0"
             },
             "type": "wordpress-plugin",
@@ -274,7 +274,7 @@
                 "theme",
                 "wordpress"
             ],
-            "time": "2018-06-27T06:55:02+00:00"
+            "time": "2018-08-08T11:55:55+00:00"
         },
         {
             "name": "devgeniem/dustpress-responsive-background-image",
