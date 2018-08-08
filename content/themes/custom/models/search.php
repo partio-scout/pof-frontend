@@ -47,7 +47,7 @@ class Search extends \DustPress\Model {
         $haku_json    = get_field( 'haku-json', 'option' );
         $kaannos_json = get_field( 'kaannos-json', 'option' );
         $ohjelma_json = get_field( 'ohjelma-json', 'option' );
-        $locale       = get_locale();
+        $locale       = explode( '_', get_locale() )[0];
 
         // Get remote data
         $program      = \POF\Api::get( $ohjelma_json, true );
@@ -112,6 +112,7 @@ class Search extends \DustPress\Model {
         $result = (object) [
             'search_terms' => $search_terms,
             'age_groups'   => $age_groups,
+            'locale'       => $locale,
         ];
 
         return $result;

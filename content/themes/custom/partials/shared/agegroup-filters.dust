@@ -3,7 +3,7 @@
         <div class="filter-opener">
             <input type="checkbox" class="custom checkbox" name="enabled_age_groups[]" value="{guid}">
             {#languages}
-                {@eq key=lang value=WP.language}
+                {@eq key=lang value=locale}
                     <p>{title}</p>
                 {/eq}
             {/languages}
