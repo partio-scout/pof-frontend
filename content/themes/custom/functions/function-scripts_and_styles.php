@@ -33,3 +33,12 @@ function enqueue_admin_styles_and_scripts( $hook ) {
     wp_enqueue_script( 'admin-js', get_template_directory_uri() . '/assets/dist/admin.js', false, '1.0.9' );
 }
 add_action( 'admin_enqueue_scripts', 'enqueue_admin_styles_and_scripts' );
+
+add_action( 'dustpress/js/dependencies', function( $deps ) {
+    // Change the dependency from jquery to main-js as jquery is now part of it
+    if ( ! is_admin() ) {
+        $deps = [ 'main-js' ];
+    }
+
+    return $deps;
+});

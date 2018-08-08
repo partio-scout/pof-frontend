@@ -1,5 +1,5 @@
 // jQuery polyfill for foundation-sites
-jQuery.fn.load = function ( cb ) {
+jQuery.fn.load = function( cb ) {
 	$( window ).trigger( 'load', cb );
 };
 
@@ -24,3 +24,6 @@ import './tips';
 import '../styles/app.scss';
 import 'slick-carousel/slick/slick.scss';
 import 'slick-carousel/slick/slick-theme.scss';
+
+// Make the jQuery instance global for dustpress-js
+window.jQuery = jQuery;
