@@ -3,7 +3,13 @@
         {@set key="fieldname" value=$idx /}
         <div class="filter-opener">
             <input type="checkbox" class="custom checkbox" name="{prefix}[enabled][]" value="{fieldname}">
-            <p>{fieldname}</p>
+            <p>
+                {?label}
+                    {label}
+                {:else}
+                    {fieldname}
+                {/label}
+            </p>
             <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
             <div class="collapsed">
                 <div class="collapsed-content {type}">

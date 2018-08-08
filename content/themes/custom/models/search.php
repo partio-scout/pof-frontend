@@ -65,8 +65,22 @@ class Search extends \DustPress\Model {
             return ! empty( $field['type'] );
         });
 
+        // Collect field name translations
+        $field_name_translations = $translations['haku'];
+
         // Combine the search terms and translations
         foreach ( $search_terms as $field_name => &$field_data ) {
+
+            // Get field group translation
+            foreach ( $field_name_translations as $name_translations ) {
+                if ( $name_translations['lang'] === $locale ) {
+                    foreach ( $name_translations['items'] as $name_translation ) {
+                        if ( $name_translation['key'] === $field_name ) {
+                            $field_data['label'] = $name_translation['value'];
+                        }
+                    }
+                }
+            }
 
             // Get each field translation
             foreach ( $field_data['fields'] as &$field ) {
