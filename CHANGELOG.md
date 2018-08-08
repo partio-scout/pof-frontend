@@ -5,6 +5,9 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Julkaisematta]
 
+### Lisätty
+- PO-267: Classic editor plugini wp päivityksen myötä
+
 ## [1.1.0] - 2018-08-07
 
 ### Lisätty
