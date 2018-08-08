@@ -8,6 +8,9 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 ### Lisätty
 - PO-288: Teeman värit manifest tiedostoon ja meta tagiin
 
+### Korjattu
+- PO-288: Laitettu sivun logolle alt attribuutti
+
 ## [1.1.0] - 2018-08-07
 
 ### Lisätty
