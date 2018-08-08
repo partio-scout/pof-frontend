@@ -9,6 +9,7 @@
 			<title>{WP.title|s}</title>
 
 			<link rel="manifest" href="/{LangSlug}/manifest.json">
+			<meta name="theme-color" content="#253764"> {! $partio_main_color !}
 			<meta name="mobile-web-app-capable" content="yes">
 			<meta name="apple-mobile-web-app-capable" content="yes">
 			<meta name="msapplication-starturl" content="{HomeUrl}">

@@ -1,3 +1,8 @@
+// jQuery polyfill for foundation-sites
+jQuery.fn.load = function ( cb ) {
+	$( window ).trigger( 'load', cb );
+};
+
 // External libraries
 import 'babel-polyfill';
 import Modernizr from 'modernizr';

@@ -20,7 +20,7 @@
 						<div class="hero__shade">
 							<div class="hero__heading-group-top">
 								<div class="hero__heading--main">
-									<img class="hero__heading-image" src="/content/themes/custom/assets/img/sp-logo-400px.png">
+									<img class="hero__heading-image" src="/content/themes/custom/assets/img/sp-logo-400px.png" alt="Site logo">
 									<h1 class="hero__heading-title">{WP.name}</h1>
 								</div>
 
