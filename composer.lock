@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9099dfa0d4c20e436519c7985b07defd",
+    "content-hash": "50df1092f6f54da9fd5d8170a1bbf9dc",
     "packages": [
         {
             "name": "composer/installers",
@@ -128,16 +128,16 @@
         },
         {
             "name": "devgeniem/dustpress",
-            "version": "1.14.0",
+            "version": "1.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devgeniem/dustpress.git",
-                "reference": "2a0e0064b6aada9ba1c8d310dd3711ab0b48b771"
+                "reference": "68514776fd2a572ac4552de3538d75b9eeb99e4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devgeniem/dustpress/zipball/2a0e0064b6aada9ba1c8d310dd3711ab0b48b771",
-                "reference": "2a0e0064b6aada9ba1c8d310dd3711ab0b48b771",
+                "url": "https://api.github.com/repos/devgeniem/dustpress/zipball/68514776fd2a572ac4552de3538d75b9eeb99e4d",
+                "reference": "68514776fd2a572ac4552de3538d75b9eeb99e4d",
                 "shasum": ""
             },
             "type": "library",
@@ -173,7 +173,7 @@
                 "theme",
                 "wordpress"
             ],
-            "time": "2018-03-22T14:22:43+00:00"
+            "time": "2018-06-20T06:47:23+00:00"
         },
         {
             "name": "devgeniem/dustpress-debugger",
@@ -228,16 +228,16 @@
         },
         {
             "name": "devgeniem/dustpress-js",
-            "version": "2.1.1",
+            "version": "2.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devgeniem/dustpress-js.git",
-                "reference": "0c853014c138ed88c748169ecb4a2857cd8fd898"
+                "reference": "42efecb6b1e0b292e2d83e0eb597e5c25775ee7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devgeniem/dustpress-js/zipball/0c853014c138ed88c748169ecb4a2857cd8fd898",
-                "reference": "0c853014c138ed88c748169ecb4a2857cd8fd898",
+                "url": "https://api.github.com/repos/devgeniem/dustpress-js/zipball/42efecb6b1e0b292e2d83e0eb597e5c25775ee7c",
+                "reference": "42efecb6b1e0b292e2d83e0eb597e5c25775ee7c",
                 "shasum": ""
             },
             "require": {
@@ -274,7 +274,46 @@
                 "theme",
                 "wordpress"
             ],
-            "time": "2018-01-17T16:08:30+00:00"
+            "time": "2018-06-27T06:55:02+00:00"
+        },
+        {
+            "name": "devgeniem/dustpress-responsive-background-image",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:devgeniem/dustpress-responsive-background-image.git",
+                "reference": "7fa44e046ee62196322b612d4d1a40b224283daa"
+            },
+            "require": {
+                "composer/installers": "^1.0.12",
+                "php": ">=5.4"
+            },
+            "type": "wordpress-plugin",
+            "autoload": {
+                "psr-4": {
+                    "DustPress\\ResponsiveBackgroundImage\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Mats Tuovinen",
+                    "email": "mats.tuovinen@geniem.com",
+                    "homepage": "http://geniem.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A WordPress plugin that enables using responsive background images on elements for DustPress based themes.",
+            "keywords": [
+                "dustpress",
+                "images",
+                "plugin",
+                "responsive",
+                "wordpress"
+            ],
+            "time": "2018-02-22T07:52:11+00:00"
         },
         {
             "name": "devgeniem/ext-relevanssi-premium",
@@ -328,20 +367,20 @@
         },
         {
             "name": "johnpbloch/wordpress",
-            "version": "4.9.5",
+            "version": "4.9.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress.git",
-                "reference": "c0d69bde6fc373270766a00db333c64f35496d67"
+                "reference": "de02cd79a41e06f36558040724414197cb7f6246"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/c0d69bde6fc373270766a00db333c64f35496d67",
-                "reference": "c0d69bde6fc373270766a00db333c64f35496d67",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/de02cd79a41e06f36558040724414197cb7f6246",
+                "reference": "de02cd79a41e06f36558040724414197cb7f6246",
                 "shasum": ""
             },
             "require": {
-                "johnpbloch/wordpress-core": "4.9.5",
+                "johnpbloch/wordpress-core": "4.9.8",
                 "johnpbloch/wordpress-core-installer": "^1.0",
                 "php": ">=5.3.2"
             },
@@ -363,27 +402,27 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2018-04-03T22:47:48+00:00"
+            "time": "2018-08-02T21:48:39+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core",
-            "version": "4.9.5",
+            "version": "4.9.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
-                "reference": "442ae6c761e3b20cc6a000bee8fefcde5dbab3fa"
+                "reference": "50323f9b91d7689d615b4af02caf9d80584b1cfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/442ae6c761e3b20cc6a000bee8fefcde5dbab3fa",
-                "reference": "442ae6c761e3b20cc6a000bee8fefcde5dbab3fa",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/50323f9b91d7689d615b4af02caf9d80584b1cfc",
+                "reference": "50323f9b91d7689d615b4af02caf9d80584b1cfc",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "provide": {
-                "wordpress/core-implementation": "4.9.5"
+                "wordpress/core-implementation": "4.9.8"
             },
             "type": "wordpress-core",
             "notification-url": "https://packagist.org/downloads/",
@@ -403,7 +442,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2018-04-03T22:47:40+00:00"
+            "time": "2018-08-02T21:48:32+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -572,28 +611,28 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v2.4.0",
+            "version": "v2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "3cc116adbe4b11be5ec557bf1d24dc5e3a21d18c"
+                "reference": "8abb4f9aa89ddea9d52112c65bbe8d0125e2fa8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/3cc116adbe4b11be5ec557bf1d24dc5e3a21d18c",
-                "reference": "3cc116adbe4b11be5ec557bf1d24dc5e3a21d18c",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/8abb4f9aa89ddea9d52112c65bbe8d0125e2fa8e",
+                "reference": "8abb4f9aa89ddea9d52112c65bbe8d0125e2fa8e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.9"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8 || ^5.0"
+                "phpunit/phpunit": "^4.8.35 || ^5.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -603,7 +642,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause-Attribution"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -618,7 +657,7 @@
                 "env",
                 "environment"
             ],
-            "time": "2016-09-01T10:05:43+00:00"
+            "time": "2018-07-29T20:33:41+00:00"
         },
         {
             "name": "wpackagist-plugin/redis-cache",
@@ -642,15 +681,15 @@
         },
         {
             "name": "wpackagist-plugin/user-switching",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/user-switching/",
-                "reference": "tags/1.3.0"
+                "reference": "tags/1.3.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/user-switching.1.3.0.zip",
+                "url": "https://downloads.wordpress.org/plugin/user-switching.1.3.1.zip",
                 "reference": null,
                 "shasum": null
             },

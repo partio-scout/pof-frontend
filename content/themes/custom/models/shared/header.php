@@ -14,6 +14,14 @@ class Header extends \DustPress\Model {
         return $slug;
     }
 
+    public function LangSlug() {
+        return pll_current_language();
+    }
+
+    public function HomeUrl() {
+        return pll_home_url();
+    }
+
 
     // public $ttl = [
     //     'Content' => 3600

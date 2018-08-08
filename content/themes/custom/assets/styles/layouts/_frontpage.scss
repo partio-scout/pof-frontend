@@ -31,6 +31,13 @@
 	height: 100%;
 }
 
+.slick-slide {
+	&,
+	& > div {
+		height: 100%;
+	}
+}
+
 .slide {
 	height: 100%;
 	background-position: 50% 50%;
@@ -270,10 +277,14 @@
 	}
 }
 
-.program__logo-container {
-	height: 100%;
-	text-align: center;
-	padding-top: 2rem;
+.program__logo {
+	max-height: 9.375rem;
+
+	&-container {
+		height: 100%;
+		text-align: center;
+		padding-top: 2rem;
+	}
 }
 
 .program__divider {

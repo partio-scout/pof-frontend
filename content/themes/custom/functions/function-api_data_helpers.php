@@ -239,3 +239,38 @@ function sort_by_mandatory( $posts ) {
 
     return $tasks;
 }
+
+function get_api_media( $id, $rendered = true ) {
+    // Make sure the id is a number
+    $id = absint( $id );
+
+    // Attempt to get the image from cache
+    $cache_key = 'apimedia/' . $id;
+    $media_data = wp_cache_get( $cache_key );
+    if ( empty( $media_data ) ) {
+
+        // Get the image from api
+        $media_url = get_field( 'media-url', 'option' );
+        if ( ! empty( $media_url ) ) {
+            $media_data = \POF_Importer::init()->fetch_data( $media_url . $id );
+
+            // Save image to cache
+            wp_cache_set( $cache_key, $media_data, null, HOUR_IN_SECONDS );
+        }
+    }
+
+    // Remove width&height params from prerendered image tag
+    if ( ! empty( $media_data ) ) {
+        $regex = '/width="[0-9]+" height="[0-9]+"/';
+        $media_data['description']['rendered'] = preg_replace( $regex, '', $media_data['description']['rendered'] );
+    }
+
+    if ( $rendered ) {
+        // Get the prerendered image tag
+        $rendered = $media_data['description']['rendered'];
+
+        return $rendered;
+    }
+
+    return $media_data;
+}

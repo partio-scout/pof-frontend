@@ -26,6 +26,15 @@ class POF_Importer {
     private $normal_importer;   // tell that we run normal importer
     private $tips_importer;     // tell that we run tips importer
     private $site_languages;    // get site general languages
+    private static $instance;
+
+    public static function init() {
+        if ( ! static::$instance ) {
+            static::$instance = new POF_Importer();
+        }
+
+        return static::$instance;
+    }
 
     public function __construct() {
         add_action( 'init', array( $this, 'init_plugin' ) );
@@ -782,7 +791,7 @@ class POF_Importer {
 
 }
 
-$importer = new POF_Importer();
+POF_Importer::init();
 
 // Require redirect handler
 require 'pof-redirect-handler.php';

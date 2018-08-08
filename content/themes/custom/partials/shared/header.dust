@@ -6,9 +6,12 @@
 		<head>
 			<meta charset="{WP.charset}">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<link rel="shortcut icon" href="http://www.partio.fi/sites/partio.fi/themes/partio2016/favicon.ico" type="image/vnd.microsoft.icon">
-			<link rel="apple-touch-icon" href="http://www.partio.fi/sites/partio.fi/themes/partio2016/apple-touch-icon.png">
 			<title>{WP.title|s}</title>
+
+			<link rel="manifest" href="/{LangSlug}/manifest.json">
+			<meta name="mobile-web-app-capable" content="yes">
+			<meta name="apple-mobile-web-app-capable" content="yes">
+			<meta name="msapplication-starturl" content="{HomeUrl}">
 
 			{@wphead /}
 			{Analytics|s}
