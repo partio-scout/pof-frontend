@@ -18,6 +18,13 @@ class Header extends \DustPress\Model {
         return pll_home_url();
     }
 
+    /**
+     * Get search page url for current language
+     */
+    public function SearchUrl() {
+        return generate_search_url();
+    }
+
 
     // public $ttl = [
     //     'Content' => 3600

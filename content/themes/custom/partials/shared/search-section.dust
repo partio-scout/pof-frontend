@@ -13,7 +13,7 @@
                             {>"shared/search-filter" embed="true" /}
                         {/small}
                     </div>
-                    <a href="#" class="advanced-search-link">
+                    <a href="{Header.SearchUrl}" class="advanced-search-link">
                         {Header.S.use_adv_search}
                         <i class="icon-chevron-right" aria-hidden="true"></i>
                     </a>

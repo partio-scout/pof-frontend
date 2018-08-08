@@ -231,8 +231,13 @@ class Search {
 
         // Change url and add the query to the history
         if ( window.history && typeof pof_lang !== 'undefined' ) {
-            const newUrl = location.toString().replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + args.search.s );
-            window.history.pushState({}, 'Haku', newUrl );
+            const oldUrl = location.toString();
+            const newUrl = oldUrl.replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + args.search.s );
+            if ( newUrl !== oldUrl ) {
+                window.history.pushState({}, 'Haku', newUrl );
+            } else {
+                window.history.pushState({}, 'Haku', oldUrl + args.search.s );
+            }
 
             this.$langMenu.find( 'a' ).each( ( i, el ) => {
                 el.href = el.href.replace( this.lastSearch, args.search.s );
