@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Partio-ohjelma Theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-29 16:05+0300\n"
-"PO-Revision-Date: 2018-06-29 16:08+0300\n"
+"POT-Creation-Date: 2018-08-09 14:46+0300\n"
+"PO-Revision-Date: 2018-08-09 14:46+0300\n"
 "Last-Translator: partioadmin <ville.siltala@geniem.com>\n"
 "Language-Team: Finnish\n"
 "Language: fi\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Sivuston asetukset"
 msgstr ""
 
-#: functions/function-menus.php:3 models/shared/header.php:199
+#: functions/function-menus.php:3 models/shared/header.php:210
 msgid "Main Menu"
 msgstr "Päävalikko"
 
@@ -215,7 +215,7 @@ msgstr "Lisätiedot"
 msgid "Equipment"
 msgstr "Tarvikkeet"
 
-#: models/page-task.php:95 models/search.php:414
+#: models/page-task.php:95 models/search.php:452
 msgid "Task group"
 msgstr "Aktiviteettiryhmä"
 
@@ -279,7 +279,7 @@ msgstr "Tavoite"
 msgid "Description"
 msgstr "Kuvaus"
 
-#: models/search.php:231
+#: models/search.php:253
 msgid "Tip in task "
 msgstr ""
 
@@ -311,61 +311,69 @@ msgstr "Takaisin ylös"
 msgid "Sitemap"
 msgstr "Sivukartta"
 
-#: models/shared/header.php:200
+#: models/shared/header.php:211
 msgid "Search"
 msgstr "Haku"
 
-#: models/shared/header.php:201
+#: models/shared/header.php:212
 msgid "Use the advanced search"
 msgstr "Käytä tarkempaa hakua"
 
-#: models/shared/header.php:202
+#: models/shared/header.php:213
 msgid "Filter the results"
 msgstr "Rajaa Hakutuloksia"
 
-#: models/shared/header.php:203
+#: models/shared/header.php:214
 msgid "Filter by agegroup"
 msgstr "Rajaa ikäkauden mukaan"
 
-#: models/shared/header.php:204
+#: models/shared/header.php:215
 msgid "By agegroup"
 msgstr "Ikäkauden mukaan"
 
-#: models/shared/header.php:205
+#: models/shared/header.php:216
 msgid "More filters"
 msgstr "Lisää rajausvaihtoehtoja"
 
-#: models/shared/header.php:206
+#: models/shared/header.php:217
 msgid "Other filters"
 msgstr "Muut Rajausvaihtoehdot"
 
-#: models/shared/header.php:207
+#: models/shared/header.php:218
 msgid "Filter type"
 msgstr "Rajaustapa"
 
-#: models/shared/header.php:208
+#: models/shared/header.php:219
 msgid "And"
 msgstr "Ja"
 
-#: models/shared/header.php:209
+#: models/shared/header.php:220
 msgid "Or"
 msgstr "Tai"
 
-#: models/shared/header.php:210
+#: models/shared/header.php:221
 msgid "Load more"
 msgstr "Lataa lisää"
 
-#: models/shared/header.php:211
+#: models/shared/header.php:222
 msgid "results found"
 msgstr "hakutuloksia"
 
-#: models/shared/header.php:212
+#: models/shared/header.php:223
 msgid "Frontpage"
 msgstr "Etusivu"
 
-#: models/shared/header.php:213
+#: models/shared/header.php:224
 msgid "Search results"
 msgstr "Hakutulokset"
+
+#: models/shared/header.php:225
+msgid "Tell us what you are looking for.."
+msgstr "Kerro, mitä etsit.."
+
+#: models/shared/header.php:226
+msgid "Search on site"
+msgstr "Etsi sivulta"
 
 #: models/shared/tips.php:51
 msgid "Order"

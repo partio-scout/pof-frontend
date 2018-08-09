@@ -6,7 +6,7 @@
                 <h3 class="search-heading">{Header.S.haku}</h3>
                 <div class="row collapse align-center">
                     <div class="small-12 columns search-input-container">
-                        <input type="search" name="s" id="search" value="{Term}" placeholder="Kerro, mitä etsit.."  title="Etsi sivulta">
+                        <input type="search" name="s" id="search" value="{Term}" placeholder="{Header.S.search_placeholder}"  title="{Header.S.search_title}">
                         <i id="search-icon" class="icon-search search-icon"></i>
                         <i id="search-filter" class="icon-filter filter-icon"></i>
                         {^small}
