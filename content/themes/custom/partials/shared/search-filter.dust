@@ -9,7 +9,7 @@
         <label>
             <p>{Header.S.filter_by_age}</p>
             <div class="search-input-container">
-                <input type="search" name="s" value="" placeholder="Etsi" title="Etsi sivulta">
+                <input type="search" name="s" value="{Term}" placeholder="Etsi" title="Etsi sivulta">
                 <i class="icon-search search-icon"></i>
             </div>
         </label>
@@ -22,7 +22,7 @@
         <label>
             <p>{Header.S.by_agegroup}</p>
             <div class="search-input-container">
-                <input type="search" name="s" value="" placeholder="Etsi" title="Etsi sivulta">
+                <input type="search" name="s" value="{Term}" placeholder="Etsi" title="Etsi sivulta">
                 <i class="icon-search search-icon"></i>
             </div>
         </label>

@@ -149,8 +149,8 @@ class Search {
     }
 
     getArgs( searchForm = null ) {
-        const search = ( searchForm || this.$searchForm ).serializeJSON();
-        const filter = this.$filterForm.filter( ':visible' ).serializeJSON();
+        const search = ( searchForm || this.$searchForm ).serialize();
+        const filter = this.$filterForm.filter( ':visible' ).serialize();
 
         const args = {
             search,
@@ -170,15 +170,18 @@ class Search {
             this.stop( e );
         }
 
-        // Collect args from the form that was submitted either via click or submit event
-        const args = this.getArgs( $( e.currentTarget ).closest( 'form' ) );
+        const $form   = $( e.currentTarget ).closest( 'form' );
+        const $SInput = $form.find( 'input[name="s"]' );
 
         // Duplicate search value across both forms
-        if ( args.search.s ) {
-            this.$searchInput.val( args.search.s );
+        if ( $SInput.val() ) {
+            this.$searchInput.val( $SInput.val() );
         } else {
-            args.search.s = this.$searchInput.val();
+            $SInput.val( this.$searchInput.val() );
         }
+
+        // Collect args from the form that was submitted either via click or submit event
+        const args = this.getArgs( $form );
 
         // Abort any existing calls
         if ( this.xhr ) {
@@ -189,7 +192,7 @@ class Search {
             partial: 'search-results-list',
             data: true,
             success: ( html, data ) => {
-                this.doSearchSuccess( html, data, args );
+                this.doSearchSuccess( html, data );
             },
             error: ( error ) => {
                 console.log( 'error', error );
@@ -233,9 +236,8 @@ class Search {
      *
      * @param {string} html Rendered html result of query.
      * @param {object} data Data that was used to render the html.
-     * @param {obejct} args Data that was used to make the ajax call.
      */
-    doSearchSuccess( html, data, args ) {
+    doSearchSuccess( html, data ) {
 
         // Get new response data or set defaults if no response
         this.handleMetadata( data );
@@ -244,19 +246,20 @@ class Search {
 
         // Change url and add the query to the history
         if ( window.history && typeof pof_lang !== 'undefined' ) {
-            const newUrl = location.toString().replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + args.search.s );
-            if ( newUrl.includes( args.search.s ) ) {
+            const searchTerm = _.get( data, 'Search.Results.params.search_term', this.$searchInput.val() );
+
+            const newUrl = location.toString().replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + searchTerm );
+            if ( newUrl.includes( searchTerm ) ) {
                 window.history.pushState({}, 'Haku', newUrl );
             } else {
-                window.history.pushState({}, 'Haku', newUrl + args.search.s );
+                window.history.pushState({}, 'Haku', newUrl + searchTerm );
             }
 
             this.$langMenu.find( 'a' ).each( ( i, el ) => {
-                el.href = el.href.replace( this.lastSearch, args.search.s );
+                el.href = el.href.replace( this.lastSearch, searchTerm );
             });
 
-            this.lastSearch = args.search.s;
-
+            this.lastSearch = searchTerm;
         }
     };
 
