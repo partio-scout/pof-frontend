@@ -1,7 +1,8 @@
 <div class="field-list agegroups">
     {#age_groups}
+        {@set key="age_guid" value=guid /}
         <div class="filter-opener">
-            <input type="checkbox" class="custom checkbox" name="enabled_age_groups[]" value="{guid}">
+            <input type="checkbox" class="custom checkbox" name="enabled_age_groups[]" value="{age_guid}">
             {#languages}
                 {@eq key=lang value=locale}
                     <p>{title}</p>
@@ -9,8 +10,23 @@
             {/languages}
             <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
             <div class="collapsed">
-                <div class="collapsed-content">
-                    {>"filters" prefix="[agegroups][{guid}]" /}
+                <div class="collapsed-content field-list">
+                    {#taskgroups}
+                        <div class="filter-opener">
+                            <input type="checkbox" class="custom checkbox" name="enabled_task_groups[]" value="{guid}">
+                            {#languages}
+                                {@eq key=lang value=locale}
+                                    <p>{title}</p>
+                                {/eq}
+                            {/languages}
+                            <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
+                            <div class="collapsed">
+                                <div class="collapsed-content">
+                                    {>"filters" prefix="agegroups[{age_guid}][{guid}]" /}
+                                </div>
+                            </div>
+                        </div>
+                    {/taskgroups}
                 </div>
             </div>
         </div>

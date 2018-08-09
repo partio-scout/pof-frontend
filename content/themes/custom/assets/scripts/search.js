@@ -149,11 +149,9 @@ class Search {
     }
 
     getArgs( searchForm = null ) {
-        const search = ( searchForm || this.$searchForm ).serialize();
-        const filter = this.$filterForm.filter( ':visible' ).serialize();
+        const filter = ( searchForm || this.$filterForm || this.$searchForm ).filter( ':visible' ).serialize();
 
         const args = {
-            search,
             filter
         };
 

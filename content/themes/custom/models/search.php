@@ -143,7 +143,7 @@ class Search extends \DustPress\Model {
         $per_page    = absint( get_option( 'posts_per_page' ), 10 );
         $page        = absint( $ajax_args->page ?? get_query_var( 'paged', 1 ) ?: 1 );
         $displaying  = $per_page * $page;
-        $search_term = $ajax_args->search['s'] ?? get_query_var( 's' );
+        $search_term = $ajax_args->filter['s'] ?? get_query_var( 's' );
         // Remove - from search_term. Else the word after - will be excluded from query.
         $search_term = str_replace( '-', ' ', $search_term );
 
@@ -299,8 +299,21 @@ class Search extends \DustPress\Model {
                 $filters_to_check = [
                     'global' => $filters['global'],
                 ];
-                foreach ( $filters['enabled_age_groups'] as $guid ) {
-                    $filters_to_check[ $guid ] = $filters['agegroups'][ $guid ];
+                foreach ( $filters['enabled_age_groups'] as $age_guid ) {
+
+                    $added = false;
+                    foreach ( $filters['enabled_task_groups'] as $task_guid ) {
+                        if ( array_key_exists( $task_guid, $filters['agegroups'][ $age_guid ] ) ) {
+                            $filters_to_check[ $task_guid ] = $filters['agegroups'][ $age_guid ][ $task_guid ];
+                            $added                          = true;
+                        }
+                    }
+
+                    // If not added then the agegroup was enabled but none of its taskgroups were
+                    // So add the agegroup to the the list of filters to check instead of taskgroup
+                    if ( ! $added ) {
+                        $filters_to_check[ $age_guid ] = null;
+                    }
                 }
 
                 // Check all filters
@@ -342,11 +355,12 @@ class Search extends \DustPress\Model {
      *
      * @param  mixed  $post    Post to check.
      * @param  mixed  $filters Filters to check.
-     * @param  string $guid    Agegroup guid or 'global'.
+     * @param  string $guid    Taskgroup guid or 'global'.
      * @return bool            True or false depending on if post filter was succesful.
      */
     protected function single_group_filter( $post, $filters, string $guid ) {
-        // First of all check agegroups
+
+        // First of all check taskgroups
         if ( $guid !== 'global' ) {
             if ( empty( $post->parents ) ) {
                 return false;
