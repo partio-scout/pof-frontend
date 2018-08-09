@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43c8b53009d21f3ead36702c4fd0f920",
+    "content-hash": "cf0501a443a3d8a903c1ea125e4348d7",
     "packages": [
         {
             "name": "composer/installers",
@@ -125,6 +125,32 @@
                 "zikula"
             ],
             "time": "2017-12-29T09:13:20+00:00"
+        },
+        {
+            "name": "devgeniem/classic-editor",
+            "version": "0.4.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:devgeniem/classic-editor.git",
+                "reference": "5c29bbf74e344db4dd5017f4638046ccaa637555"
+            },
+            "type": "wordpress-muplugin",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Ozz",
+                    "homepage": "https://github.com/azaozz/"
+                },
+                {
+                    "name": "Ville Siltala",
+                    "email": "ville.siltala@geniem.com",
+                    "homepage": "https://geniem.com/"
+                }
+            ],
+            "description": "Classic Editor WordPress plugin",
+            "time": "2018-08-08T12:35:00+00:00"
         },
         {
             "name": "devgeniem/dustpress",
@@ -658,26 +684,6 @@
                 "environment"
             ],
             "time": "2018-07-29T20:33:41+00:00"
-        },
-        {
-            "name": "wpackagist-plugin/classic-editor",
-            "version": "0.4",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/classic-editor/",
-                "reference": "tags/0.4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/classic-editor.0.4.zip",
-                "reference": null,
-                "shasum": null
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/classic-editor/"
         },
         {
             "name": "wpackagist-plugin/redis-cache",
