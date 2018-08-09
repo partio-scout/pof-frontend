@@ -186,6 +186,7 @@ class Search {
             this.xhr.abort();
         }
         this.xhr = dp( 'Search/Results', {
+            url: window.location,
             args,
             partial: 'search-results-list',
             data: true,
@@ -217,6 +218,7 @@ class Search {
                 this.xhr.abort();
             }
             this.xhr = dp( 'Search/Results', {
+                url: window.location,
                 args,
                 partial: 'search-results-list',
                 success: ( data ) => {
@@ -282,7 +284,6 @@ class Search {
         // If max pages has not been reached reset the load more button
         if ( this.$page < this.$maxPages ) {
             this.$loadMoreButton.disabled = false;
-            this.$loadMoreButton.html( 'Lataa lisää' );
             this.$loadMoreButton.removeClass( 'loading' );
         } else {
             this.$loadMoreButton.hide();

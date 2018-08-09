@@ -134,14 +134,11 @@ class Search extends \DustPress\Model {
 
         // Parse serialized ajax args
         if ( $ajax_args ) {
-            foreach ( $ajax_args as &$value ) {
-                // Assign parsed $value into itself
-                parse_str( $value, $value );
-            }
+            parse_str( $ajax_args->filter, $ajax_args->filter );
         }
 
-        $per_page    = absint( get_option( 'posts_per_page' ), 10 );
-        $page        = absint( $ajax_args->page ?? get_query_var( 'paged', 1 ) ?: 1 );
+        $per_page    = absint( get_option( 'posts_per_page' ) ?: 10 );
+        $page        = absint( ( $ajax_args->page ?? get_query_var( 'paged', 1 ) ) ?: 1 );
         $displaying  = $per_page * $page;
         $search_term = $ajax_args->filter['s'] ?? get_query_var( 's' );
         // Remove - from search_term. Else the word after - will be excluded from query.
