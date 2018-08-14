@@ -80,6 +80,14 @@ $tablet-only: "#{$screen} and (min-width:#{lower-bound($tablet-range)}) and (max
 	float: left;
 }
 
+.hide-for-small-only {
+	@media screen and (max-width: $tablet-breakpoint) {
+		display: none;
+	}
+}
 
-
-
+.show-for-small-only {
+	@media #{$tablet-up} {
+		display: none;
+	}
+}
