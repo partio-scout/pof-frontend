@@ -12,9 +12,9 @@ function enqueue_styles_and_scripts(){
     wp_enqueue_script( 'jquery' );
 
     // Local styles & scripts
-    wp_enqueue_style( 'main-css', get_template_directory_uri() . '/assets/dist/main.css', false, '1.1.0', all );
+    wp_enqueue_style( 'main-css', get_template_directory_uri() . '/assets/dist/main.css', false, '1.1.1', all );
 
-    wp_register_script( 'main-js', get_template_directory_uri() . '/assets/dist/main.js', false, '1.1.0', all );
+    wp_register_script( 'main-js', get_template_directory_uri() . '/assets/dist/main.js', false, '1.1.1', all );
     // Localize data for javascript to use.
     $localized_data = array(
         // Contains titles for search

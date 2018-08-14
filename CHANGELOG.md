@@ -5,6 +5,8 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Julkaisematta]
 
+## [1.1.1] - 2018-08-14
+
 ### Korjattu
 - PO-289: Lisätty puuttuvat .hide-for-small-only & .show-for-small-only classit
 
