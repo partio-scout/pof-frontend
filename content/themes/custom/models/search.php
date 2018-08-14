@@ -39,6 +39,10 @@ class Search extends \DustPress\Model {
         return true;
     }
 
+    protected function order_sort( $a, $b ) {
+        return $a['order'] - $b['order'];
+    }
+
     /**
      * Get search terms and translations from api
      */
@@ -54,11 +58,15 @@ class Search extends \DustPress\Model {
         $search_terms = \POF\Api::get( $haku_json, true );
         $translations = \POF\Api::get( $kaannos_json, true );
 
-        // Parse age groups
+        // Sort groups according to order
         $age_groups = $program['program'][0]['agegroups'];
-        usort( $age_groups, function( $a, $b ) {
-            return $a['order'] - $b['order'];
-        });
+        usort( $age_groups, [ $this, 'order_sort' ] );
+        foreach ( $age_groups as &$age_group ) {
+            usort( $age_group->taskgroups, [ $this, 'order_sort' ] );
+            foreach ( $age_group->taskgroups as &$taskgroup ) {
+                usort( $taskgroup->tasks, [ $this, 'order_sort' ] );
+            }
+        }
 
         // Remove invalid field types
         $search_terms = array_filter( $search_terms, function( $field ) {

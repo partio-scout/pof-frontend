@@ -1,4 +1,5 @@
 <div class="field-list agegroups">
+
     {#age_groups}
         {@set key="age_guid" value=guid /}
         <div class="filter-opener">
@@ -10,10 +11,12 @@
             {/languages}
             <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
             <div class="collapsed">
-                <div class="collapsed-content field-list">
+                <div class="collapsed-content checkbox field-list">
+
                     {#taskgroups}
+                        {@set key="taskgroup_guid" value=guid /}
                         <div class="filter-opener">
-                            <input type="checkbox" class="custom checkbox" name="enabled_task_groups[]" value="{guid}">
+                            <input type="checkbox" class="custom checkbox" name="enabled_task_groups[]" value="{taskgroup_guid}">
                             {#languages}
                                 {@eq key=lang value=locale}
                                     <p>{title}</p>
@@ -21,12 +24,25 @@
                             {/languages}
                             <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
                             <div class="collapsed">
-                                <div class="collapsed-content">
-                                    {>"filters" prefix="agegroups[{age_guid}][{guid}]" /}
+                                <div class="collapsed-content checkbox field-list">
+
+                                    {#tasks}
+                                        {@set key="task_guid" value=guid /}
+                                        <label>
+                                            <input type="checkbox" class="custom checkbox" name="enabled_tasks[]" value="{task_guid}">
+                                            {#languages}
+                                                {@eq key=lang value=locale}
+                                                    <p>{title}</p>
+                                                {/eq}
+                                            {/languages}
+                                        </label>
+                                    {/tasks}
+
                                 </div>
                             </div>
                         </div>
                     {/taskgroups}
+
                 </div>
             </div>
         </div>

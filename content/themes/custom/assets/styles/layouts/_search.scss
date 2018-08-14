@@ -34,6 +34,28 @@ $search_fontsize_smaller: rem-calc(12);
 	}
 }
 
+.search-results {
+	position: relative;
+
+	&::after {
+		content: ' ';
+		display: none;
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		background-color: white;
+		opacity: .8;
+	}
+
+	&.loading {
+		&::after {
+			display: block;
+		}
+	}
+}
+
 .search-block {
 	padding-top: 1.5rem;
 	border-bottom: 1px solid #dddddd;
@@ -415,7 +437,7 @@ $search_fontsize_smaller: rem-calc(12);
         &.checkbox {
         	label {
         		display: flex;
-        		align-items: center;
+        		align-items: flex-start;
         	}
         }
 

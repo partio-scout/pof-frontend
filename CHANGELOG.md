@@ -8,6 +8,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 ### Lisätty
 - PO-267: Classic editor plugini wp päivityksen myötä
 - PO-288: Teeman värit manifest tiedostoon ja meta tagiin
+- PO-267: Näytetään kun haku on käynnissä
 
 ### Muutettu
 - PO-288: Päivitetty jQuery ja siirretty se webpackillä compilattavaksi

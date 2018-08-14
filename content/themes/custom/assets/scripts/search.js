@@ -15,6 +15,7 @@ class Search {
      * Cache relevant dom elements
      */
     cache() {
+        this.$searchResults          = $( 'section.search-results' );
         this.$loadMoreButton         = $( '#search-results-loadmore' );
         this.$resultsContainer       = $( '#search-results-container' );
         this.$searchIcon             = $( '.search-icon' );
@@ -104,6 +105,8 @@ class Search {
      * @param {object} e Change event.
      */
     filterInputChange( e ) {
+        this.$searchResults.addClass( 'loading' );
+
         const $input = $( e.currentTarget );
         const $children = $input.parent().find( 'input[type="checkbox"][name].checkbox' );
         $children.prop( 'checked', $input.is( ':checked' ) );
@@ -164,6 +167,8 @@ class Search {
      * @param {object} e Event that initialized this function call.
      */
     doSearch( e ) {
+        this.$searchResults.addClass( 'loading' );
+
         if ( e.type !== 'change' ) {
             this.stop( e );
         }
@@ -194,7 +199,10 @@ class Search {
                 this.doSearchSuccess( html, data );
             },
             error: ( error ) => {
-                console.log( 'error', error );
+                if ( error.error !== 'abort' ) {
+                    this.$searchResults.removeClass( 'loading' );
+                    console.log( 'error', error );
+                }
             }
         });
     };
@@ -205,6 +213,7 @@ class Search {
      * @param  {object} e Click event.
      */
     loadMore( e ) {
+        this.$searchResults.addClass( 'loading' );
         this.stop( e );
         if ( ! this.$loadMoreButton.disabled ) {
             this.$loadMoreButton.disabled = true;
@@ -225,7 +234,10 @@ class Search {
                     this.loadMoreSuccess( data );
                 },
                 error: ( error ) => {
-                    console.log( 'error', error );
+                    if ( error.error !== 'abort' ) {
+                        this.$searchResults.removeClass( 'loading' );
+                        console.log( 'error', error );
+                    }
                 }
             });
         }
@@ -261,6 +273,8 @@ class Search {
 
             this.lastSearch = searchTerm;
         }
+
+        this.$searchResults.removeClass( 'loading' );
     };
 
     /**
