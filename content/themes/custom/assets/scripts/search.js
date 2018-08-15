@@ -174,9 +174,10 @@ class Search {
         const $form   = $( e.currentTarget ).closest( 'form' );
         const $SInput = $form.find( 'input[name="s"]' );
 
-        // Duplicate search value across both forms
+        // Duplicate search value across all forms
         if ( $SInput.val() ) {
             this.$searchInput.val( $SInput.val() );
+            this.$filterForm.find( 'input[name="s"]' ).val( $SInput.val() );
         } else {
             $SInput.val( this.$searchInput.val() );
         }
