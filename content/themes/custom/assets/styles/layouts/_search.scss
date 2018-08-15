@@ -164,6 +164,7 @@ $search_fontsize_smaller: rem-calc(12);
 		font-size: 1.2rem;
 		color: $partio_main_color_lighter;
 		padding: 0;
+		text-decoration: none;
 
 		.icon-cog {
 			margin-right: .5rem;
@@ -215,17 +216,18 @@ $search_fontsize_smaller: rem-calc(12);
 	}
 
 	.search-icon {
-		margin-right: .5rem;
-		right: 3.75rem;
+		margin: 0;
+		right: 3rem;
+		transform: translateY(-5%);
+		background-color: transparent;
 
 		.menu-wrapper &,
 		.search-filter & {
-			right: 1.875rem;
+			right: .5rem;
 		}
 
 		@media ( min-width: $small-breakpoint ) {
-			margin-right: 0;
-			right: 1.875rem;
+			right: .5rem;
 		}
 	}
 

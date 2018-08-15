@@ -46,11 +46,11 @@
                             <div class="min-max-input-container">
                                 <label>
                                     <p>Minimi</p>
-                                    <input type="number" name="{prefix}[filters][{fieldname}][min]:number">
+                                    <input type="number" name="{prefix}[filters][{fieldname}][min]">
                                 </label>
                                 <label>
                                     <p>Maksimi</p>
-                                    <input type="number" name="{prefix}[filters][{fieldname}][max]:number">
+                                    <input type="number" name="{prefix}[filters][{fieldname}][max]">
                                 </label>
                             </div>
                         {/eq}

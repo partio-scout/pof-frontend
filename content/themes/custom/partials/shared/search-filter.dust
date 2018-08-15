@@ -6,13 +6,12 @@
     {/embed}
 
     {?embed}
-        <label>
-            <p>{Header.S.filter_by_age}</p>
-            <div class="search-input-container">
-                <input type="search" name="s" value="{Term}" placeholder="{Header.S.search_placeholder}" title="{Header.S.search_title}">
-                <i class="icon-search search-icon"></i>
-            </div>
-        </label>
+        <h3>
+            <i class="icon-filter" aria-hidden="true"></i>
+            {Header.S.filter_search}
+        </h3>
+
+        <p>{Header.S.filter_by_age}</p>
     {:else}
         <h3>
             <i class="icon-filter" aria-hidden="true"></i>
@@ -23,7 +22,9 @@
             <p>{Header.S.by_agegroup}</p>
             <div class="search-input-container">
                 <input type="search" name="s" value="{Term}" placeholder="{Header.S.search_placeholder}" title="{Header.S.search_title}">
-                <i class="icon-search search-icon"></i>
+                <button type="submit" class="search-icon">
+                    <i class="icon-search"></i>
+                </button>
             </div>
         </label>
     {/embed}
@@ -33,7 +34,7 @@
     {>"agegroup-filters" embed="false" /}
 
     {?embed}
-        <button class="toggle-global-filters">
+        <button class="toggle-global-filters" type="button">
             <i class="icon-cog"></i>
             {Header.S.more_filters}
         </button>

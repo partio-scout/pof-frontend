@@ -18,7 +18,6 @@ class Search {
         this.$searchResults          = $( 'section.search-results' );
         this.$loadMoreButton         = $( '#search-results-loadmore' );
         this.$resultsContainer       = $( '#search-results-container' );
-        this.$searchIcon             = $( '.search-icon' );
         this.$searchForm             = $( '.search-box__form' );
         this.$searchInput            = this.$searchForm.find( 'input[name="s"]' );
         this.$advSearchLink          = this.$searchForm.find( '.advanced-search-link' );
@@ -90,7 +89,6 @@ class Search {
             // event listeners
             this.$loadMoreButton.on( 'click', ( e ) => this.loadMore( e ) );
             this.$searchForm.on( 'submit', ( e ) => this.doSearch( e ) );
-            this.$searchIcon.on( 'click', ( e ) => this.doSearch( e ) );
             this.$filterForm.on( 'submit', ( e ) => this.doSearch( e ) );
             this.$filterBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
             this.$filterMoreBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
