@@ -167,7 +167,6 @@ class Search extends \DustPress\Model {
         $search_term = $ajax_args->filter['s'] ?? get_query_var( 's' );
         // Remove - from search_term. Else the word after - will be excluded from query.
         $search_term = str_replace( '-', ' ', $search_term );
-        $locale      = static::get_locale();
 
         $params = (object) [
             'ajax_args'   => $ajax_args,
@@ -177,9 +176,10 @@ class Search extends \DustPress\Model {
             'search_term' => $search_term,
         ];
 
-        $results         = $this->get_results( $params );
-        $results->params = $params;
-        $results->locale = $locale;
+        $results            = $this->get_results( $params );
+        $results->params    = $params;
+        $results->locale    = static::get_locale();
+        $results->lang_base = pll_current_language();
 
         return $results;
     }

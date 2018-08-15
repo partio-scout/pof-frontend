@@ -36,7 +36,7 @@
                             <img src="{logo.thumbnail.url}" width="23" height="24" alt="" />
                         {/logo.thumbnail.url}
                     {/first}
-                    <a class="search-results__breadcrumb-link" href="/{Header.LangSlug}/guid/{guid}">
+                    <a class="search-results__breadcrumb-link" href="/{Search.Results.lang_base}/guid/{guid}">
                         {#languages}
                             {@eq key=lang value=Search.Results.locale}
                                 {title}

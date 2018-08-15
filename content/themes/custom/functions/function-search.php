@@ -5,7 +5,17 @@ add_action( 'init', 'page_rewrite', 999, 0 );
  */
 function page_rewrite() {
     add_rewrite_rule( 'guid/(.+)', 'index.php?pagename=guid&guid=$matches[1]', 'top' );
+    add_rewrite_rule( '(' . implode( '|', pll_languages_list() ) . ')/guid/(.+)', 'index.php?lang=$matches[1]&pagename=guid&guid=$matches[2]', 'top' );
 }
+
+// Stop polylang from redirecting guid links
+add_filter( 'pll_check_canonical_url', function( $redirect_url ) {
+    if ( strpos( $redirect_url, '/guid/' ) !== false ) {
+        $redirect_url = false;
+    }
+
+    return $redirect_url;
+});
 
 add_action( 'init', 'translate_base_rewrite', 999, 0 );
 /**
