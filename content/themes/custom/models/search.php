@@ -298,56 +298,24 @@ class Search extends \DustPress\Model {
             $filters = $args->filter;
             $model   = $this;
             $posts   = array_filter( $posts, function( $post ) use ( $filters, $model ) {
-                $base_relation = $filters['base_relation'];
 
-                // Collect all items to check into single array
-                $filters_to_check = [
-                    'global' => $filters['global'],
-                ];
-                foreach ( $filters['enabled_age_groups'] as $age_guid ) {
-
-                    $added = false;
-                    foreach ( $filters['enabled_task_groups'] as $task_guid ) {
-                        if ( array_key_exists( $task_guid, $filters['agegroups'][ $age_guid ] ) ) {
-                            $filters_to_check[ $task_guid ] = $filters['agegroups'][ $age_guid ][ $task_guid ];
-                            $added                          = true;
-                        }
-                    }
-
-                    // If not added then the agegroup was enabled but none of its taskgroups were
-                    // So add the agegroup to the the list of filters to check instead of taskgroup
-                    if ( ! $added ) {
-                        $filters_to_check[ $age_guid ] = null;
-                    }
-                }
-
-                // Check all filters
-                $success = 0;
-                foreach ( $filters_to_check as $guid => $filter ) {
-                    $result = $model->single_group_filter( $post, $filter, $guid );
-
-                    // If base relation is in OR mode succeed with only one success
-                    if ( $base_relation === 'OR' && $result ) {
-                        return true;
-                    }
-                    // Otherwise check all
-                    elseif ( $result ) {
-                        $success++;
-                    }
-                    // Otherwise fail immediately
-                    else {
+                // First check post relation
+                if ( ! empty( $filters['post_guids'] ) ) {
+                    $post_relation_result = $model->post_relation_filter( $post, $filters );
+                    if ( ! $post_relation_result ) {
                         return false;
                     }
-
                 }
 
-                // If we are in AND mode and all were succesful
-                if ( $success === count( $filters_to_check ) ) {
-                    return true;
+                // Now check task filters
+                if ( ! empty( $filters['global']['enabled'] ) ) {
+                    $result = $model->task_filter( $post, $filters['global'] );
+                    if ( ! $result ) {
+                        return false;
+                    }
                 }
 
-                // Finally if we are in AND more and not all were successful fail
-                return false;
+                return true;
             });
             header( 'x-filter-time: ' . round( microtime( true ) - $filter_start, 4 ) );
         }
@@ -356,96 +324,105 @@ class Search extends \DustPress\Model {
     }
 
     /**
-     * Check a set of filters against a post to filter it
+     * Check for api guid matches
      *
-     * @param  mixed  $post    Post to check.
-     * @param  mixed  $filters Filters to check.
-     * @param  string $guid    Taskgroup guid or 'global'.
-     * @return bool            True or false depending on if post filter was succesful.
+     * @param  mixed $post    Post to check.
+     * @param  mixed $filters Filters to check.
+     * @return bool           True or false depending on if post filter was succesful.
      */
-    protected function single_group_filter( $post, $filters, string $guid ) {
+    protected function post_relation_filter( $post, $filters ) {
+        $relation = $filters['post_relation'] ?? 'AND';
 
-        // First of all check taskgroups
-        if ( $guid !== 'global' ) {
-            if ( empty( $post->parents ) ) {
-                return false;
-            }
+        // Collect all post guids into a single array for comparison
+        $post_guids = array_merge(
+            wp_list_pluck( $post->parents, 'guid' ),
+            [
+                $post->fields['api_guid'],
+            ]
+        );
+        $collisions = array_intersect( $post_guids, $filters['post_guids'] );
 
-            $parent_success = false;
-            foreach ( $post->parents as $post_parent ) {
-                if ( $post_parent['guid'] === $guid ) {
-                    $parent_success = true;
-                    break;
-                }
-            }
-
-            if ( ! $parent_success ) {
-                return false;
-            }
+        if ( $relation === 'AND' ) {
+            // If we are in AND mode then all filter guids should be matched
+            $success = ( count( $collisions ) === count( $filters['post_guids'] ) );
+        }
+        else {
+            // If we are in OR mode then succeed with any matches
+            $success = ! empty( $collisions );
         }
 
-        // Now check filters
-        if ( ! empty( $filters['enabled'] ) ) {
-            foreach ( $filters['enabled'] as $field_key ) {
-                $relation = $filters['and_or'][ $field_key ] ?? 'AND'; // If no relation is found that means it is in false state = "AND"
-                $filter   = $filters['filters'][ $field_key ];
-                $success  = ( $relation === 'AND' ) ? 0 : false;
+        return $success;
+    }
 
-                foreach ( $post->fields['tags'] as $tag ) {
-                    foreach ( $tag['group'] as $group ) {
-                        if ( $group['group_key'] === $field_key ) {
-                            // MinMax
-                            if ( is_object( $filter ) ) {
-                                if (
-                                    (
-                                        $filter->max &&
-                                        $filter->max <= absint( $group['slug'] )
-                                    ) ||
-                                    (
-                                        $filter->min &&
-                                        $filter->min >= absint( $group['slug'] )
-                                    )
-                                ) {
-                                    $success = true;
-                                    continue 2;
+    /**
+     * Check a set of filters against a post to filter it
+     *
+     * @param  mixed $post    Post to check.
+     * @param  mixed $filters Filters to check.
+     * @return bool           True or false depending on if post filter was succesful.
+     */
+    protected function task_filter( $post, $filters ) {
+
+        foreach ( $filters['enabled'] as $field_key ) {
+            // Get relation, if no relation is found that means it is in false state = "AND"
+            $relation = $filters['and_or'][ $field_key ] ?? 'AND';
+            $filter   = $filters['filters'][ $field_key ];
+            $success  = ( $relation === 'AND' ) ? 0 : false;
+
+            foreach ( $post->fields['tags'] as $tag ) {
+                foreach ( $tag['group'] as $group ) {
+                    if ( $group['group_key'] === $field_key ) {
+                        // MinMax
+                        if ( is_object( $filter ) ) {
+                            if (
+                                (
+                                    $filter->max &&
+                                    $filter->max <= absint( $group['slug'] )
+                                ) ||
+                                (
+                                    $filter->min &&
+                                    $filter->min >= absint( $group['slug'] )
+                                )
+                            ) {
+                                $success = true;
+                                continue 2;
+                            }
+                        }
+                        // AND/OR
+                        elseif ( is_array( $filter ) ) {
+                            if ( $relation === 'AND' ) {
+                                if ( in_array( $group['slug'], $filter, true ) ) {
+                                    $success++;
                                 }
                             }
-                            // AND/OR
-                            elseif ( is_array( $filter ) ) {
-                                if ( $relation === 'AND' ) {
-                                    if ( in_array( $group['slug'], $filter, true ) ) {
-                                        $success++;
-                                    }
-                                }
-                                else {
-                                    if ( in_array( $group['slug'], $filter, true ) ) {
-                                        $success = true;
-                                        continue 2;
-                                    }
-                                }
-                            }
-                            // Single selection
-                            elseif ( is_string( $filter ) ) {
-                                if ( $filter === $group['slug'] ) {
+                            else {
+                                if ( in_array( $group['slug'], $filter, true ) ) {
                                     $success = true;
                                     continue 2;
                                 }
                             }
                         }
+                        // Single selection
+                        elseif ( is_string( $filter ) ) {
+                            if ( $filter === $group['slug'] ) {
+                                $success = true;
+                                continue 2;
+                            }
+                        }
                     }
                 }
+            }
 
-                if (
-                    // Success was set to false
-                    ! $success ||
-                    (
-                        // Not all AND relations were met
-                        is_int( $success ) &&
-                        $success !== count( $filter )
-                    )
-                ) {
-                    return false;
-                }
+            if (
+                // Success was set to false
+                ! $success ||
+                (
+                    // Not all AND relations were met
+                    is_int( $success ) &&
+                    $success !== count( $filter )
+                )
+            ) {
+                return false;
             }
         }
 

@@ -1,9 +1,8 @@
 <div class="field-list agegroups">
 
     {#age_groups}
-        {@set key="age_guid" value=guid /}
         <div class="filter-opener">
-            <input type="checkbox" class="custom checkbox" name="enabled_age_groups[]" value="{age_guid}">
+            <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
             {#languages}
                 {@eq key=lang value=locale}
                     <p>{title}</p>
@@ -14,9 +13,8 @@
                 <div class="collapsed-content checkbox field-list">
 
                     {#taskgroups}
-                        {@set key="taskgroup_guid" value=guid /}
                         <div class="filter-opener">
-                            <input type="checkbox" class="custom checkbox" name="enabled_task_groups[]" value="{taskgroup_guid}">
+                            <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
                             {#languages}
                                 {@eq key=lang value=locale}
                                     <p>{title}</p>
@@ -26,17 +24,23 @@
                             <div class="collapsed">
                                 <div class="collapsed-content checkbox field-list">
 
-                                    {#tasks}
-                                        {@set key="task_guid" value=guid /}
+                                    {?taskgroups}
+                                        {@set key="children" value=taskgroups /}
+                                    {:else}
+                                        {@set key="children" value=tasks /}
+                                    {/taskgroups}
+
+
+                                    {#children}
                                         <label>
-                                            <input type="checkbox" class="custom checkbox" name="enabled_tasks[]" value="{task_guid}">
+                                            <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
                                             {#languages}
                                                 {@eq key=lang value=locale}
                                                     <p>{title}</p>
                                                 {/eq}
                                             {/languages}
                                         </label>
-                                    {/tasks}
+                                    {/children}
 
                                 </div>
                             </div>

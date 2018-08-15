@@ -28,7 +28,7 @@
         </label>
     {/embed}
 
-    {>"search-and-or" name="base_relation" /}
+    {>"search-and-or" name="post_relation" /}
 
     {>"agegroup-filters" embed="false" /}
 
