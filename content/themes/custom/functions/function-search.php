@@ -32,8 +32,14 @@ function show_empty_search( $query ) {
         $query->is_main_query() &&
         empty( filter_input( INPUT_GET, 's', FILTER_SANITIZE_URL ) ) &&
         (
-            in_array( $query->query['name'], $search_bases, true ) ||
-            in_array( $query->query['category_name'], $search_bases, true )
+            (
+                array_key_exists( 'name', $query->query ) &&
+                in_array( $query->query['name'], $search_bases, true )
+            ) ||
+            (
+                array_key_exists( 'category_name', $query->query ) &&
+                in_array( $query->query['category_name'], $search_bases, true )
+            )
         )
     ) {
         $query->is_search = true;

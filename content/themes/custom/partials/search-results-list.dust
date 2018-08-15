@@ -31,8 +31,18 @@
         {?parents}
             <p class="search-results__breadcrumb">
                 {#parents}
-                    {@first}<img src="{logo.thumbnail.url}" width="23" height="24" alt="{title}" />{/first}
-                    <a class="search-results__breadcrumb-link" href="{url}" >{title}</a>
+                    {@first}
+                        {?logo.thumbnail.url}
+                            <img src="{logo.thumbnail.url}" width="23" height="24" alt="" />
+                        {/logo.thumbnail.url}
+                    {/first}
+                    <a class="search-results__breadcrumb-link" href="/{Header.LangSlug}/guid/{guid}">
+                        {#languages}
+                            {@eq key=lang value=Search.Results.locale}
+                                {title}
+                            {/eq}
+                        {/languages}
+                    </a>
                     {@sep}<i class="icon-chevron-right breadcrumb-divider"></i>{/sep}
                 {/parents}
             </p>

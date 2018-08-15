@@ -39,8 +39,18 @@ class Search extends \DustPress\Model {
         return true;
     }
 
-    protected function order_sort( $a, $b ) {
+    public static function order_sort( $a, $b ) {
         return $a['order'] - $b['order'];
+    }
+
+    /**
+     * Get short locale
+     *
+     * @return string First part of locale.
+     */
+    public static function get_locale() {
+        $locale = explode( '_', get_locale() )[0];
+        return $locale;
     }
 
     /**
@@ -51,7 +61,7 @@ class Search extends \DustPress\Model {
         $haku_json    = get_field( 'haku-json', 'option' );
         $kaannos_json = get_field( 'kaannos-json', 'option' );
         $ohjelma_json = get_field( 'ohjelma-json', 'option' );
-        $locale       = explode( '_', get_locale() )[0];
+        $locale       = static::get_locale();
 
         // Get remote data
         $program      = \POF\Api::get( $ohjelma_json, true );
@@ -60,11 +70,17 @@ class Search extends \DustPress\Model {
 
         // Sort groups according to order
         $age_groups = $program['program'][0]['agegroups'];
-        usort( $age_groups, [ $this, 'order_sort' ] );
-        foreach ( $age_groups as &$age_group ) {
-            usort( $age_group->taskgroups, [ $this, 'order_sort' ] );
-            foreach ( $age_group->taskgroups as &$taskgroup ) {
-                usort( $taskgroup->tasks, [ $this, 'order_sort' ] );
+        if ( ! empty( $age_groups ) ) {
+
+            usort( $age_groups, [ __CLASS__, 'order_sort' ] );
+            foreach ( $age_groups as &$age_group ) {
+                if ( ! empty( $age_group->taskgroups ) ) {
+
+                    usort( $age_group->taskgroups, [ __CLASS__, 'order_sort' ] );
+                    foreach ( $age_group->taskgroups as &$taskgroup ) {
+                        usort( $taskgroup->tasks, [ __CLASS__, 'order_sort' ] );
+                    }
+                }
             }
         }
 
@@ -151,6 +167,7 @@ class Search extends \DustPress\Model {
         $search_term = $ajax_args->filter['s'] ?? get_query_var( 's' );
         // Remove - from search_term. Else the word after - will be excluded from query.
         $search_term = str_replace( '-', ' ', $search_term );
+        $locale      = static::get_locale();
 
         $params = (object) [
             'ajax_args'   => $ajax_args,
@@ -162,6 +179,7 @@ class Search extends \DustPress\Model {
 
         $results         = $this->get_results( $params );
         $results->params = $params;
+        $results->locale = $locale;
 
         return $results;
     }
@@ -263,7 +281,8 @@ class Search extends \DustPress\Model {
                 else {
                     $new_post->search_type = $new_post->fields['api_type'];
                     $new_post->url         = get_permalink( $new_post->ID );
-                    $new_post->parents     = map_api_parents( json_decode_pof( $new_post->fields['api_path'] ) );
+                    $new_post->parents     = map_api_parents( json_decode_pof( $new_post->fields['api_path'] ) ?? [] );
+
                     map_api_images( $new_post->fields['api_images'] );
                     if ( is_array( $new_post->fields['api_images'] ) ) {
                         $new_post->image = $new_post->fields['api_images'][0]['logo'];

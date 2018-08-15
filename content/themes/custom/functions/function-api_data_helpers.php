@@ -51,23 +51,27 @@ function map_api_tags( &$repeater ) {
     }
 }
 
-// binds parents into a more dust-friendly array
-function map_api_parents( &$parents ) {
-    $parent_arr = [];
-    if ( is_array ( $parents ) ) {
-        foreach ( $parents as $key => $parent) {
-            if ( $parent->type !== 'program' ) {
-                $parent_arr[$key]['guid'] = $parent->guid;
-                $parent_arr[$key]['title'] = $parent->title;
-                $parent_arr[$key]['url'] = '/guid/'.$parent->guid;
-                if ( $parent->type === 'agegroup' ) {
-                    $details = get_images_by_guid( array( 'guid' => $parent->guid ) );
-                    $parent_arr[$key]['logo'] = $details['logo'];
-                }
-            }
+/**
+ * Modify parents array
+ *
+ * @param  array $parents Parent list.
+ * @return array          Modified $parents.
+ */
+function map_api_parents( array $parents ) {
+    // Remove programs from parents
+    $parents = array_filter( $parents, function( $parent ) {
+        return $parent->type !== 'program';
+    });
+
+    // Add logo data to agegroups
+    $parents = array_map( function( $parent ) {
+        if ( $parent->type === 'agegroup' ) {
+            $parent->logo = get_images_by_guid( $parent->guid );
         }
-        return $parent_arr;
-    }
+        return $parent;
+    }, $parents );
+
+    return $parents;
 }
 
 // loads all children of a page in a tree format
@@ -175,31 +179,38 @@ function pofapilink_shortcode( $atts  ) {
 }
 add_shortcode( 'pofapilink', 'pofapilink_shortcode' );
 
-// get post details by guid
-function get_images_by_guid( $atts  ) {
-    $guid = $atts['guid'];
-    if ($guid) {
-        $data = [];
-        $lang = isset($atts['lang']) ? $atts['lang'] : 'FI';
-        $args = [
-            'lang'              => strtolower($lang),
-            'posts_per_page'    => -1,
-            'post_type'         => 'page',
-            'post_status'       => 'publish',
-            'meta_query'        => array(
-                                    array('key' => 'api_guid', 'value' => $guid),
-                                    array('key' => 'api_lang', 'value' => $lang)
-                                )
+/**
+ * Get api images by guid
+ *
+ * @param  string $guid Api item guid.
+ * @return mixed        Image object or null.
+ */
+function get_images_by_guid( $guid ) {
+    $cache_key = 'get_images_by_guid/' . $guid . '/';
+    $result    = wp_cache_get( $cache_key );
+    if ( empty( $result ) ) {
+        $args  = [
+            'posts_per_page' => 1,
+            'post_type'      => 'page',
+            'post_status'    => 'publish',
+            'meta_query'     => [
+                [
+                    'key'   => 'api_guid',
+                    'value' => $guid,
+                ],
+            ],
         ];
-        $pages  = \DustPress\Query::get_acf_posts( $args );
-        if (count($pages) === 1) {
+        $pages = \DustPress\Query::get_acf_posts( $args );
+
+        if ( ! empty( $pages ) ) {
             map_api_images( $pages[0]->fields['api_images'] );
-            $data['logo'] = $pages[0]->fields['api_images'][0]['logo'];
-            return $data;
+            $result = $pages[0]->fields['api_images'][0]['logo'];
         }
+
+        wp_cache_set( $cache_key, $result, null, HOUR_IN_SECONDS );
     }
 
-    return null;
+    return $result;
 }
 
 // Get hero args

@@ -315,6 +315,8 @@ class Search {
             // Push and change the full location path.
             window.history.pushState( {}, 'Sivu', newUrl );
         }
+
+        this.$searchResults.removeClass( 'loading' );
     };
 
     /**
