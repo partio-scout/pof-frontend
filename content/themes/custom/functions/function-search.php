@@ -72,7 +72,7 @@ function search_redirect() {
         return;
     }
 
-    $search_parameter = filter_input( INPUT_GET, 's', FILTER_SANITIZE_URL );
+    $search_parameter = rawurlencode( filter_input( INPUT_GET, 's', FILTER_SANITIZE_STRING ) );
     if ( is_search() && ! is_admin() && ! empty( $search_parameter ) ) {
         wp_safe_redirect( generate_search_url( $search_parameter ) );
         exit();
