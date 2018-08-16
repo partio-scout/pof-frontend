@@ -39,10 +39,6 @@ class Search extends \DustPress\Model {
         return true;
     }
 
-    public static function order_sort( $a, $b ) {
-        return $a['order'] - $b['order'];
-    }
-
     /**
      * Get short locale
      *
@@ -60,29 +56,12 @@ class Search extends \DustPress\Model {
         // Get local data
         $haku_json    = get_field( 'haku-json', 'option' );
         $kaannos_json = get_field( 'kaannos-json', 'option' );
-        $ohjelma_json = get_field( 'ohjelma-json', 'option' );
         $locale       = static::get_locale();
 
         // Get remote data
-        $program      = \POF\Api::get( $ohjelma_json, true );
         $search_terms = \POF\Api::get( $haku_json, true );
         $translations = \POF\Api::get( $kaannos_json, true );
-
-        // Sort groups according to order
-        $age_groups = $program['program'][0]['agegroups'];
-        if ( ! empty( $age_groups ) ) {
-
-            usort( $age_groups, [ __CLASS__, 'order_sort' ] );
-            foreach ( $age_groups as &$age_group ) {
-                if ( ! empty( $age_group->taskgroups ) ) {
-
-                    usort( $age_group->taskgroups, [ __CLASS__, 'order_sort' ] );
-                    foreach ( $age_group->taskgroups as &$taskgroup ) {
-                        usort( $taskgroup->tasks, [ __CLASS__, 'order_sort' ] );
-                    }
-                }
-            }
-        }
+        $age_groups   = get_age_groups();
 
         // Remove invalid field types
         $search_terms = array_filter( $search_terms, function( $field ) {

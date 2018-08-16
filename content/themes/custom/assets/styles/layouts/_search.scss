@@ -101,6 +101,11 @@ $search_fontsize_smaller: rem-calc(12);
 		}
 	}
 	.search-results__breadcrumb {
+		&__logo {
+			width: 1.5rem;
+			height: 1.5rem;
+		}
+
 		.search-results__breadcrumb-link {
 			font-size: 0.85rem;
 			font-weight: bold;

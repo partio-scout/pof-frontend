@@ -285,3 +285,16 @@ function get_api_media( $id, $rendered = true ) {
 
     return $media_data;
 }
+
+/**
+ * Get age groups from the api
+ *
+ * @return array
+ */
+function get_age_groups() {
+    $ohjelma_json = get_field( 'ohjelma-json', 'option' );
+    $program      = \POF\Api::get( $ohjelma_json, true );
+    $age_groups   = $program['program'][0]['agegroups'];
+
+    return $age_groups;
+}

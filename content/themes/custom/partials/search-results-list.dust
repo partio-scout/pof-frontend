@@ -32,9 +32,13 @@
             <p class="search-results__breadcrumb">
                 {#parents}
                     {@first}
-                        {?logo.thumbnail.url}
-                            <img src="{logo.thumbnail.url}" width="23" height="24" alt="" />
-                        {/logo.thumbnail.url}
+                        {#logo}
+                            {?id}
+                                {@apiimage id=logo.id img_only="true" class="search-results__breadcrumb__logo" /}
+                            {:else}
+                                <img src="{thumbnail.url}" class="search-results__breadcrumb__logo" alt="" />
+                            {/id}
+                        {/logo}
                     {/first}
                     <a class="search-results__breadcrumb-link" href="/{Search.Results.lang_base}/guid/{guid}">
                         {#languages}
