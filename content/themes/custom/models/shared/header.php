@@ -41,6 +41,15 @@ class Header extends \DustPress\Model {
             'orderby'           => 'menu_order title',
             'order'             => 'ASC',
         ];
+
+        // Class to add to menus that are currently open
+        $opened_class = 'opened';
+
+        // Do not open the menu anywhere when in search
+        if ( is_search() ) {
+            $opened_class = '';
+        }
+
         //TODO: Make this dynamically and open as many parents element have, not manually defined amount
         if ( !empty( $menu )) {
             foreach ( $menu as $key => $item ) {
@@ -61,7 +70,7 @@ class Header extends \DustPress\Model {
                     // Keeps sidemenu open if on a page that is listed in the menu
                     if ( $curpageparent === (int) $menu[ $key ]->object_id ) {
                         $firstparent = true;
-                        $menu[ $key ]->current_first = 'opened';
+                        $menu[ $key ]->current_first = $opened_class;
                         $menu[ $key ]->current_id = $curpage;
                     }
 
@@ -79,8 +88,8 @@ class Header extends \DustPress\Model {
                             // Keeps sidemenu open if on a page that is listed in the menu
                             if ( $curpageparent ===  $menu[ $key ]->children[ $child_key ]->ID ) {
                                 $firstparent = true;
-                                $menu[ $key ]->current_first = 'opened';
-                                $menu[ $key ]->children[ $child_key ]->current_second = 'opened';
+                                $menu[ $key ]->current_first = $opened_class;
+                                $menu[ $key ]->children[ $child_key ]->current_second = $opened_class;
                                 $menu[ $key ]->children[ $child_key ]->current_id = $curpage;
                             }
 
@@ -89,8 +98,8 @@ class Header extends \DustPress\Model {
                                 ( $curpageparentsparent === $menu[ $key ]->children[ $child_key ]->ID ||
                                   $curpagethirdparent === $menu[ $key ]->children[ $child_key ]->ID )
                             ) {
-                                $menu[ $key ]->current_first = 'opened';
-                                $menu[ $key ]->children[ $child_key ]->current_second = 'opened';
+                                $menu[ $key ]->current_first = $opened_class;
+                                $menu[ $key ]->children[ $child_key ]->current_second = $opened_class;
                                 $menu[ $key ]->current_id = $curpageparent;
                             }
                         }
