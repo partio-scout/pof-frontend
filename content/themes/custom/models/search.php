@@ -110,6 +110,20 @@ class Search extends \DustPress\Model {
                     }
                 }
             }
+
+            if ( ! empty( $field_data['fields'] ) ) {
+                $field_data['fields'] = array_map(function( $item ) {
+                    // If there were no translations just transform this into a dust friendly format
+                    if ( ! is_object( $item ) ) {
+                        $item = (object) [
+                            'key'   => $item,
+                            'value' => $item,
+                        ];
+                    }
+
+                    return $item;
+                }, $field_data['fields']);
+            }
         }
 
         $result = (object) [
