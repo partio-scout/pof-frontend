@@ -5,6 +5,9 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Julkaisematta]
 
+### Muutettu
+- PO-287: Laitettu takaisin title kenttä vinkin lisäykseen
+
 ## [1.1.1] - 2018-08-14
 
 ### Korjattu
