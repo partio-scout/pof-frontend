@@ -3,14 +3,18 @@
     <div class="column search-block">
         <div class="basic-details clearfix">
             <div class="search-results__title">
-                {?image}
-                    <img
-                        class="taskgroup-sidelogo search-sidelogo hide-for-small-only"
-                        src="{image.thumbnail.url}" 
-                        width="{image.thumbnail.width}"
-                        height="{image.thumbnail.height}"
-                        alt="{post_title}"
-                    />
+                {#image}
+                    {?id}
+                        {@apiimage id=id img_only="true" class="taskgroup-sidelogo search-sidelogo hide-for-small-only" /}
+                    {:else}
+                        <img
+                            class="taskgroup-sidelogo search-sidelogo hide-for-small-only"
+                            src="{thumbnail.url}"
+                            width="{thumbnail.width}"
+                            height="{thumbnail.height}"
+                            alt="{post_title}"
+                        />
+                    {/id}
                 {/image}
                 <div class="{?image}float-content clearfix{/image}">
                     <span class="left clearfix">
