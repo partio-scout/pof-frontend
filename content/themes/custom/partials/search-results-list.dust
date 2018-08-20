@@ -45,11 +45,7 @@
                         {/logo}
                     {/first}
                     <a class="search-results__breadcrumb-link" href="/{Search.Results.lang_base}/guid/{guid}">
-                        {#languages}
-                            {@eq key=lang value=Search.Results.locale}
-                                {title}
-                            {/eq}
-                        {/languages}
+                        {@apititle /}
                     </a>
                     {@sep}<i class="icon-chevron-right breadcrumb-divider"></i>{/sep}
                 {/parents}

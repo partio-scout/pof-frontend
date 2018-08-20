@@ -287,6 +287,37 @@ function get_api_media( $id, $rendered = true ) {
 }
 
 /**
+ * Sort taskgroups and tasks in age groups result
+ *
+ * @param mixed $data Data to sort.
+ */
+function sort_results( &$data ) {
+    if ( is_array( $data ) ) {
+        if ( array_key_exists( 'taskgroups', $data ) && ! empty( $data['taskgroups'] ) ) {
+            usort( $data['taskgroups'], 'sort_by_order' );
+            foreach ( $data['taskgroups'] as &$sub_array ) {
+                sort_results( $sub_array );
+            }
+        }
+        elseif ( array_key_exists( 'tasks', $data ) && ! empty( $data['tasks'] ) ) {
+            // Use elseif here because if we have taskgroups we don't show tasks
+            usort( $data['tasks'], 'sort_by_order' );
+        }
+    }
+}
+
+/**
+ * Sort array by item order parameter
+ *
+ * @param  array $a Item to compare.
+ * @param  array $b Item to compare.
+ * @return int
+ */
+function sort_by_order( $a, $b ) {
+    return $a['order'] - $b['order'];
+}
+
+/**
  * Get age groups from the api
  *
  * @return array
@@ -295,6 +326,9 @@ function get_age_groups() {
     $ohjelma_json = get_field( 'ohjelma-json', 'option' );
     $program      = \POF\Api::get( $ohjelma_json, true );
     $age_groups   = $program['program'][0]['agegroups'];
+
+    usort( $age_groups, 'sort_by_order' );
+    sort_results( $age_groups );
 
     return $age_groups;
 }

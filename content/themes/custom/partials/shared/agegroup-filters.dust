@@ -1,13 +1,8 @@
 <div class="field-list agegroups">
-
     {#age_groups}
         <div class="filter-opener">
             <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
-            {#languages}
-                {@eq key=lang value=locale}
-                    <p>{title}</p>
-                {/eq}
-            {/languages}
+            <p>{@apititle /}</p>
             <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
             <div class="collapsed">
                 <div class="collapsed-content checkbox field-list">
@@ -15,11 +10,7 @@
                     {#taskgroups}
                         <div class="filter-opener">
                             <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
-                            {#languages}
-                                {@eq key=lang value=locale}
-                                    <p>{title}</p>
-                                {/eq}
-                            {/languages}
+                            <p>{@apititle /}</p>
                             <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
                             <div class="collapsed">
                                 <div class="collapsed-content checkbox field-list">
@@ -30,15 +21,10 @@
                                         {@set key="children" value=tasks /}
                                     {/taskgroups}
 
-
                                     {#children}
                                         <label>
                                             <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
-                                            {#languages}
-                                                {@eq key=lang value=locale}
-                                                    <p>{title}</p>
-                                                {/eq}
-                                            {/languages}
+                                            <p>{@apititle /}</p>
                                         </label>
                                     {/children}
 
