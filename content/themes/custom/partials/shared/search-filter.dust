@@ -5,21 +5,13 @@
         <form class="search-filter">
     {/embed}
 
-    {?embed}
-        <h3>
-            <i class="icon-filter" aria-hidden="true"></i>
-            {Header.S.filter_search}
-        </h3>
+    <h3>
+        <i class="icon-filter" aria-hidden="true"></i>
+        {Header.S.filter_search}
+    </h3>
 
-        <p>{Header.S.filter_by_age}</p>
-    {:else}
-        <h3>
-            <i class="icon-filter" aria-hidden="true"></i>
-            {Header.S.filter_search}
-        </h3>
-
+    {^embed}
         <label>
-            <p>{Header.S.by_agegroup}</p>
             <div class="search-input-container">
                 <input type="search" name="s" value="{Term}" placeholder="{Header.S.search_placeholder}" title="{Header.S.search_title}">
                 <button type="submit" class="search-icon">
@@ -30,6 +22,12 @@
     {/embed}
 
     {>"search-and-or" name="post_relation" /}
+
+    {?embed}
+        <p>{Header.S.filter_by_age}</p>
+    {:else}
+        <p>{Header.S.by_agegroup}</p>
+    {/embed}
 
     {>"agegroup-filters" embed="false" /}
 
