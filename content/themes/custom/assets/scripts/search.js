@@ -262,16 +262,32 @@ class Search {
                 newUrl += '/';
             }
 
+            // Update url
             if ( newUrl.includes( searchTerm ) ) {
                 window.history.pushState({}, 'Haku', newUrl );
             } else {
                 window.history.pushState({}, 'Haku', newUrl + searchTerm );
             }
 
+            // Update language urls
             this.$langMenu.find( 'a' ).each( ( i, el ) => {
-                el.href = el.href.replace( this.lastSearch, searchTerm );
+                if ( this.lastSearch ) {
+
+                    // Replace earlier url search term
+                    el.href = el.href.replace( this.lastSearch, searchTerm );
+                } else {
+
+                    // Add trailing slash to url if it doesn't exist
+                    if ( el.href.substr( -1 ) !== '/' ) {
+                        el.href += '/';
+                    }
+
+                    // Add search term to empty search page url
+                    el.href += searchTerm;
+                }
             });
 
+            // Store last search
             this.lastSearch = searchTerm;
         }
 
