@@ -19,7 +19,7 @@
         "devgeniem/dustpress": "^1.6.9",
         "devgeniem/dustpress-debugger": "1.*",
         "devgeniem/dustpress-js": "^3.0.3",
-        "devgeniem/ext-relevanssi-premium": "^1.14.9.1",
+        "devgeniem/ext-relevanssi-premium": "^2.1.5.1",
         "partio-scout/wordpress-advanced-custom-fields-pro": "^5.3",
         "vlucas/phpdotenv": "^2.4",
         "composer/installers": "^1.3",

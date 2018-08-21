@@ -128,7 +128,7 @@ if ( $debug ) {
     echo( ob_get_clean() );
 }
 
-if ( $cached && $display_powered_by_redis ) {
+if ( isset( $cached ) && $cached && $display_powered_by_redis ) {
     // You should move this CSS to your CSS file and change the: float:right;margin:20px 0;
     echo "<style>#redis_powered{float:right;margin:20px 0;background:url(http://images.staticjw.com/jim/3959/redis.png) 10px no-repeat #fff;border:1px solid #D7D8DF;padding:10px;width:190px;}
     #redis_powered div{width:190px;text-align:right;font:10px/11px arial,sans-serif;color:#000;}</style>";

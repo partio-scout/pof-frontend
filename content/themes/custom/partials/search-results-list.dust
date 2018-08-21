@@ -18,16 +18,28 @@
                 {/image}
                 <div class="{?image}float-content clearfix{/image}">
                     <span class="left clearfix">
-                        <a href="{url}">
+                        <a href="{permalink}">
                             <h5 class="page_title left">{post_title|s}</h5>
                         </a>
                     </span>
                     <span class="divider">|</span>
-                    <span class="page_type"> {search_type}</span>
+                    <span class="page_type">
+                        {@eq key=post_type value="pof_tip"}
+                            pof_tip
+                        {:else}
+                            {fields.api_type}
+                        {/eq}
+                    </span>
                     {?post_excerpt}
                         <p class="page_ingress">
                             {post_excerpt|s}
                         </p>
+                    {:else}
+                        {?post_content}
+                            <p class="page_ingress">
+                                {@excerpt string=post_content /}
+                            </p>
+                        {/post_content}
                     {/post_excerpt}
                 </div>
             </div>

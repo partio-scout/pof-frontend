@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf0501a443a3d8a903c1ea125e4348d7",
+    "content-hash": "249fea92e5c3e225e214de3145cf7c3b",
     "packages": [
         {
             "name": "composer/installers",
@@ -343,11 +343,11 @@
         },
         {
             "name": "devgeniem/ext-relevanssi-premium",
-            "version": "1.14.9.1",
+            "version": "2.1.5.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:devgeniem/ext-relevanssi-premium.git",
-                "reference": "722bd0281e84ec3f9447e9a3d9ad54bd3bd3e41d"
+                "reference": "6b69b687eb4b22113c6922f50d1139fad127b323"
             },
             "type": "wordpress-plugin",
             "extra": {
@@ -362,7 +362,7 @@
                 }
             ],
             "description": "Relevanssi Premium replaces the default search with a partial-match search that sorts results by relevance. It also indexes comments and shortcode content.",
-            "time": "2017-03-29T11:27:04+00:00"
+            "time": "2018-05-11T06:20:00+00:00"
         },
         {
             "name": "devgeniem/wp-redis-object-cache-dropin",

@@ -129,7 +129,6 @@ class Search extends \DustPress\Model {
         $result = (object) [
             'search_terms' => $search_terms,
             'age_groups'   => $age_groups,
-            'locale'       => $locale,
         ];
 
         return $result;
@@ -171,25 +170,23 @@ class Search extends \DustPress\Model {
 
         $results            = $this->get_results( $params );
         $results->params    = $params;
-        $results->locale    = static::get_locale();
         $results->lang_base = pll_current_language();
 
         return $results;
     }
 
     /**
-     * Get results from params
+     * Get post list
      *
-     * @param  stdClass $params Params to use for searching.
-     * @return stdClass         Object containing metadata for request and post list.
+     * @param  stdClass $params Search params.
+     * @return array            An array of posts or post ids.
      */
-    protected function get_results( stdClass $params ) {
+    protected function get_post_list( stdClass $params ) {
         $posts_start = microtime( true );
-        $posts_key   = 'search/' . esc_sql( wp_json_encode( $params ) ) . '/' . get_locale();
-        $posts       = wp_cache_get( $posts_key );
+        $cache_key   = 'search/' . esc_sql( $params->search_term ) . '/' . get_locale();
+        $posts       = wp_cache_get( $cache_key );
         if ( empty( $posts ) ) {
             $args = [
-                's'              => $params->search_term,
                 'post_type'      => [ 'page', 'pof_tip' ],
                 'post_status'    => 'publish',
                 'posts_per_page' => -1, //phpcs:ignore
@@ -213,36 +210,108 @@ class Search extends \DustPress\Model {
                 ],
             ];
 
+            // Allow searching without a search term
+            if ( ! empty( $params->search_term ) ) {
+                $args['s'] = $params->search_term;
+            }
+            else {
+                $args['fields'] = 'ids';
+            }
+
             // Get all posts with query
             $query = new WP_Query( $args );
-            $posts = relevanssi_do_query( $query );
 
-            wp_cache_set( $posts_key, $posts, null, HOUR_IN_SECONDS );
+            // Only use relevanssi if there is a search term
+            if ( ! empty( $params->search_term ) ) {
+                $posts = relevanssi_do_query( $query );
+            }
+            else {
+                $posts = $query->posts;
+            }
+
+            wp_cache_set( $cache_key, $posts, null, HOUR_IN_SECONDS );
         }
         header( 'x-posts-time: ' . round( microtime( true ) - $posts_start, 4 ) );
 
-        // Get extra post data for each post
-        $posts = $this->get_post_data( $posts );
+        return $posts;
+    }
 
-        // Filter the posts
-        if ( ! empty( $params->ajax_args ) ) {
-            $posts = $this->filter_posts( $posts, $params->ajax_args );
+    /**
+     * Get results from params
+     *
+     * @param  stdClass $params Params to use for searching.
+     * @return stdClass         Object containing metadata for request and post list.
+     */
+    protected function get_results( stdClass $params ) {
+
+        // Get initial post list
+        $posts = $this->get_post_list( $params );
+
+        // Pagination metadata
+        $count         = 0;
+        $max_num_pages = 0;
+        $page          = $params->page;
+
+        if ( ! empty( $posts ) ) {
+            // Get extra post data for each post
+            $posts = $this->get_post_data( $posts );
+
+            // Filter the posts
+            if ( ! empty( $params->ajax_args ) ) {
+                $posts = $this->filter_posts( $posts, $params->ajax_args );
+            }
+
+            // Do pagination in php since we do the filtering in php as well
+            $count         = count( $posts );
+            $max_num_pages = ceil( $count / $params->per_page );
+            $posts         = $this->do_pagination( $posts, $params );
         }
 
-        // Do pagination in php since we do the filtering in php as well
-        $pagination_start = microtime( true );
-        $offset = $params->page > 1 ? $params->page * $params->per_page : 0;
-        $result = array_slice( $posts, $offset, $params->per_page );
-        header( 'x-pagination-time: ' . round( microtime( true ) - $pagination_start, 4 ) );
-
+        // Construct object containing metadata for request and post list.
         $data = (object) [
-            'posts'         => $result,
-            'count'         => count( $posts ),
-            'max_num_pages' => ceil( count( $posts ) / $params->per_page ),
-            'page'          => $params->page,
+            'posts'         => $posts,
+            'count'         => $count,
+            'max_num_pages' => $max_num_pages,
+            'page'          => $page,
         ];
 
         return $data;
+    }
+
+    /**
+     * Do post pagination in php
+     *
+     * @param  array    $posts  Post list.
+     * @param  stdClass $params Params to do pagination by.
+     * @return array            Sliced post list.
+     */
+    protected function do_pagination( array $posts, stdClass $params ) {
+        $pagination_start = microtime( true );
+
+        $offset = $params->page > 1 ? $params->page * $params->per_page : 0;
+        $posts  = array_slice( $posts, $offset, $params->per_page );
+
+        header( 'x-pagination-time: ' . round( microtime( true ) - $pagination_start, 4 ) );
+
+        return $posts;
+    }
+
+    /**
+     * Get single acf post by post id
+     *
+     * @param  mixed $post_id Post id.
+     * @return \WP_Post
+     */
+    protected function get_single_acf_post( $post_id ) {
+        $cache_key = 'acfpost/' . $post_id;
+        $post      = wp_cache_get( $cache_key );
+        if ( empty( $post ) ) {
+            $post = \DustPress\Query::get_acf_post( $post_id );
+
+            wp_cache_set( $cache_key, $post, null, HOUR_IN_SECONDS );
+        }
+
+        return $post;
     }
 
     /**
@@ -254,41 +323,53 @@ class Search extends \DustPress\Model {
     protected function get_post_data( array $posts ) {
         $post_data_start = microtime( true );
         foreach ( $posts as &$post ) {
-            $post_key = 'postdata/' . $post->ID;
-            $new_post = wp_cache_get( $post_key );
-            if ( empty( $new_post ) ) {
-                // Add fields
-                $new_post = \DustPress\Query::get_acf_post( $post->ID );
+            if ( is_object( $post ) ) {
+                $id      = $post->ID;
+                $excerpt = $post->post_excerpt;
+            }
+            else {
+                $id = $post;
+            }
+            $post = $this->get_single_acf_post( $id );
 
-                // Add other custom data
-                $new_post->ingress = $new_post->post_excerpt;
-                if ( $new_post->post_type === 'pof_tip' ) {
-                    $new_post->search_type = $new_post->post_type;
-                    $parent_id             = get_post_meta( $new_post->ID, 'pof_tip_parent', true );
-                    $guid                  = get_post_meta( $new_post->ID, 'pof_tip_guid', true );
-                    $parent_link           = get_permalink( $parent_id );
-                    $parent_title          = get_the_title( $parent_id );
-                    $new_post->url         = $parent_link . '#' . $guid;
-                    $new_post->post_title  = __( 'Tip in task ', 'pof' ) . '<i>' . $parent_title . '</i>';
-                }
-                else {
-                    $new_post->search_type = $new_post->fields['api_type'];
-                    $new_post->url         = get_permalink( $new_post->ID );
-                    $new_post->parents     = map_api_parents( json_decode_pof( $new_post->fields['api_path'] ) ?? [] );
-
-                    map_api_images( $new_post->fields['api_images'] );
-                    if ( is_array( $new_post->fields['api_images'] ) ) {
-                        $new_post->image = $new_post->fields['api_images'][0]['logo'];
-                    }
-                }
-
-                wp_cache_set( $post_key, $new_post, null, HOUR_IN_SECONDS );
+            if ( ! empty( $excerpt ) ) {
+                // Replace $post but keep the excerpt
+                $post->post_excerpt = $excerpt;
             }
 
-            // Replace $post but keep the excerpt
-            $excerpt            = $post->post_excerpt;
-            $post               = $new_post;
-            $post->post_excerpt = $excerpt;
+            if ( $post->post_type === 'pof_tip' ) {
+
+                // Get tip parent link & title
+                $tip_cache_key = 'tipdata/' . $id;
+                $extra_data    = wp_cache_get( $tip_cache_key );
+                if ( empty( $extra_data ) ) {
+                    // Get post parent
+                    $parent_id   = get_post_meta( $id, 'pof_tip_parent', true );
+                    $parent_post = $this->get_single_acf_post( $parent_id );
+
+                    // Store relevant data
+                    $extra_data = (object) [
+                        'permalink'  => $parent_post->permalink . '#' . $post->post_name,
+                        'post_title' => __( 'Tip in task ', 'pof' ) . '<i>' . $parent_post->post_title . '</i>',
+                    ];
+
+                    wp_cache_set( $tip_cache_key, $extra_data, null, HOUR_IN_SECONDS );
+                }
+
+                // Overwrite tip link and title with parents
+                $post->permalink  = $extra_data->permalink;
+                $post->post_title = $extra_data->post_title;
+            }
+            else {
+
+                // Get api images
+                $post->parents = ! empty( $post->fields['api_path'] ) ? map_api_parents( json_decode_pof( $post->fields['api_path'] ) ?? [] ) : null;
+                map_api_images( $post->fields['api_images'] );
+                if ( is_array( $post->fields['api_images'] ) ) {
+                    $post->image = $post->fields['api_images'][0]['logo'];
+                }
+            }
+
         }
         header( 'x-post_data-time: ' . round( microtime( true ) - $post_data_start, 4 ) );
 

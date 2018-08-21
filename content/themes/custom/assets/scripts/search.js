@@ -175,12 +175,8 @@ class Search {
         const $SInput = $form.find( 'input[name="s"]' );
 
         // Duplicate search value across all forms
-        if ( $SInput.val() ) {
-            this.$searchInput.val( $SInput.val() );
-            this.$filterForm.find( 'input[name="s"]' ).val( $SInput.val() );
-        } else {
-            $SInput.val( this.$searchInput.val() );
-        }
+        this.$searchInput.val( $SInput.val() );
+        this.$filterForm.find( 'input[name="s"]' ).val( $SInput.val() );
 
         // Collect args from the form that was submitted either via click or submit event
         const args = this.getArgs( $form );
@@ -259,7 +255,13 @@ class Search {
         if ( window.history && typeof pof_lang !== 'undefined' ) {
             const searchTerm = _.get( data, 'Search.Results.params.search_term', this.$searchInput.val() );
 
-            const newUrl = location.toString().replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + searchTerm );
+            let newUrl = location.toString().replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + searchTerm );
+
+            // Add trailing slash to url if it doesn't exist
+            if ( newUrl.substr( -1 ) !== '/' ) {
+                newUrl += '/';
+            }
+
             if ( newUrl.includes( searchTerm ) ) {
                 window.history.pushState({}, 'Haku', newUrl );
             } else {
@@ -282,7 +284,7 @@ class Search {
      * @param {string} data Rendered html result of query.
      */
     loadMoreSuccess( data ) {
-        const newPage = this.$page++;
+        const newPage = ++this.$page;
         this.$loadMoreButton.data( 'page', newPage );
 
         // Add returned HTML to container
