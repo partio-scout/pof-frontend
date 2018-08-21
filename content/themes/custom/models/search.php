@@ -511,44 +511,46 @@ class Search extends \DustPress\Model {
             $filter   = $filters['filters'][ $field_key ];
             $success  = ( $relation === 'AND' ) ? 0 : false;
 
-            foreach ( $post->fields['tags'] as $tag ) {
-                foreach ( $tag['group'] as $group ) {
-                    if ( $group['group_key'] === $field_key ) {
-                        // MinMax
-                        if ( is_object( $filter ) ) {
-                            if (
-                                (
-                                    $filter->max &&
-                                    $filter->max <= absint( $group['slug'] )
-                                ) ||
-                                (
-                                    $filter->min &&
-                                    $filter->min >= absint( $group['slug'] )
-                                )
-                            ) {
-                                $success = true;
-                                continue 2;
-                            }
-                        }
-                        // AND/OR
-                        elseif ( is_array( $filter ) ) {
-                            if ( $relation === 'AND' ) {
-                                if ( in_array( $group['slug'], $filter, true ) ) {
-                                    $success++;
-                                }
-                            }
-                            else {
-                                if ( in_array( $group['slug'], $filter, true ) ) {
+            if ( ! empty( $post->fields['tags'] ) ) {
+                foreach ( $post->fields['tags'] as $tag ) {
+                    foreach ( $tag['group'] as $group ) {
+                        if ( $group['group_key'] === $field_key ) {
+                            // MinMax
+                            if ( is_object( $filter ) ) {
+                                if (
+                                    (
+                                        $filter->max &&
+                                        $filter->max <= absint( $group['slug'] )
+                                    ) ||
+                                    (
+                                        $filter->min &&
+                                        $filter->min >= absint( $group['slug'] )
+                                    )
+                                ) {
                                     $success = true;
                                     continue 2;
                                 }
                             }
-                        }
-                        // Single selection
-                        elseif ( is_string( $filter ) ) {
-                            if ( $filter === $group['slug'] ) {
-                                $success = true;
-                                continue 2;
+                            // AND/OR
+                            elseif ( is_array( $filter ) ) {
+                                if ( $relation === 'AND' ) {
+                                    if ( in_array( $group['slug'], $filter, true ) ) {
+                                        $success++;
+                                    }
+                                }
+                                else {
+                                    if ( in_array( $group['slug'], $filter, true ) ) {
+                                        $success = true;
+                                        continue 2;
+                                    }
+                                }
+                            }
+                            // Single selection
+                            elseif ( is_string( $filter ) ) {
+                                if ( $filter === $group['slug'] ) {
+                                    $success = true;
+                                    continue 2;
+                                }
                             }
                         }
                     }
