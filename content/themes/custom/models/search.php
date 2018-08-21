@@ -184,8 +184,8 @@ class Search extends \DustPress\Model {
     protected function get_post_list( stdClass $params ) {
         $posts_start = microtime( true );
         $cache_key   = 'search/' . esc_sql( $params->search_term ) . '/' . get_locale();
-        $posts       = wp_cache_get( $cache_key );
-        if ( empty( $posts ) ) {
+        $result      = wp_cache_get( $cache_key );
+        if ( empty( $result ) ) {
             $args = [
                 'post_type'      => [ 'page', 'pof_tip' ],
                 'post_status'    => 'publish',
@@ -219,21 +219,46 @@ class Search extends \DustPress\Model {
             }
 
             // Get all posts with query
-            $query = new WP_Query( $args );
+            $query   = new WP_Query( $args );
+            $matches = [];
 
             // Only use relevanssi if there is a search term
             if ( ! empty( $params->search_term ) ) {
+
+                // Add filter to get which part was matched in post
+                add_filter( 'relevanssi_match', function( $match ) use ( &$matches ) {
+                    if ( ! empty( $match->customfield_detail ) ) {
+                        // Check fields for matches but ignore certain non human readable fields
+                        $fields    = array_keys( unserialize( $match->customfield_detail ) );
+                        $blacklist = [
+                            'api_path',
+                        ];
+
+                        foreach ( $fields as $field ) {
+                            if ( ! in_array( $field, $blacklist, true ) ) {
+                                $matches[ $match->doc ] = $field;
+                                break;
+                            }
+                        }
+                    }
+                    return $match;
+                });
                 $posts = relevanssi_do_query( $query );
             }
             else {
                 $posts = $query->posts;
             }
 
-            wp_cache_set( $cache_key, $posts, null, HOUR_IN_SECONDS );
+            $result = (object) [
+                'posts'   => $posts,
+                'matches' => $matches,
+            ];
+
+            wp_cache_set( $cache_key, $result, null, HOUR_IN_SECONDS );
         }
         header( 'x-posts-time: ' . round( microtime( true ) - $posts_start, 4 ) );
 
-        return $posts;
+        return $result;
     }
 
     /**
@@ -245,16 +270,17 @@ class Search extends \DustPress\Model {
     protected function get_results( stdClass $params ) {
 
         // Get initial post list
-        $posts = $this->get_post_list( $params );
+        $result = $this->get_post_list( $params );
 
         // Pagination metadata
         $count         = 0;
         $max_num_pages = 0;
         $page          = $params->page;
+        $posts         = [];
 
-        if ( ! empty( $posts ) ) {
+        if ( ! empty( $result->posts ) ) {
             // Get extra post data for each post
-            $posts = $this->get_post_data( $posts );
+            $posts = $this->get_post_data( $result, $params );
 
             // Filter the posts
             if ( ! empty( $params->ajax_args ) ) {
@@ -317,15 +343,21 @@ class Search extends \DustPress\Model {
     /**
      * Get each post data
      *
-     * @param  array $posts An array of \WP_Post objects.
-     * @return array        Modified $posts.
+     * @param  stdClass $result Get posts result.
+     * @param  stdClass $params Search params.
+     * @return array            Modified $result->posts.
      */
-    protected function get_post_data( array $posts ) {
+    protected function get_post_data( stdClass $result, stdClass $params ) {
+
         $post_data_start = microtime( true );
-        foreach ( $posts as &$post ) {
+        foreach ( $result->posts as &$post ) {
             if ( is_object( $post ) ) {
-                $id      = $post->ID;
-                $excerpt = $post->post_excerpt;
+                $id = $post->ID;
+
+                // Don't set the normal highlight if match was in custom field
+                if ( ! array_key_exists( $id, $result->matches ) ) {
+                    $excerpt = $post->post_excerpt;
+                }
             }
             else {
                 $id = $post;
@@ -335,6 +367,23 @@ class Search extends \DustPress\Model {
             if ( ! empty( $excerpt ) ) {
                 // Replace $post but keep the excerpt
                 $post->post_excerpt = $excerpt;
+            }
+            elseif ( array_key_exists( $id, $result->matches ) ) {
+                // Generate custom highlighted excerpt from custom field
+                $post->post_excerpt = force_balance_tags( // Fix any broken tags
+                    html_entity_decode( // Decode previously encoded html tags
+                        wp_trim_words( // Trim the string into an acceptable length
+                            htmlentities( // Encode tags so wp_trim_words doesn't remove them
+                                relevanssi_highlight_terms( // Highlight matches
+                                    $post->fields[ $result->matches[ $id ] ],
+                                    $params->search_term,
+                                    true
+                                )
+                            ),
+                            30 // Number of max words
+                        )
+                    )
+                );
             }
 
             if ( $post->post_type === 'pof_tip' ) {
@@ -373,7 +422,7 @@ class Search extends \DustPress\Model {
         }
         header( 'x-post_data-time: ' . round( microtime( true ) - $post_data_start, 4 ) );
 
-        return $posts;
+        return $result->posts;
     }
 
     /**
