@@ -23,24 +23,28 @@
 
     {>"search-and-or" name="post_relation" /}
 
-    {?embed}
-        <p>{Header.S.filter_by_age}</p>
-    {:else}
-        <p>{Header.S.by_agegroup}</p>
-    {/embed}
+    <fieldset>
+        {?embed}
+            <p>{Header.S.filter_by_age}</p>
+        {:else}
+            <p>{Header.S.by_agegroup}</p>
+        {/embed}
 
-    {>"agegroup-filters" embed="false" /}
+        {>"agegroup-filters" embed="false" /}
+    </fieldset>
 
-    {?embed}
-        <button class="toggle-global-filters" type="button">
-            <i class="icon-cog"></i>
-            {Header.S.more_filters}
-        </button>
-    {:else}
-        <p>{Header.S.other_filters}</p>
-    {/embed}
+    <fieldset>
+        {?embed}
+            <button class="toggle-global-filters" type="button">
+                <i class="icon-cog"></i>
+                {Header.S.more_filters}
+            </button>
+        {:else}
+            <p>{Header.S.other_filters}</p>
+        {/embed}
 
-    {>"filters" prefix="global" /}
+        {>"filters" prefix="global" /}
+    </fieldset>
 
     {?embed}
         </div>

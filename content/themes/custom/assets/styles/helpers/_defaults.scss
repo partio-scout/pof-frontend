@@ -91,3 +91,13 @@ $tablet-only: "#{$screen} and (min-width:#{lower-bound($tablet-range)}) and (max
 		display: none;
 	}
 }
+
+@mixin word-wrap {
+    hyphens: auto;
+    word-break: break-word;
+    word-wrap: break-word;
+}
+
+.word-wrap {
+    @include word-wrap;
+}

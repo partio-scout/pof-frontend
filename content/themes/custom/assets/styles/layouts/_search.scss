@@ -170,12 +170,14 @@ $search_fontsize_smaller: rem-calc(12);
 		color: $partio_main_color_lighter;
 		padding: 0;
 		text-decoration: none;
+		margin: 0;
 
 		.icon-cog {
 			margin-right: .5rem;
 		}
 
 		&.active + .field-list {
+			margin-top: 1.3rem;
 			display: block;
 		}
 	}
@@ -191,6 +193,10 @@ $search_fontsize_smaller: rem-calc(12);
 
 	label {
 		color: inherit;
+	}
+
+	fieldset {
+		margin-bottom: 0;
 	}
 
 	@media ( min-width: $small-breakpoint ) {
@@ -331,6 +337,7 @@ $search_fontsize_smaller: rem-calc(12);
 	p {
 		flex: 1;
 		margin: 0;
+    	@include word-wrap;
 
 		// Only add margin if after an input
 		input + & {
@@ -472,17 +479,15 @@ $search_fontsize_smaller: rem-calc(12);
 }
 
 .field-list {
-	&.agegroups {
-		margin-bottom: $column-gutter;
-	}
-
 	.field-list {
 		padding-left: $column-gutter-half;
 	}
 }
 
 .embed-filter {
-	& > .embed {
-		display: none;
+	& > fieldset {
+		& > .embed {
+			display: none;
+		}
 	}
 }
