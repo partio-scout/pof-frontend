@@ -29,7 +29,7 @@ class Search {
         this.$filterForm             = $( '.search-filter' );
         this.$filterBtn              = this.$searchForm.find( '.filter-icon' );
         this.$filterMoreBtn          = this.$filterForm.find( '.toggle-global-filters' );
-        this.$filterInputs           = this.$filterForm.find( 'input[name]:not([type="text"])' );
+        this.$filterInputs           = this.$filterForm.find( 'input[name]:not([type="text"]), select[name]' );
         this.lastSearch              = this.$searchInput.val();
         this.$langMenu               = $( '#second-lang-menu' );
     };
@@ -98,6 +98,32 @@ class Search {
     };
 
     /**
+     * Enable filter when filter is changed
+     *
+     * @param  {jQuery} $input Input that was changed.
+     */
+    enableParent( $input ) {
+
+        const checked = (
+
+            // If input is checkbox and atleast one is checked
+            $input.is( '.checkbox' ) ?
+            $input.closest( '.collapsed-content' ).find( 'label:not(.search-and-or)>input[name]' ).is( ':checked' ) :
+            (
+
+                // Or input is radio or select
+                $input.is( '.radio' ) ||
+                $input.is( 'select' )
+            ) ||
+
+                // Or input value is true
+                !! $input.val()
+        );
+
+        $input.closest( '.filter-opener' ).children( 'input[name]' ).attr( 'checked', checked );
+    }
+
+    /**
      * Handle change event on filter inputs
      *
      * @param {object} e Change event.
@@ -106,6 +132,11 @@ class Search {
         this.$searchResults.addClass( 'loading' );
 
         const $input = $( e.currentTarget );
+        if ( $input.closest( '.filters' ).length ) {
+            this.enableParent( $input );
+        }
+
+
         const $children = $input.parent().find( 'input[type="checkbox"][name].checkbox' );
         $children.prop( 'checked', $input.is( ':checked' ) );
 

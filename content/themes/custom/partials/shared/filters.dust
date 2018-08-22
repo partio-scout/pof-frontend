@@ -1,4 +1,4 @@
-<div class="field-list {?embed}embed{/embed}">
+<div class="field-list filters {?embed}embed{/embed}">
     {#search_terms}
         {@set key="fieldname" value=$idx /}
         <div class="filter-opener">
