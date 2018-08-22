@@ -174,19 +174,20 @@ class Search extends \DustPress\Model {
             }
         }
         // Get api type translations
-        $task_translation      = null;
-        $taskgroup_translation = null;
+        $fields = [
+            'taskgroup' => null,
+            'task'      => null,
+            'pof_tip'   => null,
+        ];
         foreach ( $translations['yleiset'] as $translation_data ) {
             if ( $translation_data['lang'] === $locale ) {
                 foreach ( $translation_data['items'] as $translation ) {
-                    if ( $translation['key'] === 'task' ) {
-                        $task_translation = $translation['value'];
-                    }
-                    if ( $translation['key'] === 'taskgroup' ) {
-                        $taskgroup_translation = $translation['value'];
+                    if ( array_key_exists( $translation['key'], $fields ) ) {
+                        $fields[ $translation['key'] ] = $translation['value'];
                     }
 
-                    if ( $task_translation && $taskgroup_translation ) {
+                    // If all translations are here then we can close the loop
+                    if ( array_filter( $fields ) === $fields ) {
                         break 2;
                     }
                 }
@@ -197,17 +198,15 @@ class Search extends \DustPress\Model {
         $field = [
             'label'  => $type_translation,
             'type'   => 'radiobutton',
-            'fields' => [
-                (object) [
-                    'key'   => 'task',
-                    'value' => $task_translation,
-                ],
-                (object) [
-                    'key'   => 'taskgroup',
-                    'value' => $taskgroup_translation,
-                ],
-            ],
+            'fields' => [],
         ];
+
+        foreach ( $fields as $key => $value ) {
+            $field['fields'][] = (object) [
+                'key'   => $key,
+                'value' => $value ?? $key,
+            ];
+        }
 
         return $field;
     }
@@ -484,8 +483,9 @@ class Search extends \DustPress\Model {
                 }
 
                 // Overwrite tip link and title with parents
-                $post->permalink  = $extra_data->permalink;
-                $post->post_title = $extra_data->post_title;
+                $post->permalink          = $extra_data->permalink;
+                $post->post_title         = $extra_data->post_title;
+                $post->fields['api_type'] = 'pof_tip';
             }
             else {
 
