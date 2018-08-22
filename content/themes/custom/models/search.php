@@ -56,7 +56,6 @@ class Search extends \DustPress\Model {
         // Get local data
         $haku_json    = get_field( 'haku-json', 'option' );
         $kaannos_json = get_field( 'kaannos-json', 'option' );
-        $locale       = static::get_locale();
 
         // Get remote data
         $search_terms = \POF\Api::get( $haku_json, true );
@@ -67,6 +66,30 @@ class Search extends \DustPress\Model {
         $search_terms = array_filter( $search_terms, function( $field ) {
             return ! empty( $field['type'] );
         });
+
+        // Translate any field values
+        $search_terms = static::translate_search_terms( $search_terms, $translations );
+
+        // Create pseudo filtering field for api_type
+        $search_terms['api_type'] = static::create_api_type_field( $translations );
+
+        $result = (object) [
+            'search_terms' => $search_terms,
+            'age_groups'   => $age_groups,
+        ];
+
+        return $result;
+    }
+
+    /**
+     * Translate field values gathered from the api
+     *
+     * @param  array $search_terms Search terms from the api.
+     * @param  array $translations Translations from the api.
+     * @return array               Modified $search_terms.
+     */
+    protected static function translate_search_terms( array $search_terms, array $translations ) {
+        $locale = static::get_locale();
 
         // Collect field name translations
         $field_name_translations = $translations['haku'];
@@ -126,12 +149,67 @@ class Search extends \DustPress\Model {
             }
         }
 
-        $result = (object) [
-            'search_terms' => $search_terms,
-            'age_groups'   => $age_groups,
+        return $search_terms;
+    }
+
+    /**
+     * Generate a field that will filter by api_type
+     *
+     * @param  array $translations Translations retrieved from the api.
+     * @return array               Generated field.
+     */
+    protected static function create_api_type_field( array $translations ) {
+        $locale = static::get_locale();
+
+        // Get api_type field label translation
+        $type_translation = null;
+        foreach ( $translations['haku'] as $translation_data ) {
+            if ( $translation_data['lang'] === $locale ) {
+                foreach ( $translation_data['items'] as $translation ) {
+                    if ( $translation['key'] === 'tyyppi' ) {
+                        $type_translation = $translation['value'];
+                        break 2;
+                    }
+                }
+            }
+        }
+        // Get api type translations
+        $task_translation      = null;
+        $taskgroup_translation = null;
+        foreach ( $translations['yleiset'] as $translation_data ) {
+            if ( $translation_data['lang'] === $locale ) {
+                foreach ( $translation_data['items'] as $translation ) {
+                    if ( $translation['key'] === 'task' ) {
+                        $task_translation = $translation['value'];
+                    }
+                    if ( $translation['key'] === 'taskgroup' ) {
+                        $taskgroup_translation = $translation['value'];
+                    }
+
+                    if ( $task_translation && $taskgroup_translation ) {
+                        break 2;
+                    }
+                }
+            }
+        }
+
+        // Construct pseudo field to filter by api_type
+        $field = [
+            'label'  => $type_translation,
+            'type'   => 'radiobutton',
+            'fields' => [
+                (object) [
+                    'key'   => 'task',
+                    'value' => $task_translation,
+                ],
+                (object) [
+                    'key'   => 'taskgroup',
+                    'value' => $taskgroup_translation,
+                ],
+            ],
         ];
 
-        return $result;
+        return $field;
     }
 
     /**
@@ -511,45 +589,51 @@ class Search extends \DustPress\Model {
             $filter   = $filters['filters'][ $field_key ];
             $success  = ( $relation === 'AND' ) ? 0 : false;
 
-            if ( ! empty( $post->fields['tags'] ) ) {
-                foreach ( $post->fields['tags'] as $tag ) {
-                    foreach ( $tag['group'] as $group ) {
-                        if ( $group['group_key'] === $field_key ) {
-                            // MinMax
-                            if ( is_object( $filter ) ) {
-                                if (
-                                    (
-                                        $filter->max &&
-                                        $filter->max <= absint( $group['slug'] )
-                                    ) ||
-                                    (
-                                        $filter->min &&
-                                        $filter->min >= absint( $group['slug'] )
-                                    )
-                                ) {
-                                    $success = true;
-                                    continue 2;
-                                }
-                            }
-                            // AND/OR
-                            elseif ( is_array( $filter ) ) {
-                                if ( $relation === 'AND' ) {
-                                    if ( in_array( $group['slug'], $filter, true ) ) {
-                                        $success++;
-                                    }
-                                }
-                                else {
-                                    if ( in_array( $group['slug'], $filter, true ) ) {
+            if ( $field_key === 'api_type' && $post->fields['api_type'] === $filter ) {
+                // Do different filtering for pseudo field
+                $success = true;
+            }
+            else {
+                if ( ! empty( $post->fields['tags'] ) ) {
+                    foreach ( $post->fields['tags'] as $tag ) {
+                        foreach ( $tag['group'] as $group ) {
+                            if ( $group['group_key'] === $field_key ) {
+                                // MinMax
+                                if ( is_object( $filter ) ) {
+                                    if (
+                                        (
+                                            $filter->max &&
+                                            $filter->max <= absint( $group['slug'] )
+                                        ) ||
+                                        (
+                                            $filter->min &&
+                                            $filter->min >= absint( $group['slug'] )
+                                        )
+                                    ) {
                                         $success = true;
                                         continue 2;
                                     }
                                 }
-                            }
-                            // Single selection
-                            elseif ( is_string( $filter ) ) {
-                                if ( $filter === $group['slug'] ) {
-                                    $success = true;
-                                    continue 2;
+                                // AND/OR
+                                elseif ( is_array( $filter ) ) {
+                                    if ( $relation === 'AND' ) {
+                                        if ( in_array( $group['slug'], $filter, true ) ) {
+                                            $success++;
+                                        }
+                                    }
+                                    else {
+                                        if ( in_array( $group['slug'], $filter, true ) ) {
+                                            $success = true;
+                                            continue 2;
+                                        }
+                                    }
+                                }
+                                // Single selection
+                                elseif ( is_string( $filter ) ) {
+                                    if ( $filter === $group['slug'] ) {
+                                        $success = true;
+                                        continue 2;
+                                    }
                                 }
                             }
                         }
