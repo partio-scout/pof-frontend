@@ -1,7 +1,7 @@
 {?name}
     <label class="search-and-or">
         <p>{Header.S.filter_type}</p>
-        <input type="checkbox" name="{name}" data-unchecked-value="AND" value="OR" checked>
+        <input type="checkbox" name="{name}" value="OR" checked class="and-or-input">
         <span class="and-or-indicator">
             <span class="and">{Header.S.and}</span>
             <span class="indicator"></span>

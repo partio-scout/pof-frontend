@@ -103,12 +103,11 @@ class Search {
      * @param  {jQuery} $input Input that was changed.
      */
     enableParent( $input ) {
-
         const checked = (
 
             // If input is checkbox and atleast one is checked
             $input.is( '.checkbox' ) ?
-            $input.closest( '.collapsed-content' ).find( 'label:not(.search-and-or)>input[name]' ).is( ':checked' ) :
+            $input.closest( '.collapsed-content' ).find( '>label:not(.search-and-or)>input[name]' ).is( ':checked' ) :
             (
 
                 // Or input is radio or select
@@ -120,7 +119,7 @@ class Search {
                 !! $input.val()
         );
 
-        $input.closest( '.filter-opener' ).children( 'input[name]' ).attr( 'checked', checked );
+        $input.closest( '.filter-opener' ).children( 'input[name]' ).attr( 'checked', checked ).prop( 'checked', checked );
     }
 
     /**
@@ -132,13 +131,24 @@ class Search {
         this.$searchResults.addClass( 'loading' );
 
         const $input = $( e.currentTarget );
-        if ( $input.closest( '.filters' ).length ) {
+        if ( $input.closest( '.filters' ).length && ! $input.is( '[name="global[enabled][]"]' ) ) {
             this.enableParent( $input );
         }
 
+        // Propagate checkbox change to children or on unchecked clear children
+        const $children = $input.siblings( '.collapsed' ).find( 'input[name]:not(.and-or-input), select[name]' );
+        if ( $input.is( ':checked' ) ) {
 
-        const $children = $input.parent().find( 'input[type="checkbox"][name].checkbox' );
-        $children.prop( 'checked', $input.is( ':checked' ) );
+            // Check child checkboxes
+            $children.filter( '[type="checkbox"]' ).attr( 'checked', 'checked' ).prop( 'checked', true );
+        } else {
+
+            // Clear checked status from checkbox & radiobutton
+            const $checkboxAndRadio = $children.filter( '[type="checkbox"], [type="radio"]' ).removeAttr( 'checked' ).prop( 'checked', false );
+
+            // Clear input data from others
+            $children.not( $checkboxAndRadio ).val( '' );
+        }
 
         this.doSearch( e );
     }

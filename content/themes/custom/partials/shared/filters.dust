@@ -16,6 +16,9 @@
                     {@select key=type}
                         {@eq value="dropdown"}
                             <select name="{prefix}[filters][{fieldname}]">
+                                {! have nothing selected by default !}
+                                <option class="none" disabled selected></option>
+
                                 {#fields}
                                     <option value="{key}">{value}</option>
                                 {/fields}

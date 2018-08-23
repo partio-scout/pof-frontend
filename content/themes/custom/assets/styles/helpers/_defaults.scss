@@ -76,6 +76,10 @@ $tablet-only: "#{$screen} and (min-width:#{lower-bound($tablet-range)}) and (max
 	display: block;
 }
 
+.none {
+	display: none;
+}
+
 .columns + .columns:last-child {
 	float: left;
 }
