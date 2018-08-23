@@ -566,18 +566,21 @@ class Search extends \DustPress\Model {
                 $post->fields['api_guid'],
             ]
         );
-        $collisions = array_intersect( $post_guids, $filters['post_guids'] );
 
-        if ( $relation === 'AND' ) {
-            // If we are in AND mode then all filter guids should be matched
-            $success = ( count( $collisions ) === count( $filters['post_guids'] ) );
-        }
-        else {
-            // If we are in OR mode then succeed with any matches
-            $success = ! empty( $collisions );
+        foreach ( $filters['post_guids'] as $filter_guids ) {
+            $is_match = in_array( $filter_guids, $post_guids, true );
+
+            if (
+                $relation === 'AND' ?
+                    ! $is_match : // AND mode non match found
+                    $is_match // OR mode match found
+            ) {
+                return $is_match;
+            }
         }
 
-        return $success;
+        // If we got here then succeed in AND mode and fail in OR mode
+        return ( $relation === 'AND' );
     }
 
     /**
