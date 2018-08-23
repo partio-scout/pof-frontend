@@ -356,6 +356,12 @@ class Search extends \DustPress\Model {
         $posts         = [];
 
         if ( ! empty( $result->posts ) ) {
+
+            // Increase memory limit just in case when getting all posts
+            if ( empty( $params->search_term ) ) {
+                ini_set( 'memory_limit', '248M' ); // Original was 124M
+            }
+
             // Get extra post data for each post
             $posts = $this->get_post_data( $result, $params );
 
