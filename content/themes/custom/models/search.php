@@ -62,16 +62,15 @@ class Search extends \DustPress\Model {
         $translations = \POF\Api::get( $kaannos_json, true );
         $age_groups   = get_age_groups();
 
-        // Remove invalid field types
-        $search_terms = array_filter( $search_terms, function( $field ) {
-            return ! empty( $field['type'] );
-        });
-
-        // Translate any field values
-        $search_terms = static::translate_search_terms( $search_terms, $translations );
-
         // Create pseudo filtering field for api_type
-        $search_terms['api_type'] = static::create_api_type_field( $translations );
+        $search_terms['api_type'] = [
+            'type'   => 'radiobutton',
+            'fields' => [
+                'task',
+                'taskgroup',
+                'pof_tip',
+            ],
+        ];
 
         $result = (object) [
             'search_terms' => $search_terms,
@@ -79,136 +78,6 @@ class Search extends \DustPress\Model {
         ];
 
         return $result;
-    }
-
-    /**
-     * Translate field values gathered from the api
-     *
-     * @param  array $search_terms Search terms from the api.
-     * @param  array $translations Translations from the api.
-     * @return array               Modified $search_terms.
-     */
-    protected static function translate_search_terms( array $search_terms, array $translations ) {
-        $locale = static::get_locale();
-
-        // Collect field name translations
-        $field_name_translations = $translations['haku'];
-
-        // Combine the search terms and translations
-        foreach ( $search_terms as $field_name => &$field_data ) {
-
-            // Get field group translation
-            foreach ( $field_name_translations as $name_translations ) {
-                if ( $name_translations['lang'] === $locale ) {
-                    foreach ( $name_translations['items'] as $name_translation ) {
-                        if ( $name_translation['key'] === $field_name ) {
-                            $field_data['label'] = $name_translation['value'];
-                        }
-                    }
-                }
-            }
-
-            // Get each field translation
-            foreach ( $field_data['fields'] as &$field ) {
-
-                // Get translations for correct field
-                foreach ( $translations as $translation_field_name => $field_translations ) {
-                    if ( $translation_field_name === $field_name ) {
-
-                        // Get correct language translations
-                        foreach ( $field_translations as $translation_data ) {
-                            if ( $translation_data['lang'] === $locale ) {
-
-                                foreach ( $translation_data['items'] as $translation ) {
-                                    if ( $translation['key'] === $field ) {
-                                        // Transform the field to an object for better dust handling
-                                        $field = (object) $translation;
-                                        // Break all the way to the $field_data['fields'] loop
-                                        // to handle the next field value
-                                        break 3;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            if ( ! empty( $field_data['fields'] ) ) {
-                $field_data['fields'] = array_map(function( $item ) {
-                    // If there were no translations just transform this into a dust friendly format
-                    if ( ! is_object( $item ) ) {
-                        $item = (object) [
-                            'key'   => $item,
-                            'value' => $item,
-                        ];
-                    }
-
-                    return $item;
-                }, $field_data['fields']);
-            }
-        }
-
-        return $search_terms;
-    }
-
-    /**
-     * Generate a field that will filter by api_type
-     *
-     * @param  array $translations Translations retrieved from the api.
-     * @return array               Generated field.
-     */
-    protected static function create_api_type_field( array $translations ) {
-        $locale = static::get_locale();
-
-        // Get api_type field label translation
-        $type_translation = null;
-        foreach ( $translations['haku'] as $translation_data ) {
-            if ( $translation_data['lang'] === $locale ) {
-                foreach ( $translation_data['items'] as $translation ) {
-                    if ( $translation['key'] === 'tyyppi' ) {
-                        $type_translation = $translation['value'];
-                        break 2;
-                    }
-                }
-            }
-        }
-        // Get api type translations
-        $fields = [
-            'taskgroup' => null,
-            'task'      => null,
-            'pof_tip'   => null,
-        ];
-        foreach ( $translations['yleiset'] as $translation_data ) {
-            if ( $translation_data['lang'] === $locale ) {
-                foreach ( $translation_data['items'] as $translation ) {
-                    if ( array_key_exists( $translation['key'], $fields ) ) {
-                        $fields[ $translation['key'] ] = $translation['value'];
-                    }
-
-                    // If all translations are here then we can close the loop
-                    if ( array_filter( $fields ) === $fields ) {
-                        break 2;
-                    }
-                }
-            }
-        }
-
-        // Construct pseudo field to filter by api_type
-        $field = [
-            'label'  => $type_translation,
-            'type'   => 'radiobutton',
-            'fields' => [],
-        ];
-
-        foreach ( $fields as $key => $value ) {
-            $field['fields'][] = (object) [
-                'key'   => $key,
-                'value' => $value ?? $key,
-            ];
-        }
-
-        return $field;
     }
 
     /**

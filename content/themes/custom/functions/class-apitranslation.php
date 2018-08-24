@@ -29,15 +29,16 @@ class ApiTranslation extends Helper {
             }
         }
 
-        $path = $this->params->path;
-        $path = explode( '.', $path );
-        $item = $translations;
+        $path     = $this->params->path;
+        $fallback = $this->params->fallback ?? null;
+        $path     = explode( '.', $path );
+        $item     = $translations;
         foreach ( $path as $key ) {
             if ( array_key_exists( $key, $item ) ) {
                 $item = $item[ $key ];
             }
             else {
-                return null;
+                return $fallback;
             }
         }
 

@@ -3,13 +3,7 @@
         {@set key="fieldname" value=$idx /}
         <div class="filter-opener">
             <input type="checkbox" class="custom checkbox" name="{prefix}[enabled][]" value="{fieldname}">
-            <p>
-                {?label}
-                    {label}
-                {:else}
-                    {fieldname}
-                {/label}
-            </p>
+            <p>{@apitranslation path="haku.{fieldname}" fallback=fieldname /}</p>
             <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
             <div class="collapsed">
                 <div class="collapsed-content {type}">
@@ -20,7 +14,8 @@
                                 <option class="none" disabled selected></option>
 
                                 {#fields}
-                                    <option value="{key}">{value}</option>
+                                    {@set key="fieldvalue" value=. /}
+                                    <option value="{fieldvalue}">{@apitranslation path="{fieldname}.{fieldvalue}" fallback=. /}</option>
                                 {/fields}
                             </select>
                         {/eq}
@@ -30,8 +25,9 @@
 
                             {#fields}
                                 <label>
-                                    <input type="checkbox" class="custom checkbox" name="{prefix}[filters][{fieldname}][]" value="{key}">
-                                    <p>{value}</p>
+                                    {@set key="fieldvalue" value=. /}
+                                    <input type="checkbox" class="custom checkbox" name="{prefix}[filters][{fieldname}][]" value="{fieldvalue}">
+                                    <p>{@apitranslation path="{fieldname}.{fieldvalue}" fallback=. /}</p>
                                 </label>
                             {/fields}
                         {/eq}
@@ -39,8 +35,9 @@
                         {@eq value="radiobutton"}
                             {#fields}
                                 <label>
-                                    <input type="radio" class="custom radio" name="{prefix}[filters][{fieldname}]" value="{key}">
-                                    <p>{value}</p>
+                                    {@set key="fieldvalue" value=. /}
+                                    <input type="radio" class="custom radio" name="{prefix}[filters][{fieldname}]" value="{fieldvalue}">
+                                    <p>{@apitranslation path="{fieldname}.{fieldvalue}" fallback=. /}</p>
                                 </label>
                             {/fields}
                         {/eq}
