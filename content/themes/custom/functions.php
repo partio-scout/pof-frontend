@@ -63,8 +63,11 @@ include_once( 'functions/function-manifest.php' );
 // Api call helper class
 include_once( 'functions/class-api.php' );
 
-// Api call helper class
+// Translation helper
 require_once 'functions/function-program_lang_helper.php';
+
+// Complete api translation retriever
+require_once 'functions/class-apitranslation.php';
 
 /*
  * Fixes missing field key mappings in postmeta table for pages
