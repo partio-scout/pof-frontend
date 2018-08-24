@@ -378,6 +378,8 @@ class Search extends \DustPress\Model {
                 if ( is_array( $extra_data->parent_post->fields['api_images'] ) ) {
                     $post->image = $extra_data->parent_post->fields['api_images'][0]['logo'];
                 }
+
+                // TODO: decode taskgroup_term, subtaskgroup_term and task_term for translation & display purposes
             }
             else {
 
