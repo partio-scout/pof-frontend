@@ -481,22 +481,43 @@ class Search extends \DustPress\Model {
 
                     // Store relevant data
                     $extra_data = (object) [
-                        'permalink'  => $parent_post->permalink . '#' . $post->post_name,
-                        'post_title' => __( 'Tip in task ', 'pof' ) . '<i>' . $parent_post->post_title . '</i>',
+                        'parent_post' => $parent_post,
+                        'post_title'  => __( 'Tip in task ', 'pof' ) . '<i>' . $parent_post->post_title . '</i>',
                     ];
 
                     wp_cache_set( $tip_cache_key, $extra_data, null, HOUR_IN_SECONDS );
                 }
 
+                // Get parent post api path & parent to it
+                $api_path      = $extra_data->parent_post->fields['api_path'] ?? '[]';
+                $api_path      = json_decode_pof( $api_path );
+                $api_path[]    = [
+                    'guid'      => $extra_data->parent_post->fields['api_guid'],
+                    'languages' => [
+                        [
+                            'lang'  => static::get_locale(),
+                            'title' => $extra_data->parent_post->post_title,
+                        ],
+                    ],
+                ];
+                $post->parents = map_api_parents( $api_path );
+
                 // Overwrite tip link and title with parents
-                $post->permalink          = $extra_data->permalink;
+                $post->permalink          = $extra_data->parent_post->permalink . '#' . $post->post_name;
                 $post->post_title         = $extra_data->post_title;
                 $post->fields['api_type'] = 'pof_tip';
+
+                // Get api images from parent
+                map_api_images( $extra_data->parent_post->fields['api_images'] );
+                if ( is_array( $extra_data->parent_post->fields['api_images'] ) ) {
+                    $post->image = $extra_data->parent_post->fields['api_images'][0]['logo'];
+                }
             }
             else {
 
                 // Get api images
-                $post->parents = ! empty( $post->fields['api_path'] ) ? map_api_parents( json_decode_pof( $post->fields['api_path'] ) ?? [] ) : null;
+                $api_path      = $post->fields['api_path'] ?? '[]';
+                $post->parents = map_api_parents( json_decode_pof( $api_path ) ) ?? null;
                 map_api_images( $post->fields['api_images'] );
                 if ( is_array( $post->fields['api_images'] ) ) {
                     $post->image = $post->fields['api_images'][0]['logo'];
