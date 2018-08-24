@@ -53,13 +53,10 @@ class Search extends \DustPress\Model {
      * Get search terms and translations from api
      */
     public static function ApiSearchTerms() {
-        // Get local data
-        $haku_json    = get_field( 'haku-json', 'option' );
-        $kaannos_json = get_field( 'kaannos-json', 'option' );
 
         // Get remote data
+        $haku_json    = get_field( 'haku-json', 'option' );
         $search_terms = \POF\Api::get( $haku_json, true );
-        $translations = \POF\Api::get( $kaannos_json, true );
         $age_groups   = get_age_groups();
 
         // Create pseudo filtering field for api_type
