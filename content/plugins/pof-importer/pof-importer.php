@@ -67,6 +67,17 @@ class POF_Importer {
     }
 
     /**
+     * Print error message to wp cli if it is enabled
+     *
+     * @param string $msg Message to print.
+     */
+    protected function wp_cli_error( $msg ) {
+        if ( defined( '\\WP_CLI' ) && \WP_CLI ) {
+            \WP_CLI::error( $msg );
+        }
+    }
+
+    /**
      * Create wp cli progress bar if it is enabled.
      *
      * @param  string $msg   Message to show alongside progressbar.
@@ -120,6 +131,7 @@ class POF_Importer {
 
     // Setup cronjob for importer daily automatic execution
     public function importer_cron() {
+        $start = microtime( true );
         $this->wp_cli_msg( 'Beginning import' );
         ini_set( 'memory_limit', '-1' );
         $this->tree_url = get_field( 'ohjelma-json', 'option' );
@@ -128,6 +140,7 @@ class POF_Importer {
         update_field( 'field_57c6b36acafd4', date( 'Y-m-d H:i:s' ), 'option' );
         $this->import_tips();
         update_field( 'field_57c6b3e52325e', date( 'Y-m-d H:i:s' ), 'option' );
+        $this->wp_cli_msg( 'Import finished in: ' . round( microtime( true ) - $start, 4 ) . 's' );
     }
 
     /*
@@ -160,7 +173,9 @@ class POF_Importer {
         // tree imported
         if ( $tree ) {
             $tree = $this->import_data( $tree['program'][0] );
+            $tree = $this->retrieve_new_data( $tree );
             $this->update_pages( $tree );
+            $this->update_metas( $tree );
         }
     }
 
@@ -171,6 +186,7 @@ class POF_Importer {
     *
     */
     public function import_tips() {
+        $this->wp_cli_msg( 'Importing tips' );
 
         // init counters
         $this->updated    = 0;
@@ -269,12 +285,24 @@ class POF_Importer {
         $posts = \DustPress\Query::get_acf_posts([
             'post_type'      => 'page',
             'post_status'    => 'any',
-            'posts_per_page' => -1,
+            'posts_per_page' => -1, //phpcs:ignore
         ]);
+        // Store each post and its language
+        foreach ( $posts as $post ) {
+            $guid = $post->fields['api_guid'];
+            $lang = strtolower( $post->fields['api_lang'] );
+
+            if ( ! array_key_exists( $guid, $this->queried ) ) {
+                $this->queried[ $guid ] = [];
+            }
+            $this->queried[ $guid ][ $lang ] = $post;
+        }
+
+        // Add all pages to queried list
         $this->wp_cli_msg( 'Got all pages in: ' . round( microtime( true ) - $start, 4 ) . 's' );
 
         // Create wp cli progress bar
-        $progress = $this->wp_cli_progress( 'Retrieving data for updating', count( $tree ) );
+        $progress = $this->wp_cli_progress( 'Filtering posts to update', count( $tree ) );
 
         // Update tree data for languages
         $start    = microtime( true );
@@ -291,42 +319,28 @@ class POF_Importer {
                 // Mark posts to update
                 foreach ( $pages as $page ) {
                     if ( $lang['lang'] === strtolower( $page->fields['api_lang'] ) ) {
+
                         // Store the page to possibly update it or translations later
                         $lang['page'] = $page;
 
-                        // Store page to use it later for connecting parents
-                        if ( ! array_key_exists( $page->fields['api_guid'], $importer->queried ) ) {
-                            $importer->queried[ $page->fields['api_guid'] ] = [];
-                        }
-                        $importer->queried[ $page->fields['api_guid'] ][ $lang['lang'] ] = $page;
-
-                        // Check if item has been modified
+                        // Mark post meta for update
                         if (
                             strtotime( $page->fields['api_lastmodified'] ) <
                             strtotime( $lang['lastModified'] )
                         ) {
                             // Mark the language for updating
-                            $lang['update'] = true;
+                            $lang['update_meta'] = true;
                         }
-                        break;
-                    }
-                }
 
-                // fetch details if create/update
-                if ( ! $lang['page'] || $lang['update'] ) {
-                    $lang['data'] = $this->fetch_data( $lang['details'] );
-
-                    /*global $asd;
-                    if ( ! $asd ) {
-                        $asd = 0;
+                        // Mark post data for update
+                        if (
+                            strtotime( $page->post_modified ) <
+                            strtotime( $lang['lastModified'] )
+                        ) {
+                            // Mark the language for updating
+                            $lang['update_page'] = true;
+                        }
                     }
-                    if ( $asd < 2 ) {
-                        $lang['data'] = $this->fetch_data( $lang['details'] );
-                        $asd++;
-                    }
-                    else {
-                        $lang['data'] = true;
-                    }*/
                 }
 
                 return $lang;
@@ -339,12 +353,11 @@ class POF_Importer {
         }, $tree);
         // Finish progressbar
         $progress->finish();
-        $this->wp_cli_msg( 'Retrieved data in: ' . round( microtime( true ) - $start, 4 ) . 's' );
 
         // Reduce tree to only those that need to be updated
         $tree = array_filter( $tree, function( $item ) {
             foreach ( $item['languages'] as $lang ) {
-                if ( ! empty( $lang['data'] ) ) {
+                if ( $lang['update_meta'] || $lang['update_page'] ) {
                     return true;
                 }
             }
@@ -357,23 +370,94 @@ class POF_Importer {
     }
 
     /**
-     * Begin the actual import process
+     * Get new data for languages
      *
-     * @param  array $tree Api data.
+     * @param  array $tree Api data tree.
+     * @return array       Modified $tree.
      */
-    private function update_pages( $tree ) {
+    private function retrieve_new_data( $tree ) {
+
+        $pool_size = 20; // Max concurrent requests
+        $pool      = []; // Current requests
+        $done      = []; // Done requests
+
+        // Get full limit of calls
+        $size = 0;
+        foreach ( $tree as $item ) {
+            foreach ( $item['languages'] as $lang ) {
+                $size++;
+            }
+        }
 
         // Create wp cli progress bar
-        $progress = $this->wp_cli_progress( 'Importing items', count( $tree ) );
+        $progress = $this->wp_cli_progress( 'Fetching new data', $size );
+        foreach ( $tree as $item ) {
+            foreach ( $item['languages'] as $lang ) {
+                if ( $lang['update_meta'] || $lang['update_page'] ) {
+                    if ( count( $pool ) >= $pool_size ) {
+                        $responses = \Requests::request_multiple( $pool );
+                        foreach ( $responses as $resp ) {
+                            if ( $resp->status_code !== 200 ) {
+                                $this->wp_cli_error( 'Request failed: (' . $resp->url . ')' );
+                            }
+                        }
+                        $done = array_merge( $done, $responses );
+                        $pool = [];
+                    }
+
+                    $pool[ $lang['details'] ] = [
+                        'url'  => $lang['details'],
+                        'type' => 'GET',
+                    ];
+                }
+
+                $progress->tick();
+            }
+        }
+        // Finish any dangling requests
+        if ( ! empty( $pool ) ) {
+            $responses = \Requests::request_multiple( $pool );
+            $done      = array_merge( $done, $responses );
+            $pool      = [];
+        }
+        $progress->finish();
+
+        // Assign results to languages
+        foreach ( $tree as &$item ) {
+            foreach ( $item['languages'] as &$lang ) {
+                if ( $lang['update_meta'] || $lang['update_page'] ) {
+                    $lang['data'] = json_decode( $done[ $lang['detail'] ]->body, true ) ?? null;
+                }
+            }
+        }
+
+        return $tree;
+    }
+
+    /**
+     * Begin the actual import process
+     *
+     * @param array $tree Api data.
+     */
+    private function update_pages( &$tree ) {
+
+        // Create wp cli progress bar
+        $progress = $this->wp_cli_progress( 'Importing page content', count( $tree ) );
         $start    = microtime( true );
 
         // Update/Create invidual pages
-        foreach ( $tree as $item ) {
+        foreach ( $tree as &$item ) {
 
             // Collect connected posts
             $translations = [];
             foreach ( $item['languages'] as $lang ) {
-                if ( ! $lang['update'] && $lang['page'] ) {
+                if (
+                    (
+                        ! $lang['update_meta'] &&
+                        ! $lang['update_page']
+                    ) &&
+                    $lang['page']
+                ) {
                     $translations[ $lang['lang'] ] = $lang['page']->ID;
                     break;
                 }
@@ -381,8 +465,8 @@ class POF_Importer {
             $new_translations = false;
 
             // Update translations
-            foreach ( $item['languages'] as $lang ) {
-                if ( $lang['data'] ) {
+            foreach ( $item['languages'] as &$lang ) {
+                if ( $lang['update_page'] && $lang['data'] ) {
 
                     // Post object params
                     $args = [
@@ -393,12 +477,13 @@ class POF_Importer {
                         'post_title'    => $item['title'],
                         'post_content'  => $lang['data']['content'],
                         'page_template' => 'models/page-' . $lang['data']['type'] . '.php',
+                        'post_modified' => $lang['lastModified'],
                     ];
 
                     // If item has parent link to it
                     if ( $item['parent'] ) {
-                        $parent_id = $this->queried[ $item['parent'] ][ $lang['lang'] ]->ID;
-                        if ( $parent_id ) {
+                        $parent_id = $this->queried[ $item['guid'] ][ $lang['lang'] ]->ID;
+                        if ( ! empty( $parent_id ) ) {
                             $args['post_parent'] = $parent_id;
                         }
                     }
@@ -435,11 +520,12 @@ class POF_Importer {
                             // Store set language
                             $translations[ $lang['lang'] ] = $post_id;
                         }
-                    }
 
-                    // TODO Create own loop for this & optimize it by using a single? post meta update
-                    // Update meta fields
-                    $this->update_page_meta( $post_id, $item, $lang );
+                        // Create dummy page object for post meta update
+                        $lang['page'] = (object) [
+                            'ID' => $post_id,
+                        ];
+                    }
                 }
             }
 
@@ -457,6 +543,34 @@ class POF_Importer {
         $this->wp_cli_success( 'Updated pages in: ' . round( microtime( true ) - $start, 4 ) . 's' );
     }
 
+    /**
+     * Update page meta data
+     *
+     * @param array $tree Api data.
+     */
+    private function update_metas( $tree ) {
+
+        // Create wp cli progress bar
+        $progress = $this->wp_cli_progress( 'Importing postmeta', count( $tree ) );
+        $start    = microtime( true );
+
+        // Update meta data
+        foreach ( $tree as $item ) {
+
+            // Update translations
+            foreach ( $item['languages'] as $lang ) {
+                if ( $lang['update_meta'] && $lang['data'] ) {
+                    // Update meta fields
+                    $this->update_page_meta( $lang['page']->ID, $item, $lang );
+                }
+            }
+            $progress->tick();
+        }
+        $progress->finish();
+
+        $this->wp_cli_success( 'Updated postmeta in: ' . round( microtime( true ) - $start, 4 ) . 's' );
+    }
+
     private function update_tips( $data ) {
 
         $tips      = array();
@@ -465,6 +579,8 @@ class POF_Importer {
         if ( ! $tips_data ) {
             $this->error = __( 'An error occured while fetching tips from backend.', 'pof_importer' );
         } else {
+            $progress = $this->wp_cli_progress( 'Importing tips', count( $tips_data ) );
+
             foreach ( $tips_data as $id => $tip ) {
                 $parent     = $data[ $tip['post']['guid'] ][ $tip['lang'] ];
                 $comment_id = null;
@@ -514,7 +630,10 @@ class POF_Importer {
 
                     // TODO: Errorlog, if some tips not importet
                 }
+
+                $progress->tick();
             }
+            $progress->finish();
         }
     }
 
