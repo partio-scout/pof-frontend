@@ -3,7 +3,7 @@
         {@set key="fieldname" value=$idx /}
         <div class="filter-opener">
             <input type="checkbox" class="custom checkbox" name="{prefix}[enabled][]" value="{fieldname}">
-            <p>{@apitranslation path="haku.{fieldname}" fallback=fieldname /}</p>
+            <p>{@apitranslation path="haku.{fieldname}" fallback="haku.{fieldname}" /}</p>
             <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
             <div class="collapsed">
                 <div class="collapsed-content {type}">
@@ -15,7 +15,7 @@
 
                                 {#fields}
                                     {@set key="fieldvalue" value=. /}
-                                    <option value="{fieldvalue}">{@apitranslation path="{fieldname}.{fieldvalue}" fallback=fieldvalue /}</option>
+                                    <option value="{fieldvalue}">{@apitranslation path="{fieldname}.{fieldvalue}" fallback="{fieldname}.{fieldvalue}" /}</option>
                                 {/fields}
                             </select>
                         {/eq}
@@ -27,7 +27,7 @@
                                 <label>
                                     {@set key="fieldvalue" value=. /}
                                     <input type="checkbox" class="custom checkbox" name="{prefix}[filters][{fieldname}][]" value="{fieldvalue}">
-                                    <p>{@apitranslation path="{fieldname}.{fieldvalue}" fallback=fieldvalue /}</p>
+                                    <p>{@apitranslation path="{fieldname}.{fieldvalue}" fallback="{fieldname}.{fieldvalue}" /}</p>
                                 </label>
                             {/fields}
                         {/eq}
@@ -37,7 +37,7 @@
                                 <label>
                                     {@set key="fieldvalue" value=. /}
                                     <input type="radio" class="custom radio" name="{prefix}[filters][{fieldname}]" value="{fieldvalue}">
-                                    <p>{@apitranslation path="{fieldname}.{fieldvalue}" fallback=fieldvalue /}</p>
+                                    <p>{@apitranslation path="{fieldname}.{fieldvalue}" fallback="{fieldname}.{fieldvalue}" /}</p>
                                 </label>
                             {/fields}
                         {/eq}
@@ -45,11 +45,11 @@
                         {@eq value="min-max-input"}
                             <div class="min-max-input-container">
                                 <label>
-                                    <p>Minimi</p>
+                                    <p>{@apitranslation path="haku.min" fallback="haku.min" /}</p>
                                     <input type="number" name="{prefix}[filters][{fieldname}][min]">
                                 </label>
                                 <label>
-                                    <p>Maksimi</p>
+                                    <p>{@apitranslation path="haku.max" fallback="haku.max" /}</p>
                                     <input type="number" name="{prefix}[filters][{fieldname}][max]">
                                 </label>
                             </div>

@@ -1,11 +1,11 @@
 {?name}
     <label class="search-and-or">
-        <p>{Header.S.filter_type}</p>
+        <p>{@apitranslation path="haku.filter_type" fallback="haku.filter_type" /}</p>
         <input type="checkbox" name="{name}" value="OR" checked class="and-or-input">
         <span class="and-or-indicator">
-            <span class="and">{Header.S.and}</span>
+            <span class="and">{@apitranslation path="yleiset.and" fallback="yleiset.and" /}</span>
             <span class="indicator"></span>
-            <span class="or">{Header.S.or}</span>
+            <span class="or">{@apitranslation path="yleiset.or" fallback="yleiset.or" /}</span>
         </span>
     </label>
 {/name}

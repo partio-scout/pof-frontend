@@ -3,7 +3,7 @@
     <div class="row">
         <div class="small-12 columns align-center">
             <form class="search-box__form" method="get" action="/{Header.LangSlug}/">
-                <h3 class="search-heading">{Header.S.haku}</h3>
+                <h3 class="search-heading">{@apitranslation path="haku.search_title" fallback="haku.search_title" /}</h3>
                 <div class="row collapse align-center">
                     <div class="small-12 columns search-input-container">
                         <input type="search" name="s" value="{Term}" placeholder="{Header.S.search_placeholder}"  title="{Header.S.search_title}">
@@ -16,7 +16,7 @@
                         {/small}
                     </div>
                     <a href="{Header.SearchUrl}" class="advanced-search-link">
-                        {Header.S.use_adv_search}
+                        {@apitranslation path="haku.advanced_search" fallback="haku.advanced_search" /}
                         <i class="icon-chevron-right" aria-hidden="true"></i>
                     </a>
                 </div>

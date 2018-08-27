@@ -11,7 +11,7 @@
 
 					{>"shared/sidenav" /}
 
-					<main class="content-wrapper">					
+					<main class="content-wrapper">
 
 						<div class="content-inner">
 
@@ -23,7 +23,7 @@
 
 							<div id="program-content">
 								<div class="small-12 columns">
-                					<h3 class="search-heading">{Header.S.haku}</h3>
+                					<h3 class="search-heading">{@apitranslation path="haku.search_title" fallback="haku.search_title" /}</h3>
 								</div>
 								<div class="small-12 medium-7 columns">
 									{>"shared/search-section" /}
@@ -31,7 +31,7 @@
 									<section class="search-results">
 										<span class="sr-only" aria-live="polite" id="results-message"></span>
 										<div class="column search-block">
-											<p class="search-results__breadcrumb"><span id="results-count">{Results.count}</span> {Header.S.results_found}</p>
+											<p class="search-results__breadcrumb"><span id="results-count">{Results.count}</span> {@apitranslation path="haku.results_found" fallback="haku.results_found" /}</p>
 										</div>
 										<div class="row small-up-1" id="search-results-container">
 											{>"search-results-list" /}
@@ -44,7 +44,7 @@
 													data-maxpages="{Results.max_num_pages}"
 													data-page="{Results.page}"
 													data-postcount="{Results.count}">
-													{Header.S.loadmore}
+													{@apitranslation path="yleiset.load_more" fallback="yleiset.load_more" /}
 												</button>
 						                    </div>
 						                </div>
