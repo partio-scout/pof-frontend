@@ -24,11 +24,9 @@
                     </span>
                     <span class="divider">|</span>
                     <span class="page_type">
-                        {@eq key=post_type value="pof_tip"}
-                            pof_tip
-                        {:else}
-                            {fields.api_type}
-                        {/eq}
+                        {! Get translation from both groups as only 1 will match !}
+                        {@apitranslation path="aktivitettipaketin_ylakasite.{term.single}_single" /}
+                        {@apitranslation path="aktiviteetin_ylakasite.{term.single}_single" /}
                     </span>
                     {?post_excerpt}
                         <p class="page_ingress">

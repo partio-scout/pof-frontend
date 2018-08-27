@@ -299,6 +299,9 @@ class Search extends \DustPress\Model {
     protected function get_post_data( stdClass $result, stdClass $params ) {
 
         $post_data_start = microtime( true );
+
+        // Get program tree
+        $tree = get_flat_program_tree();
         foreach ( $result->posts as &$post ) {
             if ( is_object( $post ) ) {
                 $id = $post->ID;
@@ -338,64 +341,90 @@ class Search extends \DustPress\Model {
             if ( $post->post_type === 'pof_tip' ) {
 
                 // Get tip parent link & title
-                $tip_cache_key = 'tipdata/' . $id;
-                $extra_data    = wp_cache_get( $tip_cache_key );
-                if ( empty( $extra_data ) ) {
+                $tip_cache_key = 'tip_parent/' . $id;
+                $parent_post   = wp_cache_get( $tip_cache_key );
+                if ( empty( $parent_post ) ) {
                     // Get post parent
                     $parent_id   = get_post_meta( $id, 'pof_tip_parent', true );
                     $parent_post = $this->get_single_acf_post( $parent_id );
 
-                    // Store relevant data
-                    $extra_data = (object) [
-                        'parent_post' => $parent_post,
-                        'post_title'  => __( 'Tip in task ', 'pof' ) . '<i>' . $parent_post->post_title . '</i>',
-                    ];
-
-                    wp_cache_set( $tip_cache_key, $extra_data, null, HOUR_IN_SECONDS );
+                    wp_cache_set( $tip_cache_key, $parent_post, null, HOUR_IN_SECONDS );
                 }
 
-                // Get parent post api path & parent to it
-                $api_path      = $extra_data->parent_post->fields['api_path'] ?? '[]';
-                $api_path      = json_decode_pof( $api_path );
-                $api_path[]    = [
-                    'guid'      => $extra_data->parent_post->fields['api_guid'],
+                // Overwrite tip link and title with parents
+                $post->permalink          = $parent_post->permalink . '#' . $post->post_name;
+                $post->post_title         = __( 'Tip in task ', 'pof' ) . '<i>' . $parent_post->post_title . '</i>';
+                $post->fields             = $parent_post->fields;
+                $post->fields['api_type'] = 'pof_tip';
+            }
+
+            // Map item parents
+            $api_path = json_decode_pof( $post->fields['api_path'] ?? '[]' );
+            if ( $post->post_type === 'pof_tip' ) {
+                // If this is a tip then add the task itself to the path as well
+                $api_path[] = [
+                    'guid'      => $post->fields['api_guid'],
                     'languages' => [
                         [
                             'lang'  => static::get_locale(),
-                            'title' => $extra_data->parent_post->post_title,
+                            'title' => $parent_post->post_title,
                         ],
                     ],
                 ];
-                $post->parents = map_api_parents( $api_path );
-
-                // Overwrite tip link and title with parents
-                $post->permalink          = $extra_data->parent_post->permalink . '#' . $post->post_name;
-                $post->post_title         = $extra_data->post_title;
-                $post->fields['api_type'] = 'pof_tip';
-
-                // Get api images from parent
-                map_api_images( $extra_data->parent_post->fields['api_images'] );
-                if ( is_array( $extra_data->parent_post->fields['api_images'] ) ) {
-                    $post->image = $extra_data->parent_post->fields['api_images'][0]['logo'];
-                }
-
-                // TODO: decode taskgroup_term, subtaskgroup_term and task_term for translation & display purposes
             }
-            else {
+            $post->parents = map_api_parents( $api_path );
 
-                // Get api images
-                $api_path      = $post->fields['api_path'] ?? '[]';
-                $post->parents = map_api_parents( json_decode_pof( $api_path ) ) ?? null;
-                map_api_images( $post->fields['api_images'] );
-                if ( is_array( $post->fields['api_images'] ) ) {
-                    $post->image = $post->fields['api_images'][0]['logo'];
-                }
+            // Decode images
+            map_api_images( $post->fields['api_images'] );
+            // Get the main logo
+            if (
+                is_array( $post->fields['api_images'] ) &&
+                ! empty( $post->fields['api_images'] ) &&
+                array_key_exists( 'logo', $post->fields['api_images'][0] )
+            ) {
+                $post->image = $post->fields['api_images'][0]['logo'];
             }
 
+            // Get actual item guid
+            $guid = $post->fields['api_guid'];
+            if ( array_key_exists( $guid, $tree ) ) {
+                // Get post term data
+                $this->get_post_term( $tree[ $guid ], $post->term, $tree );
+            }
         }
         header( 'x-post_data-time: ' . round( microtime( true ) - $post_data_start, 4 ) );
 
         return $result->posts;
+    }
+
+    /**
+     * Get post term
+     *
+     * @param  array $item Item to check for terms.
+     * @param  null  $term Variable to assign term to.
+     * @param  array $tree Tree to use for getting items.
+     * @return void
+     */
+    protected function get_post_term( $item, &$term, $tree ) {
+        $term_groups = [
+            'task_term',
+            'subtaskgroup_term',
+            'taskgroup_term',
+            'subtask_term',
+        ];
+        foreach ( $term_groups as $key ) {
+            if ( ! empty( $item[ $key ] ) ) {
+                $term = $item[ $key ];
+                return;
+            }
+        }
+
+        if (
+            ! empty( $item['parent'] ) &&
+            array_key_exists( $item['parent'], $tree )
+        ) {
+            $this->get_post_term( $tree[ $item['parent'] ], $term, $tree );
+        }
     }
 
     /**
