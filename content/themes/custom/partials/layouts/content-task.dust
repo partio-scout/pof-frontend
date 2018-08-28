@@ -13,6 +13,7 @@
 
 <section class="text-content">
     <strong>{S.kuvaus}:</strong> {@content data=Content.post_content /}
+    <button class="clipboard" data-clipboard-text="{permalink}" title="Copy url" data-msg="Url copied to clipboard" />
 </section>
 
 {>"shared/task_info" /}
