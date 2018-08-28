@@ -174,6 +174,7 @@ class POF_Importer {
         if ( $tree ) {
             $tree = $this->import_data( $tree['program'][0] );
             $tree = $this->retrieve_new_data( $tree );
+
             $this->update_pages( $tree );
             $this->update_metas( $tree );
         }
@@ -186,8 +187,6 @@ class POF_Importer {
     *
     */
     public function import_tips() {
-        $this->wp_cli_msg( 'Importing tips' );
-
         // init counters
         $this->updated    = 0;
         $this->created    = 0;
@@ -328,16 +327,14 @@ class POF_Importer {
                             strtotime( $page->fields['api_lastmodified'] ) <
                             strtotime( $lang['lastModified'] )
                         ) {
-                            // Mark the language for updating
                             $lang['update_meta'] = true;
                         }
 
-                        // Mark post data for update
+                        // Mark page for update
                         if (
                             strtotime( $page->post_modified ) <
                             strtotime( $lang['lastModified'] )
                         ) {
-                            // Mark the language for updating
                             $lang['update_page'] = true;
                         }
                     }
@@ -364,7 +361,7 @@ class POF_Importer {
 
             return false;
         });
-        $this->wp_cli_msg( 'Items to update: ' . count( $tree ) );
+        $this->wp_cli_msg( 'Posts to update: ' . count( $tree ) );
 
         return $tree;
     }
@@ -377,7 +374,7 @@ class POF_Importer {
      */
     private function retrieve_new_data( $tree ) {
 
-        $pool_size = 20; // Max concurrent requests
+        $pool_size = ( defined( '\\WP_CLI' ) && \WP_CLI ) ? 20 : 5; // Max concurrent requests
         $pool      = []; // Current requests
         $done      = []; // Done requests
 
@@ -426,7 +423,7 @@ class POF_Importer {
         foreach ( $tree as &$item ) {
             foreach ( $item['languages'] as &$lang ) {
                 if ( $lang['update_meta'] || $lang['update_page'] ) {
-                    $lang['data'] = json_decode( $done[ $lang['detail'] ]->body, true ) ?? null;
+                    $lang['data'] = json_decode( $done[ $lang['details'] ]->body, true ) ?? null;
                 }
             }
         }
@@ -451,13 +448,7 @@ class POF_Importer {
             // Collect connected posts
             $translations = [];
             foreach ( $item['languages'] as $lang ) {
-                if (
-                    (
-                        ! $lang['update_meta'] &&
-                        ! $lang['update_page']
-                    ) &&
-                    $lang['page']
-                ) {
+                if ( $lang['page'] ) {
                     $translations[ $lang['lang'] ] = $lang['page']->ID;
                     break;
                 }
@@ -471,7 +462,7 @@ class POF_Importer {
                     // Post object params
                     $args = [
                         'post_title'    => sanitize_title( $lang['title'] ),
-                        'menu_order'    => $lang['order'],
+                        'menu_order'    => $item['order'],
                         'post_status'   => 'publish',
                         'post_type'     => 'page',
                         'post_title'    => $item['title'],
@@ -482,7 +473,7 @@ class POF_Importer {
 
                     // If item has parent link to it
                     if ( $item['parent'] ) {
-                        $parent_id = $this->queried[ $item['guid'] ][ $lang['lang'] ]->ID;
+                        $parent_id = $this->queried[ $item['parent'] ][ $lang['lang'] ]->ID;
                         if ( ! empty( $parent_id ) ) {
                             $args['post_parent'] = $parent_id;
                         }
@@ -539,8 +530,6 @@ class POF_Importer {
             $progress->tick();
         }
         $progress->finish();
-
-        $this->wp_cli_success( 'Updated pages in: ' . round( microtime( true ) - $start, 4 ) . 's' );
     }
 
     /**
@@ -567,8 +556,6 @@ class POF_Importer {
             $progress->tick();
         }
         $progress->finish();
-
-        $this->wp_cli_success( 'Updated postmeta in: ' . round( microtime( true ) - $start, 4 ) . 's' );
     }
 
     private function update_tips( $data ) {
@@ -645,60 +632,59 @@ class POF_Importer {
      * @param  array $lang    Post language data.
      */
     public function update_page_meta( $post_id, $item, $lang ) {
-        // update acf fields
-        update_field( 'field_559a2aa1bbff7', $lang['data']['type'], $post_id ); // api_type
-        update_field( 'field_559a2abfbbff8', $lang['data']['ingress'], $post_id ); // api_ingress
-        update_field( 'field_559a2aebbbff9', $lang['data']['lastModified'], $post_id ); // last_modified
-        update_field( 'field_559a2d91a18a1', $lang['data']['lang'], $post_id ); // api_lang
-        update_field( 'field_559a2db2a18a2', $lang['data']['guid'], $post_id ); // api_guid
-        update_field( 'field_559e4a50b1f42', $lang['details'], $post_id ); // api_url
-        update_field( 'field_5abca09542839', wp_json_encode( $lang['data']['parents'] ), $post_id ); // api_path
-
-        // update acf repeater field to create/clear the array
-        update_field( 'field_55a369e3d3b3a', null, $post_id );
-        if ( is_array( $lang['images'] ) ) {
-            foreach ( $lang['images'] as $key => $obj ) {
-                if ( is_array( $obj ) && count( $obj ) > 0 ) {
-                    update_sub_field( array( 'api_images', $i, 'key' ), $key, $post_id );
-                    update_sub_field( array( 'api_images', $i, 'object' ), wp_json_encode( $obj ), $post_id );
-                    $saved++;
-                }
-                $i++;
-            }
+        $fields = [
+            'api_type'        => $lang['data']['type'],
+            'api_ingress'     => $lang['data']['ingress'],
+            'last_modified'   => $lang['data']['lastModified'],
+            'api_lang'        => $lang['data']['lang'],
+            'api_guid'        => $lang['data']['guid'],
+            'api_url'         => $lang['details'],
+            'api_path'        => wp_json_encode( $lang['data']['parents'] ),
+            'api_images'      => null,
+            'api_attachments' => null,
+        ];
+        foreach ( $fields as $key => $value ) {
+            update_field( $key, $value, $post_id );
         }
 
-        // set array count, 'cause acf is lazy
-        if ( $saved > 0 ) {
-            $field = array(
+        // images (acf repeater)
+        $i = 0;
+        if ( is_array( $lang['data']['images'] ) ) {
+            foreach ( $lang['data']['images'] as $key => $obj ) {
+                if ( is_array( $obj ) && count( $obj ) > 0 ) {
+                    $i++;
+                    update_sub_field( [ 'api_images', $i, 'key' ], $key, $post_id );
+                    update_sub_field( [ 'api_images', $i, 'object' ], wp_json_encode( $obj ), $post_id );
+                }
+            }
+        }
+        if ( $i > 0 ) {
+            // set array count, 'cause acf is lazy
+            $field = [
                 'name' => 'api_images',
                 'key'  => 'field_55a369e3d3b3a',
-            );
-            acf_update_value( $saved, $post_id, $field );
+            ];
+            acf_update_value( $i, $post_id, $field );
         }
 
         // attachments (acf repeater)
-        $j           = 1;
-        $attachments = 0;
-        // update acf repeater field to create/clear the array
-        update_field( 'field_57bffb08a4191', null, $post_id );
-        if ( ! empty( $lang['additional_content'] ) ) {
-            foreach ( $lang['additional_content'] as $type => $content ) {
+        $j = 0;
+        if ( ! empty( $lang['data']['additional_content'] ) ) {
+            foreach ( $lang['data']['additional_content'] as $type => $content ) {
                 foreach ( $content as $obj ) {
-                    update_sub_field( array( 'api_attachments', $j, 'type' ), $type, $post_id );
-                    update_sub_field( array( 'api_attachments', $j, 'object' ), wp_json_encode( $obj ), $post_id );
-                    $attachments++;
                     $j++;
+                    update_sub_field( [ 'api_attachments', $j, 'type' ], $type, $post_id );
+                    update_sub_field( [ 'api_attachments', $j, 'object' ], wp_json_encode( $obj ), $post_id );
                 }
             }
         }
-
-        // set array count, 'cause acf is lazy
-        if ( $attachments > 0 ) {
-            $field = array(
+        if ( $j > 0 ) {
+            // set array count, 'cause acf is lazy
+            $field = [
                 'name' => 'api_attachments',
                 'key'  => 'field_57bffb08a4191',
-            );
-            acf_update_value( $attachments, $post_id, $field );
+            ];
+            acf_update_value( $j, $post_id, $field );
         }
 
         // update page specific fields
