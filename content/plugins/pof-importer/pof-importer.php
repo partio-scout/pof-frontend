@@ -423,7 +423,7 @@ class POF_Importer {
         foreach ( $tree as &$item ) {
             foreach ( $item['languages'] as &$lang ) {
                 if ( $lang['update_meta'] || $lang['update_page'] ) {
-                    $lang['data'] = json_decode( $done[ $lang['details'] ]->body, true ) ?? null;
+                    $lang['data'] = ! empty( $done[ $lang['details'] ]->body ) ? json_decode( $done[ $lang['details'] ]->body, true ) : null;
                 }
             }
         }
