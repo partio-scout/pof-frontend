@@ -353,7 +353,7 @@ class Search extends \DustPress\Model {
 
                 // Overwrite tip link and title with parents
                 $post->permalink          = $parent_post->permalink . '#' . $post->post_name;
-                $post->post_title         = __( 'Tip in task ', 'pof' ) . '<i>' . $parent_post->post_title . '</i>';
+                $post->post_title         = $parent_post->post_title;
                 $post->fields             = $parent_post->fields;
                 $post->fields['api_type'] = 'pof_tip';
             }

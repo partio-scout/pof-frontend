@@ -19,7 +19,13 @@
                 <div class="{?image}float-content clearfix{/image}">
                     <span class="left clearfix">
                         <a href="{permalink}">
-                            <h5 class="page_title left">{post_title|s}</h5>
+                            <h5 class="page_title left">
+                                {@eq key=post_type value="pof_tip"}
+                                    <i>{post_title}</i>
+                                {:else}
+                                    {post_title}
+                                {/eq}
+                            </h5>
                         </a>
                     </span>
                     <span class="divider">|</span>
