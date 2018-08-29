@@ -33,7 +33,7 @@
 				<div class="tip">
 					<div class="tip__content">
 						<p>{comment_content|s}</p>
-						<button class="clipboard" data-clipboard-text="{permalink}#{guid}" title="Copy url" data-msg="Url copied to clipboard" />
+						{>"shared/clipboard" url="{Header.RawHomeUrl}guid/{Content.fields.api_guid}?lang={Header.LangSlug}" hash=guid /}
 					</div>
 					{?fields.attachments}
 					<div class="row tasks__body-row opened">

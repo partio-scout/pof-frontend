@@ -42,7 +42,7 @@
 	</div>
 	{/Content.fields.custom_content}
 
-	<button class="clipboard" data-clipboard-text="{permalink}" title="Copy url" data-msg="Url copied to clipboard" />
+	{>"shared/clipboard" url="{Header.RawHomeUrl}guid/{Content.fields.api_guid}?lang={Header.LangSlug}" /}
 </section>
 
 <section class="tasks">

@@ -31,7 +31,7 @@
 		{?Content.post_content}
 			{@content data=Content.post_content /}
 		{/Content.post_content}
-		<button class="clipboard" data-clipboard-text="{permalink}" title="Copy url" data-msg="Url copied to clipboard" />
+		{>"shared/clipboard" url="{Header.RawHomeUrl}guid/{Content.fields.api_guid}?lang={Header.LangSlug}" /}
 	</div>
 
 	{?Content.fields.custom_content}
