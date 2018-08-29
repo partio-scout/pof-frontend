@@ -28,7 +28,7 @@
 			{#Tips}
 				{! Ankkurilinkki vinkille !}
 				{?guid}
-					<a name="{guid}"></a>
+					<a id="{guid}"></a>
 				{/guid}
 				<div class="tip">
 					<div class="tip__content">
