@@ -48,17 +48,6 @@ class PageAgegroup extends \DustPress\Model {
         return sort_by_mandatory( $child_tree );
     }
 
-    // Bind translated strings.
-    public function S() {
-
-        $s = [
-            'valinnaiset'           => __('Selectable', 'pof'),
-            'pakolliset'            => __('Obligatory', 'pof'),
-        ];
-
-        return $s;
-    }
-
     public function Hero() {
         $hero = [
             'image'  => \DustPress\Query::get_acf_posts( get_hero_args() ),

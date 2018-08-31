@@ -13,7 +13,7 @@
     {^embed}
         <label>
             <div class="search-input-container">
-                <input type="search" name="s" value="{Term}" placeholder="{Header.S.search_placeholder}" title="{Header.S.search_title}">
+                <input type="search" name="s" value="{Term}" placeholder="{@apitranslation path="haku.search_input" fallback="haku.search_input" /}" title="{@apitranslation path="haku.search_title" fallback="haku.search_title" /}">
                 <button type="submit" class="search-icon">
                     <i class="icon-search"></i>
                 </button>

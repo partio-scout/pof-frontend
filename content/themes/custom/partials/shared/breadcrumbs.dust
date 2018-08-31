@@ -1,5 +1,5 @@
 <nav class="breadcrumbs">
-	<a href="{Breadcrumbs.CurrentLangFrontPLink}">{Breadcrumbs.S.etusivu}</a>
+	<a href="{Breadcrumbs.CurrentLangFrontPLink}">{@apitranslation path="yleiset.frontpage" fallback="yleiset.frontpage" /}</a>
 	{#Breadcrumbs.Content}
 			<a href="{url}" {#current}class="current"{/current}>{title|s}</a>
 	{/Breadcrumbs.Content}

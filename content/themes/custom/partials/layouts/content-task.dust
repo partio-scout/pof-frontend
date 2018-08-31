@@ -4,7 +4,7 @@
     <h1 class="content__main-header">{Content.post_title}</h1>
     <br>
     {?Content.fields.api_ingress}
-        <strong> {S.tavoite}: </strong>
+        <strong> {@apitranslation path="yleiset.task_target" fallback="yleiset.task_target" /}: </strong>
         <p> {Content.fields.api_ingress} </p>
     {/Content.fields.api_ingress}
 </section>
@@ -12,7 +12,7 @@
 {! Tekstiosio !}
 
 <section class="text-content">
-    <strong>{S.kuvaus}:</strong> {@content data=Content.post_content /}
+    <strong>{@apitranslation path="yleiset.description" fallback="yleiset.description" /}:</strong> {@content data=Content.post_content /}
 </section>
 
 {>"shared/task_info" /}

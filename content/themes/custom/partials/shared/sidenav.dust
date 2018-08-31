@@ -2,7 +2,7 @@
 		<div class="menu-search-block">
 			{>"search-section" small="true" /}
 		</div>
-		<h3 class="menu-heading show-for-medium-up">{Header.S.valikko}</h3>
+		<h3 class="menu-heading show-for-medium-up">{@apitranslation path="yleiset.main_menu" fallback="yleiset.main_menu" /}</h3>
 		<ul class="menu">
             <div class="row lang-menu-row">
                 <div class="lang-menu-container">

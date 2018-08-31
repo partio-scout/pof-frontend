@@ -2,13 +2,13 @@
 <section class="tasks attachments">
 	<div class="row tasks__heading-row">
 		<div class="columns small-12">
-			<h3 class="tasks__filter-heading opened">{Attachments.S.liitteet}<i class="icon-chevron-down"></i></h3>
+			<h3 class="tasks__filter-heading opened">{@apitranslation path="yleiset.attachments" fallback="yleiset.attachments" /}<i class="icon-chevron-down"></i></h3>
 		</div>
 	</div>
 	<div class="row tasks__body-row opened">
 		{?Content.fields.api_attachments.images}
 		<div class="columns small-4">
-		<h5>{Attachments.S.kuvat}</h5>
+		<h5>{@apitranslation path="yleiset.images" fallback="yleiset.images" /}</h5>
 			{#Content.fields.api_attachments.images}
 				<div>
 					<a href="{url}"><img src="{thumbnail.url}" /></a>
@@ -19,7 +19,7 @@
 
 		{?Content.fields.api_attachments.files}
 		<div class="columns small-4">
-		<h5>{Attachments.S.tiedostot}</h5>
+		<h5>{@apitranslation path="yleiset.files" fallback="yleiset.files" /}</h5>
 			{#Content.fields.api_attachments.files}
 				<div>
 					<a href="{url}"><img src="{icon}" alt="{mime_type}" /></a>
@@ -30,7 +30,7 @@
 
 		{?Content.fields.api_attachments.links}
 		<div class="columns small-4">
-		<h5>{Attachments.S.linkit}</h5>
+		<h5>{@apitranslation path="yleiset.links" fallback="yleiset.links" /}</h5>
 			{#Content.fields.api_attachments.links}
 				<div>
 					<a href="{url}">{description}</a>

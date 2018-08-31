@@ -1,6 +1,6 @@
 
 	<aside class="main_menu-wrapper">
-		<h3 class="main_menu-heading">{Header.S.valikko}</h3>
+		<h3 class="main_menu-heading">{@apitranslation path="yleiset.main_menu" fallback="yleiset.main_menu" /}</h3>
 		<ul class="menu">
 			<li class="row lang-menu-row lang-menu-container">
 				<ul class="lang-menu">
