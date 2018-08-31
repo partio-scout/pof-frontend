@@ -389,7 +389,7 @@ class Search extends \DustPress\Model {
             $guid = $post->fields['api_guid'];
             if ( array_key_exists( $guid, $tree ) ) {
                 // Get post term data
-                $this->get_post_term( $tree[ $guid ], $post->term, $tree );
+                $post->term = $this->get_post_term( $guid, $tree );
             }
         }
         header( 'x-post_data-time: ' . round( microtime( true ) - $post_data_start, 4 ) );
@@ -398,33 +398,25 @@ class Search extends \DustPress\Model {
     }
 
     /**
-     * Get post term
+     * Get api item term
      *
-     * @param  array $item Item to check for terms.
-     * @param  null  $term Variable to assign term to.
-     * @param  array $tree Tree to use for getting items.
-     * @return void
+     * @param  string $guid Item guid.
+     * @param  array  $tree Api item tree.
+     * @param  string $key  Term key to search for.
+     * @return mixed        Term or null on no match.
      */
-    protected function get_post_term( $item, &$term, $tree ) {
-        $term_groups = [
-            'task_term',
-            'subtaskgroup_term',
-            'taskgroup_term',
-            'subtask_term',
-        ];
-        foreach ( $term_groups as $key ) {
-            if ( ! empty( $item[ $key ] ) ) {
-                $term = $item[ $key ];
-                return;
-            }
+    protected function get_post_term( string $guid, array $tree, string $key = 'taskgroup_term' ) {
+        $item = $tree[ $guid ] ?? [];
+
+        if ( ! empty( $item[ $key ] ) ) {
+            return $item[ $key ];
+        }
+        elseif ( ! empty( $item['parent'] ) ) {
+            // If no matching term found, try to get term from parent
+            return $this->get_post_term( $item['parent'], $tree, 'subtaskgroup_term' );
         }
 
-        if (
-            ! empty( $item['parent'] ) &&
-            array_key_exists( $item['parent'], $tree )
-        ) {
-            $this->get_post_term( $tree[ $item['parent'] ], $term, $tree );
-        }
+        return null;
     }
 
     /**
