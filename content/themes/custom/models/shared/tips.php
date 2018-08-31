@@ -22,9 +22,9 @@ class Tips extends \DustPress\Model {
             $tip->comment_content = nl2br( $tip->comment_content );
             $tip->fields          = get_comment_meta( $tip->comment_ID );
 
-            // Parse tip guid from ag_{guid}_{lang}
+            // Parse tip guid from meta fields
             foreach ( $tip->fields as $key => $value ) {
-                $key_arr = explode( '_', $key );
+                $key_arr = explode( '_', $key ); // guid is formatted as ag_{guid}_{lang}
                 if ( count( $key_arr ) === 3 && $key_arr[0] === 'ag' ) {
                     $tip->guid = $key_arr[1];
                     break;
