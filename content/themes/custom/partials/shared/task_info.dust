@@ -20,7 +20,7 @@
 						<div class="tag-group__text">
 							<div class="equipment">
 								<span class="equipment__heading">
-									{@apitranslation path="yleiset.{key}" fallback="yleiset.{key}" /}
+									{@apitranslation path="haku.{key}" fallback="haku.{key}" /}
 								</span>
 								{#values}
 									<span class="equipment__item">
