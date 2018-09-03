@@ -1,0 +1,35 @@
+/**
+* Styles shared between all navigations
+*/
+
+// Language switcher styles
+.menu {
+    .lang-item {
+        display: inline-block;
+
+        &.current-lang {
+            text-decoration: underline;
+        }
+
+        & > a {
+            font-size: 0;
+            padding-right: .5rem;
+
+            &:after {
+                font-size: 1rem;
+                text-transform: uppercase;
+            }
+        }
+
+        $langs: 'fi', 'en', 'sv';
+        @each $lang in $langs {
+            &.lang-item-#{$lang} {
+                a {
+                    &:after {
+                        content: $lang;
+                    }
+                }
+            }
+        }
+    }
+}

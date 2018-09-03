@@ -43,7 +43,7 @@ include_once( 'functions/function-api_data_helpers.php' );
 include_once( 'functions/function-lang_helpers.php' );
 
 // Menu functions
-include_once( 'functions/function-menus.php' );
+require_once 'functions/class-menu.php';
 
 // Search functions
 include_once( 'functions/function-search.php' );

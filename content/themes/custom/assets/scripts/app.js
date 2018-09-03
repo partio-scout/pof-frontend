@@ -102,8 +102,6 @@ window.Partio = ( function( window, document, $ ){
                 var parent_li = self.closest('.menu-item-has-children');
 
                 parent_li.siblings().removeClass('opened');
-                parent_li.siblings().find('.toggler').removeClass('opened');
-                self.toggleClass('opened');
                 parent_li.toggleClass('opened');
 
                 //lasketaan contentille uusi korkeus jos menun uusi korkeus korkeampi kuin content
