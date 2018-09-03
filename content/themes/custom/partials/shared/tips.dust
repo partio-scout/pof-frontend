@@ -92,7 +92,7 @@
 			<form class="tips__form" id="tips__form_data" enctype="multipart/form-data">
 
 				<div class="tips__input_container">
-					<input class="radius" type="text" name="suggestion_name" placeholder="{@apitranslation path="yleiset.suggestion_form_name_placeholder" fallback="yleiset.suggestion_form_name_placeholder" /}" aria-label="{@apitranslation path="yleiset.name" fallback="yleiset.name" /}">
+					<input class="radius" type="text" name="suggestion_name" placeholder="{@apitranslation path="yleiset.suggestion_form_name_placeholder" fallback="yleiset.suggestion_form_name_placeholder" /}" aria-label="{@apitranslation path="yleiset.suggestion_form_name_placeholder" fallback="yleiset.suggestion_form_name_placeholder" /}">
 					<small class="error tips__error" id="tips__error_suggestion_name"></small>
 				</div>
 
