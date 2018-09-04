@@ -25,9 +25,12 @@
 								{#values}
 									<span class="equipment__item">
 										{?icon}
-											<span class="tag-group__icon"><img src="{icon}" alt=""></span>
+											<span class="tag-group__icon">
+												<img src="{@apiicon base=group_key guid=Content.fields.api_guid icon=slug /}" alt="">
+											</span>
 										{/icon}
-										{name}</span>
+										{@apitranslation path="{group_key}.{slug}" fallback="{group_key}.{slug}" /}
+									</span>
 								{/values}
 							</div>
 						</div>

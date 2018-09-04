@@ -69,6 +69,9 @@ require_once 'functions/function-program_lang_helper.php';
 // Complete api translation retriever
 require_once 'functions/class-apitranslation.php';
 
+// Complete api icon retriever
+require_once 'functions/class-apiicon.php';
+
 /*
  * Fixes missing field key mappings in postmeta table for pages
  */

@@ -379,3 +379,24 @@ function get_flat_program_tree() {
 
     return $flattened;
 }
+
+/**
+ * Parse item from data by path
+ *
+ * @param  string $path Dot separated path to item.
+ * @param  array  $item Items to search for path.
+ * @return mixed        Item found in path or null.
+ */
+function parse_path( string $path, array $item ) {
+    $path = explode( '.', $path );
+    foreach ( $path as $key ) {
+        if ( array_key_exists( $key, $item ) ) {
+            $item = $item[ $key ];
+        }
+        else {
+            return null;
+        }
+    }
+
+    return $item;
+}
