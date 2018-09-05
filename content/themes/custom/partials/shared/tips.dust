@@ -27,7 +27,7 @@
 
 			<div class="list">
 			{#Tips}
-				<div class="tip" class="tip__date">			
+				<div class="tip">			
 					{! Ankkurilinkki vinkille !}
 					{?fields.guid}
 						<a name="{fields.guid}"></a>
