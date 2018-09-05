@@ -38,12 +38,16 @@ add_action( 'template_redirect', function() {
 
             // Collect data to show in the manifest file
             $data = [
-                'lang'        => $lang,
-                'start_url'   => $start_url,
-                'display'     => $display,
-                'name'        => $name,
-                'short_name'  => $short_name,
-                'description' => $description,
+                'lang'             => $lang,
+                'start_url'        => $start_url,
+                'display'          => $display,
+                'name'             => $name,
+                'short_name'       => $short_name,
+                'description'      => $description,
+
+                // Both of these colors are defined in _colors.scss
+                'theme_color'      => '#253764', // partio_main_color
+                'background_color' => '#28a9e1', // partio_main_color_lighter
             ];
 
             $icon_id = get_option( 'site_icon' );

@@ -7,9 +7,15 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ### Muutettu
 - PO-287: Laitettu takaisin title kenttä vinkin lisäykseen
+- PO-288: Päivitetty jQuery ja siirretty se webpackillä compilattavaksi
 
 ### Lisätty
 - PO-270: Sisältöjen jakotoiminto kopioimalla linkki leikepöydälle
+- PO-288: Teeman värit manifest tiedostoon ja meta tagiin
+
+### Korjattu
+- PO-288: Laitettu sivun logolle alt attribuutti
+- PO-288: Kielinavigaation rakenteen korjaus
 
 ## [1.1.1] - 2018-08-14
 
