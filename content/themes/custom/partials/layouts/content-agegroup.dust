@@ -4,7 +4,7 @@
 	<h1 class="content__main-header">{Content.post_title}</h1>
 	{?Content.fields.api_ingress}
 		<h2 class="ingress">{Content.fields.api_ingress}</h2>
-	{/Content.fields.api_ingress}								
+	{/Content.fields.api_ingress}
 </section>
 
 <section class="task-group__header" data-equalizer data-equalizer-mq="medium-up">
@@ -41,6 +41,8 @@
 		{@content data=Content.fields.custom_content /}
 	</div>
 	{/Content.fields.custom_content}
+
+	{>"shared/clipboard" url="{Header.RawHomeUrl}guid/{Content.fields.api_guid}?lang={Header.LangSlug}" /}
 </section>
 
 <section class="tasks">

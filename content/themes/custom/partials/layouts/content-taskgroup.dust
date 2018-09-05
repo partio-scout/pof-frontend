@@ -28,9 +28,10 @@
 <section class="task-group__header" data-equalizer data-equalizer-mq="medium-up">
 
 	<div class="task-group__text-container" data-equalizer-watch>
-	{?Content.post_content}
-		{@content data=Content.post_content /}
-	{/Content.post_content}
+		{?Content.post_content}
+			{@content data=Content.post_content /}
+		{/Content.post_content}
+		{>"shared/clipboard" url="{Header.RawHomeUrl}guid/{Content.fields.api_guid}?lang={Header.LangSlug}" /}
 	</div>
 
 	{?Content.fields.custom_content}
