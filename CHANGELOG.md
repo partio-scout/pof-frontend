@@ -5,6 +5,8 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Julkaisematta]
 
+## [1.2.0] - 2018-09-05
+
 ### Muutettu
 - PO-287: Laitettu takaisin title kenttä vinkin lisäykseen
 - PO-288: Päivitetty jQuery ja siirretty se webpackillä compilattavaksi
