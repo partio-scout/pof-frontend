@@ -27,12 +27,13 @@
 			<div class="list">
 			{#Tips}
 				{! Ankkurilinkki vinkille !}
-				{?fields.guid}
-					<a name="{fields.guid}"></a>
-				{/fields.guid}	
-				<div class="tip">			
+				{?guid}
+					<a id="{guid}"></a>
+				{/guid}
+				<div class="tip">
 					<div class="tip__content">
 						<p>{comment_content|s}</p>
+						{>"shared/clipboard" url="{Header.RawHomeUrl}guid/{Content.fields.api_guid}?lang={Header.LangSlug}" hash=guid /}
 					</div>
 					{?fields.attachments}
 					<div class="row tasks__body-row opened">
@@ -94,6 +95,11 @@
 				<div class="tips__input_container">
 					<input class="radius" type="text" name="suggestion_name" placeholder="{S.nimi}" aria-label="Name">
 					<small class="error tips__error" id="tips__error_suggestion_name"></small>
+				</div>
+
+				<div class="tips__input_container">
+					<input class="radius" type="text" name="suggestion_title" placeholder="{S.otsikko}" aria-label="{S.otsikko}">
+					<small class="error tips__error" id="tips__error_suggestion_title"></small>
 				</div>
 
 				<div class="tips__input_container">
