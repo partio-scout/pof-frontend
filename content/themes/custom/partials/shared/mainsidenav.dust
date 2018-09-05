@@ -2,15 +2,13 @@
 	<aside class="main_menu-wrapper">
 		<h3 class="main_menu-heading">{Header.S.valikko}</h3>
 		<ul class="menu">
-			<div class="row lang-menu-row">
-				<div class="lang-menu-container">
-					<ul class="lang-menu">
-						{#Header.LangSwitcher.langs}
-							<li><a{?active} class="active"{/active} href="{permalink}">{lang}</a></li>
-						{/Header.LangSwitcher.langs}
-					</ul>
-				</div>
-			</div>
+			<li class="row lang-menu-row lang-menu-container">
+				<ul class="lang-menu">
+					{#Header.LangSwitcher.langs}
+						<li><a{?active} class="active"{/active} href="{permalink}">{lang}</a></li>
+					{/Header.LangSwitcher.langs}
+				</ul>
+			</li>
 
 			{#Header.Content}
 			<li class="menu-item{?has_children} menu-item-has-children{/has_children} {current_first}">

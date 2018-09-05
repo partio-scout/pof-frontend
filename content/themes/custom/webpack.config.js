@@ -35,11 +35,6 @@ const config = {
         path: path.resolve( './assets/dist' ),
         filename: '[name].js'
     },
-    externals: {
-
-        // Set jQuery to be an external resource.
-        'jquery': 'jQuery'
-    },
     plugins: [
 
         // Extract all css into one file.

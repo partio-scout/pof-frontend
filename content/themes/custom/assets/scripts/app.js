@@ -1,4 +1,5 @@
 import FastClick from 'fastclick';
+import ClipboardJS from 'clipboard';
 
 window.Partio = ( function( window, document, $ ){
 
@@ -51,7 +52,28 @@ window.Partio = ( function( window, document, $ ){
         console.log('error', errorThrown);
     };
 
+    /**
+     * Setup clipboard copying
+     */
+    app.setupClipboard = () => {
+        // Initialize clipboard
+        const clipboard = new ClipboardJS( '.clipboard' );
+        clipboard.on( 'success', ( e ) => {
+            // Show msg on copy
+            $( e.trigger ).addClass( 'copied' );
+            $( e.trigger ).on( 'mouseleave', ( ev ) => {
+                $( ev.currentTarget ).removeClass( 'copied' ).off();
+            });
+        });
+        clipboard.on( 'error', ( e ) => {
+            // On error just display text prompt with url
+            prompt( 'Share', e.text );
+        });
+    };
+
     app.init = function(){
+
+        app.setupClipboard();
 
         app.cache();
 

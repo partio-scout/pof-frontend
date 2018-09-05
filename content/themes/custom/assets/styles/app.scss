@@ -3,6 +3,7 @@
 
 @import 'helpers/colors';
 @import 'helpers/settings';
+@import '../icomoon/variables';
 
 // FOUNDATION DISABLED COMPONENTS
 // @import 'foundation/components/accordion';
@@ -65,6 +66,7 @@
 @import 'components/tips';
 @import 'components/searchform';
 @import 'components/sitemap';
+@import 'components/clipboard';
 
 // LAYOUTS
 @import 'layouts/frontpage';
