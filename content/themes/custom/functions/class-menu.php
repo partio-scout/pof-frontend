@@ -49,6 +49,8 @@ class Menu {
             $cache_key = 'custom_menu/' . $menu->slug;
             $new_items = wp_cache_get( $cache_key );
             if ( empty( $new_items ) ) {
+                ini_set( 'memory_limit', '256M' );
+
                 // Add the children
                 $new_items = static::add_children( $items );
 
