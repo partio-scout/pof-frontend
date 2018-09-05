@@ -49,9 +49,6 @@ class Menu {
             $cache_key = 'custom_menu/' . $menu->slug;
             $new_items = wp_cache_get( $cache_key );
             if ( empty( $new_items ) ) {
-                // Double the memory limit if we are getting all menu items without cache
-                ini_set( 'memory_limit', '512M' );
-
                 // Add the children
                 $new_items = static::add_children( $items );
 
@@ -152,8 +149,24 @@ class Menu {
         $post->type             = 'post_type';
         $post->post_type        = 'nav_menu_item';
         $post->menu_item_parent = $parent;
+        $post                   = wp_setup_nav_menu_item( $post );
 
-        $post = wp_setup_nav_menu_item( $post );
+        // Only keep necessary values
+        $whitelist = [
+            'ID',
+            'menu_order',
+            'menu_item_parent',
+            'url',
+            'title',
+            'classes',
+            'object_id',
+            'object',
+        ];
+        foreach ( (array) $post as $key => $val ) {
+            if ( ! in_array( $key, $whitelist, true ) ) {
+                unset( $post->{ $key } );
+            }
+        }
 
         return $post;
     }
