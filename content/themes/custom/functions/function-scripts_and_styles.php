@@ -8,9 +8,9 @@ function enqueue_styles_and_scripts() {
     }
 
     // Local styles & scripts
-    wp_enqueue_style( 'main-css', get_template_directory_uri() . '/assets/dist/main.css', false, '1.2.0' );
+    wp_enqueue_style( 'main-css', get_template_directory_uri() . '/assets/dist/main.css', false, '1.2.1' );
 
-    wp_register_script( 'main-js', get_template_directory_uri() . '/assets/dist/main.js', false, '1.2.0' );
+    wp_register_script( 'main-js', get_template_directory_uri() . '/assets/dist/main.js', false, '1.2.1' );
 
     // Localize data for javascript to use.
     $localized_data = array(

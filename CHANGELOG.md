@@ -5,6 +5,8 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Julkaisematta]
 
+## [1.2.1] - 2018-09-05
+
 ### Korjattu
 - PO-293: Vinkkien järjestäminen
 
