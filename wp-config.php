@@ -58,7 +58,7 @@ switch ( $_SERVER[ 'SERVER_NAME' ] ) {
         define( 'WP_PUB_SITEURL', 'http://partio-ohjelma.test' );
         define( 'WP_CONTENT_BASE_URL', 'http://partio-ohjelma.test' );
         define( 'WP_ADMIN_URL', 'http://partio-ohjelma.test' );
-        break;        
+        break;
     case 'partio-ohjelma.dev': // LOCAL DEV DOMAIN
         define( 'WP_HOME', 'http://partio-ohjelma.dev' );
         define( 'WP_SITEURL', 'http://partio-ohjelma.dev/wp/' );
@@ -79,6 +79,20 @@ switch ( $_SERVER[ 'SERVER_NAME' ] ) {
         define( 'WP_PUB_SITEURL', 'http://partio.jackie.geniem.com' );
         define( 'WP_CONTENT_BASE_URL', 'http://partio.jackie.geniem.com' );
         define( 'WP_ADMIN_URL', 'http://partio.jackie.geniem.com' );
+        break;
+}
+
+// Error handling
+$server_name = filter_input( INPUT_SERVER, 'SERVER_NAME' );
+switch ( $server_name ) {
+    case 'partio-ohjelma.test':
+    case 'partio-ohjelma.dev':
+    case 'partio.dev':
+        $whoops = new \Whoops\Run();
+        $whoops->pushHandler( new \Whoops\Handler\PrettyPageHandler() );
+        $whoops->register();
+        break;
+    default:
         break;
 }
 
