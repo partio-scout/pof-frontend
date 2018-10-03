@@ -33,6 +33,7 @@
         {>"agegroup-filters" embed="false" /}
     </fieldset>
 
+    {!
     <fieldset>
         {?embed}
             <button class="toggle-global-filters" type="button">
@@ -45,6 +46,7 @@
 
         {>"filters" prefix="global" /}
     </fieldset>
+    !}
 
     {?embed}
         </div>
