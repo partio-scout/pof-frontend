@@ -650,7 +650,12 @@ class POF_Importer {
                 )
             );
         }
-        $json = file_get_contents($url, false, $ctx);
+        try {
+            $json = file_get_contents( $url, false, $ctx );
+        }
+        catch ( \Exception $e ) {
+            $json = '[]';
+        }
         if ( $json ) {
             return json_decode( $json, true ); // decode the JSON into an associative array (true)
         }
