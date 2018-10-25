@@ -575,14 +575,4 @@ class Search extends \DustPress\Model {
 
         return true;
     }
-
-    /**
-     * Bind translated strings.
-     */
-    public function S() {
-        $s = [
-            'aktiviteettiryhma' => __( 'Task group', 'pof' ),
-        ];
-        return $s;
-    }
 }

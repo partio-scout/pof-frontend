@@ -1,4 +1,4 @@
 <nav class="breadcrumbs">
-	<a href="{WP.home}/">{Header.S.frontpage}</a>
+	<a href="{WP.home}/">{@apitranslation path="yleiset.frontpage" fallback="yleiset.frontpage" /}</a>
 	<a href="" class="current">{@apitranslation path="haku.search_results" fallback="haku.search_results" /}</a>
 </nav>

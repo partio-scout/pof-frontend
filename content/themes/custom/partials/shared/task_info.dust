@@ -5,7 +5,7 @@
 		<div class="columns medium-6 tag-groups" data-equalizer-watch>
 
 			<header class="task-info__header">
-				<h4 class="task-info__heading">{S.suoritustiedot}</h4>
+				<h4 class="task-info__heading">{@apitranslation path="yleiset.performance_details" fallback="yleiset.performance_details" /}</h4>
 			</header>
 
 			{! SUORITUSTIEDOT !}
@@ -20,36 +20,7 @@
 						<div class="tag-group__text">
 							<div class="equipment">
 								<span class="equipment__heading">
-									{@eq value="suoritus_kesto"}
-										{S.suoritus_kesto}:
-									{/eq}
-									{@eq value="pakollisuus"}
-										{S.pakollisuus}:
-									{/eq}
-									{@eq value="johtamistaito"}
-										{S.johtamistaito}:
-									{/eq}
-									{@eq value="valmistelu"}
-										{S.valmistelu}:
-									{/eq}
-									{@eq value="suoritus_valmistelu_kesto"}
-										{S.suoritus_valmistelu_kesto}:
-									{/eq}
-									{@eq value="taitoalueet"}
-										{S.taitoalueet}:
-									{/eq}
-									{@eq value="ryhmakoko"}
-										{S.ryhmakoko}:
-									{/eq}
-									{@eq value="paikka"}
-										{S.paikka}:
-									{/eq}
-									{@eq value="tarvikkeet"}
-										{S.tarvikkeet}:
-									{/eq}
-									{@eq value="kasvatustavoitteet"}
-										{S.kasvatustavoitteet}:
-									{/eq}
+									{@apitranslation path="haku.{key}" fallback="haku.{key}" /}
 								</span>
 								{#values}
 									<span class="equipment__item">
@@ -68,7 +39,7 @@
 				<div class="tag-group">
 					<div class="tag-group__text">
 						<div class="equipment">
-							<span class="equipment__heading">{S.taso}:</span>
+							<span class="equipment__heading">{@apitranslation path="yleiset.level" fallback="yleiset.level" /}:</span>
 							<span class="equipment__item">{Content.fields.level}</span>
 						</div>
 					</div>
@@ -78,7 +49,7 @@
 				<div class="tag-group">
 					<div class="tag-group__text">
 						<div class="equipment">
-							<span class="equipment__heading"><strong>{S.johtajan_tehtava}:</strong></span>
+							<span class="equipment__heading"><strong>{@apitranslation path="yleiset.leader_task" fallback="yleiset.leader_task" /}:</strong></span>
 							<span class="equipment__item">{Content.fields.leader_tasks|s}</span>
 						</div>
 					</div>
@@ -90,22 +61,22 @@
 		<div class="columns medium-6 additional-info" data-equalizer-watch>
 
 			<header class="task-info__header">
-				<h4 class="task-info__heading">{S.lisatiedot}</h4>
+				<h4 class="task-info__heading">{@apitranslation path="yleiset.info" fallback="yleiset.info" /}</h4>
 			</header>
 
 			{?Parent}
 				<div class="current-task-group">
-					<p class="heading">{S.aktiviteettiryhma}</p>
+					<p class="heading">{@apitranslation path="yleiset.taskgroup" fallback="yleiset.taskgroup" /}</p>
 					<a href="{Parent.permalink}" class="link">{Parent.post_title}</a>
 				</div>
 			{/Parent}
 
 			{?Siblings}
 				<div class="other-tasks-from-current">
-					<p class="heading">{S.ryhman_muut_aktiviteetit}</p>
+					<p class="heading">{@apitranslation path="yleiset.group_other_activities" fallback="yleiset.group_other_activities" /}</p>
 					<form action="">
 				        <select class="radius" onChange="window.location.href=this.value">
-				         	<option selected disabled>{S.valitse}...</option>
+				         	<option selected disabled>{@apitranslation path="yleiset.choose" fallback="yleiset.choose" /}</option>
 							{#Siblings}
 								<option value="{permalink}">{post_title}</option>
 							{/Siblings}
@@ -152,7 +123,7 @@
 			{?wp_tags}
 				<div class="skills keywords">
 
-					<p class="heading">{S.avainsanat}</p>
+					<p class="heading">{@apitranslation path="yleiset.keywords" fallback="yleiset.keywords" /}</p>
 
 					{#wp_tags}
 						<a href="" class="keyword">{name}</a>

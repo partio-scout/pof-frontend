@@ -38,13 +38,4 @@ class Breadcrumbs extends \DustPress\Model {
 
         return $currentLink;
     }
-
-    // Bind translated strings.
-    public function S() {
-
-        $s = [
-            'etusivu' => __('Front page', 'pof'),
-        ];
-        return $s;
-    }
 }

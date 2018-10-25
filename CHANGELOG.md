@@ -12,6 +12,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ### Muutettu
 - PO-288: Päivitetty jQuery ja siirretty se webpackillä compilattavaksi
+- PO-260: Kaikki frontin käännökset haetaan pof backendistä
 
 ### Korjattu
 - PO-288: Laitettu sivun logolle alt attribuutti
