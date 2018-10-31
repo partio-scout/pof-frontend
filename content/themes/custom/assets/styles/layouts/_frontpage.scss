@@ -91,8 +91,7 @@
 	min-width: 48rem;
 	margin: 0 auto;
 	top: 25%;
-	left: 25px;
-	transition: top .3s ease;
+	transition: top .3s ease;	
 }
 
 .hero__divider {
@@ -391,7 +390,7 @@
 
 	.hero__heading-group-search {
 		top: 15%;
-		min-width: 40rem;
+		min-width: 35rem;
 	}
 }
 
@@ -418,7 +417,7 @@
 
 	.hero__heading-group-search {
 		top: 16%;
-		left: 0;
-		min-width: 27rem;
+		min-width: 0;
+		width: 90%;
 	}
 }
