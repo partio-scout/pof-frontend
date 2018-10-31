@@ -6,7 +6,7 @@
                 <h3 class="search-heading">{@apitranslation path="haku.search_title" fallback="haku.search_title" /}</h3>
                 <div class="row collapse align-center">
                     <div class="small-12 columns search-input-container">
-                        <input type="search" name="s" value="{Term}" placeholder="{Header.S.search_placeholder}"  title="{Header.S.search_title}">
+                        <input type="search" name="s" value="{Term}" placeholder="{Header.S.search_placeholder}"  title="{Header.S.search_title}" class="search-input">
                         <button type="submit" class="search-icon">
                             <i class="icon-search"></i>
                         </button>
