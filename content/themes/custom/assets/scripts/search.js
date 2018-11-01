@@ -94,6 +94,7 @@ class Search {
             this.$filterMoreBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
             this.$filterInputs.on( 'change', ( e ) => this.filterInputChange( e ) );
             this.$advSearchLink.on( 'click', ( e ) => this.highLightFilter( e ) );
+            this.$searchInput.on( 'change', ( e ) => this.searchInputChange( e ) );
         }
     };
 
@@ -120,6 +121,16 @@ class Search {
         );
 
         $input.closest( '.filter-opener' ).children( 'input[name]' ).attr( 'checked', checked ).prop( 'checked', checked );
+    }
+
+    /**
+     * Handle change event on search input.
+     * 
+     * @param {object} e Change event.
+     */
+    searchInputChange( e ) {
+        const searchValue = $( e.target ).val();
+        this.$filterForm.find( 'input[name="s"]' ).val( searchValue );
     }
 
     /**
