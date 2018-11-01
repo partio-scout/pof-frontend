@@ -223,7 +223,7 @@ class Search {
             this.stop( e );
         }
 
-        const $form   = $( e.currentTarget ).closest( 'form' );
+        const $form   = this.$filterForm;
         const $SInput = $form.find( 'input[name="s"]' );
 
         // Duplicate search value across all forms
