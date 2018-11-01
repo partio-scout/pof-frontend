@@ -195,10 +195,6 @@ $search_fontsize_smaller: rem-calc(12);
 		color: inherit;
 	}
 
-	fieldset {
-		margin-bottom: 0;
-	}
-
 	@media ( min-width: $small-breakpoint ) {
 		display: block;
 
@@ -317,6 +313,12 @@ $search_fontsize_smaller: rem-calc(12);
     			transition: transform 100ms ease-in-out;
 			}
 		}
+	}
+}
+
+.search-buttons {
+	&__btn {
+		margin-bottom: 0;
 	}
 }
 

@@ -32,6 +32,8 @@ class Search {
         this.$filterInputs           = this.$filterForm.find( 'input[name]:not([type="text"]), select[name]' );
         this.lastSearch              = this.$searchInput.val();
         this.$langMenu               = $( '#second-lang-menu' );
+        this.$searchFilter           = $( '#search-filter' );
+        this.$emptyFiltersButton     = this.$filterForm.find( '#search-empty-filters-button' );
     };
 
     toggleSelfActive( e ) {
@@ -94,6 +96,7 @@ class Search {
             this.$filterMoreBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
             this.$filterInputs.on( 'change', ( e ) => this.filterInputChange( e ) );
             this.$advSearchLink.on( 'click', ( e ) => this.highLightFilter( e ) );
+            this.$emptyFiltersButton.on( 'click', ( e ) => this.emptyFilters( e ) );
         }
     };
 
@@ -387,6 +390,16 @@ class Search {
         e.stopPropagation();
         e.preventDefault();
     };
+
+    /**
+     * Empty filters.
+     */
+    emptyFilters( e ) {
+        const checkboxes = this.$searchFilter.find( 'input[type=checkbox]:not(.and-or-input)' );
+        checkboxes.filter( '[type="checkbox"]:checked' ).removeAttr( 'checked' ).prop( 'checked', false );
+
+        this.doSearch( e );
+    }
 }
 
 export default new Search();
