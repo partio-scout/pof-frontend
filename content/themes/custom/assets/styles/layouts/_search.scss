@@ -262,6 +262,7 @@ $search_fontsize_smaller: rem-calc(12);
 }
 
 .search-and-or {
+	display: none; // Delete this when search-and-or feature is needed.
 	background-color: $partio_main_color_darker;
 	display: flex;
 	align-items: center;

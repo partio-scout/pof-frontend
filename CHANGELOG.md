@@ -11,6 +11,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - PO-267: Näytetään kun haku on käynnissä
 
 ### Muutettu
+- PO-299: Piilotettu haun rajaustapa toistaiseksi
 - PO-288: Päivitetty jQuery ja siirretty se webpackillä compilattavaksi
 
 ### Korjattu
