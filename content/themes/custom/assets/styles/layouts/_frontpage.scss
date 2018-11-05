@@ -1,8 +1,6 @@
 // PÄÄKUVAN OSIO
 
 .hero {
-	height: 60%;
-	min-height: 24rem;
 	transition: min-height .3s ease;
 	position: relative;
 }
@@ -46,9 +44,8 @@
 }
 
 .hero__shade {
-	position: absolute;
-	top: 0;
-	left: 0;
+	position: relative;
+	padding-top: 4rem;
 	width: 100%;
 	height: 100%;
 	background-color: rgba($black, .35);
@@ -301,9 +298,6 @@
 }
 
 @media #{$medium-up} {
-	.hero {
-		min-height: 20rem;
-	}
 	.hero__heading-group {
 		top: 30%;
 	}
