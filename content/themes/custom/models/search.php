@@ -170,7 +170,7 @@ class Search extends \DustPress\Model {
 
                 // Add filter to get which part was matched in post
                 add_filter( 'relevanssi_match', function( $match ) use ( &$matches ) {
-                    if ( ! empty( $match->customfield_detail ) ) {
+                    if ( ! empty( $match->customfield_detail && is_array( unserialize( $match->customfield_detail ) ) ) ) {
                         // Check fields for matches but ignore certain non human readable fields
                         $fields    = array_keys( unserialize( $match->customfield_detail ) );
                         $blacklist = [
@@ -250,7 +250,36 @@ class Search extends \DustPress\Model {
             'page'          => $page,
         ];
 
+        $data->posts = $this->remove_duplicate_posts( $posts );
+
         return $data;
+    }
+
+    /**
+     * Remove duplicate posts.
+     * If duplicated posts found, keep the post which post type is 'pof_tip' only.
+     *
+     * @param array $posts Posts array.
+     * @return void
+     */
+    protected function remove_duplicate_posts( $posts ) {
+        foreach ( $posts as $post ) {
+            // Current post data.
+            $current_id    = $post->ID;
+            $current_title = $post->post_title;
+
+            foreach ( $posts as $key => $post ) {
+                // Do not care current post.
+                if ( $current_id !== $post->ID ) {
+                    // If post found with same title and it is not pof_tip, delete it.
+                    if ( $post->post_title === $current_title && $post->post_type !== 'pof_tip' ) {
+                        unset( $posts[ $key ] );
+                    }
+                }
+            }
+        }
+
+        return $posts;
     }
 
     /**

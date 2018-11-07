@@ -42,6 +42,14 @@ window.Tips = ( function( window, document, $ ){
         });
         app.$tipsForm.submit(app.saveTip);
 
+        // Jump to tip.
+        if ( window.location.hash ) {
+            const target = $(window.location.hash);
+
+            if ( target.length ) {    
+                $( 'html, body' ).scrollTop( target.offset().top );
+            }
+        }
     };
 
     app.initListJS = function() {

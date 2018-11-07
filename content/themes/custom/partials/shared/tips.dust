@@ -26,11 +26,7 @@
 
 			<div class="list">
 			{#Tips}
-				{! Ankkurilinkki vinkille !}
-				{?guid}
-					<a name="{guid}"></a>
-				{/guid}
-				<div class="tip">			
+				<div class="tip" {?guid}id="{guid}"{/guid}>			
 					<div class="tip__content">
 						<p>{post_content|s}</p>
 					</div>
