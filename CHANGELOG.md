@@ -6,6 +6,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 ## [Julkaisematta]
 
 ### Korjattu
+- PO-320: Yläreunan kuvakaruselli
 - PO-293: Vinkkien järjestäminen
 
 ## [1.2.0] - 2018-09-05
