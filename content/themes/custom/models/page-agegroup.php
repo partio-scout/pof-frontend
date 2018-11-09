@@ -37,7 +37,9 @@ class PageAgegroup extends \DustPress\Model {
         $post->subtaskgroup_term = json_decode_pof($post->fields['subtaskgroup_term']);
 
         // Change seo image.
-        change_seo_image( $this->post->fields['api_images'][0]['logo']->url );
+        if ( ! empty( $this->post->fields['api_images'][0]['logo']->url ) ) {
+            change_seo_image( $this->post->fields['api_images'][0]['logo']->url );
+        }
 
         return $post;
     }

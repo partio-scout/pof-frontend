@@ -40,7 +40,9 @@ class PageTaskgroup extends \DustPress\Model {
         $this->post = $post;
 
         // Change seo image.
-        change_seo_image( $this->post->fields['api_images'][0]['logo']->url );
+        if ( ! empty( $this->post->fields['api_images'][0]['logo']->url ) ) {
+            change_seo_image( $this->post->fields['api_images'][0]['logo']->url );
+        }
 
         return $post;
     }
