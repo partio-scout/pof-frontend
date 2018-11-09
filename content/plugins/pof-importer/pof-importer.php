@@ -10,8 +10,15 @@ Author: Ville Siltala, Kalle Haavisto
 register_activation_hook( __FILE__, array( 'POF_Importer', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'POF_Importer', 'deactivate' ) );
 
+/**
+ * Class POF_Importer
+ */
 class POF_Importer {
+    // Class constants
+    const API_IMAGES_FIELD = 'field_55a369e3d3b3a';
+    const API_ATTACHMENTS_FIELD = 'field_57bffb08a4191';
 
+    // Class variables
     private $queried = [];      // pages queried from db
     private $data;              // data from json api
     private $tree_url;          // url to main tree json
@@ -472,7 +479,7 @@ class POF_Importer {
                     ];
 
                     // If item has parent link to it
-                    if ( $item['parent'] ) {
+                    if ( ! empty( $item['parent'] ) ) {
                         $parent_id = $this->queried[ $item['parent'] ][ $lang['lang'] ]->ID;
                         if ( ! empty( $parent_id ) ) {
                             $args['post_parent'] = $parent_id;
@@ -558,6 +565,11 @@ class POF_Importer {
         $progress->finish();
     }
 
+    /**
+     * Update tips.
+     *
+     * @param array $data Tip data.
+     */
     private function update_tips( $data ) {
 
         $tips      = array();
@@ -662,7 +674,7 @@ class POF_Importer {
             // set array count, 'cause acf is lazy
             $field = [
                 'name' => 'api_images',
-                'key'  => 'field_55a369e3d3b3a',
+                'key'  => static::API_IMAGES_FIELD,
             ];
             acf_update_value( $i, $post_id, $field );
         }
@@ -682,7 +694,7 @@ class POF_Importer {
             // set array count, 'cause acf is lazy
             $field = [
                 'name' => 'api_attachments',
-                'key'  => 'field_57bffb08a4191',
+                'key'  => static::API_ATTACHMENTS_FIELD,
             ];
             acf_update_value( $j, $post_id, $field );
         }
