@@ -17,4 +17,6 @@
 .env
 content/themes/custom/config.codekit3
 /content/plugins/dustpress-responsive-background-image
+/content/plugins/relevanssi-premium
+/content/mu-plugins/classic-editor
 node_modules

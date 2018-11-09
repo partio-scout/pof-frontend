@@ -5,6 +5,9 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Julkaisematta]
 
+### Muutettu
+- PO-310: Vaihdettu SEO kuvan haku logosta, jos sellainen on
+
 ## [1.2.0] - 2018-09-05
 
 ### Muutettu
