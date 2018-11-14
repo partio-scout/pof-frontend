@@ -236,6 +236,8 @@ class Search extends \DustPress\Model {
                 $posts = $this->filter_posts( $posts, $params->ajax_args );
             }
 
+            $posts = $this->remove_duplicate_posts( $posts );
+
             // Do pagination in php since we do the filtering in php as well
             $count         = count( $posts );
             $max_num_pages = ceil( $count / $params->per_page );
@@ -249,8 +251,6 @@ class Search extends \DustPress\Model {
             'max_num_pages' => $max_num_pages,
             'page'          => $page,
         ];
-
-        $data->posts = $this->remove_duplicate_posts( $posts );
 
         return $data;
     }
