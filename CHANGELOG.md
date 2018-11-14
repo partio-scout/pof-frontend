@@ -5,6 +5,9 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Julkaisematta]
 
+### Muutettu
+- node-sass-version: Vaihdettu node-sass versio 4.10.0 buildaamis ongelmien vuoksi
+
 ### Korjattu
 - PO-293: Vinkkien järjestäminen
 
