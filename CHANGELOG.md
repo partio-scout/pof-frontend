@@ -14,6 +14,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - PO-288: Päivitetty jQuery ja siirretty se webpackillä compilattavaksi
 
 ### Korjattu
+- PO-323: Filtereiden checkboxien mobiilityylit
 - PO-288: Laitettu sivun logolle alt attribuutti
 - PO-288: Kielinavigaation rakenteen korjaus
 
