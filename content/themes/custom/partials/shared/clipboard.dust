@@ -1,5 +1,17 @@
-<button
-	class="clipboard"
-	data-clipboard-text="{url}{?hash}#{hash}{/hash}"
-	title="Copy url"
-	data-msg="Url copied to clipboard" />
+{@select key="{type}"}
+	{@eq value="qr"}
+		<button class="clipboard-qr" id="js-qr-code-{hash}"></button>
+
+		<div id="dialog-{hash}" title="Basic dialog">
+  			{! <img src="{qr_code}" /> !}
+		</div>
+	{/eq}
+	{@default}
+		<button
+		class="clipboard"
+		data-clipboard-text="{url}{?hash}#{hash}{/hash}"
+		title="Copy url"
+		data-msg="Url copied to clipboard">
+		</button>
+	{/default}
+{/select}

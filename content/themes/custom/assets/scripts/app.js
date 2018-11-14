@@ -1,6 +1,11 @@
 import FastClick from 'fastclick';
 import ClipboardJS from 'clipboard';
 
+import 'jquery-ui/themes/base/core.css';
+import 'jquery-ui/themes/base/theme.css';
+import 'jquery-ui/themes/base/dialog.css';
+import 'jquery-ui/ui/widgets/dialog';
+
 window.Partio = ( function( window, document, $ ){
 
     var app = {};
@@ -72,6 +77,14 @@ window.Partio = ( function( window, document, $ ){
     };
 
     app.init = function(){
+
+        $( "#dialog-f3f4a14fafe40e017215c7ef67286aeb" ).dialog({
+            autoOpen: false
+          });
+
+        $( "#js-qr-code-f3f4a14fafe40e017215c7ef67286aeb" ).on( "click", function() {
+            $( "#dialog-f3f4a14fafe40e017215c7ef67286aeb" ).dialog( "open" );
+          });
 
         app.setupClipboard();
 

@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?dwc1sy');
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?dwc1sy#iefix') format('embedded-opentype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?dwc1sy') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?dwc1sy') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?dwc1sy##{$icomoon-font-family}') format('svg');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?t9vtse');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?t9vtse#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?t9vtse') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?t9vtse') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?t9vtse##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -99,6 +99,11 @@
 .icon-share2 {
   &:before {
     content: $icon-share2; 
+  }
+}
+.icon-qrcode {
+  &:before {
+    content: $icon-qrcode; 
   }
 }
 

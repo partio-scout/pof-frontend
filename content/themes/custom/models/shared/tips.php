@@ -1,5 +1,10 @@
 <?php
 
+use chillerlan\QRCode\{QRCode};
+
+/**
+ * Class Tips
+ */
 class Tips extends \DustPress\Model {
 
     // Load tips based on params
@@ -42,7 +47,13 @@ class Tips extends \DustPress\Model {
                     }
                 }
             }
+
+            if ( ! empty( $tip->guid ) ) {
+                $qr_data = get_permalink() . '/#/' . $tip->guid;
+                $tip->qr_code = ( new QRCode() )->render( $qr_data );
+            }
         }
+
         return $tips;
     }
 

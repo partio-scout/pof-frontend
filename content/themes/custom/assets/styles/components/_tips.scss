@@ -179,7 +179,11 @@
 				min-height: -webkit-fit-content;
                 margin-bottom: 0;
 			}
-			//max-height: rem-calc(200);
+			
+			&__share {
+				display: flex;
+				justify-content: flex-end;
+			}
 		}
 
 		.tip__likes {
