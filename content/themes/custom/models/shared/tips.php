@@ -35,7 +35,7 @@ class Tips extends \DustPress\Model {
     }
 
     public function SendUrl() {
-        return get_field('tips-send-url', 'option');
+        return get_field( 'tips-send-url', 'option' );
     }
 
     // Init strings for UI
@@ -47,18 +47,18 @@ class Tips extends \DustPress\Model {
         }
 
         $s = [
-            'vinkit'            => __( 'Tips', 'pof' ),
-            'jarjestys'         => __( 'Order', 'pof' ),
-            'uusimmat'          => __( 'Latest', 'pof' ),
-            'suosituimmat'      => __( 'Most popular', 'pof' ),
-            'nayta_lisaa'       => __( 'Show more', 'pof' ),
-            'lisaa_vinkki'      => __( 'Add a tip', 'pof' ),
-            'kuvat'             => __( 'Pictures', 'pof' ),
-            'laheta'            => __( 'Send', 'pof' ),
-            'nimi'              => __( 'Name', 'pof'),
-            'otsikko'           => __( 'Title', 'pof'),
-            'kirjoita_tahan'    => __( 'Write your tips here', 'pof'),
-            'liite'             => __( 'Add an attachment', 'pof')
+            'vinkit'         => __( 'Tips', 'pof' ),
+            'jarjestys'      => __( 'Order', 'pof' ),
+            'uusimmat'       => __( 'Latest', 'pof' ),
+            'suosituimmat'   => __( 'Most popular', 'pof' ),
+            'nayta_lisaa'    => __( 'Show more', 'pof' ),
+            'lisaa_vinkki'   => __( 'Add a tip', 'pof' ),
+            'kuvat'          => __( 'Pictures', 'pof' ),
+            'laheta'         => __( 'Send', 'pof' ),
+            'nimi'           => __( 'Name', 'pof' ),
+            'otsikko'        => __( 'Title', 'pof' ),
+            'kirjoita_tahan' => __( 'Write your tips here', 'pof' ),
+            'liite'          => __( 'Add an attachment', 'pof' ),
         ];
 
         return $s;

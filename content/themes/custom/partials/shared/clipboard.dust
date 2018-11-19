@@ -1,0 +1,5 @@
+<button
+	class="clipboard"
+	data-clipboard-text="{url}{?hash}#{hash}{/hash}"
+	title="Copy url"
+	data-msg="Url copied to clipboard" />

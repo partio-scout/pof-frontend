@@ -25,6 +25,15 @@ class Header extends \DustPress\Model {
         return generate_search_url();
     }
 
+    /**
+     * Get base language home url
+     *
+     * @return string
+     */
+    public function RawHomeUrl() {
+        return pll_home_url( 'fi' );
+    }
+
 
     // public $ttl = [
     //     'Content' => 3600
