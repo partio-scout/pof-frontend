@@ -18,3 +18,5 @@
 content/themes/custom/config.codekit3
 /content/plugins/dustpress-responsive-background-image
 node_modules
+/content/mu-plugins/classic-editor/
+/content/plugins/relevanssi-premium/

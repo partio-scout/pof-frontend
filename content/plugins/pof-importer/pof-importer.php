@@ -7,12 +7,19 @@ Version: 0.0.2
 Author: Ville Siltala, Kalle Haavisto
 */
 
-register_activation_hook(   __FILE__, array( 'POF_Importer', 'activate' ) );
+register_activation_hook( __FILE__, array( 'POF_Importer', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'POF_Importer', 'deactivate' ) );
 
+/**
+ * Class POF_Importer
+ */
 class POF_Importer {
+    // Class constants
+    const API_IMAGES_FIELD = 'field_55a369e3d3b3a';
+    const API_ATTACHMENTS_FIELD = 'field_57bffb08a4191';
 
-    private $queried;           // pages queried from db
+    // Class variables
+    private $queried = [];      // pages queried from db
     private $data;              // data from json api
     private $tree_url;          // url to main tree json
     private $tips_url;          // url to tips json
@@ -39,17 +46,75 @@ class POF_Importer {
     public function __construct() {
         add_action( 'init', array( $this, 'init_plugin' ) );
         add_action( 'daily_cron',  array( $this, 'importer_cron' ) );
+        if ( defined( '\\WP_CLI' ) && \WP_CLI ) {
+            \WP_CLI::add_command( 'pof import', [ $this, 'importer_cron' ] );
+        }
+    }
+
+    /**
+     * Print message to wp cli if it is enabled
+     *
+     * @param string $msg Message to print.
+     */
+    protected function wp_cli_msg( $msg ) {
+        if ( defined( '\\WP_CLI' ) && \WP_CLI ) {
+            \WP_CLI::log( $msg );
+        }
+    }
+
+    /**
+     * Print success message to wp cli if it is enabled
+     *
+     * @param string $msg Message to print.
+     */
+    protected function wp_cli_success( $msg ) {
+        if ( defined( '\\WP_CLI' ) && \WP_CLI ) {
+            \WP_CLI::success( $msg );
+        }
+    }
+
+    /**
+     * Print error message to wp cli if it is enabled
+     *
+     * @param string $msg Message to print.
+     */
+    protected function wp_cli_error( $msg ) {
+        if ( defined( '\\WP_CLI' ) && \WP_CLI ) {
+            \WP_CLI::error( $msg );
+        }
+    }
+
+    /**
+     * Create wp cli progress bar if it is enabled.
+     *
+     * @param  string $msg   Message to show alongside progressbar.
+     * @param  int    $count Amount of items to process.
+     * @return mixed         Progressbar class or dummy object.
+     */
+    protected function wp_cli_progress( $msg, $count ) {
+        if ( defined( '\\WP_CLI' ) && \WP_CLI ) {
+            $progress = \WP_CLI\Utils\make_progress_bar( $msg, $count );
+        }
+        else {
+            // Create dummy functions if wp cli is not enabled
+            $progress = (object) [
+                'tick'   => function() {},
+                'finish' => function() {},
+            ];
+        }
+
+        return $progress;
     }
 
     public function init_plugin() {
 
         // get API url from options
-        include_once( ABSPATH . 'wp-admin/includes/plugin.php' ); // included for is_plugin_active()
+        include_once ABSPATH . 'wp-admin/includes/plugin.php'; // included for is_plugin_active()
         if ( is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
-            $this->tree_url = get_field('ohjelma-json', 'option')  . '?rand=' . mt_rand();
-            $this->tips_url = get_field('tips-json', 'option') . '?rand=' . mt_rand();
+            $this->tree_url       = get_field( 'ohjelma-json', 'option' ) . '?rand=' . mt_rand();
+            $this->tips_url       = get_field( 'tips-json', 'option' ) . '?rand=' . mt_rand();
             $this->site_languages = array();
-            if (function_exists('pll_languages_list')) {
+            if ( function_exists( 'pll_languages_list' ) ) {
                 $this->site_languages = pll_languages_list();
             }
         }
@@ -59,7 +124,7 @@ class POF_Importer {
 
         // Add admin menu
         if ( is_admin() ) {
-            add_action( 'admin_menu', array($this, 'pof_menu_init') );
+            add_action( 'admin_menu', array( $this, 'pof_menu_init' ) );
         }
     }
 
@@ -68,27 +133,30 @@ class POF_Importer {
         wp_schedule_event( time(), 'hourly', 'daily_cron' );
     }
     public static function deactivate() {
-        wp_clear_scheduled_hook('daily_cron');
+        wp_clear_scheduled_hook( 'daily_cron' );
     }
 
     // Setup cronjob for importer daily automatic execution
-    public function importer_cron () {
-        ini_set('memory_limit', '-1');
-        $this->tree_url = get_field('ohjelma-json', 'option');
-        $this->tips_url = get_field('tips-json', 'option');
+    public function importer_cron() {
+        $start = microtime( true );
+        $this->wp_cli_msg( 'Beginning import' );
+        ini_set( 'memory_limit', '-1' );
+        $this->tree_url = get_field( 'ohjelma-json', 'option' );
+        $this->tips_url = get_field( 'tips-json', 'option' );
         $this->import();
-        update_field( 'field_57c6b36acafd4', date("Y-m-d H:i:s"), 'option' );
+        update_field( 'field_57c6b36acafd4', date( 'Y-m-d H:i:s' ), 'option' );
         $this->import_tips();
-        update_field( 'field_57c6b3e52325e', date("Y-m-d H:i:s"), 'option' );
+        update_field( 'field_57c6b3e52325e', date( 'Y-m-d H:i:s' ), 'option' );
+        $this->wp_cli_msg( 'Import finished in: ' . round( microtime( true ) - $start, 4 ) . 's' );
     }
 
     /*
     * Helper function to calc script execution time
     */
-    public function execution_time($halt = false) {
-        $execution_time = microtime(true) - $this->start_time;
-        echo '<b>Total Execution Time:</b> '.$execution_time.' Seconds';
-        if ($halt) {
+    public function execution_time( $halt = false ) {
+        $execution_time = microtime( true ) - $this->start_time;
+        echo '<b>Total Execution Time:</b> ' . $execution_time . ' Seconds';
+        if ( $halt ) {
             die();
         }
     }
@@ -102,30 +170,21 @@ class POF_Importer {
     public function import() {
 
         // init counters
-        $this->updated = 0;
-        $this->created = 0;
-        $this->start_time = microtime(true);
+        $this->updated    = 0;
+        $this->created    = 0;
+        $this->start_time = microtime( true );
 
         // fetch the POF API tree
         $tree = $this->fetch_data( $this->tree_url );
 
         // tree imported
         if ( $tree ) {
-            $this->success = $this->import_data( $tree['program'][0] );
-        } // something went wrong
-        else  {
-            $this->error = __('An error occured while importing the data tree.', 'pof_importer');
-        }
+            $tree = $this->import_data( $tree['program'][0] );
+            $tree = $this->retrieve_new_data( $tree );
 
-        // Something went wrong
-        if ( isset( $this->success['error'] ) ) {
-            $this->error = $this->success['error'];
-            $this->error .= '<li>' . $this->success['guid'] . '</li>';
-        } else {
-            // Update pages
-            $this->update_pages();
+            $this->update_pages( $tree );
+            $this->update_metas( $tree );
         }
-
     }
 
     /*
@@ -135,29 +194,74 @@ class POF_Importer {
     *
     */
     public function import_tips() {
-
         // init counters
-        $this->updated = 0;
-        $this->created = 0;
-        $this->start_time = microtime(true);
+        $this->updated    = 0;
+        $this->created    = 0;
+        $this->start_time = microtime( true );
 
         // fetch tasks from database
-        $args = [
-            'posts_per_page'    => -1,
-            'post_type'         => 'page',
-            'post_parent'       => $post_id,
-            'post_status'       => 'publish',
-            'meta_key'          => 'api_type',
-            'meta_value'        => 'task'
+        $args  = [
+            'posts_per_page' => -1,
+            'post_type'      => 'page',
+            'post_parent'    => $post_id,
+            'post_status'    => 'publish',
+            'meta_key'       => 'api_type',
+            'meta_value'     => 'task',
         ];
         $tasks = \DustPress\Query::get_acf_posts( $args );
 
         $taskData = array();
-        foreach ($tasks as $key => $task) {
-            $taskData[$task->fields['api_guid']][strtolower($task->fields['api_lang'])] = $task;
+        foreach ( $tasks as $key => $task ) {
+            $taskData[ $task->fields['api_guid'] ][ strtolower( $task->fields['api_lang'] ) ] = $task;
         }
 
-        $this->update_tips($taskData);
+        $this->update_tips( $taskData );
+    }
+
+    /**
+     * Flatten api program tree into a single array
+     *
+     * @param  array $tree Api program tree.
+     * @return array       Flattened tree.
+     */
+    protected function flatten_tree( $tree ) {
+        $flattened = [];
+        $start     = microtime( true );
+
+        /**
+         * Recursively add api item to flattened array
+         *
+         * @param array  $item      Item to add.
+         * @param array  $flattened Array to gather items to.
+         * @param string $parent    Parent guid.
+         */
+        function add_to_flattened( $item, &$flattened, $parent = null ) {
+            $item['parent']  = $parent;
+            $items_to_search = [
+                'taskgroups',
+                'tasks',
+                'agegroups',
+            ];
+
+            foreach ( $items_to_search as $key ) {
+                if ( array_key_exists( $key, $item ) ) {
+                    foreach ( $item[ $key ] as $new_item ) {
+                        add_to_flattened( $new_item, $flattened, $item['guid'] );
+                    }
+
+                    // Remove unnecessary data from item
+                    unset( $item[ $key ] );
+                }
+            }
+
+            $flattened[ $item['guid'] ] = $item;
+
+        }
+        add_to_flattened( $tree, $flattened );
+
+        $this->wp_cli_msg( 'Flattened tree in: ' . round( microtime( true ) - $start, 4 ) . 's' );
+
+        return $flattened;
     }
 
     /*
@@ -166,278 +270,340 @@ class POF_Importer {
     *  This function loops recursively through the API tree and imports items from the POF API.
     *
     */
-    public function import_data( $branch, $parent = 0 ) {
-        // create or update current page of branch
-        $success = $this->get_items( $branch, $parent );
-        // an error occured
-        if ( isset( $success['error'] ) ) {
-            return $success;
-        } elseif ( is_array( $success ) ) {
-            // store items for later
-            $this->data[$branch['guid']] = $success;
-        }
+    public function import_data( $tree ) {
+        $tree = $this->flatten_tree( $tree );
+        $tree = $this->get_import_data( $tree );
 
-        // loop through age groups
-        if ( isset( $branch['agegroups'] ) ) {
-            foreach ( $branch['agegroups'] as $ag ) {
-                $success = $this->import_data( $ag, $branch['guid'] );
-            }
-            // an error occured
-            if ( isset( $success['error'] ) ) {
-                return $success;
-            }
-        }
-
-        // loop through task groups
-        if ( isset( $branch['taskgroups'] ) ) {
-            foreach ( $branch['taskgroups'] as $ag ) {
-                $success = $this->import_data( $ag, $branch['guid'] );
-            }
-            // an error occured
-            if ( isset( $success['error'] ) ) {
-                return $success;
-            }
-        }
-
-        // loop through tasks
-        if ( isset( $branch['tasks'] ) ) {
-            foreach ( $branch['tasks'] as $ag ) {
-                $success = $this->import_data( $ag, $branch['guid'] );
-            }
-            // an error occured
-            if ( isset( $success['error'] ) ) {
-                return $success;
-            }
-        }
-
-        // all good
-        return $success;
-
+        return $tree;
     }
 
-    /*
-    *  get_items
-    *
-    *  This function loads items from api and compares them to wp data.
-    *  Modified pages/json data are returned for later use.
-    *
-    */
-    private function get_items( $branch, $parent ) {
-        $guid               = $branch['guid'];
-        $languages          = [];
-        $details            = [];
-        $pages              = [];
-        $api_data           = [];
-        $count              = 0;
+    /**
+     * Get data to import
+     * This function loads items from api and compares them to wp data.
+     * Modified pages/json data are returned for later use.
+     *
+     * @param  array $tree Api data.
+     * @return array       Modified & filtered $tree.
+     */
+    private function get_import_data( $tree ) {
 
-        // loop languages and get the item data
-        foreach ( $branch['languages'] as $item ) {
-            $languages[strtoupper($item['lang'])] = [ 
-                'order' => isset($branch['order']) ? $branch['order'] : 0,
-                'url' => $item['details'],
-                'modified' => $item['lastModified']
-            ];
+        $start = microtime( true );
+        $posts = \DustPress\Query::get_acf_posts([
+            'post_type'      => 'page',
+            'post_status'    => 'any',
+            'posts_per_page' => -1, //phpcs:ignore
+        ]);
+        // Store each post and its language
+        foreach ( $posts as $post ) {
+            $guid = $post->fields['api_guid'];
+            $lang = strtolower( $post->fields['api_lang'] );
+
+            if ( ! array_key_exists( $guid, $this->queried ) ) {
+                $this->queried[ $guid ] = [];
+            }
+            $this->queried[ $guid ][ $lang ] = $post;
         }
 
-        // query page by api guid
-        $args = array(
-            'meta_key' => 'ag_'.$guid,
-            'meta_value' => 'true',
-            'post_type' => 'page',
-            'post_status' => 'any',
-            'posts_per_page' => -1
-        );
-        $posts = get_posts($args);
-        // index array by language
-        foreach ($posts as $p) {
-            $lang = strtoupper( get_post_meta( $p->ID, 'api_lang', true ) );
-            $pages[$lang] = $p;
-        }
-        // page found
-        if ( count( $pages) > 0 ) {
-            // store pages for later
-            $this->queried[$guid] = $pages;
-            // loop through pages and check if modified
-            foreach ( $languages as $lang => $leaf ) {
-                if ( isset( $pages[$lang] ) ) {
-                    $modified = get_field( 'api_lastmodified', $pages[$lang]->ID );
+        // Add all pages to queried list
+        $this->wp_cli_msg( 'Got all pages in: ' . round( microtime( true ) - $start, 4 ) . 's' );
 
-                    if ( $languages[$lang]['modified'] > $modified ) {
-                        $languages[$lang]['update'] = true;
-                    }
-                    else if ( $this->queried[$parent][$lang]->ID !== $pages[$lang]->post_parent && ! is_null($this->queried[$parent][$lang]->ID) ) {
-                        $languages[$lang]['update'] = true;
-                    }
+        // Create wp cli progress bar
+        $progress = $this->wp_cli_progress( 'Filtering posts to update', count( $tree ) );
 
-                } else {
-                    $languages[$lang]['new_lang'] = true;
+        // Update tree data for languages
+        $start    = microtime( true );
+        $importer = $this; // Store this in variable to pass it to the functions
+        $tree     = array_map(function( $item ) use ( $posts, $progress, $importer ) {
+
+            // Collect only matching posts
+            $pages = array_filter( $posts, function( $page ) use ( $item ) {
+                return ( ! empty( $page->fields ) && $page->fields['api_guid'] === $item['guid'] );
+            });
+
+            // Update languages with necessary data
+            $item['languages'] = array_map(function( $lang ) use ( $pages, $importer ) {
+                // Mark posts to update
+                foreach ( $pages as $page ) {
+                    if ( $lang['lang'] === strtolower( $page->fields['api_lang'] ) ) {
+
+                        // Store the page to possibly update it or translations later
+                        $lang['page'] = $page;
+
+                        // Mark post meta for update
+                        if (
+                            strtotime( $page->fields['api_lastmodified'] ) <
+                            strtotime( $lang['lastModified'] )
+                        ) {
+                            $lang['update_meta'] = true;
+                        }
+
+                        // Mark page for update
+                        if (
+                            strtotime( $page->post_modified ) <
+                            strtotime( $lang['lastModified'] )
+                        ) {
+                            $lang['update_page'] = true;
+                        }
+                    }
+                }
+
+                return $lang;
+            }, $item['languages'] );
+
+            // Update progressbar
+            $progress->tick();
+
+            return $item;
+        }, $tree);
+        // Finish progressbar
+        $progress->finish();
+
+        // Reduce tree to only those that need to be updated
+        $tree = array_filter( $tree, function( $item ) {
+            foreach ( $item['languages'] as $lang ) {
+                if ( $lang['update_meta'] || $lang['update_page'] ) {
+                    return true;
                 }
             }
-        } else {
-            $create = true;
+
+            return false;
+        });
+        $this->wp_cli_msg( 'Posts to update: ' . count( $tree ) );
+
+        return $tree;
+    }
+
+    /**
+     * Get new data for languages
+     *
+     * @param  array $tree Api data tree.
+     * @return array       Modified $tree.
+     */
+    private function retrieve_new_data( $tree ) {
+
+        $pool_size = ( defined( '\\WP_CLI' ) && \WP_CLI ) ? 20 : 5; // Max concurrent requests
+        $pool      = []; // Current requests
+        $done      = []; // Done requests
+
+        // Get full limit of calls
+        $size = 0;
+        foreach ( $tree as $item ) {
+            foreach ( $item['languages'] as $lang ) {
+                $size++;
+            }
         }
 
-        // fetch details if create/update
-        foreach ( $languages as $lang => $leaf ) {
-            if ( $create || isset( $leaf['update'] ) || isset( $leaf['new_lang'] ) ) {
-                $d = $this->fetch_data( $leaf['url'] );
+        // Create wp cli progress bar
+        $progress = $this->wp_cli_progress( 'Fetching new data', $size );
+        foreach ( $tree as $item ) {
+            foreach ( $item['languages'] as $lang ) {
+                if ( $lang['update_meta'] || $lang['update_page'] ) {
+                    if ( count( $pool ) >= $pool_size ) {
+                        $responses = \Requests::request_multiple( $pool );
+                        foreach ( $responses as $resp ) {
+                            if ( $resp->status_code !== 200 ) {
+                                $this->wp_cli_error( 'Request failed: (' . $resp->url . ')' );
+                            }
+                        }
+                        $done = array_merge( $done, $responses );
+                        $pool = [];
+                    }
 
-                // check if an error occurred
-                if ( ! is_array( $d ) ) {
-                    return [
-                        'error' => __('Data could not be loaded from:<br/>', 'pof_importer'),
-                        'guid'  => $leaf['url']
+                    $pool[ $lang['details'] ] = [
+                        'url'  => $lang['details'],
+                        'type' => 'GET',
                     ];
                 }
 
-                $d['url'] = $leaf['url']; // store url
-                $d['order'] = $leaf['order']; // get menu order from main tree
-                $details[$lang] = $d;
-                $count++;
-
+                $progress->tick();
             }
         }
+        // Finish any dangling requests
+        if ( ! empty( $pool ) ) {
+            $responses = \Requests::request_multiple( $pool );
+            $done      = array_merge( $done, $responses );
+            $pool      = [];
+        }
+        $progress->finish();
 
-        // nothing loaded -> return
-        if ( $count === 0 ) return;
-
-        // details ok
-        if ( count( $details ) > 0 && ! array_search( false, $details ) ) {
-            foreach ( $details as $lang => $data ) {
-
-                // has a $parent
-                if ( $parent !== 0 ) {
-                    $data['parent'] = $parent;
+        // Assign results to languages
+        foreach ( $tree as &$item ) {
+            foreach ( $item['languages'] as &$lang ) {
+                if ( $lang['update_meta'] || $lang['update_page'] ) {
+                    $lang['data'] = ! empty( $done[ $lang['details'] ]->body ) ? json_decode( $done[ $lang['details'] ]->body, true ) : null;
                 }
-
-                // store by language index
-                $api_data[$lang] = $data;
             }
-        } else {
-            return [
-                'error' => __('An error occured while importing data for guid:<br/>', 'pof_importer'),
-                'guid'  => $guid
-            ]; // something went wrong
         }
-        return $api_data;
+
+        return $tree;
     }
 
-    /*
-    *  update_pages
-    *
-    *  This function updates/creates pages
-    *
-    */
-    private function update_pages() {
-        // loop through loaded data
-        if ( is_array( $this->data ) ) {
-            foreach ( $this->data as $guid => $items ) {
-                $polyLangs = array();
-                $redirect_cache = array();
-                foreach ( $items as $item ) {
-                    $args = array();
+    /**
+     * Begin the actual import process
+     *
+     * @param array $tree Api data.
+     */
+    private function update_pages( &$tree ) {
 
-                    // Langversion found, add existing page specific args
-                    if (isset($this->queried[$guid][$item['lang']])) {
-                        $page = $this->queried[$guid][$item['lang']];
-                        $args['ID']         = $page->ID;
-                        $args['menu_order'] = isset($item['order']) ? $item['order'] : $page->menu_order;
-                        $args['post_name']  = wp_unique_post_slug( sanitize_title( $item['title'] ), $page->ID, 'publish', 'page', $parent_id );
-                        // Get current page relative url
-                        $old_slug = wp_make_link_relative( get_permalink( $page->ID ));
+        // Create wp cli progress bar
+        $progress = $this->wp_cli_progress( 'Importing page content', count( $tree ) );
+        $start    = microtime( true );
 
-                    } else {
-                        $args['menu_order'] = isset($item['order']) ? $item['order'] : 0;
-                        $args['post_name'] = wp_unique_post_slug( sanitize_title( $item['title'] ), $post_id, 'publish', 'page', $parent_id );
-                    }
+        // Update/Create invidual pages
+        foreach ( $tree as &$item ) {
 
-                    // has a parent
-                    if ( isset( $item['parent'] ) ) {
-                        $parent_guid = $item['parent'];
-                        $parent_id = $this->queried[$parent_guid][$item['lang']]->ID;
-                    } else {
-                        $parent_id = 0;
-                    }
+            // Collect connected posts
+            $translations = [];
+            foreach ( $item['languages'] as $lang ) {
+                if ( $lang['page'] ) {
+                    $translations[ $lang['lang'] ] = $lang['page']->ID;
+                    break;
+                }
+            }
+            $new_translations = false;
 
-                    // Default values for page creation/updation
-                    $args['post_status']   = 'publish';
-                    $args['post_type']     = 'page';
-                    $args['post_title']    = $item['title'];
-                    $args['post_parent']   = $parent_id;
-                    $args['post_content']  = isset($item['content']) ? $item['content'] : '';
-                    $args['page_template'] = 'models/page-' . $item['type'] . '.php';
+            // Update translations
+            foreach ( $item['languages'] as &$lang ) {
+                if ( $lang['update_page'] && $lang['data'] ) {
 
-                    
-                    // Create the post
-                    $post_id = wp_insert_post( $args );
+                    // Post object params
+                    $args = [
+                        'post_title'    => sanitize_title( $lang['title'] ),
+                        'menu_order'    => $item['order'],
+                        'post_status'   => 'publish',
+                        'post_type'     => 'page',
+                        'post_title'    => $item['title'],
+                        'post_content'  => $lang['data']['content'],
+                        'page_template' => 'models/page-' . $lang['data']['type'] . '.php',
+                        'post_modified' => $lang['lastModified'],
+                    ];
 
-                    if ( ! is_wp_error( $post_id ) && $post_id !== 0 && isset( $old_slug ) ) {
-                        $new_slug = wp_make_link_relative( get_permalink( $post_id ));
-                        if ( $new_slug !== $old_slug ) {
-                            $redirect_cache[ $old_slug ] = $new_slug;
+                    // If item has parent link to it
+                    if ( ! empty( $item['parent'] ) ) {
+                        $parent_id = $this->queried[ $item['parent'] ][ $lang['lang'] ]->ID;
+                        if ( ! empty( $parent_id ) ) {
+                            $args['post_parent'] = $parent_id;
                         }
                     }
 
+                    // If page already exists update it
+                    if ( $lang['page'] ) {
+                        // Assign id to update page
+                        $args['ID'] = $lang['page']->ID;
 
-
-                    $this->update_page_meta( $post_id, $guid, $item );
-                    if (in_array(strtolower($item['lang']), $this->site_languages)) {
-                        if (function_exists('pll_set_post_language')) {
-                            pll_set_post_language($post_id, strtolower($item['lang']));
+                        // Check that there are actually updated values
+                        foreach ( $args as $key => $value ) {
+                            if ( $lang['page']->{ $key } !== $value ) {
+                                // Update the post
+                                $post_id = wp_insert_post( $args );
+                                break;
+                            }
                         }
-                        $polyLangs[strtolower($item['lang'])] = $post_id;
+
+                        // If no changes were made collect page id just in case anyways
+                        if ( ! $post_id ) {
+                            $post_id = $lang['page']->ID;
+                        }
                     }
+                    else {
+                        // Create the post
+                        $post_id = wp_insert_post( $args );
 
-                    isset($args['ID']) ? $this->updated++ : $this->created++;
+                        // Set post language
+                        if ( in_array( $lang['lang'], $this->site_languages, true ) ) {
+                            if ( function_exists( 'pll_set_post_language' ) ) {
+                                pll_set_post_language( $post_id, $lang['lang'] );
+                                $new_translations = true;
+                            }
+                            // Store set language
+                            $translations[ $lang['lang'] ] = $post_id;
+                        }
+
+                        // Create dummy page object for post meta update
+                        $lang['page'] = (object) [
+                            'ID' => $post_id,
+                        ];
+                    }
                 }
-
-                // Redirect changes have been made, update cache.
-                if( ! empty ( $redirect_cache ) ) {
-                    POF_Redirect::update_cache( $redirect_cache );
-                }
-
             }
-            // Link program page different languages for polylang
-            if (!empty($polyLangs)) {
-                if (function_exists('pll_save_post_translations')) {
-                    pll_save_post_translations($polyLangs);
+
+            // Link connected translations
+            if ( $new_translations ) {
+                if ( function_exists( 'pll_save_post_translations' ) ) {
+                    pll_save_post_translations( $translations );
                 }
             }
+
+            $progress->tick();
         }
+        $progress->finish();
     }
 
-    private function update_tips($data) {
+    /**
+     * Update page meta data
+     *
+     * @param array $tree Api data.
+     */
+    private function update_metas( $tree ) {
 
-        $tips = array();
+        // Create wp cli progress bar
+        $progress = $this->wp_cli_progress( 'Importing postmeta', count( $tree ) );
+        $start    = microtime( true );
+
+        // Update meta data
+        foreach ( $tree as $item ) {
+
+            // Update translations
+            foreach ( $item['languages'] as $lang ) {
+                if ( $lang['update_meta'] && $lang['data'] ) {
+                    // Update meta fields
+                    $this->update_page_meta( $lang['page']->ID, $item, $lang );
+                }
+            }
+            $progress->tick();
+        }
+        $progress->finish();
+    }
+
+    /**
+     * Update tips.
+     *
+     * @param array $data Tip data.
+     */
+    private function update_tips( $data ) {
+
+        $tips      = array();
         $tips_data = $this->fetch_data( $this->tips_url );
 
-        if ( !$tips_data ) {
-            $this->error = __('An error occured while fetching tips from backend.', 'pof_importer');
+        if ( ! $tips_data ) {
+            $this->error = __( 'An error occured while fetching tips from backend.', 'pof_importer' );
         } else {
-            foreach ($tips_data as $id => $tip) {
-                $parent = $data[$tip['post']['guid']][$tip['lang']];
+            $progress = $this->wp_cli_progress( 'Importing tips', count( $tips_data ) );
+
+            foreach ( $tips_data as $id => $tip ) {
+                $parent     = $data[ $tip['post']['guid'] ][ $tip['lang'] ];
                 $comment_id = null;
-                if (isset($parent)) {
+                if ( isset( $parent ) ) {
                     // Data for new import
                     $comment_data = array(
-                        'comment_post_ID'   => $parent->ID,
-                        'comment_author'    => $tip['publisher']['nickname'],
-                        'comment_content'   => $tip['content'],
-                        'user_id'           => $parent->post_author,
-                        'comment_date'      => $tip['modified'],
-                        'comment_approved'  => 1,
+                        'comment_post_ID'  => $parent->ID,
+                        'comment_author'   => $tip['publisher']['nickname'],
+                        'comment_content'  => $tip['content'],
+                        'user_id'          => $parent->post_author,
+                        'comment_date'     => $tip['modified'],
+                        'comment_approved' => 1,
                     );
 
                     // Check if comment exists
-                    $args = array(
-                        'meta_key' => 'ag_'.$tip['guid'].'_'.$tip['lang'],
+                    $args     = array(
+                        'meta_key'   => 'ag_' . $tip['guid'] . '_' . $tip['lang'],
                         'meta_value' => 'true',
                     );
                     $comments = get_comments( $args );
 
-                    if (count($comments) > 0) {
+                    if ( count( $comments ) > 0 ) {
                         if ( $tip['modified'] > $comments[0]->comment_date ) {
-                            $comment_id = $comments[0]->comment_ID;
+                            $comment_id                 = $comments[0]->comment_ID;
                             $comment_data['comment_ID'] = $comment_id;
                             wp_update_comment( $comment_data );
                             $this->data['updated'][] = $tip;
@@ -451,114 +617,111 @@ class POF_Importer {
                         $this->data['created'][] = $tip;
                         $this->created++;
                     }
-                    if ($comment_id) {
-                        update_comment_meta( $comment_id, 'ag_'.$tip['guid'].'_'.$tip['lang'], 'true' );
+                    if ( $comment_id ) {
+                        update_comment_meta( $comment_id, 'ag_' . $tip['guid'] . '_' . $tip['lang'], 'true' );
                         update_comment_meta( $comment_id, 'guid', $tip['guid'] );
                         update_comment_meta( $comment_id, 'title', $tip['title'] );
-                        if (!empty( $tip['additional_content'] )) {
-                            update_comment_meta( $comment_id, 'attachments', json_encode($tip['additional_content']) );
+                        if ( ! empty( $tip['additional_content'] ) ) {
+                            update_comment_meta( $comment_id, 'attachments', json_encode( $tip['additional_content'] ) );
                         }
                     }
-                }
-                else {
+                } else {
 
                     // TODO: Errorlog, if some tips not importet
                 }
+
+                $progress->tick();
             }
+            $progress->finish();
         }
     }
 
-    /*
-    *  update_page_meta
-    *
-    *  This function updates api related meta for pages.
-    *
-    */
-    public function update_page_meta( $post_id, $guid, $item ) {
-        // update acf fields
-        update_field( 'field_559a2aa1bbff7', $item['type'], $post_id ); // api_type
-        update_field( 'field_559a2abfbbff8', $item['ingress'], $post_id ); // api_ingress
-        update_field( 'field_559a2aebbbff9', $item['lastModified'], $post_id ); // last_modified
-        update_field( 'field_559a2d91a18a1', $item['lang'], $post_id ); // api_lang
-        update_field( 'field_559a2db2a18a2', $guid, $post_id ); // api_guid
-        update_field( 'field_559e4a50b1f42', $item['url'], $post_id ); // api_url
-        update_field( 'field_5abca09542839', json_encode( $item['parents'] ), $post_id ); // api_path
-        update_post_meta($post_id, 'ag_'.$guid, 'true');
-
-        // images (acf repeater)
-        $i = 1;
-        $saved = 0;
-        // update acf repeater field to create/clear the array
-        update_field( 'field_55a369e3d3b3a', null, $post_id );
-        if ( is_array( $item['images'] ) ) {
-            foreach ( $item['images'] as $key => $obj ) {
-                if ( is_array( $obj ) && count( $obj ) > 0 ) {
-                    update_sub_field( array( 'api_images', $i, 'key' ), $key, $post_id );
-                    update_sub_field( array( 'api_images', $i, 'object' ), json_encode( $obj ), $post_id );
-                    $saved++;
-                }
-                $i++;
-            }
+    /**
+     * Update page meta from api data
+     *
+     * @param  int   $post_id Post id to update.
+     * @param  array $item    Api item.
+     * @param  array $lang    Post language data.
+     */
+    public function update_page_meta( $post_id, $item, $lang ) {
+        $fields = [
+            'api_type'        => $lang['data']['type'],
+            'api_ingress'     => $lang['data']['ingress'],
+            'last_modified'   => $lang['data']['lastModified'],
+            'api_lang'        => $lang['data']['lang'],
+            'api_guid'        => $lang['data']['guid'],
+            'api_url'         => $lang['details'],
+            'api_path'        => wp_json_encode( $lang['data']['parents'] ),
+            'api_images'      => null,
+            'api_attachments' => null,
+        ];
+        foreach ( $fields as $key => $value ) {
+            update_field( $key, $value, $post_id );
         }
 
-        // set array count, 'cause acf is lazy
-        if ( $saved > 0 ) {
-            $field = array(
-                'name'  => 'api_images',
-                'key'   => 'field_55a369e3d3b3a',
-            );
-            acf_update_value( $saved, $post_id, $field );
+        // images (acf repeater)
+        $i = 0;
+        if ( is_array( $lang['data']['images'] ) ) {
+            foreach ( $lang['data']['images'] as $key => $obj ) {
+                if ( is_array( $obj ) && count( $obj ) > 0 ) {
+                    $i++;
+                    update_sub_field( [ 'api_images', $i, 'key' ], $key, $post_id );
+                    update_sub_field( [ 'api_images', $i, 'object' ], wp_json_encode( $obj ), $post_id );
+                }
+            }
+        }
+        if ( $i > 0 ) {
+            // set array count, 'cause acf is lazy
+            $field = [
+                'name' => 'api_images',
+                'key'  => static::API_IMAGES_FIELD,
+            ];
+            acf_update_value( $i, $post_id, $field );
         }
 
         // attachments (acf repeater)
-        $j = 1;
-        $attachments = 0;
-        // update acf repeater field to create/clear the array
-        update_field( 'field_57bffb08a4191', null, $post_id );
-        if ( !empty( $item['additional_content'] )) {
-            foreach ( $item['additional_content'] as $type => $content ) {
-                foreach ($content as $obj) {
-                    update_sub_field( array( 'api_attachments', $j, 'type' ), $type, $post_id );
-                    update_sub_field( array( 'api_attachments', $j, 'object'), json_encode( $obj ), $post_id );
-                    $attachments++;
+        $j = 0;
+        if ( ! empty( $lang['data']['additional_content'] ) ) {
+            foreach ( $lang['data']['additional_content'] as $type => $content ) {
+                foreach ( $content as $obj ) {
                     $j++;
+                    update_sub_field( [ 'api_attachments', $j, 'type' ], $type, $post_id );
+                    update_sub_field( [ 'api_attachments', $j, 'object' ], wp_json_encode( $obj ), $post_id );
                 }
             }
         }
-
-        // set array count, 'cause acf is lazy
-        if ( $attachments > 0 ) {
-            $field = array(
-                'name'  => 'api_attachments',
-                'key'   => 'field_57bffb08a4191',
-            );
-            acf_update_value( $attachments, $post_id, $field );
+        if ( $j > 0 ) {
+            // set array count, 'cause acf is lazy
+            $field = [
+                'name' => 'api_attachments',
+                'key'  => static::API_ATTACHMENTS_FIELD,
+            ];
+            acf_update_value( $j, $post_id, $field );
         }
 
         // update page specific fields
-        switch ( $item['type'] ) {
+        switch ( $lang['type'] ) {
             case 'agegroup':
-                if (isset($item['subtaskgroup_term'])) {
-                    update_field( 'field_57c067cfff3cf', json_encode($item['subtaskgroup_term']), $post_id ); // task_term
+                if ( isset( $lang['subtaskgroup_term'] ) ) {
+                    update_field( 'field_57c067cfff3cf', wp_json_encode( $lang['subtaskgroup_term'] ), $post_id ); // task_term
                 }
                 break;
             case 'taskgroup':
-                if (isset($item['subtaskgroup_term'])) {
-                    update_field( 'field_57c067cfff3cf', json_encode($item['subtaskgroup_term']), $post_id ); // task_term
+                if ( isset( $lang['subtaskgroup_term'] ) ) {
+                    update_field( 'field_57c067cfff3cf', wp_json_encode( $lang['subtaskgroup_term'] ), $post_id ); // task_term
                 }
-                if (isset($item['taskgroup_term'])) {
-                    update_field( 'field_57c06808e6bcf', json_encode($item['taskgroup_term']), $post_id ); // task_term
+                if ( isset( $lang['taskgroup_term'] ) ) {
+                    update_field( 'field_57c06808e6bcf', wp_json_encode( $lang['taskgroup_term'] ), $post_id ); // task_term
                 }
-                if (isset($item['subtask_term'])) {
-                    update_field( 'field_57c0680ae6bd0', json_encode($item['subtask_term']), $post_id ); // task_term
+                if ( isset( $lang['subtask_term'] ) ) {
+                    update_field( 'field_57c0680ae6bd0', wp_json_encode( $lang['subtask_term'] ), $post_id ); // task_term
                 }
-                $this->update_task_data( $post_id, $guid, $item, true );
+                $this->update_task_data( $post_id, $item['guid'], $lang, true );
                 break;
             case 'task':
-                $this->update_task_data( $post_id, $guid, $item );
+                $this->update_task_data( $post_id, $item['guid'], $lang );
                 break;
             default:
-                # code...
                 break;
         }
     }
@@ -573,19 +736,19 @@ class POF_Importer {
     public function update_task_data( $post_id, $guid, $item, $taskgroup = false ) {
 
         // init counters
-        $saved = 0;
+        $saved        = 0;
         $saved_groups = 0;
 
-        if (!$taskgroup) {
+        if ( ! $taskgroup ) {
             // update acf fields
-            if (isset($item['level'])) {
+            if ( isset( $item['level'] ) ) {
                 update_field( 'field_57c05f189b016', $item['level'], $post_id ); // level
             }
-            if (isset($item['leader_tasks'])) {
+            if ( isset( $item['leader_tasks'] ) ) {
                 update_field( 'field_57c05f519b017', $item['leader_tasks'], $post_id ); // leader_tasks
             }
-            if (isset($item['task_term'])) {
-                update_field( 'field_57c0642aca6ae', json_encode($item['task_term']), $post_id ); // task_term
+            if ( isset( $item['task_term'] ) ) {
+                update_field( 'field_57c0642aca6ae', wp_json_encode( $item['task_term'] ), $post_id ); // task_term
             }
         }
 
@@ -616,8 +779,8 @@ class POF_Importer {
             }
 
             $field = array(
-                'name'  => 'tags_' . $saved_groups . '_group',
-                'key'   => 'field_55a3b40596fea',
+                'name' => 'tags_' . $saved_groups . '_group',
+                'key'  => 'field_55a3b40596fea',
             );
             acf_update_value( $saved, $post_id, $field );
             $saved = 0; // init counter
@@ -626,8 +789,8 @@ class POF_Importer {
 
         if ( $saved_groups > 0 ) {
             $field = array(
-                'name'  => 'tags',
-                'key'   => 'field_55a3b3e796fe9',
+                'name' => 'tags',
+                'key'  => 'field_55a3b3e796fe9',
             );
             acf_update_value( $saved_groups, $post_id, $field );
         }
@@ -641,18 +804,17 @@ class POF_Importer {
     */
     public function fetch_data( $url ) {
         $ctx = null;
-        if ($url === $this->tree_url) {
+        if ( $url === $this->tree_url ) {
             $ctx = stream_context_create(
                 array(
-                    'http' => array('timeout' => 120) //raise timeout value for full three fetching
+                    'http' => array( 'timeout' => 120 ), // raise timeout value for full three fetching
                 )
             );
         }
-        $json = file_get_contents($url, false, $ctx);
+        $json = file_get_contents( $url, false, $ctx );
         if ( $json ) {
             return json_decode( $json, true ); // decode the JSON into an associative array (true)
-        }
-        else {
+        } else {
             return false;
         }
 
@@ -665,7 +827,7 @@ class POF_Importer {
     *
     */
     public function pof_menu_init() {
-        add_options_page( 'POF Importer Options', 'POF Importer', 'manage_options', 'pof_importer', array( $this, 'pof_menu') );
+        add_options_page( 'POF Importer Options', 'POF Importer', 'manage_options', 'pof_importer', array( $this, 'pof_menu' ) );
     }
 
     /*
@@ -680,13 +842,13 @@ class POF_Importer {
         }
 
         if ( isset( $_POST['pof_import'] ) ) {
-            ini_set('memory_limit', '-1');
+            ini_set( 'memory_limit', '-1' );
             $this->normal_importer = true;
             $this->import();
 
         }
 
-        if ( isset ( $_POST['pof_import_tips'] ) ) {
+        if ( isset( $_POST['pof_import_tips'] ) ) {
             $this->tips_importer = true;
             $this->import_tips();
         }
@@ -700,12 +862,12 @@ class POF_Importer {
                 <form name="pof-importer-form" method="post">
                     <input type="hidden" name="pof_import" value="1"/>
                     <h3>Import</h3>
-                    <p class="pof-info"><?php _e('Click here to import data from the POF API. The import might take a while, please be patient.', 'pof_importer'); ?></p>
+                    <p class="pof-info"><?php _e( 'Click here to import data from the POF API. The import might take a while, please be patient.', 'pof_importer' ); ?></p>
                     <p class="pof-submit">
-                        <input type="submit" name="import" class="button-primary" value="<?php _e('Import', 'pof_importer'); ?>"/>
+                        <input type="submit" name="import" class="button-primary" value="<?php _e( 'Import', 'pof_importer' ); ?>"/>
                     </p>
                 </form>
-            <?php if ( $this->normal_importer ): ?>
+            <?php if ( $this->normal_importer ) : ?>
                 <?php if ( $this->error ) : ?>
                     <div class="pof-error">
                         <h4>Error!</h4>
@@ -713,19 +875,29 @@ class POF_Importer {
                     </div>
                 <?php elseif ( $this->success || $this->updated > 0 || $this->created > 0 ) : ?>
                     <div class="pof-imported">
-                        <h4><?php _e('Data imported!', 'pof_importer'); ?></h4>
+                        <h4><?php _e( 'Data imported!', 'pof_importer' ); ?></h4>
                         <ul style="color:#00A0D2">
-                            <li><?php echo $this->created; _e(' pages created.'); ?></li>
-                            <li><?php echo $this->updated; _e(' pages updated.'); ?></li>
+                            <li>
+                            <?php
+                            echo $this->created;
+_e( ' pages created.' );
+?>
+</li>
+                            <li>
+                            <?php
+                            echo $this->updated;
+_e( ' pages updated.' );
+?>
+</li>
                         </ul>
                     </div>
-                <?php elseif ( $this->updated === 0  && $this->created === 0): ?>
+                <?php elseif ( $this->updated === 0 && $this->created === 0 ) : ?>
                     <div class="pof-imported">
-                        <h4><?php _e('Everything up to date', 'pof_importer'); ?></h4>
-                        <p><?php _e('The WordPress database already matches the POF API.', 'pof_importer'); ?></p>
+                        <h4><?php _e( 'Everything up to date', 'pof_importer' ); ?></h4>
+                        <p><?php _e( 'The WordPress database already matches the POF API.', 'pof_importer' ); ?></p>
                     </div>
                 <?php endif; ?>
-                <?php if ($this->debug): ?>
+                <?php if ( $this->debug ) : ?>
                 <?php $this->execution_time(); ?>
                 <?php endif; ?>
                 <?php if ( $this->debug && $this->data ) : ?>
@@ -742,12 +914,12 @@ class POF_Importer {
                 <form name="pof-importer-tips-form" method="post">
                     <input type="hidden" name="pof_import_tips" value="1" />
                     <h3>Import tips</h3>
-                    <p class="pof-info"><?php _e('Click here to import tips data from the POF API. The import might take a while, please be patient.', 'pof_importer'); ?></p>
+                    <p class="pof-info"><?php _e( 'Click here to import tips data from the POF API. The import might take a while, please be patient.', 'pof_importer' ); ?></p>
                     <p class="pof-submit">
-                        <input type="submit" name="import-tips" class="button-primary" value="<?php _e('Import', 'pof_importer'); ?>"/>
+                        <input type="submit" name="import-tips" class="button-primary" value="<?php _e( 'Import', 'pof_importer' ); ?>"/>
                     </p>
                 </form>
-            <?php if ( $this->tips_importer ): ?>
+            <?php if ( $this->tips_importer ) : ?>
                 <?php if ( $this->error ) : ?>
                     <div class="pof-error">
                         <h4>Error!</h4>
@@ -755,28 +927,38 @@ class POF_Importer {
                     </div>
                 <?php elseif ( $this->success || $this->updated > 0 || $this->created > 0 ) : ?>
                     <div class="pof-imported">
-                        <h4><?php _e('Data imported!', 'pof_importer'); ?></h4>
+                        <h4><?php _e( 'Data imported!', 'pof_importer' ); ?></h4>
                         <ul style="color:#00A0D2">
-                            <li><?php echo $this->created; _e(' tips created.'); ?></li>
-                            <li><?php echo $this->updated; _e(' tips updated.'); ?></li>
+                            <li>
+                            <?php
+                            echo $this->created;
+_e( ' tips created.' );
+?>
+</li>
+                            <li>
+                            <?php
+                            echo $this->updated;
+_e( ' tips updated.' );
+?>
+</li>
                         </ul>
                     </div>
-                <?php elseif ( $this->updated === 0  && $this->created === 0): ?>
+                <?php elseif ( $this->updated === 0 && $this->created === 0 ) : ?>
                     <div class="pof-imported">
-                        <h4><?php _e('Everything up to date', 'pof_importer'); ?></h4>
-                        <p><?php _e('The WordPress database already matches the POF TIPS API.', 'pof_importer'); ?></p>
+                        <h4><?php _e( 'Everything up to date', 'pof_importer' ); ?></h4>
+                        <p><?php _e( 'The WordPress database already matches the POF TIPS API.', 'pof_importer' ); ?></p>
                     </div>
                 <?php endif; ?>
-                <?php if ($this->debug): ?>
+                <?php if ( $this->debug ) : ?>
                 <?php $this->execution_time(); ?>
                 <?php endif; ?>
                 <?php if ( $this->debug && $this->data ) : ?>
-                    <?php if ($this->data['created']): ?>
+                    <?php if ( $this->data['created'] ) : ?>
                     <hr/>
                     <h2>Tips created</h2>
                     <pre><?php var_dump( $this->data['created'] ); ?></pre>
                     <?php endif; ?>
-                    <?php if ($this->data['updated']): ?>
+                    <?php if ( $this->data['updated'] ) : ?>
                     <hr />
                     <h2>Tips updated</h2>
                     <pre><?php var_dump( $this->data['updated'] ); ?></pre>

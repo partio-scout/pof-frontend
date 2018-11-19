@@ -5,6 +5,12 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Julkaisematta]
 
+### Lisätty
+- PO-292: Wp-cli:llä ajettava versio importista§
+
+### Muutettu
+- PO-292: Nopeutettu importerin sivujen importtausta
+
 ### Korjattu
 - PO-293: Vinkkien järjestäminen
 
