@@ -232,6 +232,10 @@ $search_fontsize_smaller: rem-calc(12);
 		transform: translateY(-5%);
 		background-color: transparent;
 
+		&--force-right {
+			right: .5rem;
+		}
+
 		.menu-wrapper &,
 		.search-filter & {
 			right: .5rem;
