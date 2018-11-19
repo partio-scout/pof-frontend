@@ -645,15 +645,16 @@ class POF_Importer {
      */
     public function update_page_meta( $post_id, $item, $lang ) {
         $fields = [
-            'api_type'        => $lang['data']['type'],
-            'api_ingress'     => $lang['data']['ingress'],
-            'last_modified'   => $lang['data']['lastModified'],
-            'api_lang'        => $lang['data']['lang'],
-            'api_guid'        => $lang['data']['guid'],
-            'api_url'         => $lang['details'],
-            'api_path'        => wp_json_encode( $lang['data']['parents'] ),
-            'api_images'      => null,
-            'api_attachments' => null,
+            'api_type'         => $lang['data']['type'],
+            'api_ingress'      => $lang['data']['ingress'],
+            'last_modified'    => $lang['data']['lastModified'],
+            'api_lastmodified' => $lang['data']['lastModified'],
+            'api_lang'         => $lang['data']['lang'],
+            'api_guid'         => $lang['data']['guid'],
+            'api_url'          => $lang['details'],
+            'api_path'         => wp_json_encode( $lang['data']['parents'] ),
+            'api_images'       => null,
+            'api_attachments'  => null,
         ];
         foreach ( $fields as $key => $value ) {
             update_field( $key, $value, $post_id );
@@ -700,7 +701,7 @@ class POF_Importer {
         }
 
         // update page specific fields
-        switch ( $lang['type'] ) {
+        switch ( $lang['data']['type'] ) {
             case 'agegroup':
                 if ( isset( $lang['subtaskgroup_term'] ) ) {
                     update_field( 'field_57c067cfff3cf', wp_json_encode( $lang['subtaskgroup_term'] ), $post_id ); // task_term
@@ -716,10 +717,10 @@ class POF_Importer {
                 if ( isset( $lang['subtask_term'] ) ) {
                     update_field( 'field_57c0680ae6bd0', wp_json_encode( $lang['subtask_term'] ), $post_id ); // task_term
                 }
-                $this->update_task_data( $post_id, $item['guid'], $lang, true );
+                $this->update_task_data( $post_id, $item['guid'], $lang['data'], true );
                 break;
             case 'task':
-                $this->update_task_data( $post_id, $item['guid'], $lang );
+                $this->update_task_data( $post_id, $item['guid'], $lang['data'] );
                 break;
             default:
                 break;
