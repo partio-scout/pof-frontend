@@ -384,7 +384,7 @@ class Search extends \DustPress\Model {
             $guid = $post->fields['api_guid'];
             if ( array_key_exists( $guid, $tree ) ) {
                 // Get post term data
-                $post->term = $this->get_post_term( $guid, $tree, 'task_term' );
+                $post->term = $this->get_post_term( $guid, $tree );
             }
         }
         header( 'x-post_data-time: ' . round( microtime( true ) - $post_data_start, 4 ) );
@@ -397,21 +397,23 @@ class Search extends \DustPress\Model {
      *
      * @param  string $guid Item guid.
      * @param  array  $tree Api item tree.
-     * @param  string $key  Term key to search for.
      * @return mixed        Term or null on no match.
      */
-    protected function get_post_term( string $guid, array $tree, string $key = 'taskgroup_term' ) {
-        $item = $tree[ $guid ] ?? [];
-
-        if ( ! empty( $item[ $key ] ) ) {
-            return $item[ $key ];
+    protected function get_post_term( string $guid, array $tree ) {
+        $item            = $tree[ $guid ] ?? [];
+        $params_to_check = [
+            'task_term',
+            'taskgroup_term',
+            'subtaskgroup_term',
+            'subtask_term',
+        ];
+        foreach ( $params_to_check as $term ) {
+            if ( ! empty( $item[ $term ] ) ) {
+                return $item[ $term ];
+            }
         }
-        elseif ( ! empty( $item['taskgroup_term'] ) ) {
-            return $this->get_post_term( $guid, $tree );
-        }
-        elseif ( ! empty( $item['parent'] ) ) {
-            // If no matching term found, try to get term from parent
-            return $this->get_post_term( $item['parent'], $tree, 'subtaskgroup_term' );
+        if ( ! empty( $item['parent'] ) ) {
+            return $this->get_post_term( $item['parent'], $tree );
         }
 
         return null;
