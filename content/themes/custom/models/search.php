@@ -223,11 +223,6 @@ class Search extends \DustPress\Model {
 
         if ( ! empty( $result->posts ) ) {
 
-            // Increase memory limit just in case when getting all posts
-            if ( empty( $params->search_term ) ) {
-                ini_set( 'memory_limit', '248M' ); // Original was 124M
-            }
-
             // Get extra post data for each post
             $posts = $this->get_post_data( $result, $params );
 
@@ -389,7 +384,7 @@ class Search extends \DustPress\Model {
             $guid = $post->fields['api_guid'];
             if ( array_key_exists( $guid, $tree ) ) {
                 // Get post term data
-                $post->term = $this->get_post_term( $guid, $tree );
+                $post->term = $this->get_post_term( $guid, $tree, 'task_term' );
             }
         }
         header( 'x-post_data-time: ' . round( microtime( true ) - $post_data_start, 4 ) );
@@ -410,6 +405,9 @@ class Search extends \DustPress\Model {
 
         if ( ! empty( $item[ $key ] ) ) {
             return $item[ $key ];
+        }
+        elseif ( ! empty( $item['taskgroup_term'] ) ) {
+            return $this->get_post_term( $guid, $tree );
         }
         elseif ( ! empty( $item['parent'] ) ) {
             // If no matching term found, try to get term from parent
