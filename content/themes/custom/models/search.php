@@ -250,7 +250,9 @@ class Search extends \DustPress\Model {
             'page'          => $page,
         ];
 
-        $data->posts = $this->remove_duplicate_posts( $posts );
+        if ( WP_ENV === 'stage' ) {
+            $data->posts = $this->remove_duplicate_posts( $posts );
+        }
 
         return $data;
     }

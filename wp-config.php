@@ -82,6 +82,24 @@ switch ( $_SERVER[ 'SERVER_NAME' ] ) {
         break;
 }
 
+// Setup WP_ENV
+switch ( $_SERVER['SERVER_NAME'] ) {
+    case 'partio-ohjelma.fi': // REAL LIVE DOMAIN
+    case 'admin.partio-ohjelma.fi': // REAL ADMIN DOMAIN
+    case 'admin.partio.geniem.com': // ADMIN DOMAIN
+    case 'partio.geniem.com': // LIVE DOMAIN
+        define( 'WP_ENV', 'production' );
+        break;
+    case 'partio-ohjelma.test': // LOCAL DEV DOMAIN
+    case 'partio-ohjelma.dev': // LOCAL DEV DOMAIN
+    case 'partio.dev': // LOCAL DEV DOMAIN
+        define( 'WP_ENV', 'dev' );
+        break;
+    case 'partio.jackie.geniem.com': // STAGING DOMAIN
+        define( 'WP_ENV', 'stage' );
+        break;
+}
+
 // Error handling
 $server_name = filter_input( INPUT_SERVER, 'SERVER_NAME' );
 switch ( $server_name ) {
