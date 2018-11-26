@@ -48,19 +48,20 @@ class ApiIcon extends Helper {
             // Get translations from the api and transform them into an easily searchable format
             $icon_json = get_field( 'icon-json', 'option' );
             $icons     = \POF\Api::get( $icon_json, true );
-            foreach ( $icons as &$group ) {
-                $group = array_column( $group, 'items', 'post_guid' );
-                foreach ( $group as $slug => &$items ) {
-                    // Replace empty slug with "default"
-                    if ( empty( $slug ) ) {
-                        $group['default'] = $items;
-                        unset( $group[ $slug ] );
-                        continue;
-                    }
+            $icons     = array_map(function( $icon_group ) {
+                $icon_group = array_column( $icon_group, 'items', 'post_guid' );
 
-                    $items = array_column( $items, 'icon', 'key' );
-                }
-            }
+                $icon_group = array_map(function( $icons ) {
+                    $icons = array_column( $icons, 'icon', 'key' );
+
+                    return $icons;
+                }, $icon_group );
+
+                $icon_group['default'] = $icon_group[''];
+                unset( $icon_group[''] );
+
+                return $icon_group;
+            }, $icons);
 
             static::$icons = $icons;
         }
