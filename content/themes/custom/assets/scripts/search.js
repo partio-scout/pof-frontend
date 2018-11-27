@@ -221,6 +221,7 @@ class Search {
 
         // Collect args from the form that was submitted either via click or submit event
         const args = this.getArgs( $form );
+        this.handleUrlOnSearch( args );
 
         // Abort any existing calls
         if ( this.xhr ) {
@@ -228,7 +229,6 @@ class Search {
         }
         this.xhr = dp( 'Search/Results', {
             url: window.location,
-            args,
             partial: 'search-results-list',
             data: true,
             success: ( html, data ) => {
@@ -257,6 +257,7 @@ class Search {
 
             const args = this.getArgs();
             args.page = this.$page + 1;
+            this.handleUrlOnSearch( args );
 
             // Abort any existing calls
             if ( this.xhr ) {
@@ -264,7 +265,6 @@ class Search {
             }
             this.xhr = dp( 'Search/Results', {
                 url: window.location,
-                args,
                 partial: 'search-results-list',
                 success: ( data ) => {
                     this.loadMoreSuccess( data );
@@ -279,6 +279,34 @@ class Search {
         }
     };
 
+    handleUrlOnSearch( data ) {
+
+        // Change url and add the query to the history
+        if ( window.history && typeof pof_lang !== 'undefined' ) {
+            const searchTerm = '?' + data.filter + ( data.page ? '&paged=' + data.page : '' );
+            const newUrl     = location.toString().replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + searchTerm );
+
+            // Update url
+            window.history.pushState({}, 'Haku', newUrl );
+
+            // Update language urls
+            this.$langMenu.find( 'a' ).each( ( i, el ) => {
+                if ( this.lastSearch ) {
+
+                    // Replace earlier url search term
+                    el.href = el.href.replace( this.lastSearch, searchTerm );
+                } else {
+
+                    // Add search term to empty search page url
+                    el.href += searchTerm;
+                }
+            });
+
+            // Store last search
+            this.lastSearch = searchTerm;
+        }
+    }
+
     /**
      * Handle succesful search call
      *
@@ -290,47 +318,8 @@ class Search {
         // Get new response data or set defaults if no response
         this.handleMetadata( data );
 
+        // Update content
         this.$resultsContainer.html( html );
-
-        // Change url and add the query to the history
-        if ( window.history && typeof pof_lang !== 'undefined' ) {
-            const searchTerm = _.get( data, 'Search.Results.params.search_term', this.$searchInput.val() );
-
-            let newUrl = location.toString().replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + searchTerm );
-
-            // Add trailing slash to url if it doesn't exist
-            if ( newUrl.substr( -1 ) !== '/' ) {
-                newUrl += '/';
-            }
-
-            // Update url
-            if ( newUrl.includes( searchTerm ) ) {
-                window.history.pushState({}, 'Haku', newUrl );
-            } else {
-                window.history.pushState({}, 'Haku', newUrl + searchTerm );
-            }
-
-            // Update language urls
-            this.$langMenu.find( 'a' ).each( ( i, el ) => {
-                if ( this.lastSearch ) {
-
-                    // Replace earlier url search term
-                    el.href = el.href.replace( this.lastSearch, searchTerm );
-                } else {
-
-                    // Add trailing slash to url if it doesn't exist
-                    if ( el.href.substr( -1 ) !== '/' ) {
-                        el.href += '/';
-                    }
-
-                    // Add search term to empty search page url
-                    el.href += searchTerm;
-                }
-            });
-
-            // Store last search
-            this.lastSearch = searchTerm;
-        }
 
         this.$searchResults.removeClass( 'loading' );
     };
@@ -359,20 +348,6 @@ class Search {
             this.$loadMoreButton.removeClass( 'loading' );
         } else {
             this.$loadMoreButton.hide();
-        }
-
-        // Check if history is supported in browser.
-        if ( window.history && typeof pof_lang !== 'undefined' ) {
-            let newUrl;
-            if ( location.toString().includes( pof_lang.pagination_base ) ) {
-                newUrl = location.toString().replace( new RegExp( pof_lang.pagination_base + '\/.+', 'g' ), pof_lang.pagination_base + '/' + newPage );
-            }
-            else {
-                newUrl = location.toString().replace( /\/$/, '' ) + '/' + pof_lang.pagination_base + '/' + newPage;
-            }
-
-            // Push and change the full location path.
-            window.history.pushState( {}, 'Sivu', newUrl );
         }
 
         this.$searchResults.removeClass( 'loading' );
