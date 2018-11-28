@@ -326,15 +326,30 @@ class Search {
             this.$postRelation.attr( 'checked', true );
         }
 
+        // Populate post guid checkboxes
         const postGuids = _.get( url, 'query["post_guids"]', '' ).split( ',' );
         if ( postGuids.length ) {
-            this.$filterForm.find( 'input[name="post_guids[]"]' ).each( ( i, el ) => {
+            const $postGuidInputs = this.$filterForm.find( 'input[name="post_guids[]"]' );
+            $postGuidInputs.each( ( i, el ) => {
                 if ( postGuids.includes( el.value ) ) {
                     const $el = $( el );
                     $el.attr( 'checked', true );
                     this.filterInputChange( $el );
                 }
             });
+
+            // After population expand areas that are not checked but have checked children
+            $postGuidInputs.filter( ':checked' ).each( ( i, el ) => this.openParent( i, el ) );
+        }
+    }
+
+    openParent( i, el ) {
+        const $el              = $( el );
+        const $parentContainer = $el.closest( '.field-list' ).closest( '.filter-opener' );
+        const $parentInput     = $parentContainer.children( 'input[name="post_guids[]"]:not(:checked)' );
+        if ( $parentInput.length ) {
+            $parentContainer.children( '.collapse-toggle' ).attr( 'checked', true );
+            this.openParent( i, $parentInput.get( 0 ) );
         }
     }
 
