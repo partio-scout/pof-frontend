@@ -112,7 +112,6 @@ class Search extends \DustPress\Model {
             'filters'     => $filters,
             'per_page'    => $per_page,
             'page'        => $page,
-            'displaying'  => $displaying,
             'search_term' => $search_term,
         ];
 

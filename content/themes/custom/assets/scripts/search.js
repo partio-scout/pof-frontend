@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import Url from 'domurl';
 
 const $ = jQuery;
 
@@ -32,6 +33,7 @@ class Search {
         this.$filterInputs           = this.$filterForm.find( 'input[name]:not([type="text"]), select[name]' );
         this.lastSearch              = this.$searchInput.val();
         this.$langMenu               = $( '#second-lang-menu' );
+        this.$postRelation           = this.$filterForm.find( 'input[name="post_relation"]' );
     };
 
     toggleSelfActive( e ) {
@@ -94,6 +96,8 @@ class Search {
             this.$filterMoreBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
             this.$filterInputs.on( 'change', ( e ) => this.filterInputChange( e ) );
             this.$advSearchLink.on( 'click', ( e ) => this.highLightFilter( e ) );
+
+            this.populateFilters();
         }
     };
 
@@ -279,15 +283,34 @@ class Search {
         }
     };
 
+    populateFilters() {
+        const url = new Url();
+
+        const postRelation = _.get( url, 'query.post_relation', 'OR' );
+        if ( postRelation === 'AND' ) {
+            this.$postRelation.attr( 'checked', true );
+        }
+
+        const postGuids = _.get( url, 'query["post_guids[]"]', []);
+        if ( postGuids.length ) {
+            this.$filterForm.find( 'input[name="post_guids[]"]' ).each( ( i, el ) => {
+                if ( postGuids.includes( el.value ) ) {
+                    $( el ).attr( 'checked', true );
+                }
+            });
+        }
+    }
+
     handleUrlOnSearch( data ) {
 
         // Change url and add the query to the history
-        if ( window.history && typeof pof_lang !== 'undefined' ) {
-            const searchTerm = '?' + data.filter + ( data.page ? '&paged=' + data.page : '' );
-            const newUrl     = location.toString().replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + searchTerm );
+        if ( window.history ) {
+            const searchTerm = data.filter + ( data.page ? '&paged=' + data.page : '' );
+            const newUrl     = new Url();
+            newUrl.query     = searchTerm;
 
             // Update url
-            window.history.pushState({}, 'Haku', newUrl );
+            window.history.pushState({}, 'Haku', newUrl.toString() );
 
             // Update language urls
             this.$langMenu.find( 'a' ).each( ( i, el ) => {
@@ -298,7 +321,7 @@ class Search {
                 } else {
 
                     // Add search term to empty search page url
-                    el.href += searchTerm;
+                    el.href += '?' + searchTerm;
                 }
             });
 
