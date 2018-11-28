@@ -137,7 +137,7 @@ class Search extends \DustPress\Model {
             $args = [
                 'post_type'      => [ 'page', 'pof_tip' ],
                 'post_status'    => 'publish',
-                'posts_per_page' => 30, //phpcs:ignore
+                'posts_per_page' => -1, //phpcs:ignore
                 'meta_query'     => [
                     'relation' => 'OR',
                     [
