@@ -94,7 +94,7 @@ class Search {
             this.$filterForm.on( 'submit', ( e ) => this.doSearch( e ) );
             this.$filterBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
             this.$filterMoreBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
-            this.$filterInputs.on( 'change', ( e ) => this.filterInputChange( e ) );
+            this.$filterInputs.on( 'change', ( e ) => this.filterInputChange( $( e.currentTarget ), e ) );
             this.$advSearchLink.on( 'click', ( e ) => this.highLightFilter( e ) );
 
             this.populateFilters();
@@ -128,13 +128,16 @@ class Search {
 
     /**
      * Handle change event on filter inputs
+     * call search afterwards if this was not programmatically initiated
      *
-     * @param {object} e Change event.
+     * @param  {jQuery} $input Input element.
+     * @param  {object} e      Change event.
      */
-    filterInputChange( e ) {
-        this.$searchResults.addClass( 'loading' );
+    filterInputChange( $input, e = null ) {
+        if ( e ) {
+            this.$searchResults.addClass( 'loading' );
+        }
 
-        const $input = $( e.currentTarget );
         if ( $input.closest( '.filters' ).length && ! $input.is( '[name="global[enabled][]"]' ) ) {
             this.enableParent( $input );
         }
@@ -160,8 +163,9 @@ class Search {
             $children.not( $checkboxAndRadio ).val( '' );
         }
 
-
-        this.doSearch( e );
+        if ( e ) {
+            this.doSearch( e );
+        }
     }
 
     /**
@@ -322,11 +326,13 @@ class Search {
             this.$postRelation.attr( 'checked', true );
         }
 
-        const postGuids = _.get( url, 'query["post_guids[]"]', []);
+        const postGuids = _.get( url, 'query["post_guids"]', '' ).split( ',' );
         if ( postGuids.length ) {
             this.$filterForm.find( 'input[name="post_guids[]"]' ).each( ( i, el ) => {
                 if ( postGuids.includes( el.value ) ) {
-                    $( el ).attr( 'checked', true );
+                    const $el = $( el );
+                    $el.attr( 'checked', true );
+                    this.filterInputChange( $el );
                 }
             });
         }
