@@ -92,10 +92,11 @@ class Search extends \DustPress\Model {
         $search_term = get_query_var( 's', '' );
         $per_page    = absint( get_option( 'posts_per_page' ) ?: 10 );
         $page        = absint( get_query_var( 'paged', 1 ) ?: 1 );
-        $post_guids  = get_query_var( 'post_guids', [] );
+        $post_guids  = get_query_var( 'post_guids', null );
+        $post_guids  = ! empty( $post_guids ) ? explode( ',', $post_guids ) : null;
 
         if ( ! empty( $post_guids ) ) {
-            $post_relation = get_query_var( 'post_relation', 'AND' );
+            $post_relation = get_query_var( 'post_relation', 'OR' );
             $filters       = [
                 'post_guids'    => $post_guids,
                 'post_relation' => $post_relation,

@@ -145,6 +145,12 @@ class Search {
 
             // Check child checkboxes
             $children.filter( '[type="checkbox"]' ).attr( 'checked', 'checked' ).prop( 'checked', true );
+
+            // If all post_guid siblings are checked, also check parent
+            const $siblings = $input.parent().siblings().children( 'input[name]:not(.and-or-input)' );
+            if ( $siblings.length === $siblings.filter( ':checked' ).length ) {
+                $input.parent().parent().closest( '.filter-opener' ).children( 'input[name]:not(.and-or-input)' ).attr( 'checked', true ).prop( 'checked', true );
+            }
         } else {
 
             // Clear checked status from checkbox & radiobutton
@@ -153,6 +159,7 @@ class Search {
             // Clear input data from others
             $children.not( $checkboxAndRadio ).val( '' );
         }
+
 
         this.doSearch( e );
     }
@@ -194,12 +201,36 @@ class Search {
         }, 2 * 1000 );
     }
 
-    getArgs( searchForm = null ) {
-        const filter = ( searchForm || this.$filterForm || this.$searchForm ).filter( ':visible' ).serialize();
+    collectGuids( $el, collected = []) {
+        const $inputs  = $el.find( '>.filter-opener>input[name="post_guids[]"]' );
+        const $checked = $inputs.filter( ':checked' );
+        if ( $inputs.length !== $checked.length ) {
+            $checked.each( ( i, el ) => {
+                collected.push( el.value );
+            });
+        }
 
-        const args = {
-            filter
-        };
+        $inputs.each( ( i, el ) => {
+            this.collectGuids( $( el ).parent().find( '>.collapsed>.field-list' ), collected );
+        });
+
+        return collected;
+    }
+
+    getArgs( searchForm = null ) {
+        const formdata     = new FormData( ( searchForm || this.$filterForm || this.$searchForm ).filter( ':visible' ).get( 0 ) );
+        const postGuids    = this.collectGuids( $( '.agegroups' ) ).join( ',' );
+        const postRelation = formdata.get( 'post_relation' );
+        const s            = formdata.get( 's' );
+        const args         = { s };
+
+        if ( postGuids ) {
+            args['post_guids'] = postGuids;
+        }
+
+        if ( postRelation !== 'OR' ) {
+            args['post_relation'] = 'AND';
+        }
 
         return args;
     }
@@ -305,9 +336,8 @@ class Search {
 
         // Change url and add the query to the history
         if ( window.history ) {
-            const searchTerm = data.filter + ( data.page ? '&paged=' + data.page : '' );
             const newUrl     = new Url();
-            newUrl.query     = searchTerm;
+            newUrl.query     = $.param( data );
 
             // Update url
             window.history.pushState({}, 'Haku', newUrl.toString() );
@@ -317,16 +347,16 @@ class Search {
                 if ( this.lastSearch ) {
 
                     // Replace earlier url search term
-                    el.href = el.href.replace( this.lastSearch, searchTerm );
+                    el.href = el.href.replace( this.lastSearch, data.s );
                 } else {
 
                     // Add search term to empty search page url
-                    el.href += '?' + searchTerm;
+                    el.href += '?' + data.s;
                 }
             });
 
             // Store last search
-            this.lastSearch = searchTerm;
+            this.lastSearch = data.s;
         }
     }
 
