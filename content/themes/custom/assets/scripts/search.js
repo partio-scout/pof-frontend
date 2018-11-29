@@ -96,6 +96,7 @@ class Search {
             this.$filterMoreBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
             this.$filterInputs.on( 'change', ( e ) => this.filterInputChange( $( e.currentTarget ), e ) );
             this.$advSearchLink.on( 'click', ( e ) => this.highLightFilter( e ) );
+            this.$searchInput.on( 'input change', _.debounce( ( e ) => this.doSearch( e ), 500 ) );
 
             this.populateFilters();
         }
