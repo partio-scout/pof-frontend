@@ -228,11 +228,6 @@ class Search extends \DustPress\Model {
 
         if ( ! empty( $result->posts ) ) {
 
-            // Increase memory limit just in case when getting all posts
-            if ( empty( $params->search_term ) ) {
-                ini_set( 'memory_limit', '248M' ); // Original was 124M
-            }
-
             // Get extra post data for each post
             $posts = $this->get_post_data( $result, $params );
 
@@ -413,18 +408,23 @@ class Search extends \DustPress\Model {
      *
      * @param  string $guid Item guid.
      * @param  array  $tree Api item tree.
-     * @param  string $key  Term key to search for.
      * @return mixed        Term or null on no match.
      */
-    protected function get_post_term( string $guid, array $tree, string $key = 'taskgroup_term' ) {
-        $item = $tree[ $guid ] ?? [];
-
-        if ( ! empty( $item[ $key ] ) ) {
-            return $item[ $key ];
+    protected function get_post_term( string $guid, array $tree ) {
+        $item            = $tree[ $guid ] ?? [];
+        $params_to_check = [
+            'task_term',
+            'taskgroup_term',
+            'subtaskgroup_term',
+            'subtask_term',
+        ];
+        foreach ( $params_to_check as $term ) {
+            if ( ! empty( $item[ $term ] ) ) {
+                return $item[ $term ];
+            }
         }
-        elseif ( ! empty( $item['parent'] ) ) {
-            // If no matching term found, try to get term from parent
-            return $this->get_post_term( $item['parent'], $tree, 'subtaskgroup_term' );
+        if ( ! empty( $item['parent'] ) ) {
+            return $this->get_post_term( $item['parent'], $tree );
         }
 
         return null;
