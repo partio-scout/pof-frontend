@@ -32,7 +32,11 @@
                     <span class="page_type">
                         {! Get translation from both groups as only 1 will match !}
                         {?term}
-                            {@apitranslation path="aktiviteettipaketin_ylakasite.{term.single}_single" /}
+                            {@eq key=fields.api_type value="taskgroup"}
+                                {@apitranslation path="aktiviteettipaketin_ylakasite.{term.single}_single" /}
+                            {:else}
+                                {@apitranslation path="aktiviteetin_ylakasite.{term.single}_single" /}
+                            {/eq}
                         {/term}
                     </span>
                     {?post_excerpt}
