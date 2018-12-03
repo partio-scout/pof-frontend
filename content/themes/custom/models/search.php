@@ -106,6 +106,10 @@ class Search extends \DustPress\Model {
             $filters = [];
         }
 
+        if ( empty( $filters ) && empty( $search_term ) ) {
+            return null;
+        }
+
         // Remove - from search_term. Else the word after - will be excluded from query.
         $search_term = str_replace( '-', ' ', $search_term );
 
