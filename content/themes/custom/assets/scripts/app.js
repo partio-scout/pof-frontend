@@ -1,5 +1,6 @@
 import FastClick from 'fastclick';
 import ClipboardJS from 'clipboard';
+import _ from 'lodash';
 
 window.Partio = ( function( window, document, $ ){
 
@@ -56,16 +57,29 @@ window.Partio = ( function( window, document, $ ){
      * Setup clipboard copying
      */
     app.setupClipboard = () => {
+
         // Initialize clipboard
-        const clipboard = new ClipboardJS( '.clipboard' );
-        clipboard.on( 'success', ( e ) => {
+        new ClipboardJS( '.clipboard', {
+            text: ( el ) => {
+                const getText = _.get( el, 'dataset.clipboardText', false );
+                const getPath = _.get( el, 'dataset.clipboardGet', false );
+                if ( getText ) {
+                    return getText;
+                } else if ( getPath ) {
+                    return _.get( window, getPath, '' );
+                } else {
+                    return '';
+                }
+            }
+        }).on( 'success', ( e ) => {
+
             // Show msg on copy
             $( e.trigger ).addClass( 'copied' );
             $( e.trigger ).on( 'mouseleave', ( ev ) => {
                 $( ev.currentTarget ).removeClass( 'copied' ).off();
             });
-        });
-        clipboard.on( 'error', ( e ) => {
+        }).on( 'error', ( e ) => {
+
             // On error just display text prompt with url
             prompt( 'Share', e.text );
         });

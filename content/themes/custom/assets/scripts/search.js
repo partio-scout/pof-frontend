@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import Url from 'domurl';
 
 const $ = jQuery;
 
@@ -32,6 +33,7 @@ class Search {
         this.$filterInputs           = this.$filterForm.find( 'input[name]:not([type="text"]), select[name]' );
         this.lastSearch              = this.$searchInput.val();
         this.$langMenu               = $( '#second-lang-menu' );
+        this.$postRelation           = this.$filterForm.find( 'input[name="post_relation"]' );
     };
 
     toggleSelfActive( e ) {
@@ -92,8 +94,10 @@ class Search {
             this.$filterForm.on( 'submit', ( e ) => this.doSearch( e ) );
             this.$filterBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
             this.$filterMoreBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
-            this.$filterInputs.on( 'change', ( e ) => this.filterInputChange( e ) );
+            this.$filterInputs.on( 'change', ( e ) => this.filterInputChange( $( e.currentTarget ), e ) );
             this.$advSearchLink.on( 'click', ( e ) => this.highLightFilter( e ) );
+
+            this.populateFilters();
         }
     };
 
@@ -124,13 +128,16 @@ class Search {
 
     /**
      * Handle change event on filter inputs
+     * call search afterwards if this was not programmatically initiated
      *
-     * @param {object} e Change event.
+     * @param  {jQuery} $input Input element.
+     * @param  {object} e      Change event.
      */
-    filterInputChange( e ) {
-        this.$searchResults.addClass( 'loading' );
+    filterInputChange( $input, e = null ) {
+        if ( e ) {
+            this.$searchResults.addClass( 'loading' );
+        }
 
-        const $input = $( e.currentTarget );
         if ( $input.closest( '.filters' ).length && ! $input.is( '[name="global[enabled][]"]' ) ) {
             this.enableParent( $input );
         }
@@ -141,6 +148,12 @@ class Search {
 
             // Check child checkboxes
             $children.filter( '[type="checkbox"]' ).attr( 'checked', 'checked' ).prop( 'checked', true );
+
+            // If all post_guid siblings are checked, also check parent
+            const $siblings = $input.parent().siblings().children( 'input[name]:not(.and-or-input)' );
+            if ( $siblings.length === $siblings.filter( ':checked' ).length ) {
+                $input.parent().parent().closest( '.filter-opener' ).children( 'input[name]:not(.and-or-input)' ).attr( 'checked', true ).prop( 'checked', true );
+            }
         } else {
 
             // Clear checked status from checkbox & radiobutton
@@ -150,7 +163,9 @@ class Search {
             $children.not( $checkboxAndRadio ).val( '' );
         }
 
-        this.doSearch( e );
+        if ( e ) {
+            this.doSearch( e );
+        }
     }
 
     /**
@@ -190,12 +205,54 @@ class Search {
         }, 2 * 1000 );
     }
 
-    getArgs( searchForm = null ) {
-        const filter = ( searchForm || this.$filterForm || this.$searchForm ).filter( ':visible' ).serialize();
+    /**
+     * Recrusively collect enabled post guids
+     *
+     * @param  {jQuery} $el       Element to collect post guids from.
+     * @param  {Array}  collected Already collected post guids.
+     * @return {Array}            An array of post guids.
+     */
+    collectGuids( $el, collected = []) {
+        const $inputs  = $el.find( '>.filter-opener>input[name="post_guids[]"]' );
+        const $checked = $inputs.filter( ':checked' );
 
-        const args = {
-            filter
-        };
+        // Do not collect post guids if they are all collected
+        // In this case we will automatically just collect the parent guid
+        if ( $inputs.length !== $checked.length ) {
+            $checked.each( ( i, el ) => {
+                collected.push( el.value );
+            });
+        }
+
+        // Continue on to parent element to collect all the guids
+        $inputs.each( ( i, el ) => {
+            this.collectGuids( $( el ).parent().find( '>.collapsed>.field-list' ), collected );
+        });
+
+        return collected;
+    }
+
+    /**
+     * Get current search args
+     *
+     * @param  {jQuery} $searchForm The searchform element that was activated.
+     * @return {Object}             An object containing the search terms.
+     */
+    getArgs( $searchForm = null ) {
+        const $filterForm  = $().add( this.$filterForm ).add( $searchForm ).filter( ':visible' );
+        const formdata     = new FormData( $searchForm.get( 0 ) );
+        const postGuids    = this.collectGuids( $filterForm.find( '.agegroups:visible' ) ).join( ',' );
+        const postRelation = formdata.get( 'post_relation' );
+        const s            = formdata.get( 's' );
+        const args         = { s }; // Create the return object
+
+        if ( postGuids ) {
+            args['post_guids'] = postGuids;
+        }
+
+        if ( postRelation !== 'OR' ) {
+            args['post_relation'] = 'AND';
+        }
 
         return args;
     }
@@ -221,6 +278,7 @@ class Search {
 
         // Collect args from the form that was submitted either via click or submit event
         const args = this.getArgs( $form );
+        this.handleUrlOnSearch( args );
 
         // Abort any existing calls
         if ( this.xhr ) {
@@ -228,7 +286,6 @@ class Search {
         }
         this.xhr = dp( 'Search/Results', {
             url: window.location,
-            args,
             partial: 'search-results-list',
             data: true,
             success: ( html, data ) => {
@@ -257,6 +314,7 @@ class Search {
 
             const args = this.getArgs();
             args.page = this.$page + 1;
+            this.handleUrlOnSearch( args );
 
             // Abort any existing calls
             if ( this.xhr ) {
@@ -264,7 +322,6 @@ class Search {
             }
             this.xhr = dp( 'Search/Results', {
                 url: window.location,
-                args,
                 partial: 'search-results-list',
                 success: ( data ) => {
                     this.loadMoreSuccess( data );
@@ -280,6 +337,87 @@ class Search {
     };
 
     /**
+     * Populate the selected filters on page reload according to GET params
+     */
+    populateFilters() {
+
+        // Get current url params
+        const url = new Url();
+
+        // Populate post_relation checkbox
+        const postRelation = _.get( url, 'query.post_relation', 'OR' );
+        if ( postRelation === 'AND' ) {
+            this.$postRelation.attr( 'checked', true );
+        }
+
+        // Populate post guid checkboxes
+        const postGuids = _.get( url, 'query["post_guids"]', '' ).split( ',' );
+        if ( postGuids.length ) {
+            const $postGuidInputs = this.$filterForm.find( 'input[name="post_guids[]"]' );
+            $postGuidInputs.each( ( i, el ) => {
+                if ( postGuids.includes( el.value ) ) {
+                    const $el = $( el );
+                    $el.attr( 'checked', true );
+                    this.filterInputChange( $el );
+                }
+            });
+
+            // After population expand areas that are not checked but have checked children
+            $postGuidInputs.filter( ':checked' ).each( ( i, el ) => this.openParent( el ) );
+        }
+    }
+
+    /**
+     * Open filter parents recursively to show all selected filters
+     *
+     * @param {Object} el Element to make visible.
+     */
+    openParent( el ) {
+        const $el              = $( el );
+        const $parentContainer = $el.closest( '.field-list' ).closest( '.filter-opener' );
+
+        // If this has a parent then make that visible as well
+        const $parentInput = $parentContainer.children( 'input[name="post_guids[]"]:not(:checked)' );
+        if ( $parentInput.length ) {
+            $parentContainer.children( '.collapse-toggle' ).attr( 'checked', true );
+            this.openParent( $parentInput.get( 0 ) );
+        }
+    }
+
+    /**
+     * Change url when a search is done
+     *
+     * @param {Object} data Search data.
+     */
+    handleUrlOnSearch( data ) {
+
+        // Change url and add the query to the history
+        if ( window.history ) {
+            const newUrl     = new Url();
+            newUrl.query     = $.param( data );
+
+            // Update url
+            window.history.pushState({}, 'Haku', newUrl.toString() );
+
+            // Update language urls
+            this.$langMenu.find( 'a' ).each( ( i, el ) => {
+                if ( this.lastSearch ) {
+
+                    // Replace earlier url search term
+                    el.href = el.href.replace( this.lastSearch, data.s );
+                } else {
+
+                    // Add search term to empty search page url
+                    el.href += '?' + data.s;
+                }
+            });
+
+            // Store last search
+            this.lastSearch = data.s;
+        }
+    }
+
+    /**
      * Handle succesful search call
      *
      * @param {string} html Rendered html result of query.
@@ -290,47 +428,8 @@ class Search {
         // Get new response data or set defaults if no response
         this.handleMetadata( data );
 
+        // Update content
         this.$resultsContainer.html( html );
-
-        // Change url and add the query to the history
-        if ( window.history && typeof pof_lang !== 'undefined' ) {
-            const searchTerm = _.get( data, 'Search.Results.params.search_term', this.$searchInput.val() );
-
-            let newUrl = location.toString().replace( new RegExp( encodeURIComponent( pof_lang.search_base ) + '\/.+', 'g' ), pof_lang.search_base + '/' + searchTerm );
-
-            // Add trailing slash to url if it doesn't exist
-            if ( newUrl.substr( -1 ) !== '/' ) {
-                newUrl += '/';
-            }
-
-            // Update url
-            if ( newUrl.includes( searchTerm ) ) {
-                window.history.pushState({}, 'Haku', newUrl );
-            } else {
-                window.history.pushState({}, 'Haku', newUrl + searchTerm );
-            }
-
-            // Update language urls
-            this.$langMenu.find( 'a' ).each( ( i, el ) => {
-                if ( this.lastSearch ) {
-
-                    // Replace earlier url search term
-                    el.href = el.href.replace( this.lastSearch, searchTerm );
-                } else {
-
-                    // Add trailing slash to url if it doesn't exist
-                    if ( el.href.substr( -1 ) !== '/' ) {
-                        el.href += '/';
-                    }
-
-                    // Add search term to empty search page url
-                    el.href += searchTerm;
-                }
-            });
-
-            // Store last search
-            this.lastSearch = searchTerm;
-        }
 
         this.$searchResults.removeClass( 'loading' );
     };
@@ -359,20 +458,6 @@ class Search {
             this.$loadMoreButton.removeClass( 'loading' );
         } else {
             this.$loadMoreButton.hide();
-        }
-
-        // Check if history is supported in browser.
-        if ( window.history && typeof pof_lang !== 'undefined' ) {
-            let newUrl;
-            if ( location.toString().includes( pof_lang.pagination_base ) ) {
-                newUrl = location.toString().replace( new RegExp( pof_lang.pagination_base + '\/.+', 'g' ), pof_lang.pagination_base + '/' + newPage );
-            }
-            else {
-                newUrl = location.toString().replace( /\/$/, '' ) + '/' + pof_lang.pagination_base + '/' + newPage;
-            }
-
-            // Push and change the full location path.
-            window.history.pushState( {}, 'Sivu', newUrl );
         }
 
         this.$searchResults.removeClass( 'loading' );

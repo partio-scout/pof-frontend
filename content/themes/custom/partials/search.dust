@@ -28,6 +28,7 @@
 								<div class="small-12 medium-7 columns">
 									{>"shared/search-section" /}
 
+									<button class="clipboard" data-clipboard-get="location.href" title="Copy url" data-msg="Url copied to clipboard"></button>
 									<section class="search-results">
 										<span class="sr-only" aria-live="polite" id="results-message"></span>
 										<div class="column search-block">
