@@ -231,6 +231,10 @@ class Search extends \DustPress\Model {
             // Get extra post data for each post
             $posts = $this->get_post_data( $result, $params );
 
+            if ( WP_ENV === 'stage' ) {
+                $posts = $this->remove_duplicate_posts( $posts );
+            }
+
             // Filter the posts
             if ( ! empty( $params->ajax_args ) ) {
                 $posts = $this->filter_posts( $posts, $params->ajax_args );
@@ -250,10 +254,6 @@ class Search extends \DustPress\Model {
             'page'          => $page,
         ];
 
-        if ( WP_ENV === 'stage' ) {
-            $data->posts = $this->remove_duplicate_posts( $posts );
-        }
-
         return $data;
     }
 
@@ -261,22 +261,20 @@ class Search extends \DustPress\Model {
      * Remove duplicate posts.
      * If duplicated posts found, keep the post which post type is 'pof_tip' only.
      *
-     * @param array $posts Posts array.
-     * @return void
+     * @param   array $posts Posts array.
+     * @return array         Modified $posts.
      */
     protected function remove_duplicate_posts( $posts ) {
-        foreach ( $posts as $post ) {
-            // Current post data.
-            $current_id    = $post->ID;
-            $current_title = $post->post_title;
-
-            foreach ( $posts as $key => $post ) {
+        foreach ( $posts as $key => $post ) {
+            foreach ( $posts as $key2 => $post2 ) {
                 // Do not care current post.
-                if ( $current_id !== $post->ID ) {
-                    // If post found with same title and it is not pof_tip, delete it.
-                    if ( $post->post_title === $current_title && $post->post_type !== 'pof_tip' ) {
-                        unset( $posts[ $key ] );
-                    }
+                if (
+                    $post2->ID !== $post->ID &&
+                    $post2->post_title === $post->post_title &&
+                    $post2->post_type !== 'pof_tip'
+                ) {
+                    unset( $posts[ $key ] );
+                    break;
                 }
             }
         }
