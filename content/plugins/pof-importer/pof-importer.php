@@ -340,6 +340,11 @@ class POF_Importer {
                     }
                 }
 
+                if ( empty( $lang['page'] ) ) {
+                    $lang['update_meta'] = true;
+                    $lang['update_page'] = true;
+                }
+
                 return $lang;
             }, $item['languages'] );
 
@@ -444,15 +449,6 @@ class POF_Importer {
 
         // Update/Create invidual pages
         foreach ( $tree as &$item ) {
-
-            // Collect connected posts
-            $translations = [];
-            foreach ( $item['languages'] as $lang ) {
-                if ( $lang['page'] ) {
-                    $translations[ $lang['lang'] ] = $lang['page']->ID;
-                    break;
-                }
-            }
             $new_translations = false;
 
             // Update translations
@@ -508,8 +504,6 @@ class POF_Importer {
                                 pll_set_post_language( $post_id, $lang['lang'] );
                                 $new_translations = true;
                             }
-                            // Store set language
-                            $translations[ $lang['lang'] ] = $post_id;
                         }
 
                         // Create dummy page object for post meta update
@@ -518,6 +512,12 @@ class POF_Importer {
                         ];
                     }
                 }
+            }
+
+            // Collect connected posts
+            $translations = [];
+            foreach ( $item['languages'] as $itemlang ) {
+                $translations[ $itemlang['lang'] ] = $itemlang['page']->ID;
             }
 
             // Link connected translations
