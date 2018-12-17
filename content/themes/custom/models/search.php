@@ -269,8 +269,8 @@ class Search extends \DustPress\Model {
         $pagination_start = microtime( true );
 
         // Do different pagination handling if we are doing a loadmore call
-        if ( DOING_AJAX ) {
-            $offset = $params->page > 1 ? $params->page * $params->per_page : 0;
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+            $offset = $params->page > 1 ? ( $params->page - 1 ) * $params->per_page : 0;
             $posts  = array_slice( $posts, $offset, $params->per_page );
         }
         else {
