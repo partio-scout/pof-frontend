@@ -231,13 +231,13 @@ class Search extends \DustPress\Model {
             // Get extra post data for each post
             $posts = $this->get_post_data( $result, $params );
 
-            if ( WP_ENV === 'stage' ) {
-                $posts = $this->remove_duplicate_posts( $posts );
-            }
-
             // Filter the posts
             if ( ! empty( $params->ajax_args ) ) {
                 $posts = $this->filter_posts( $posts, $params->ajax_args );
+            }
+
+            if ( WP_ENV === 'stage' || WP_ENV === 'dev' ) {
+                $posts = $this->remove_duplicate_posts( $posts );
             }
 
             // Do pagination in php since we do the filtering in php as well
