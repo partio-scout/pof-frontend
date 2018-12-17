@@ -91,7 +91,7 @@ class Search extends \DustPress\Model {
     public function Results() {
         $search_term = get_query_var( 's', '' );
         $per_page    = absint( get_option( 'posts_per_page' ) ?: 10 );
-        $page        = absint( get_query_var( 'paged', 1 ) ?: 1 );
+        $page        = absint( get_query_var( 'page', 1 ) ?: 1 );
         $post_guids  = get_query_var( 'post_guids', null );
         $post_guids  = ! empty( $post_guids ) ? explode( ',', $post_guids ) : null;
 
