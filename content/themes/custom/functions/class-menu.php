@@ -62,6 +62,7 @@ class Menu {
             // Mark current active tree
             $id = get_the_ID();
             if (
+                ! empty( $id ) &&
                 array_key_exists( $id, $items ) &&
                 property_exists( $items[ $id ], 'menu_item_parent' ) &&
                 array_key_exists( $items[ $id ]->menu_item_parent, $items ) &&
