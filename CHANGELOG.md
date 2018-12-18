@@ -12,6 +12,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ### Muutettu
 - PO-336: Näytetään hakutuloksia vain jos on hakusana tai filtereitä
+- PO-343: Näytetään "{num} Tulosta" teksti vain jos on tehty haku
 
 ### Korjattu
 - PO-293: Vinkkien järjestäminen
