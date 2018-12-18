@@ -221,9 +221,10 @@ class Search {
         return collected;
     }
 
-    getArgs( searchForm = null ) {
-        const formdata     = new FormData( ( searchForm || this.$filterForm || this.$searchForm ).filter( ':visible' ).get( 0 ) );
-        const postGuids    = this.collectGuids( $( '.agegroups' ) ).join( ',' );
+    getArgs( $searchForm = null ) {
+        const $filterForm  = $().add( this.$filterForm ).add( $searchForm ).filter( ':visible' );
+        const formdata     = new FormData( $searchForm.get( 0 ) );
+        const postGuids    = this.collectGuids( $filterForm.find( '.agegroups:visible' ) ).join( ',' );
         const postRelation = formdata.get( 'post_relation' );
         const s            = formdata.get( 's' );
         const args         = { s };
