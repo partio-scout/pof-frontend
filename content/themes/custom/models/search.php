@@ -286,13 +286,28 @@ class Search extends \DustPress\Model {
      * Get single acf post by post id
      *
      * @param  mixed $post_id Post id.
-     * @return \WP_Post
+     * @return \stdClass
      */
     protected function get_single_acf_post( $post_id ) {
         $cache_key = 'acfpost/' . $post_id;
         $post      = wp_cache_get( $cache_key );
         if ( empty( $post ) ) {
-            $post = \DustPress\Query::get_acf_post( $post_id );
+            $post_obj = get_post( $post_id );
+
+            // Construct the actual used post object
+            $post = (object) [
+                'post_title'   => $post_obj->post_title,
+                'post_type'    => $post_obj->post_type,
+                'permalink'    => get_permalink( $post_id ),
+                'post_excerpt' => ! empty( $post_obj->post_excerpt ) ? $post_obj->post_excerpt : $post_obj->post_content,
+                'fields'       => [
+                    'api_guid'   => get_field( 'api_guid', $post_id ),
+                    'api_type'   => get_field( 'api_type', $post_id ),
+                    'api_path'   => get_field( 'api_path', $post_id ),
+                    'api_images' => get_field( 'api_images', $post_id ),
+                    'tags'       => get_field( 'tags', $post_id ),
+                ],
+            ];
 
             wp_cache_set( $cache_key, $post, null, HOUR_IN_SECONDS );
         }
@@ -363,14 +378,14 @@ class Search extends \DustPress\Model {
                 }
 
                 // Overwrite tip link and title with parents
-                $post->permalink          = $parent_post->permalink . '#' . $post->post_name;
+                $post->permalink          = $parent_post->permalink . '#' . $post->post_title;
                 $post->post_title         = $parent_post->post_title;
                 $post->fields             = $parent_post->fields;
                 $post->fields['api_type'] = 'pof_tip';
             }
 
             // Map item parents
-            $api_path = json_decode_pof( $post->fields['api_path'] ?? '[]' );
+            $api_path = json_decode_pof( $post->fields['api_path'] ?? '[]' ) ?? [];
             if ( $post->post_type === 'pof_tip' ) {
                 // If this is a tip then add the task itself to the path as well
                 $api_path[] = [
