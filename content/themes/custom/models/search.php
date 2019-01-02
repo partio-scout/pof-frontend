@@ -311,6 +311,10 @@ class Search extends \DustPress\Model {
             ];
 
             wp_cache_set( $cache_key, $post, null, HOUR_IN_SECONDS );
+
+            // Save id for guid data retrieval
+            $guid_cache_key = 'get_id_by_guid/' . $post->fields['api_guid'] . '/';
+            wp_cache_set( $guid_cache_key, $post_id, null, HOUR_IN_SECONDS );
         }
 
         return $post;
@@ -391,7 +395,7 @@ class Search extends \DustPress\Model {
                     ],
                 ];
             }
-            $post->parents = map_api_parents( $api_path );
+            $post->parents = array_reduce( $api_path, [ $this, 'map_api_parents' ], [] );
 
             // Decode images
             map_api_images( $post->fields['api_images'] );
@@ -414,6 +418,80 @@ class Search extends \DustPress\Model {
         header( 'x-post_data-time: ' . round( microtime( true ) - $post_data_start, 4 ) );
 
         return $result->posts;
+    }
+
+    /**
+     * Set api item parents
+     * Should be used via array_reduce
+     *
+     * @param  array           $parents Complete array.
+     * @param  array|\stdClass $parent  Parent object.
+     * @return array           Modified $parents.
+     */
+    public function map_api_parents( array $parents, $parent ) {
+        $parent = (object) $parent;
+
+        // Remove programs from parents
+        if ( ! $parent->type !== 'program' ) {
+
+            // Add logo data to agegroup parent
+            if ( $parent->type === 'agegroup' ) {
+                $parent->logo = $this->get_images_by_guid( $parent->guid );
+            }
+
+            $parents[] = $parent;
+        }
+
+        return $parents;
+    }
+
+    /**
+     * Get api images by guid
+     *
+     * @param  string $guid Api guid of post to get images of.
+     * @return mixed
+     */
+    public function get_images_by_guid( string $guid ) {
+        $id     = $this->get_id_by_guid( $guid );
+        $result = null;
+        if ( ! empty( $id ) ) {
+            $post   = $this->get_single_acf_post( $id );
+            $result = $post->fields['api_images'];
+            map_api_images( $result );
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get post id by guid
+     *
+     * @param  string $guid Post api guid.
+     * @return mixed
+     */
+    public function get_id_by_guid( string $guid ) {
+        $cache_key = 'get_id_by_guid/' . $guid . '/';
+        $result    = wp_cache_get( $cache_key );
+        if ( $result === false ) {
+            $args = [
+                'posts_per_page' => 1,
+                'post_type'      => 'page',
+                'post_status'    => 'publish',
+                'fields'         => 'ids',
+                'meta_query'     => [
+                    [
+                        'key'   => 'api_guid',
+                        'value' => $guid,
+                    ],
+                ],
+            ];
+
+            $query = ( new WP_Query( $args ) )->posts[0] ?? null;
+
+            wp_cache_set( $cache_key, $result, null, HOUR_IN_SECONDS );
+        }
+
+        return $result;
     }
 
     /**
