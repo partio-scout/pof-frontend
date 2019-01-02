@@ -301,11 +301,12 @@ class Search extends \DustPress\Model {
                 'permalink'    => get_permalink( $post_id ),
                 'post_excerpt' => ! empty( $post_obj->post_excerpt ) ? $post_obj->post_excerpt : $post_obj->post_content,
                 'fields'       => [
-                    'api_guid'   => get_field( 'api_guid', $post_id ),
-                    'api_type'   => get_field( 'api_type', $post_id ),
-                    'api_path'   => get_field( 'api_path', $post_id ),
-                    'api_images' => get_field( 'api_images', $post_id ),
-                    'tags'       => get_field( 'tags', $post_id ),
+                    'api_guid'       => get_field( 'api_guid', $post_id ),
+                    'api_type'       => get_field( 'api_type', $post_id ),
+                    'api_path'       => get_field( 'api_path', $post_id ),
+                    'api_images'     => get_field( 'api_images', $post_id ),
+                    'tags'           => get_field( 'tags', $post_id ),
+                    'pof_tip_parent' => get_field( 'pof_tip_parent', $post_id ),
                 ],
             ];
 
@@ -367,15 +368,7 @@ class Search extends \DustPress\Model {
             if ( $post->post_type === 'pof_tip' ) {
 
                 // Get tip parent link & title
-                $tip_cache_key = 'tip_parent/' . $id;
-                $parent_post   = wp_cache_get( $tip_cache_key );
-                if ( empty( $parent_post ) ) {
-                    // Get post parent
-                    $parent_id   = get_post_meta( $id, 'pof_tip_parent', true );
-                    $parent_post = $this->get_single_acf_post( $parent_id );
-
-                    wp_cache_set( $tip_cache_key, $parent_post, null, HOUR_IN_SECONDS );
-                }
+                $parent_post = $this->get_single_acf_post( $post->fields['pof_tip_parent'] );
 
                 // Overwrite tip link and title with parents
                 $post->permalink          = $parent_post->permalink . '#' . $post->post_title;
