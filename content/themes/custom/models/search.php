@@ -313,7 +313,7 @@ class Search extends \DustPress\Model {
             wp_cache_set( $cache_key, $post, null, HOUR_IN_SECONDS );
 
             // Save id for guid data retrieval
-            $guid_cache_key = 'get_id_by_guid/' . $post->fields['api_guid'] . '/';
+            $guid_cache_key = 'get_id_by_guid/' . $post->fields['api_guid'] . '/' . get_locale();
             wp_cache_set( $guid_cache_key, $post_id, null, HOUR_IN_SECONDS );
         }
 
@@ -470,7 +470,7 @@ class Search extends \DustPress\Model {
      * @return mixed
      */
     public function get_id_by_guid( string $guid ) {
-        $cache_key = 'get_id_by_guid/' . $guid . '/';
+        $cache_key = 'get_id_by_guid/' . $guid . '/' . get_locale();
         $result    = wp_cache_get( $cache_key );
         if ( $result === false ) {
             $args = [
