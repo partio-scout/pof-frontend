@@ -286,15 +286,35 @@ class Search extends \DustPress\Model {
      * Get single acf post by post id
      *
      * @param  mixed $post_id Post id.
-     * @return \WP_Post
+     * @return \stdClass
      */
     protected function get_single_acf_post( $post_id ) {
         $cache_key = 'acfpost/' . $post_id;
         $post      = wp_cache_get( $cache_key );
         if ( empty( $post ) ) {
-            $post = \DustPress\Query::get_acf_post( $post_id );
+            $post_obj = get_post( $post_id );
+
+            // Construct the actual used post object
+            $post = (object) [
+                'post_title'   => $post_obj->post_title,
+                'post_type'    => $post_obj->post_type,
+                'permalink'    => get_permalink( $post_id ),
+                'post_excerpt' => ! empty( $post_obj->post_excerpt ) ? $post_obj->post_excerpt : $post_obj->post_content,
+                'fields'       => [
+                    'api_guid'       => get_field( 'api_guid', $post_id ),
+                    'api_type'       => get_field( 'api_type', $post_id ),
+                    'api_path'       => get_field( 'api_path', $post_id ),
+                    'api_images'     => get_field( 'api_images', $post_id ),
+                    'tags'           => get_field( 'tags', $post_id ),
+                    'pof_tip_parent' => get_field( 'pof_tip_parent', $post_id ),
+                ],
+            ];
 
             wp_cache_set( $cache_key, $post, null, HOUR_IN_SECONDS );
+
+            // Save id for guid data retrieval
+            $guid_cache_key = 'get_id_by_guid/' . $post->fields['api_guid'] . '/' . get_locale();
+            wp_cache_set( $guid_cache_key, $post_id, null, HOUR_IN_SECONDS );
         }
 
         return $post;
@@ -352,25 +372,17 @@ class Search extends \DustPress\Model {
             if ( $post->post_type === 'pof_tip' ) {
 
                 // Get tip parent link & title
-                $tip_cache_key = 'tip_parent/' . $id;
-                $parent_post   = wp_cache_get( $tip_cache_key );
-                if ( empty( $parent_post ) ) {
-                    // Get post parent
-                    $parent_id   = get_post_meta( $id, 'pof_tip_parent', true );
-                    $parent_post = $this->get_single_acf_post( $parent_id );
-
-                    wp_cache_set( $tip_cache_key, $parent_post, null, HOUR_IN_SECONDS );
-                }
+                $parent_post = $this->get_single_acf_post( $post->fields['pof_tip_parent'] );
 
                 // Overwrite tip link and title with parents
-                $post->permalink          = $parent_post->permalink . '#' . $post->post_name;
+                $post->permalink          = $parent_post->permalink . '#' . $post->post_title;
                 $post->post_title         = $parent_post->post_title;
                 $post->fields             = $parent_post->fields;
                 $post->fields['api_type'] = 'pof_tip';
             }
 
             // Map item parents
-            $api_path = json_decode_pof( $post->fields['api_path'] ?? '[]' );
+            $api_path = json_decode_pof( $post->fields['api_path'] ?? '[]' ) ?? [];
             if ( $post->post_type === 'pof_tip' ) {
                 // If this is a tip then add the task itself to the path as well
                 $api_path[] = [
@@ -383,7 +395,7 @@ class Search extends \DustPress\Model {
                     ],
                 ];
             }
-            $post->parents = map_api_parents( $api_path );
+            $post->parents = array_reduce( $api_path, [ $this, 'map_api_parents' ], [] );
 
             // Decode images
             map_api_images( $post->fields['api_images'] );
@@ -406,6 +418,80 @@ class Search extends \DustPress\Model {
         header( 'x-post_data-time: ' . round( microtime( true ) - $post_data_start, 4 ) );
 
         return $result->posts;
+    }
+
+    /**
+     * Set api item parents
+     * Should be used via array_reduce
+     *
+     * @param  array           $parents Complete array.
+     * @param  array|\stdClass $parent  Parent object.
+     * @return array           Modified $parents.
+     */
+    public function map_api_parents( array $parents, $parent ) {
+        $parent = (object) $parent;
+
+        // Remove programs from parents
+        if ( ! $parent->type !== 'program' ) {
+
+            // Add logo data to agegroup parent
+            if ( $parent->type === 'agegroup' ) {
+                $parent->logo = $this->get_images_by_guid( $parent->guid );
+            }
+
+            $parents[] = $parent;
+        }
+
+        return $parents;
+    }
+
+    /**
+     * Get api images by guid
+     *
+     * @param  string $guid Api guid of post to get images of.
+     * @return mixed
+     */
+    public function get_images_by_guid( string $guid ) {
+        $id     = $this->get_id_by_guid( $guid );
+        $result = null;
+        if ( ! empty( $id ) ) {
+            $post   = $this->get_single_acf_post( $id );
+            $result = $post->fields['api_images'];
+            map_api_images( $result );
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get post id by guid
+     *
+     * @param  string $guid Post api guid.
+     * @return mixed
+     */
+    public function get_id_by_guid( string $guid ) {
+        $cache_key = 'get_id_by_guid/' . $guid . '/' . get_locale();
+        $result    = wp_cache_get( $cache_key );
+        if ( $result === false ) {
+            $args = [
+                'posts_per_page' => 1,
+                'post_type'      => 'page',
+                'post_status'    => 'publish',
+                'fields'         => 'ids',
+                'meta_query'     => [
+                    [
+                        'key'   => 'api_guid',
+                        'value' => $guid,
+                    ],
+                ],
+            ];
+
+            $query = ( new WP_Query( $args ) )->posts[0] ?? null;
+
+            wp_cache_set( $cache_key, $result, null, HOUR_IN_SECONDS );
+        }
+
+        return $result;
     }
 
     /**

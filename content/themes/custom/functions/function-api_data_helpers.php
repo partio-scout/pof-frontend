@@ -53,29 +53,6 @@ function map_api_tags( &$repeater ) {
     }
 }
 
-/**
- * Modify parents array
- *
- * @param  array $parents Parent list.
- * @return array          Modified $parents.
- */
-function map_api_parents( array $parents ) {
-    // Remove programs from parents
-    $parents = array_filter( $parents, function( $parent ) {
-        return ! empty( $parent->type ) && $parent->type !== 'program';
-    });
-
-    // Add logo data to agegroups
-    $parents = array_map( function( $parent ) {
-        if ( $parent->type === 'agegroup' ) {
-            $parent->logo = get_images_by_guid( $parent->guid );
-        }
-        return $parent;
-    }, $parents );
-
-    return $parents;
-}
-
 // loads all children of a page in a tree format
 function get_child_page_tree( $post_id, $helper, $grandchildren = true  ) {
 
@@ -180,40 +157,6 @@ function pofapilink_shortcode( $atts  ) {
     return $link;
 }
 add_shortcode( 'pofapilink', 'pofapilink_shortcode' );
-
-/**
- * Get api images by guid
- *
- * @param  string $guid Api item guid.
- * @return mixed        Image object or null.
- */
-function get_images_by_guid( $guid ) {
-    $cache_key = 'get_images_by_guid/' . $guid . '/';
-    $result    = wp_cache_get( $cache_key );
-    if ( empty( $result ) ) {
-        $args  = [
-            'posts_per_page' => 1,
-            'post_type'      => 'page',
-            'post_status'    => 'publish',
-            'meta_query'     => [
-                [
-                    'key'   => 'api_guid',
-                    'value' => $guid,
-                ],
-            ],
-        ];
-        $pages = \DustPress\Query::get_acf_posts( $args );
-
-        if ( ! empty( $pages ) ) {
-            map_api_images( $pages[0]->fields['api_images'] );
-            $result = $pages[0]->fields['api_images'][0]['logo'];
-        }
-
-        wp_cache_set( $cache_key, $result, null, HOUR_IN_SECONDS );
-    }
-
-    return $result;
-}
 
 // Get hero args
 function get_hero_args() {

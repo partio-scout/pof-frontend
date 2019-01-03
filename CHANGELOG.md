@@ -10,6 +10,9 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - PO-288: Teeman värit manifest tiedostoon ja meta tagiin
 - PO-267: Näytetään kun haku on käynnissä
 
+### Muutettu
+- PO-351: Optimoitu redikseen menevää dataa
+
 ### Korjattu
 - PO-293: Vinkkien järjestäminen
 
