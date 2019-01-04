@@ -60,28 +60,30 @@ function show_empty_search( $query ) {
 }
 
 
-add_action( 'template_redirect', 'search_redirect' );
-/**
- * Redirects search results from /?s=query to /search/query/, converts %20 to +
- *
- * @link http://txfx.net/wordpress-plugins/nice-search/
- */
-function search_redirect() {
-    global $wp_rewrite, $wp_query;
-    if ( ! isset( $wp_rewrite ) || ! is_object( $wp_rewrite ) || ! $wp_rewrite->get_search_permastruct() ) {
-        return;
-    }
+// add_action( 'template_redirect', 'search_redirect' );
+// /**
+//  * Redirects search results from /?s=query to /search/query/, converts %20 to +
+//  *
+//  * @link http://txfx.net/wordpress-plugins/nice-search/
+//  */
+// function search_redirect() {
+//     global $wp_rewrite, $wp_query;
+//     if ( ! isset( $wp_rewrite ) || ! is_object( $wp_rewrite ) || ! $wp_rewrite->get_search_permastruct() ) {
+//         return;
+//     }
 
-    $search_parameter = rawurlencode( filter_input( INPUT_GET, 's', FILTER_SANITIZE_STRING ) );
-    if ( is_search() && ! is_admin() && ! empty( $search_parameter ) ) {
-        wp_safe_redirect( generate_search_url( $search_parameter ) );
-        exit();
-    }
-}
+//     $search_parameter = rawurlencode( filter_input( INPUT_GET, 's', FILTER_SANITIZE_STRING ) );
+//     if ( is_search() && ! is_admin() && ! empty( $search_parameter ) ) {
+//         wp_safe_redirect( generate_search_url( $search_parameter ) );
+//         exit();
+//     }
+// }
 
 add_filter( 'query_vars', 'add_query_vars_filter' );
 function add_query_vars_filter( $vars ){
-    $vars[] = "guid";
-    $vars[] = "lang";
+    $vars[] = 'guid';
+    $vars[] = 'lang';
+    $vars[] = 'post_guids';
+    $vars[] = 'post_relation';
     return $vars;
 }

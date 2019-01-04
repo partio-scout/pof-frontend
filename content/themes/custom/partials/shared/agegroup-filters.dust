@@ -22,7 +22,7 @@
                                     {/taskgroups}
 
                                     {#children}
-                                        <label>
+                                        <label class="filter-opener">
                                             <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
                                             <p>{@apititle /}</p>
                                         </label>

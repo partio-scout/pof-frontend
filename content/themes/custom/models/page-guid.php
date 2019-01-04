@@ -3,12 +3,17 @@
  Template name: GUID-ohjaus
 */
 
+/**
+ * PageGuid Class
+ */
 class PageGuid extends \DustPress\Model {
 
     /**
      * Method to get page/tips with guid and redirect to correct place in site
      */
     public function init() {
+
+        // Get necessary args
         $guid = get_query_var( 'guid' );
         $lang = get_query_var( 'lang' ) ?: pll_current_language();
 
@@ -17,12 +22,12 @@ class PageGuid extends \DustPress\Model {
             exit;
         }
 
-        $id  = ( new \WP_Query([
-            'fields'         => 'ids',
+        $args = [
             'posts_per_page' => 1,
             'lang'           => $lang,
             'post_type'      => 'page',
             'post_status'    => 'publish',
+            'fields'         => 'ids',
             'meta_query'     => [
                 [
                     'key'     => 'api_guid',
@@ -30,16 +35,16 @@ class PageGuid extends \DustPress\Model {
                     'compare' => '=',
                 ],
             ],
-        ]) )->posts[0];
-        $url = get_permalink( $id );
+        ];
 
-        if ( $url ) {
-            wp_safe_redirect( $url );
+        $pages = ( new \WP_Query( $args ) )->posts;
+        if ( ! empty( $pages ) ) {
+            wp_safe_redirect( get_permalink( $pages[0] ) );
             exit;
         }
 
         // If page not found, check also if guid is tip-spesific
-        $tips = get_comments([
+        $tips_args = [
             'status'     => 'approve',
             'meta_query' => [
                 [
@@ -48,9 +53,9 @@ class PageGuid extends \DustPress\Model {
                     'compare' => '=',
                 ],
             ],
-        ]);
-
-        if ( $tips ) {
+        ];
+        $tips      = get_comments( $tips_args );
+        if ( $tips && count( $tips ) === 1 ) {
             $parent = get_permalink( $tips[0]->comment_post_ID );
             wp_safe_redirect( $parent . '#' . $guid );
             exit;

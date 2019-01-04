@@ -6,6 +6,7 @@
 
 <section class="text-content">
 	{@content data=Content.post_content /}
+    {>"shared/clipboard" url="{Header.RawHomeUrl}guid/{Content.fields.api_guid}?lang={Header.LangSlug}" /}
 </section>
 
 {?Children}
