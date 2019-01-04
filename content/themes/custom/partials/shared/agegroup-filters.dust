@@ -11,25 +11,24 @@
                         <div class="filter-opener">
                             <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
                             <p>{@apititle /}</p>
-                            <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
-                            <div class="collapsed">
-                                <div class="collapsed-content checkbox field-list">
 
-                                    {?taskgroups}
-                                        {@set key="children" value=taskgroups /}
-                                    {:else}
-                                        {@set key="children" value=tasks /}
-                                    {/taskgroups}
+                            {?taskgroups}
+                                <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
+                                <div class="collapsed">
+                                    <div class="collapsed-content checkbox field-list">
 
-                                    {#children}
-                                        <label class="filter-opener">
-                                            <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
-                                            <p>{@apititle /}</p>
-                                        </label>
-                                    {/children}
+                                        {#taskgroups}
+                                            <label class="filter-opener">
+                                                <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
+                                                <p>{@apititle /}</p>
+                                            </label>
+                                        {/taskgroups}
 
+                                    </div>
                                 </div>
-                            </div>
+                            {:else}
+                                <div class="collapsed"></div>
+                            {/taskgroups}
                         </div>
                     {/taskgroups}
 
