@@ -445,10 +445,13 @@ class Search {
      * Empty filters.
      */
     emptyFilters( e ) {
-        const checkboxes = this.$searchFilter.find( 'input[type=checkbox]:not(.and-or-input)' );
-        checkboxes.filter( '[type="checkbox"]:checked' ).removeAttr( 'checked' ).prop( 'checked', false );
+        const $checkboxes = this.$searchFilter.find( 'input[type=checkbox]:not(.and-or-input):checked' );
+        $checkboxes.removeAttr( 'checked' ).prop( 'checked', false );
 
-        this.doSearch( e );
+        // Do new search if filters were changed
+        if ( $checkboxes.length ) {
+            this.doSearch( e );
+        }
     }
 }
 
