@@ -13,6 +13,7 @@ define( 'WP_USE_THEMES', true );
 // ==============
 define( 'WP_REDIS_DISABLE', (int) getenv( 'WP_REDIS_DISABLE' ) );
 define( 'WP_REDIS_DB', getenv( 'WP_REDIS_DB' ) );
+define( 'WP_REDIS_DATABASE', getenv( 'WP_REDIS_DB' ) );
 define( 'WP_REDIS_HOST', getenv( 'WP_REDIS_HOST' ) );
 define( 'WP_REDIS_PASSWORD', getenv( 'WP_REDIS_PASSWORD' ) );
 
