@@ -43,6 +43,15 @@ class Search {
         $( e.currentTarget ).toggleClass( 'active' );
     }
 
+    setEmptyBtnStatus() {
+        const url = new Url();
+        if ( !! _.get( url, 'query.post_guids', []).length ) {
+            this.$emptyFiltersButton.removeClass( 'inactive' );
+        } else {
+            this.$emptyFiltersButton.addClass( 'inactive' );
+        }
+    }
+
     /**
      * Handle search metadata
      *
@@ -101,6 +110,7 @@ class Search {
             this.$emptyFiltersButton.on( 'click', ( e ) => this.emptyFilters( e ) );
 
             this.populateFilters();
+            this.setEmptyBtnStatus();
         }
     };
 
@@ -395,6 +405,8 @@ class Search {
 
         // Get new response data or set defaults if no response
         this.handleMetadata( data );
+
+        this.setEmptyBtnStatus();
 
         // Update content
         this.$resultsContainer.html( html );
