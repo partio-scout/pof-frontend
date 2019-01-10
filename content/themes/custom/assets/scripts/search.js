@@ -46,9 +46,9 @@ class Search {
     setEmptyBtnStatus() {
         const url = new Url();
         if ( !! _.get( url, 'query.post_guids', []).length ) {
-            this.$emptyFiltersButton.removeClass( 'inactive' );
+            this.$emptyFiltersButton.removeClass( 'disabled' );
         } else {
-            this.$emptyFiltersButton.addClass( 'inactive' );
+            this.$emptyFiltersButton.addClass( 'disabled' );
         }
     }
 
@@ -275,6 +275,7 @@ class Search {
         // Collect args from the form that was submitted either via click or submit event
         const args = this.getArgs( $form );
         this.handleUrlOnSearch( args );
+        this.setEmptyBtnStatus();
 
         // Abort any existing calls
         if ( this.xhr ) {
@@ -406,8 +407,6 @@ class Search {
         // Get new response data or set defaults if no response
         this.handleMetadata( data );
 
-        this.setEmptyBtnStatus();
-
         // Update content
         this.$resultsContainer.html( html );
 
@@ -457,11 +456,9 @@ class Search {
      * Empty filters.
      */
     emptyFilters( e ) {
-        const $checkboxes = this.$searchFilter.find( 'input[type=checkbox]:not(.and-or-input):checked' );
-        $checkboxes.removeAttr( 'checked' ).prop( 'checked', false );
-
-        // Do new search if filters were changed
-        if ( $checkboxes.length ) {
+        const $btn = $( e.currentTarget );
+        if ( ! $btn.hasClass( 'disabled' ) ) {
+            this.$searchFilter.find( 'input[type=checkbox]:not(.and-or-input):checked' ).removeAttr( 'checked' ).prop( 'checked', false );
             this.doSearch( e );
         }
     }

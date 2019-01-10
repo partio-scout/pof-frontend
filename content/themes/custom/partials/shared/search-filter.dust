@@ -12,7 +12,7 @@
 
     {^embed}
         <div class="search-buttons">
-            <button class="search-buttons__btn" type="button" id="search-empty-filters-button">Tyhjennä</button>
+            <button class="search-buttons__btn disabled" type="button" id="search-empty-filters-button">Tyhjennä</button>
         </div>
 
         <input type="hidden" name="s" value="{Term}" placeholder="{Header.S.search_placeholder}" title="{Header.S.search_title}">

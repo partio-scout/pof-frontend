@@ -487,11 +487,3 @@ $search_fontsize_smaller: rem-calc(12);
 		}
 	}
 }
-
-.search-buttons {
-	&__btn {
-		&.inactive {
-			cursor: default;
-		}
-	}
-}
