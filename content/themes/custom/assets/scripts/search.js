@@ -43,6 +43,15 @@ class Search {
         $( e.currentTarget ).toggleClass( 'active' );
     }
 
+    setEmptyBtnStatus() {
+        const url = new Url();
+        if ( !! _.get( url, 'query.post_guids', []).length ) {
+            this.$emptyFiltersButton.removeClass( 'disabled' );
+        } else {
+            this.$emptyFiltersButton.addClass( 'disabled' );
+        }
+    }
+
     /**
      * Handle search metadata
      *
@@ -101,6 +110,7 @@ class Search {
             this.$emptyFiltersButton.on( 'click', ( e ) => this.emptyFilters( e ) );
 
             this.populateFilters();
+            this.setEmptyBtnStatus();
         }
     };
 
@@ -265,6 +275,7 @@ class Search {
         // Collect args from the form that was submitted either via click or submit event
         const args = this.getArgs( $form );
         this.handleUrlOnSearch( args );
+        this.setEmptyBtnStatus();
 
         // Abort any existing calls
         if ( this.xhr ) {
@@ -445,10 +456,11 @@ class Search {
      * Empty filters.
      */
     emptyFilters( e ) {
-        const checkboxes = this.$searchFilter.find( 'input[type=checkbox]:not(.and-or-input)' );
-        checkboxes.filter( '[type="checkbox"]:checked' ).removeAttr( 'checked' ).prop( 'checked', false );
-
-        this.doSearch( e );
+        const $btn = $( e.currentTarget );
+        if ( ! $btn.hasClass( 'disabled' ) ) {
+            this.$searchFilter.find( 'input[type=checkbox]:not(.and-or-input):checked' ).removeAttr( 'checked' ).prop( 'checked', false );
+            this.doSearch( e );
+        }
     }
 }
 

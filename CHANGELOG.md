@@ -13,6 +13,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ### Korjattu
 - PO-293: Vinkkien järjestäminen
+- PO-350: Tehdään tyhjentämisen jälkeen haku vain jos jotain muuttui
 
 ## [1.2.0] - 2018-09-05
 
