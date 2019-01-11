@@ -9,9 +9,6 @@ function err($str) {
 // Instantiate DustPress
 dustpress();
 
-// Enable dustpress cache
-add_filter( 'dustpress/settings/cache', '__return_true' );
-
 // Add geniem functions
 include_once( 'functions/function-geniem_admin.php' );
 
