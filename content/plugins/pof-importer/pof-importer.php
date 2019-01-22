@@ -97,7 +97,7 @@ class POF_Importer {
         }
 
         // Check that we will still have a suitable amount of posts after the deletion
-        if ( count( $ids ) - count( $delete_ids ) < 1000 ) {
+        if ( count( $ids ) - count( $delete_ids ) < 70 ) {
             $this->wp_cli_error( 'There would be less than a 1000 posts after cleanup so aborting just in case.' );
             return false;
         }
@@ -271,7 +271,7 @@ class POF_Importer {
             $tree = $this->import_data( $tree['program'][0] );
             $tree = $this->retrieve_new_data( $tree );
 
-            $this->update_pages( $tree );
+            $tree = $this->update_pages( $tree );
             $this->update_metas( $tree );
         }
     }
@@ -412,6 +412,13 @@ class POF_Importer {
 
             // Update languages with necessary data
             $item['languages'] = array_map(function( $lang ) use ( $pages, $importer ) {
+
+                // No matching pages so we need to create new ones
+                if ( empty( $pages ) ) {
+                    $lang['update_page'] = true;
+                    $lang['update_meta'] = true;
+                }
+
                 // Mark posts to update
                 foreach ( $pages as $page ) {
                     if ( $lang['lang'] === strtolower( $page->fields['api_lang'] ) ) {
@@ -445,6 +452,7 @@ class POF_Importer {
 
             return $item;
         }, $tree);
+
         // Finish progressbar
         $progress->finish();
 
@@ -533,27 +541,26 @@ class POF_Importer {
      *
      * @param array $tree Api data.
      */
-    private function update_pages( &$tree ) {
+    private function update_pages( $tree ) {
 
         // Create wp cli progress bar
         $progress = $this->wp_cli_progress( 'Importing page content', count( $tree ) );
         $start    = microtime( true );
 
-        // Update/Create invidual pages
-        foreach ( $tree as &$item ) {
+        $tree = array_map(function( $item ) use ( $progress ) {
 
             // Collect connected posts
-            $translations = [];
-            foreach ( $item['languages'] as $lang ) {
-                if ( $lang['page'] ) {
-                    $translations[ $lang['lang'] ] = $lang['page']->ID;
-                    break;
+            $translations = array_reduce( $item['languages'], function( $carry, $lang ) {
+                if ( ! empty( $lang['page'] ) ) {
+                    $carry[ $lang['lang'] ] = $lang['page']->ID;
                 }
-            }
-            $new_translations = false;
 
-            // Update translations
-            foreach ( $item['languages'] as &$lang ) {
+                return $carry;
+            }, []);
+
+            $new_translations  = false;
+            $item['languages'] = array_map( function( $lang ) use ( &$new_translations ) {
+
                 if ( $lang['update_page'] && $lang['data'] ) {
 
                     // Post object params
@@ -589,11 +596,7 @@ class POF_Importer {
                                 break;
                             }
                         }
-
-                        // If no changes were made collect page id just in case anyways
-                        if ( ! $post_id ) {
-                            $post_id = $lang['page']->ID;
-                        }
+                        $post_id = $post_id ?? $lang['page']->ID;
                     }
                     else {
                         // Create the post
@@ -609,13 +612,18 @@ class POF_Importer {
                             $translations[ $lang['lang'] ] = $post_id;
                         }
 
+                    }
+                    if ( ! empty( $post_id ) ) {
+
                         // Create dummy page object for post meta update
                         $lang['page'] = (object) [
                             'ID' => $post_id,
                         ];
                     }
                 }
-            }
+
+                return $lang;
+            }, $item['languages']);
 
             // Link connected translations
             if ( $new_translations ) {
@@ -625,8 +633,12 @@ class POF_Importer {
             }
 
             $progress->tick();
-        }
+
+            return $item;
+        }, $tree);
         $progress->finish();
+
+        return $tree;
     }
 
     /**
@@ -646,8 +658,13 @@ class POF_Importer {
             // Update translations
             foreach ( $item['languages'] as $lang ) {
                 if ( $lang['update_meta'] && $lang['data'] ) {
-                    // Update meta fields
-                    $this->update_page_meta( $lang['page']->ID, $item, $lang );
+                    if ( empty( $lang['page']->ID ) ) {
+                        // Show msg
+                    }
+                    else {
+                        // Update meta fields
+                        $this->update_page_meta( $lang['page']->ID, $item, $lang );
+                    }
                 }
             }
             $progress->tick();
