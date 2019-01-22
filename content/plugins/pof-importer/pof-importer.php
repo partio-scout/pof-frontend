@@ -187,8 +187,6 @@ class POF_Importer {
             $params             = $params += $extra_params;
             $url_parts['query'] = http_build_query( $params );
             $tree_url           = $url_parts['scheme'] . '://' . $url_parts['host'] . $url_parts['path'] . '?' . $url_parts['query'];
-            var_dump( $tree_url );
-            exit;
         }
 
         $this->tree_url = $tree_url;
