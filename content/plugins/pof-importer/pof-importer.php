@@ -282,6 +282,36 @@ class POF_Importer {
     }
 
     /**
+     * Recursively add api item to flattened array
+     *
+     * @param array  $item      Item to add.
+     * @param array  $flattened Array to gather items to.
+     * @param string $parent    Parent guid.
+     */
+    protected function add_to_flattened( $item, &$flattened, $parent = null ) {
+        $item['parent']  = $parent;
+        $items_to_search = [
+            'taskgroups',
+            'tasks',
+            'agegroups',
+        ];
+
+        foreach ( $items_to_search as $key ) {
+            if ( array_key_exists( $key, $item ) ) {
+                foreach ( $item[ $key ] as $new_item ) {
+                    $this->add_to_flattened( $new_item, $flattened, $item['guid'] );
+                }
+
+                // Remove unnecessary data from item
+                unset( $item[ $key ] );
+            }
+        }
+
+        $flattened[ $item['guid'] ] = $item;
+    }
+
+
+    /**
      * Flatten api program tree into a single array
      *
      * @param  array $tree Api program tree.
@@ -291,36 +321,7 @@ class POF_Importer {
         $flattened = [];
         $start     = microtime( true );
 
-        /**
-         * Recursively add api item to flattened array
-         *
-         * @param array  $item      Item to add.
-         * @param array  $flattened Array to gather items to.
-         * @param string $parent    Parent guid.
-         */
-        function add_to_flattened( $item, &$flattened, $parent = null ) {
-            $item['parent']  = $parent;
-            $items_to_search = [
-                'taskgroups',
-                'tasks',
-                'agegroups',
-            ];
-
-            foreach ( $items_to_search as $key ) {
-                if ( array_key_exists( $key, $item ) ) {
-                    foreach ( $item[ $key ] as $new_item ) {
-                        add_to_flattened( $new_item, $flattened, $item['guid'] );
-                    }
-
-                    // Remove unnecessary data from item
-                    unset( $item[ $key ] );
-                }
-            }
-
-            $flattened[ $item['guid'] ] = $item;
-
-        }
-        add_to_flattened( $tree, $flattened );
+        $this->add_to_flattened( $tree, $flattened );
 
         $this->wp_cli_msg( 'Flattened tree in: ' . round( microtime( true ) - $start, 4 ) . 's' );
 
