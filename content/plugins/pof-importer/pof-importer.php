@@ -168,12 +168,40 @@ class POF_Importer {
         return $progress;
     }
 
+    /**
+     * Get api tree url
+     *
+     * @param  array $extra_params Optional extra params to add to url.
+     * @return string              Url.
+     */
+    public function get_tree_url( array $extra_params = [] ) : string {
+        if ( ! empty( $this->tree_url ) ) {
+            return $this->tree_url;
+        }
+
+        $tree_url = get_field( 'ohjelma-json', 'option' );
+        if ( ! empty( $tree_url ) ) {
+            $url_parts = wp_parse_url( $tree_url );
+            $params    = [];
+            parse_str( $url_parts['query'], $params );
+            $params             = $params += $extra_params;
+            $url_parts['query'] = http_build_query( $params );
+            $tree_url           = $url_parts['scheme'] . '://' . $url_parts['host'] . $url_parts['path'] . '?' . $url_parts['query'];
+            var_dump( $tree_url );
+            exit;
+        }
+
+        $this->tree_url = $tree_url;
+        return $tree_url;
+    }
+
     public function init_plugin() {
 
         // get API url from options
         include_once ABSPATH . 'wp-admin/includes/plugin.php'; // included for is_plugin_active()
         if ( is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
-            $this->tree_url       = get_field( 'ohjelma-json', 'option' ) . '?rand=' . mt_rand();
+
+            $this->tree_url       = $this->get_tree_url( [ 'rand' => mt_rand() ] );
             $this->tips_url       = get_field( 'tips-json', 'option' ) . '?rand=' . mt_rand();
             $this->site_languages = array();
             if ( function_exists( 'pll_languages_list' ) ) {
