@@ -47,8 +47,70 @@ class POF_Importer {
         add_action( 'init', array( $this, 'init_plugin' ) );
         add_action( 'daily_cron',  array( $this, 'importer_cron' ) );
         if ( defined( '\\WP_CLI' ) && \WP_CLI ) {
+
+            // Does the import
             \WP_CLI::add_command( 'pof import', [ $this, 'importer_cron' ] );
+
+            // Deletes imported api items that don't exist anymore
+            \WP_CLI::add_command( 'pof cleanup', [ $this, 'importer_cleanup' ] );
         }
+    }
+
+    /**
+     * Delete imported posts that no longer exist in the backend
+     *
+     * @return bool Whether posts were deleted or not.
+     */
+    public function importer_cleanup() : bool {
+
+        $this->wp_cli_msg( 'Deleting old imported data.' );
+
+        // Collect all of the currently existing guid's
+        $tree  = $this->fetch_data( $this->tree_url );
+        $guids = array_keys( $this->flatten_tree( $tree['program'][0] ) );
+
+        // Get all current posts
+        $ids = ( new WP_Query([
+            'fields'         => 'ids',
+            'post_type'      => 'page',
+            'post_status'    => 'any',
+            'posts_per_page' => -1, //phpcs:ignore
+        ]) )->posts;
+
+        /**
+         * Filter the id's to those that have a guid that is not in the guids list
+         *
+         * @param  int $id Post id to check.
+         * @return bool    Whether this post should be deleted or not.
+         */
+        $delete_ids = array_filter( $ids, function( int $post_id ) use ( $guids ) : bool {
+            $guid = get_field( 'api_guid', $post_id );
+            return (
+                ! empty( $guid ) &&
+                ! in_array( $guid, $guids, true )
+            );
+        });
+
+        if ( empty( $delete_ids ) ) {
+            $this->wp_cli_msg( 'No posts to delete.' );
+            return false;
+        }
+
+        // Check that we will still have a suitable amount of posts after the deletion
+        if ( count( $ids ) - count( $delete_ids ) < 1000 ) {
+            $this->wp_cli_error( 'There would be less than a 1000 posts after cleanup so aborting just in case.' );
+            return false;
+        }
+
+        global $wpdb;
+        $this->wp_cli_msg( 'Deleting old posts.' );
+        $posts_table = $wpdb->prefix . 'posts';
+        $wpdb->query( 'DELETE FROM ' . $posts_table . ' WHERE ID IN(' . implode( ',', $delete_ids ) . ')' );
+        $this->wp_cli_msg( 'Deleting old postmeta.' );
+        $postmeta_table = $wpdb->prefix . 'postmeta';
+        $wpdb->query( 'DELETE FROM ' . $postmeta_table . ' WHERE post_id IN(' . implode( ',', $delete_ids ) . ')' );
+
+        return true;
     }
 
     /**
@@ -148,6 +210,7 @@ class POF_Importer {
         $this->import_tips();
         update_field( 'field_57c6b3e52325e', date( 'Y-m-d H:i:s' ), 'option' );
         $this->wp_cli_msg( 'Import finished in: ' . round( microtime( true ) - $start, 4 ) . 's' );
+        $this->importer_cleanup();
     }
 
     /*
