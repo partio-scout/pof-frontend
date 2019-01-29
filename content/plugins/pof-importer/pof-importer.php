@@ -280,8 +280,7 @@ class POF_Importer {
             $tree = $this->import_data( $tree['program'][0] );
             $tree = $this->retrieve_new_data( $tree );
 
-            $tree = $this->update_pages( $tree );
-            $this->update_metas( $tree );
+            $this->update_pages( $tree );
         }
     }
 
@@ -417,6 +416,9 @@ class POF_Importer {
         $importer = $this; // Store this in variable to pass it to the functions
         $tree     = array_map(function( $item ) use ( $posts, $progress, $importer ) {
 
+            // Update progressbar
+            $progress->tick();
+
             // Collect only matching posts
             $pages = array_filter( $posts, function( $page ) use ( $item ) {
                 return ( ! empty( $page->fields ) && $page->fields['api_guid'] === $item['guid'] );
@@ -425,42 +427,39 @@ class POF_Importer {
             // Update languages with necessary data
             $item['languages'] = array_map(function( $lang ) use ( $pages, $importer ) {
 
-                // No matching pages so we need to create new ones
                 if ( empty( $pages ) ) {
-                    $lang['update_page'] = true;
-                    $lang['update_meta'] = true;
+
+                    // No matching pages so we need to create new ones
+                    $lang['update'] = true;
                 }
+                else {
 
-                // Mark posts to update
-                foreach ( $pages as $page ) {
-                    if ( $lang['lang'] === strtolower( $page->fields['api_lang'] ) ) {
+                    // Mark posts to update
+                    foreach ( $pages as $page ) {
+                        if ( $lang['lang'] === strtolower( $page->fields['api_lang'] ) ) {
 
-                        // Store the page to possibly update it or translations later
-                        $lang['page'] = $page;
+                            // Store the page to possibly update it or translations later
+                            $lang['page'] = $page;
 
-                        // Mark post meta for update
-                        if (
-                            strtotime( $page->fields['api_lastmodified'] ) <
-                            strtotime( $lang['lastModified'] )
-                        ) {
-                            $lang['update_meta'] = true;
-                        }
-
-                        // Mark page for update
-                        if (
-                            strtotime( $page->post_modified ) <
-                            strtotime( $lang['lastModified'] )
-                        ) {
-                            $lang['update_page'] = true;
+                            // Mark post for update
+                            if (
+                                (
+                                    strtotime( $page->fields['api_lastmodified'] ) <
+                                    strtotime( $lang['lastModified'] )
+                                ) ||
+                                (
+                                    strtotime( $page->post_modified ) <
+                                    strtotime( $lang['lastModified'] )
+                                )
+                            ) {
+                                $lang['update'] = true;
+                            }
                         }
                     }
                 }
 
                 return $lang;
             }, $item['languages'] );
-
-            // Update progressbar
-            $progress->tick();
 
             return $item;
         }, $tree);
@@ -471,7 +470,7 @@ class POF_Importer {
         // Reduce tree to only those that need to be updated
         $tree = array_filter( $tree, function( $item ) {
             foreach ( $item['languages'] as $lang ) {
-                if ( $lang['update_meta'] || $lang['update_page'] ) {
+                if ( $lang['update'] ) {
                     return true;
                 }
             }
@@ -507,7 +506,9 @@ class POF_Importer {
         $progress = $this->wp_cli_progress( 'Fetching new data', $size );
         foreach ( $tree as $item ) {
             foreach ( $item['languages'] as $lang ) {
-                if ( $lang['update_meta'] || $lang['update_page'] ) {
+                $progress->tick();
+
+                if ( $lang['update'] ) {
                     if ( count( $pool ) >= $pool_size ) {
                         $responses = \Requests::request_multiple( $pool );
                         foreach ( $responses as $resp ) {
@@ -524,8 +525,6 @@ class POF_Importer {
                         'type' => 'GET',
                     ];
                 }
-
-                $progress->tick();
             }
         }
         // Finish any dangling requests
@@ -539,7 +538,7 @@ class POF_Importer {
         // Assign results to languages
         foreach ( $tree as &$item ) {
             foreach ( $item['languages'] as &$lang ) {
-                if ( $lang['update_meta'] || $lang['update_page'] ) {
+                if ( $lang['update'] ) {
                     $lang['data'] = ! empty( $done[ $lang['details'] ]->body ) ? json_decode( $done[ $lang['details'] ]->body, true ) : null;
                 }
             }
@@ -562,6 +561,7 @@ class POF_Importer {
         $class    = $this;
 
         $tree = array_map(function( $item ) use ( $progress, &$queried, $class ) {
+            $progress->tick();
 
             // Collect connected posts
             $translations = array_reduce( $item['languages'], function( $carry, $lang ) use ( $class ) {
@@ -575,7 +575,7 @@ class POF_Importer {
             $new_translations  = false;
             $item['languages'] = array_map( function( $lang ) use ( &$new_translations, &$translations, &$queried, $item, $class ) {
 
-                if ( $lang['update_page'] && $lang['data'] ) {
+                if ( $lang['update'] && $lang['data'] ) {
 
                     // Post object params
                     $args = [
@@ -597,8 +597,23 @@ class POF_Importer {
                             $args['post_parent'] = $parent_id;
                         }
                         else {
-                            // Parent post doesnt exist
-                            $class->wp_cli_warning( 'Failed to get post parent for guid (' . $item['guid'] . '), parent should have guid (' . $item['parent'] . ')' );
+
+                            // Try to get post parent via wp query if it wasnt part of the import
+                            $post_parent_query = new \WP_Query([
+                                'post_type'      => 'page',
+                                'posts_per_page' => 1,
+                                'fields'         => 'ids',
+                                'meta_key'       => 'api_guid',
+                                'meta_value'     => $item['parent'],
+                            ]);
+                            if ( ! empty( $post_parent_query->posts ) ) {
+                                $args['post_parent'] = $post_parent_query->posts[0];
+                            }
+                            else {
+
+                                // Parent post doesnt exist
+                                $class->wp_cli_warning( 'Failed to get post parent for guid (' . $item['guid'] . '), parent should have guid (' . $item['parent'] . ')' );
+                            }
                         }
                     }
 
@@ -644,6 +659,9 @@ class POF_Importer {
                         // Create a dummy page object for page parent update
                         $queried[ $item['guid'] ]                  = $queried[ $item['guid'] ] ?? [];
                         $queried[ $item['guid'] ][ $lang['lang'] ] = $pseudo_page;
+
+                        // Update meta
+                        $this->update_page_meta( $post_id, $item, $lang );
                     }
                 }
 
@@ -657,44 +675,11 @@ class POF_Importer {
                 }
             }
 
-            $progress->tick();
-
             return $item;
         }, $tree);
         $progress->finish();
 
         return $tree;
-    }
-
-    /**
-     * Update page meta data
-     *
-     * @param array $tree Api data.
-     */
-    private function update_metas( $tree ) {
-
-        // Create wp cli progress bar
-        $progress = $this->wp_cli_progress( 'Importing postmeta', count( $tree ) );
-        $start    = microtime( true );
-
-        // Update meta data
-        foreach ( $tree as $item ) {
-
-            // Update translations
-            foreach ( $item['languages'] as $lang ) {
-                if ( $lang['update_meta'] && $lang['data'] ) {
-                    if ( empty( $lang['page']->ID ) ) {
-                        $this->wp_cli_error( 'Importing meta failed for post (' . $lang['details'] . '): No Post ID.' );
-                    }
-                    else {
-                        // Update meta fields
-                        $this->update_page_meta( $lang['page']->ID, $item, $lang );
-                    }
-                }
-            }
-            $progress->tick();
-        }
-        $progress->finish();
     }
 
     /**
@@ -713,6 +698,8 @@ class POF_Importer {
             $progress = $this->wp_cli_progress( 'Importing tips', count( $tips_data ) );
 
             foreach ( $tips_data as $id => $tip ) {
+                $progress->tick();
+
                 $parent     = $data[ $tip['post']['guid'] ][ $tip['lang'] ];
                 $comment_id = null;
                 if ( isset( $parent ) ) {
@@ -761,8 +748,6 @@ class POF_Importer {
 
                     // TODO: Errorlog, if some tips not importet
                 }
-
-                $progress->tick();
             }
             $progress->finish();
         }
@@ -776,6 +761,8 @@ class POF_Importer {
      * @param  array $lang    Post language data.
      */
     public function update_page_meta( $post_id, $item, $lang ) {
+        $this->wp_cli_msg( 'Updating postmeta for ID: (' . $post_id . ') lang: (' . $lang['lang'] . ')' );
+
         $fields = [
             'field_559a2aa1bbff7' => $lang['data']['type'],                      // api_type
             'field_559a2abfbbff8' => $lang['data']['ingress'],                   // api_ingress
