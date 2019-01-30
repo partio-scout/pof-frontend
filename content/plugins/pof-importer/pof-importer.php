@@ -84,10 +84,24 @@ class POF_Importer {
          * @return bool    Whether this post should be deleted or not.
          */
         $delete_ids = array_filter( $ids, function( int $post_id ) use ( $guids ) : bool {
-            $guid = get_field( 'api_guid', $post_id );
+            $guid          = get_field( 'api_guid', $post_id );
+            $template      = get_post_meta( $post_id, '_wp_page_template', true );
+            $template_list = [
+                'models/page-agegroup.php',
+                'models/page-program.php',
+                'models/page-task.php',
+                'models/page-taskgroup.php',
+            ];
+
             return (
-                ! empty( $guid ) &&
-                ! in_array( $guid, $guids, true )
+                ( // Item is not in new tree
+                    ! empty( $guid ) &&
+                    ! in_array( $guid, $guids, true )
+                ) ||
+                ( // Item is a failed import (no guid but api item template)
+                    empty( $guid ) &&
+                    in_array( $template, $template_list, true )
+                )
             );
         });
 
