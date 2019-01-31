@@ -69,13 +69,20 @@ class POF_Importer {
         $tree  = $this->fetch_data( $this->tree_url );
         $guids = array_keys( $this->flatten_tree( $tree['program'][0] ) );
 
-        // Get all current posts
-        $ids = ( new WP_Query([
+        $query_args = [
             'fields'         => 'ids',
-            'post_type'      => 'page',
+            'post_type'      => '',
             'post_status'    => 'any',
             'posts_per_page' => -1, //phpcs:ignore
-        ]) )->posts;
+        ];
+
+        // Get all current posts & menu items
+        $page_args              = $query_args;
+        $page_args['post_type'] = 'page';
+        $menu_args              = $query_args;
+        $menu_args['post_type'] = 'nav_menu_item';
+        $ids                    = ( new WP_Query( $page_args ) )->posts;
+        $ids                    = array_merge( $ids, ( new WP_Query( $menu_args ) )->posts );
 
         /**
          * Filter the id's to those that have a guid that is not in the guids list
@@ -84,25 +91,37 @@ class POF_Importer {
          * @return bool    Whether this post should be deleted or not.
          */
         $delete_ids = array_filter( $ids, function( int $post_id ) use ( $guids ) : bool {
-            $guid          = get_field( 'api_guid', $post_id );
-            $template      = get_post_meta( $post_id, '_wp_page_template', true );
-            $template_list = [
-                'models/page-agegroup.php',
-                'models/page-program.php',
-                'models/page-task.php',
-                'models/page-taskgroup.php',
-            ];
 
-            return (
-                ( // Item is not in new tree
-                    ! empty( $guid ) &&
-                    ! in_array( $guid, $guids, true )
-                ) ||
-                ( // Item is a failed import (no guid but api item template)
-                    empty( $guid ) &&
-                    in_array( $template, $template_list, true )
-                )
-            );
+            // Is menu item or not
+            $object_id = get_post_meta( $post_id, '_menu_item_object_id', true );
+            if ( ! empty( $object_id ) ) {
+
+                return (
+                    get_field( 'api_guid', $object_id ) || // This is an api item
+                    ! get_post( $object_id ) // This is a deleted api item
+                );
+            }
+            else {
+                $guid          = get_field( 'api_guid', $post_id );
+                $template      = get_post_meta( $post_id, '_wp_page_template', true );
+                $template_list = [
+                    'models/page-agegroup.php',
+                    'models/page-program.php',
+                    'models/page-task.php',
+                    'models/page-taskgroup.php',
+                ];
+
+                return (
+                    ( // Item is not in new tree
+                        ! empty( $guid ) &&
+                        ! in_array( $guid, $guids, true )
+                    ) ||
+                    ( // Item is a failed import (no guid but api item template)
+                        empty( $guid ) &&
+                        in_array( $template, $template_list, true )
+                    )
+                );
+            }
         });
 
         if ( empty( $delete_ids ) ) {
