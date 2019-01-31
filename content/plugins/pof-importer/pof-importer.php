@@ -124,6 +124,10 @@ class POF_Importer {
         $postmeta_table = $wpdb->prefix . 'postmeta';
         $wpdb->query( 'DELETE FROM ' . $postmeta_table . ' WHERE post_id IN(' . implode( ',', $delete_ids ) . ')' );
 
+        $this->wp_cli_msg( 'Flushing cache & rewrite rules' );
+        wp_cache_flush();
+        flush_rewrite_rules();
+
         return true;
     }
 
