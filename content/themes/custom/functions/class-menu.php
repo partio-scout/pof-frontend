@@ -112,6 +112,28 @@ class Menu {
         // Modify array so the id is the array key
         $items = array_combine( wp_list_pluck( $items, 'ID' ), $items );
 
+        // Get age groups
+        $age_groups = ( new \WP_Query([
+            'post_type'      => 'page',
+            'posts_per_page' => -1,
+            'meta_key'       => 'api_type',
+            'meta_value'     => 'agegroup',
+            'fields'         => 'ids',
+        ]) )->posts;
+
+        /**
+         * Add the age groups to the current menu items
+         *
+         * @param array    $items Current menu items.
+         * @param \WP_Post $post  Age group to modify and add to menu.
+         * @return arra           Modified $items.
+         */
+        $items = array_reduce( $age_groups, function( array $items, int $post_id ) : array {
+            $menu_item               = static::custom_nav_menu_item( $post_id );
+            $items[ $menu_item->ID ] = $menu_item;
+            return $items;
+        }, $items);
+
         // Add menu item children automatically
         foreach ( $items as &$post ) {
             if ( $post->object === 'page' ) {
