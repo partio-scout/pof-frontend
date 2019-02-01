@@ -85,44 +85,84 @@ class POF_Importer {
         $ids                    = array_merge( $ids, ( new WP_Query( $menu_args ) )->posts );
 
         /**
-         * Filter the id's to those that have a guid that is not in the guids list
+         * Add api guid, template & object_id to each post
          *
-         * @param  int $id Post id to check.
-         * @return bool    Whether this post should be deleted or not.
+         * @param  array $ids      Total id list.
+         * @param  int    $post_id Post id to get data for.
+         * @return array           Modified $ids.
          */
-        $delete_ids = array_filter( $ids, function( int $post_id ) use ( $guids ) : bool {
+        $ids = array_reduce( $ids, function( array $ids, int $post_id ) : array {
+            $object_id = get_post_meta( $post_id, '_menu_item_object_id', true ) ?? null;
+            $guid      = get_field( 'api_guid', ! empty( $object_id ) ? $object_id : $post_id );
+            $template  = empty( $object_id ) ? get_post_meta( $post_id, '_wp_page_template', true ) : null;
+            $modified  = empty( $object_id ) ? get_the_modified_date( 'U', $post_id ) : null;
+            $ids[]     = [
+                'post_id'   => $post_id,
+                'guid'      => $guid,
+                'object_id' => $object_id,
+                'template'  => $template,
+                'modified'  => $modified,
+            ];
+            return $ids;
+        }, []);
 
-            // Is menu item or not
-            $object_id = get_post_meta( $post_id, '_menu_item_object_id', true );
-            if ( ! empty( $object_id ) ) {
+        /**
+         * Filter the id's to be deleted
+         *
+         * @var array
+         */
+        $delete_ids = array_reduce(
+            $ids, function( array $delete_ids, array $data ) use ( $ids, $guids ) : array {
 
-                return (
-                    get_field( 'api_guid', $object_id ) || // This is an api item
-                    ! get_post( $object_id ) // This is a deleted api item
-                );
-            }
-            else {
-                $guid          = get_field( 'api_guid', $post_id );
-                $template      = get_post_meta( $post_id, '_wp_page_template', true );
-                $template_list = [
-                    'models/page-agegroup.php',
-                    'models/page-program.php',
-                    'models/page-task.php',
-                    'models/page-taskgroup.php',
-                ];
-
-                return (
-                    ( // Item is not in new tree
-                        ! empty( $guid ) &&
-                        ! in_array( $guid, $guids, true )
+            if ( // If item is already in the delete list no need to check anything (this can happen on duplicates)
+                ! in_array( $data['post_id'], $delete_ids, true )
+            ) {
+                if (
+                    ( // Is nav menu item
+                        ! empty( $data['guid'] ) &&
+                        ! empty( $data['object_id'] )
                     ) ||
-                    ( // Item is a failed import (no guid but api item template)
-                        empty( $guid ) &&
-                        in_array( $template, $template_list, true )
+                    ( // Item is not in new tree
+                        ! empty( $data['guid'] ) &&
+                        ! in_array( $data['guid'], $guids, true )
+                    ) ||
+                    ( // Item is a failed import (no guid but has api item template)
+                        empty( $data['guid'] ) &&
+                        in_array(
+                            $data['template'], [
+                                'models/page-agegroup.php',
+                                'models/page-program.php',
+                                'models/page-task.php',
+                                'models/page-taskgroup.php',
+                            ], true
+                        )
                     )
-                );
+                ) {
+
+                    // Add item to delete list
+                    $delete_ids[] = $data['post_id'];
+                }
+                else {
+
+                    // If nothing else matched, check for duplicates
+                    $duplicates = array_filter(
+                        $ids, function( array $itemdata ) use ( $data ) : bool {
+                            return $itemdata['guid'] === $data['guid'];
+                        }
+                    );
+
+                    if ( count( $duplicates ) > 1 ) {
+
+                        // Add all but first of the duplicates to the delete list
+                        array_shift( $duplicates );
+                        $delete_ids += wp_list_pluck( $duplicates, 'post_id' );
+                    }
+                }
             }
-        });
+
+            return $delete_ids;
+            }, []
+        );
 
         if ( empty( $delete_ids ) ) {
             $this->wp_cli_msg( 'No posts to delete.' );
