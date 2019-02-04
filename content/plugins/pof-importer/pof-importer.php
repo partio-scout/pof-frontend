@@ -63,6 +63,9 @@ class POF_Importer {
      * @return bool Whether posts were deleted or not.
      */
     public function importer_cleanup() : bool {
+        global $wpdb;
+        $posts_table    = $wpdb->prefix . 'posts';
+        $postmeta_table = $wpdb->prefix . 'postmeta';
 
         $this->wp_cli_msg( 'Deleting old imported data.' );
 
@@ -70,44 +73,38 @@ class POF_Importer {
         $tree  = $this->fetch_data( $this->tree_url );
         $guids = array_keys( $this->flatten_tree( $tree['program'][0] ) );
 
-        $query_args = [
-            'fields'         => 'ids',
-            'post_type'      => '',
-            'post_status'    => 'any',
-            'posts_per_page' => -1, //phpcs:ignore
-        ];
+        // Collect all posts
+        $posts = $wpdb->get_results( 'SELECT ID,post_author,post_type,post_modified FROM ' . $posts_table . ' WHERE post_type IN ( "page", "nav_menu_item" )' );
 
-        // Get all current posts & menu items
-        $page_args              = $query_args;
-        $page_args['post_type'] = 'page';
-        $menu_args              = $query_args;
-        $menu_args['post_type'] = 'nav_menu_item';
-        $ids                    = ( new WP_Query( $page_args ) )->posts;
-        $ids                    = array_merge( $ids, ( new WP_Query( $menu_args ) )->posts );
+        $progress = $this->wp_cli_progress( 'Fetching post data to check for deletion', count( $posts ) );
 
         /**
          * Add api guid, template & object_id to each post
          *
          * @param  array $ids      Total id list.
-         * @param  int    $post_id Post id to get data for.
+         * @param  int   $post_id  Post id to get data for.
+         * @uses   mixed $progress Progressbar helper.
          * @return array           Modified $ids.
          */
-        $ids = array_reduce( $ids, function( array $ids, int $post_id ) : array {
-            $object_id = get_post_meta( $post_id, '_menu_item_object_id', true ) ?? null;
-            $guid      = get_field( 'api_guid', ! empty( $object_id ) ? $object_id : $post_id );
-            $template  = empty( $object_id ) ? get_post_meta( $post_id, '_wp_page_template', true ) : null;
-            $modified  = empty( $object_id ) ? get_the_modified_date( 'U', $post_id ) : null;
-            $author    = get_post_field( 'post_author', $post_id );
-            $ids[]     = [
-                'post_id'   => $post_id,
+        $ids = array_map( function( \stdClass $post ) use ( $progress ) : array {
+            $progress->tick();
+
+            $object_id = get_post_meta( $post->ID, '_menu_item_object_id', true ) ?? null;
+            $guid      = get_post_meta( ( ! empty( $object_id ) ? $object_id : $post->ID ), 'api_guid', true );
+            $template  = empty( $object_id ) ? get_post_meta( $post->ID, '_wp_page_template', true ) : null;
+            $modified  = strtotime( $post->post_modified );
+            $author    = intval( $post->post_author );
+            $post      = [
+                'post_id'   => $post->ID,
                 'guid'      => $guid,
                 'object_id' => $object_id,
                 'template'  => $template,
                 'modified'  => $modified,
                 'author'    => $author,
             ];
-            return $ids;
-        }, []);
+            return $post;
+        }, $posts );
+        $progress->finish();
 
         $importer = $this;
 
@@ -147,7 +144,7 @@ class POF_Importer {
                     ) ||
                     ( // Imported post is not from the author "importer"
                         ! empty( $data['guid'] ) &&
-                        $importer->get_importer_user()->ID !== intval( $data['author'] )
+                        $importer->get_importer_user()->ID !== $data['author']
                     ) ||
                     ( // Item is a failed import (no guid but has api item template)
                         empty( $data['guid'] ) &&
@@ -209,12 +206,9 @@ class POF_Importer {
             return false;
         }
 
-        global $wpdb;
         $this->wp_cli_msg( 'Deleting old posts.' );
-        $posts_table = $wpdb->prefix . 'posts';
         $wpdb->query( 'DELETE FROM ' . $posts_table . ' WHERE ID IN(' . implode( ',', $delete_ids ) . ')' );
         $this->wp_cli_msg( 'Deleting old postmeta.' );
-        $postmeta_table = $wpdb->prefix . 'postmeta';
         $wpdb->query( 'DELETE FROM ' . $postmeta_table . ' WHERE post_id IN(' . implode( ',', $delete_ids ) . ')' );
 
         $this->wp_cli_msg( 'Flushing cache & rewrite rules' );
