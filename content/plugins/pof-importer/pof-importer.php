@@ -97,15 +97,19 @@ class POF_Importer {
             $guid      = get_field( 'api_guid', ! empty( $object_id ) ? $object_id : $post_id );
             $template  = empty( $object_id ) ? get_post_meta( $post_id, '_wp_page_template', true ) : null;
             $modified  = empty( $object_id ) ? get_the_modified_date( 'U', $post_id ) : null;
+            $author    = get_post_field( 'post_author', $post_id );
             $ids[]     = [
                 'post_id'   => $post_id,
                 'guid'      => $guid,
                 'object_id' => $object_id,
                 'template'  => $template,
                 'modified'  => $modified,
+                'author'    => $author,
             ];
             return $ids;
         }, []);
+
+        $importer = $this;
 
         /**
          * Filter the id's to be deleted
@@ -113,7 +117,19 @@ class POF_Importer {
          * @var array
          */
         $delete_ids = array_reduce(
-            $ids, function( array $delete_ids, array $data ) use ( $ids, $guids ) : array {
+
+            /**
+             * Reduce the $ids array into those that should be deleted
+             *
+             * @param  array        $delete_ids Final list of id's to be deleted.
+             * @param  array        $data       Current $ids array item to check for deletion.
+             * @uses   array        $ids        Complete list of ids, used to check for duplicates.
+             * @uses   array        $guids      Complete list of guids in new api result,
+             *                                  used to check for api items that no longer exist.
+             * @uses   POF_Importer $importer   Used to get importer user id.
+             * @return array                    Modified $delete_ids.
+             */
+            $ids, function( array $delete_ids, array $data ) use ( $ids, $guids, $importer ) : array {
 
             if (
                 // If item is already in the delete list no need to check anything
@@ -128,6 +144,10 @@ class POF_Importer {
                     ( // Item is not in new tree
                         ! empty( $data['guid'] ) &&
                         ! in_array( $data['guid'], $guids, true )
+                    ) ||
+                    ( // Imported post is not from the author "importer"
+                        ! empty( $data['guid'] ) &&
+                        $importer->get_importer_user()->ID !== intval( $data['author'] )
                     ) ||
                     ( // Item is a failed import (no guid but has api item template)
                         empty( $data['guid'] ) &&
