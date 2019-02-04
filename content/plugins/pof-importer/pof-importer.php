@@ -33,6 +33,7 @@ class POF_Importer {
     private $normal_importer;   // tell that we run normal importer
     private $tips_importer;     // tell that we run tips importer
     private $site_languages;    // get site general languages
+    private $importer_user;     // Importer user object
     private static $instance;
 
     public static function init() {
@@ -114,7 +115,9 @@ class POF_Importer {
         $delete_ids = array_reduce(
             $ids, function( array $delete_ids, array $data ) use ( $ids, $guids ) : array {
 
-            if ( // If item is already in the delete list no need to check anything (this can happen on duplicates)
+            if (
+                // If item is already in the delete list no need to check anything
+                // this can happen when duplicates are added to the list
                 ! in_array( $data['post_id'], $delete_ids, true )
             ) {
                 if (
@@ -142,7 +145,7 @@ class POF_Importer {
                     // Add item to delete list
                     $delete_ids[] = $data['post_id'];
                 }
-                else {
+                elseif ( ! empty( $data['guid'] ) ) {
 
                     // If nothing else matched, check for duplicates
                     $duplicates = array_filter(
@@ -153,9 +156,20 @@ class POF_Importer {
 
                     if ( count( $duplicates ) > 1 ) {
 
+                        /**
+                         * Sort the duplicates so that the latest one is first
+                         *
+                         * @param  array $a Item to sort.
+                         * @param  array $b Item to sort.
+                         * @return int      1, -1 or 0 depending on sort result.
+                         */
+                        usort( $duplicates, function( array $a, array $b ) : int {
+                            return $b['modified'] <=> $a['modified'];
+                        });
+
                         // Add all but first of the duplicates to the delete list
                         array_shift( $duplicates );
-                        $delete_ids += wp_list_pluck( $duplicates, 'post_id' );
+                        $delete_ids = array_merge( $delete_ids, wp_list_pluck( $duplicates, 'post_id' ) );
                     }
                 }
             }
@@ -527,6 +541,9 @@ class POF_Importer {
                                 (
                                     strtotime( $page->post_modified ) <
                                     strtotime( $lang['lastModified'] )
+                                ) ||
+                                (
+                                    $importer->get_importer_user()->ID !== intval( $page->post_author )
                                 )
                             ) {
                                 $lang['update'] = true;
@@ -625,6 +642,28 @@ class POF_Importer {
     }
 
     /**
+     * Get importer user object
+     * Creates importer user if it doesnt exist
+     *
+     * @return \WP_User
+     */
+    public function get_importer_user() : \WP_User {
+        if ( ! empty( $this->importer_user ) ) {
+            return $this->importer_user;
+        }
+
+        $user = get_user_by( 'slug', 'importer' );
+        if ( empty( $user ) ) {
+            $user_id = wp_create_user( 'importer', '', 'importer@partio.fi' );
+            $user    = get_user_by( 'ID', $user_id );
+            $user->add_role( 'administrator' );
+        }
+        $this->importer_user = $user;
+
+        return $user;
+    }
+
+    /**
      * Begin the actual import process
      *
      * @param array $tree Api data.
@@ -663,6 +702,7 @@ class POF_Importer {
                         'post_content'  => $lang['data']['content'],
                         'page_template' => 'models/page-' . $lang['data']['type'] . '.php',
                         'post_modified' => $lang['lastModified'],
+                        'post_author'   => $class->get_importer_user()->ID,
                     ];
 
                     // If item has parent link to it
