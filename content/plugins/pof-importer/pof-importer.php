@@ -60,9 +60,17 @@ class POF_Importer {
     /**
      * Delete imported posts that no longer exist in the backend
      *
-     * @return bool Whether posts were deleted or not.
+     * [--dry-run]
+     * : Run the function without running the deletion.
+     *
+     * [--list-delete]
+     * : List what id's are on the delete list after the run is complete.
+     *
+     * @param  array $args       Auto populated by WP_CLI (unsued).
+     * @param  array $assoc_args Auto populated by, used to detect dry runs.
+     * @return bool              Whether posts were deleted or not.
      */
-    public function importer_cleanup() : bool {
+    public function importer_cleanup( $args = [], $assoc_args = [] ) : bool {
         global $wpdb;
         $posts_table    = $wpdb->prefix . 'posts';
         $postmeta_table = $wpdb->prefix . 'postmeta';
@@ -206,16 +214,52 @@ class POF_Importer {
             return false;
         }
 
-        $this->wp_cli_msg( 'Deleting old posts.' );
-        $wpdb->query( 'DELETE FROM ' . $posts_table . ' WHERE ID IN(' . implode( ',', $delete_ids ) . ')' );
-        $this->wp_cli_msg( 'Deleting old postmeta.' );
-        $wpdb->query( 'DELETE FROM ' . $postmeta_table . ' WHERE post_id IN(' . implode( ',', $delete_ids ) . ')' );
+        // Do not run actual deletion on dry run
+        if (
+            array_key_exists( 'dry-run', $assoc_args ) &&
+            $assoc_args['dry-run']
+        ) {
+            $this->wp_cli_success( 'Dry run complete, would delete (' . count( $delete_ids ) . ') posts.' );
+        }
+        else {
+            $this->wp_cli_msg( 'Deleting old posts.' );
+            $wpdb->query( 'DELETE FROM ' . $posts_table . ' WHERE ID IN(' . implode( ',', $delete_ids ) . ')' );
+            $this->wp_cli_msg( 'Deleting old postmeta.' );
+            $wpdb->query( 'DELETE FROM ' . $postmeta_table . ' WHERE post_id IN(' . implode( ',', $delete_ids ) . ')' );
 
-        $this->wp_cli_msg( 'Flushing cache & rewrite rules' );
-        wp_cache_flush();
-        flush_rewrite_rules();
+            $this->wp_cli_msg( 'Flushing cache & rewrite rules' );
+            wp_cache_flush();
+            flush_rewrite_rules();
+
+            $this->wp_cli_success( 'Run complete, deleted (' . count( $delete_ids ) . ') posts.' );
+        }
+
+        // List delete_ids content
+        if (
+            array_key_exists( 'list-delete', $assoc_args ) &&
+            $assoc_args['list-delete']
+        ) {
+            $this->wp_cli_format_items( array_map( function( int $id ) : array {
+                return [
+                    'id' => $id,
+                ];
+            }, $delete_ids ), [ 'id' ] );
+        }
 
         return true;
+    }
+
+    /**
+     * Format items for wp cli
+     *
+     * @param  array  $items  An array of items to format.
+     * @param  array  $fields Fields to get from items.
+     * @param  string $format What format to output the result in (table,yaml,json).
+     */
+    protected function wp_cli_format_items( array $items, array $fields, string $format = 'table' ) {
+        if ( defined( '\\WP_CLI' ) && \WP_CLI ) {
+            \WP_CLI\Utils\format_items( $format, $items, $fields );
+        }
     }
 
     /**
