@@ -79,12 +79,6 @@ class ApiTranslation extends Helper {
         $locale = substr( get_locale(), 0, 2 );
 
         foreach ( $group as $lang ) {
-
-            // Handle non-standard lang results
-            if ( is_array( $lang['lang'] ) ) {
-                $lang['lang'] = reset( $lang['lang'] );
-            }
-
             if ( $lang['lang'] === $locale ) {
                 $group = array_column( $lang['items'], 'value', 'key' );
                 break;
