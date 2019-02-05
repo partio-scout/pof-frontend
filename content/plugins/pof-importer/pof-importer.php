@@ -540,13 +540,15 @@ class POF_Importer {
      * @return array       Modified & filtered $tree.
      */
     private function get_import_data( $tree ) {
+        global $wpdb;
+        $start       = microtime( true );
+        $posts_table = $wpdb->prefix . 'posts';
+        $posts       = $wpdb->get_results( 'SELECT ID FROM ' . $posts_table . ' WHERE post_type="page"' );
+        $posts       = array_map(function( \stdClass $post ) : \stdClass {
+            return \DustPress\Query::get_acf_post( $post->ID );
+        }, $posts );
 
-        $start = microtime( true );
-        $posts = \DustPress\Query::get_acf_posts([
-            'post_type'      => 'page',
-            'post_status'    => 'any',
-            'posts_per_page' => -1, //phpcs:ignore
-        ]);
+
         // Store each post and its language
         foreach ( $posts as $post ) {
             $guid = $post->fields['api_guid'];
@@ -578,7 +580,7 @@ class POF_Importer {
             });
 
             // Update languages with necessary data
-            $item['languages'] = array_map(function( $lang ) use ( $pages, $importer ) {
+            $item['languages'] = array_map(function( $lang ) use ( $pages, $importer, $item ) {
 
                 if ( empty( $pages ) ) {
 
@@ -596,21 +598,28 @@ class POF_Importer {
 
                             // Mark post for update
                             if (
-                                (
+                                ( // Post has been modified
                                     strtotime( $page->fields['api_lastmodified'] ) <
                                     strtotime( $lang['lastModified'] )
                                 ) ||
-                                (
+                                ( // Post has been modified
                                     strtotime( $page->post_modified ) <
                                     strtotime( $lang['lastModified'] )
                                 ) ||
-                                (
+                                ( // Post isnt by importer user
                                     $importer->get_importer_user()->ID !== intval( $page->post_author )
                                 )
                             ) {
                                 $lang['update'] = true;
                             }
                         }
+                    }
+
+                    if ( // Post doesn't have a parent it should have
+                        empty( $lang['page'] ) &&
+                        ! empty( $item['parent'] )
+                    ) {
+                        $lang['update'] = true;
                     }
                 }
 
