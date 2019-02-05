@@ -194,7 +194,11 @@ class POF_Importer {
 
                         // Add all but first of the duplicates to the delete list
                         array_shift( $duplicates );
-                        $delete_ids = array_merge( $delete_ids, wp_list_pluck( $duplicates, 'post_id' ) );
+                        foreach ( $duplicates as $duplicate ) {
+                            if ( ! in_array( $duplicate['post_id'], $delete_ids, true ) ) {
+                                $delete_ids[] = $duplicate['post_id'];
+                            }
+                        }
                     }
                 }
             }
