@@ -544,7 +544,7 @@ class POF_Importer {
         $start       = microtime( true );
         $posts_table = $wpdb->prefix . 'posts';
         $posts       = $wpdb->get_results( 'SELECT ID FROM ' . $posts_table . ' WHERE post_type="page"' );
-        $posts       = array_map(function( \stdClass $post ) : \stdClass {
+        $posts       = array_map(function( \stdClass $post ) {
             return \DustPress\Query::get_acf_post( $post->ID );
         }, $posts );
 
