@@ -59,21 +59,39 @@ class ApiTranslation extends Helper {
     public static function get_translations() {
         if ( empty( static::$translation ) ) {
             // Get translations from the api and transform them into an easily searchable format
-            $kaannos_json = get_field( 'kaannos-json', 'option' );
-            $translations = \POF\Api::get( $kaannos_json, true );
-            $locale       = substr( get_locale(), 0, 2 );
-            foreach ( $translations as &$group ) {
-                foreach ( $group as $lang ) {
-                    if ( $lang['lang'] === $locale ) {
-                        $group = array_column( $lang['items'], 'value', 'key' );
-                        continue 2;
-                    }
-                }
-            }
+            $kaannos_json         = get_field( 'kaannos-json', 'option' );
+            $translations         = \POF\Api::get( $kaannos_json, true );
+            $translations         = array_map( [ __CLASS__, 'map_get_translations' ], $translations );
             static::$translations = $translations;
         }
 
         return static::$translations;
+    }
+
+    /**
+     * Map api translations into an easy to search format
+     * Should only be used via array_map
+     *
+     * @param  array $group Group to modify.
+     * @return array        Modified $group.
+     */
+    public static function map_get_translations( array $group ) : array {
+        $locale = substr( get_locale(), 0, 2 );
+
+        foreach ( $group as $lang ) {
+
+            // Handle non-standard lang results
+            if ( is_array( $lang['lang'] ) ) {
+                $lang['lang'] = reset( $lang['lang'] );
+            }
+
+            if ( $lang['lang'] === $locale ) {
+                $group = array_column( $lang['items'], 'value', 'key' );
+                break;
+            }
+        }
+
+        return $group;
     }
 }
 
