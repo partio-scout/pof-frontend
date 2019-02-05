@@ -119,6 +119,8 @@ class Menu {
             'meta_key'       => 'api_type',
             'meta_value'     => 'agegroup',
             'fields'         => 'ids',
+            'orderby'        => 'menu_order',
+            'order'          => 'ASC',
         ]) )->posts;
 
         /**
@@ -143,6 +145,8 @@ class Menu {
                     'post_status'    => 'publish',
                     'posts_per_page' => -1, //phpcs:ignore
                     'fields'         => 'ids',
+                    'orderby'        => 'menu_order',
+                    'order'          => 'ASC',
                 ]) );
                 if ( ! empty( $query->posts ) ) {
                     foreach ( $query->posts as &$child_post ) {
