@@ -3,102 +3,6 @@
     "title": "Sivuston asetukset",
     "fields": [
         {
-            "key": "field_559a7d65d2f13",
-            "label": "Kieliversiot",
-            "name": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0
-        },
-        {
-            "key": "field_559a737dde24d",
-            "label": "Kielet",
-            "name": "kielet",
-            "type": "repeater",
-            "instructions": "Lis\u00e4\u00e4 t\u00e4h\u00e4n sivuston p\u00e4\u00e4kielet. Kirjoita kielen kaksikirjaiminen lyhenne isoilla kirjaimilla, esimerkiksi 'FI'.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "min": "",
-            "max": "",
-            "layout": "row",
-            "button_label": "Lis\u00e4\u00e4 rivi",
-            "sub_fields": [
-                {
-                    "key": "field_559a7416de24e",
-                    "label": "Kielilyhenne",
-                    "name": "kielilyhenne",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": 2,
-                    "readonly": 0,
-                    "disabled": 0
-                }
-            ]
-        },
-        {
-            "key": "field_559a7da0b3dfc",
-            "label": "Sis\u00e4lt\u00f6",
-            "name": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0
-        },
-        {
-            "key": "field_57cd8a6a0d114",
-            "label": "Etusivun karusellin vaihtov\u00e4li",
-            "name": "slider_time",
-            "type": "number",
-            "instructions": "Aseta luku sekunneissa mink\u00e4 v\u00e4lein etusivun karuselli vaihtaa nostoa.",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": 10,
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "min": "",
-            "max": "",
-            "step": "",
-            "readonly": 0,
-            "disabled": 0
-        },
-        {
             "key": "field_559d20afda46a",
             "label": "API",
             "name": "",
@@ -221,6 +125,45 @@
             "disabled": 0
         },
         {
+            "key": "field_559a7da0b3dfc",
+            "label": "Sis\u00e4lt\u00f6",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_57cd8a6a0d114",
+            "label": "Etusivun karusellin vaihtov\u00e4li",
+            "name": "slider_time",
+            "type": "number",
+            "instructions": "Aseta luku sekunneissa mink\u00e4 v\u00e4lein etusivun karuselli vaihtaa nostoa.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 10,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
             "key": "field_57bdb3729d455",
             "label": "Analytiikka",
             "name": "",
@@ -275,5 +218,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1527065228
+    "modified": 1549347440
 }
