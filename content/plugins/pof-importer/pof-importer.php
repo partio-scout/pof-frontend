@@ -623,6 +623,11 @@ class POF_Importer {
                     }
                 }
 
+                // Item doesnt have a post in its language
+                if ( empty( $lang['page'] ) ) {
+                    $lang['update'] = true;
+                }
+
                 return $lang;
             }, $item['languages'] );
 
