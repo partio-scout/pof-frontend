@@ -616,8 +616,14 @@ class POF_Importer {
                     }
 
                     if ( // Post doesn't have a parent it should have
-                        empty( $lang['page'] ) &&
-                        ! empty( $item['parent'] )
+                        ! empty( $item['parent'] ) &&
+                        (
+                            empty( $lang['page'] ) ||
+                            (
+                                ! empty( $lang['page'] ) &&
+                                empty( $lang['page']->post_parent )
+                            )
+                        )
                     ) {
                         $lang['update'] = true;
                     }
