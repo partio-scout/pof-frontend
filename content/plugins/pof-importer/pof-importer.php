@@ -782,7 +782,7 @@ class POF_Importer {
                         if ( ! empty( $parent_id ) ) {
 
                             // Parent post already exists
-                            $args['post_parent'] = $parent_id;
+                            $args['post_parent'] = icl_object_id( $parent_id, 'page', false, $lang['lang'] );
                         }
                         else {
 
@@ -795,7 +795,7 @@ class POF_Importer {
                                 'meta_value'     => $item['parent'],
                             ]);
                             if ( ! empty( $post_parent_query->posts ) ) {
-                                $args['post_parent'] = $post_parent_query->posts[0];
+                                $args['post_parent'] = icl_object_id( $post_parent_query->posts[0], 'page', false, $lang['lang'] );
                             }
                             else {
 
