@@ -102,6 +102,7 @@ class POF_Importer {
             $template  = empty( $object_id ) ? get_post_meta( $post->ID, '_wp_page_template', true ) : null;
             $modified  = strtotime( $post->post_modified );
             $author    = intval( $post->post_author );
+            $language  = empty( $object_id ) ? pll_get_post_language( $post->ID ) : null;
             $post      = [
                 'post_id'   => $post->ID,
                 'guid'      => $guid,
@@ -109,6 +110,7 @@ class POF_Importer {
                 'template'  => $template,
                 'modified'  => $modified,
                 'author'    => $author,
+                'language'  => $language,
             ];
             return $post;
         }, $posts );
@@ -164,6 +166,10 @@ class POF_Importer {
                                 'models/page-taskgroup.php',
                             ], true
                         )
+                    ) ||
+                    ( // Item has no language
+                        ! empty( $data['guid'] ) &&
+                        empty( $data['language'] )
                     )
                 ) {
 
@@ -175,7 +181,10 @@ class POF_Importer {
                     // If nothing else matched, check for duplicates
                     $duplicates = array_filter(
                         $ids, function( array $itemdata ) use ( $data ) : bool {
-                            return $itemdata['guid'] === $data['guid'];
+                            return (
+                                $itemdata['guid'] === $data['guid'] &&
+                                $itemdata['language'] === $data['language']
+                            );
                         }
                     );
 
@@ -193,6 +202,7 @@ class POF_Importer {
                         });
 
                         // Add all but first of the duplicates to the delete list
+                        // As the first "duplicate" is the actual post we want to preserve
                         array_shift( $duplicates );
                         foreach ( $duplicates as $duplicate ) {
                             if ( ! in_array( $duplicate['post_id'], $delete_ids, true ) ) {
