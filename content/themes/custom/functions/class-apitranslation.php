@@ -76,9 +76,10 @@ class ApiTranslation extends Helper {
      * @return array        Modified $group.
      */
     public static function map_get_translations( array $group ) : array {
-        $locale = substr( get_locale(), 0, 2 );
+        $locale = reset( str_word_count( get_locale(), 1 ) ); // Get the start of the locale string
 
         foreach ( $group as $lang ) {
+
             if ( $lang['lang'] === $locale ) {
                 $group = array_column( $lang['items'], 'value', 'key' );
                 break;
