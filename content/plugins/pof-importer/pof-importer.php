@@ -82,7 +82,8 @@ class POF_Importer {
         $guids = array_keys( $this->flatten_tree( $tree['program'][0] ) );
 
         // Collect all posts
-        $posts = $wpdb->get_results( 'SELECT ID,post_author,post_type,post_modified FROM ' . $posts_table . ' WHERE post_type IN ( "page", "nav_menu_item" )' );
+        $posts   = $wpdb->get_results( 'SELECT ID,post_author,post_type,post_modified FROM ' . $posts_table . ' WHERE post_type IN ( "page", "nav_menu_item", "pof_tip" )' );
+        $id_list = wp_list_pluck( $posts, 'ID' );
 
         $progress = $this->wp_cli_progress( 'Fetching post data to check for deletion', count( $posts ) );
 
@@ -94,23 +95,37 @@ class POF_Importer {
          * @uses   mixed $progress Progressbar helper.
          * @return array           Modified $ids.
          */
-        $ids = array_map( function( \stdClass $post ) use ( $progress ) : array {
+        $ids = array_map( function( \stdClass $post ) use ( $id_list, $progress ) : array {
             $progress->tick();
 
-            $object_id = get_post_meta( $post->ID, '_menu_item_object_id', true ) ?? null;
-            $guid      = get_post_meta( ( ! empty( $object_id ) ? $object_id : $post->ID ), 'api_guid', true );
-            $template  = empty( $object_id ) ? get_post_meta( $post->ID, '_wp_page_template', true ) : null;
-            $modified  = strtotime( $post->post_modified );
-            $author    = intval( $post->post_author );
-            $language  = empty( $object_id ) ? pll_get_post_language( $post->ID ) : null;
-            $post      = [
-                'post_id'   => $post->ID,
-                'guid'      => $guid,
-                'object_id' => $object_id,
-                'template'  => $template,
-                'modified'  => $modified,
-                'author'    => $author,
-                'language'  => $language,
+            if ( $post->post_type === 'nav_menu_item' ) {
+                $object_id = get_post_meta( $post->ID, '_menu_item_object_id', true );
+                $guid      = get_post_meta( $object_id, 'api_guid', true );
+            }
+            elseif ( $post->post_type === 'pof_tip' ) {
+                $pof_tip_parent        = get_post_meta( $post->ID, 'pof_tip_parent', true );
+                $pof_tip_parent_exists = in_array( $pof_tip_parent, $id_list, true );
+                if ( $pof_tip_parent_exists ) {
+                    $guid = get_post_meta( $pof_tip_parent, 'api_guid', true );
+                }
+            }
+            else {
+                $guid     = get_post_meta( $post->ID, 'api_guid', true );
+                $template = get_post_meta( $post->ID, '_wp_page_template', true );
+                $author   = intval( $post->post_author );
+                $language = pll_get_post_language( $post->ID );
+                $modified = strtotime( $post->post_modified );
+            }
+            $post = [
+                'post_id'               => $post->ID,
+                'post_type'             => $post->post_type,
+                'guid'                  => $guid ?? null,
+                'object_id'             => $object_id ?? null,
+                'template'              => $template ?? null,
+                'modified'              => $modified ?? null,
+                'author'                => $author ?? null,
+                'language'              => $language ?? null,
+                'pof_tip_parent_exists' => $pof_tip_parent_exists ?? null,
             ];
             return $post;
         }, $posts );
@@ -144,32 +159,51 @@ class POF_Importer {
                 ! in_array( $data['post_id'], $delete_ids, true )
             ) {
                 if (
-                    ( // Is nav menu item
-                        ! empty( $data['guid'] ) &&
-                        ! empty( $data['object_id'] )
-                    ) ||
-                    ( // Item is not in new tree
-                        ! empty( $data['guid'] ) &&
-                        ! in_array( $data['guid'], $guids, true )
-                    ) ||
-                    ( // Imported post is not from the author "importer"
-                        ! empty( $data['guid'] ) &&
-                        $importer->get_importer_user()->ID !== $data['author']
-                    ) ||
-                    ( // Item is a failed import (no guid but has api item template)
-                        empty( $data['guid'] ) &&
-                        in_array(
-                            $data['template'], [
-                                'models/page-agegroup.php',
-                                'models/page-program.php',
-                                'models/page-task.php',
-                                'models/page-taskgroup.php',
-                            ], true
+                    ( // Common checks
+                        ( // Item guid is not in new tree
+                            ! empty( $data['guid'] ) &&
+                            ! in_array( $data['guid'], $guids, true )
+                        ) ||
+                        ( // Imported post is not from the author "importer"
+                            ! empty( $data['guid'] ) &&
+                            $importer->get_importer_user()->ID !== $data['author']
                         )
                     ) ||
-                    ( // Item has no language
-                        ! empty( $data['guid'] ) &&
-                        empty( $data['language'] )
+                    ( // Checks for nav menu items
+                        $data['post_type'] === 'nav_menu_item' &&
+                        (
+                            ( // Is nav menu item with api item as nav item
+                                ! empty( $data['guid'] )
+                            )
+                        )
+                    ) ||
+                    ( // Checks for api tips
+                        $data['post_type'] === 'pof_tip' &&
+                        (
+                            ( // Tip parent has been deleted
+                                empty( $data['pof_tip_parent_exists'] )
+                            )
+                        )
+                    ) ||
+                    ( // Check for api posts
+                        $data['post_type'] === 'page' &&
+                        (
+                            ( // Item is a failed import (no guid but has api item template)
+                                empty( $data['guid'] ) &&
+                                in_array(
+                                    $data['template'], [
+                                        'models/page-agegroup.php',
+                                        'models/page-program.php',
+                                        'models/page-task.php',
+                                        'models/page-taskgroup.php',
+                                    ], true
+                                )
+                            ) ||
+                            ( // Item has no language
+                                ! empty( $data['guid'] ) &&
+                                empty( $data['language'] )
+                            )
+                        )
                     )
                 ) {
 
