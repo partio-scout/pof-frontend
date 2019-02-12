@@ -322,17 +322,61 @@ function sort_by_order( $a, $b ) {
 /**
  * Get age groups from the api
  *
+ * @param  bool $filter Whether we should filter the results to the current language.
  * @return array
  */
-function get_age_groups() {
+function get_age_groups( bool $filter = false ) : array {
     $ohjelma_json = get_field( 'ohjelma-json', 'option' );
-    $program      = \POF\Api::get( $ohjelma_json, true );
-    $age_groups   = $program['program'][0]['agegroups'];
+    $program      = \POF\Api::get( $ohjelma_json, true )['program'];
+    $program      = $filter ? array_reduce( $program, 'filter_api_items', [] ) : $program;
+    $age_groups   = $program[0]['agegroups'];
 
     usort( $age_groups, 'sort_by_order' );
     sort_results( $age_groups );
 
     return $age_groups;
+}
+
+/**
+ * Recursively filter api items and its child items to current language
+ * Should only be called via array_reduce
+ *
+ * @param  array $items Final result.
+ * @param  array $item  Api item to filter.
+ * @return array        Modified $items.
+ */
+function filter_api_items( array $items, array $item ) : array {
+    if ( array_key_exists( 'languages', $item ) ) {
+        $lang_exists = array_reduce( $item['languages'], 'languages_has_current', false );
+
+        if ( $lang_exists ) {
+            $keys_to_traverse = [
+                'agegroups',
+                'taskgroups',
+                'tasks',
+            ];
+            foreach ( $keys_to_traverse as $key ) {
+                if ( ! empty( $item[ $key ] ) ) {
+                    $item[ $key ] = array_reduce( $item[ $key ], 'filter_api_items', [] );
+                }
+            }
+            $items[] = $item;
+        }
+    }
+
+    return $items;
+}
+
+/**
+ * Check api items languages if it contains current language
+ * Should only be called via array_reduce
+ *
+ * @param  bool  $result True or false depending on if current language exists.
+ * @param  array $lang   Language to check.
+ * @return bool          Whether language exists.
+ */
+function languages_has_current( bool $result, array $lang ) {
+    return $result ? $result : $lang['lang'] === get_short_locale();
 }
 
 /**

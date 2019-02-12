@@ -40,7 +40,7 @@ class ApiTranslation extends Helper {
             // Get translations from the api and transform them into an easily searchable format
             $kaannos_json = get_field( 'kaannos-json', 'option' );
             $translations = \POF\Api::get( $kaannos_json, true );
-            $locale       = substr( get_locale(), 0, 2 );
+            $locale       = get_short_locale();
             foreach ( $translations as &$group ) {
                 foreach ( $group as $lang ) {
                     if ( $lang['lang'] === $locale ) {
