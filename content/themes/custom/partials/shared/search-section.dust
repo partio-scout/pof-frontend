@@ -2,7 +2,7 @@
 <section class="search-box">
     <div class="row">
         <div class="small-12 columns align-center">
-            <form class="search-box__form" method="get" action="/{Header.LangSlug}">
+            <form class="search-box__form" method="get" action="/{?Header.LangSlug}{Header.LangSlug}/{/Header.LangSlug}">
                 <h3 class="search-heading">{@apitranslation path="haku.search_title" fallback="haku.search_title" /}</h3>
                 <div class="row collapse align-center">
                     <div class="small-12 columns search-input-container">
