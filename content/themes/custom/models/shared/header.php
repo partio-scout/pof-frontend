@@ -8,10 +8,17 @@ class Header extends \DustPress\Model {
 
     /**
      * Get the slug for current language
+     *
+     * @return string
      */
-    public function LangSlug() {
+    public function LangSlug() : string {
         $slug = pll_current_language();
-        return $slug;
+
+        if ( $slug !== pll_default_language() ) {
+            return $slug;
+        }
+
+        return '';
     }
 
     public function HomeUrl() {
