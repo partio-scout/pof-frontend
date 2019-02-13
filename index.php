@@ -8,14 +8,6 @@ require_once( dirname( __FILE__ ) . '/setup.php' );
 
 define( 'WP_USE_THEMES', true );
 
-// ==============
-// REDIS SETTINGS
-// ==============
-define( 'WP_REDIS_DISABLE', (int) getenv( 'WP_REDIS_DISABLE' ) );
-define( 'WP_REDIS_DB', getenv( 'WP_REDIS_DB' ) );
-define( 'WP_REDIS_HOST', getenv( 'WP_REDIS_HOST' ) );
-define( 'WP_REDIS_PASSWORD', getenv( 'WP_REDIS_PASSWORD' ) );
-
 // To disable redis caching, set the WP_REDIS_DISABLE env as 1.
 if ( WP_REDIS_DISABLE === 1 ) {
     // NO CACHING
