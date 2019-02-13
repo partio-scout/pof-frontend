@@ -11,13 +11,18 @@ class Tips extends \DustPress\Model {
             $this->validate_tip( $args );
             return;
         }
-        $tips_args = [
-            'post_id'   => get_the_ID(),    // id of the curr page
-            'status' => 'approve',
-            'orderby'   => 'comment_date',
-            'order'     => 'ASC'
-        ];
-        $tips = get_comments( $tips_args );
+
+        $args = array(
+            'post_per_page' => 100,
+            'post_type' => 'pof_tip',
+            'post_status' => 'publish',
+            'meta_key' => 'pof_tip_parent',
+            'meta_compare' => '=',
+            'meta_value' => get_the_ID(),
+        );
+
+        $query = new WP_Query( $args );
+        $tips = $query->posts;
         foreach ($tips as $key => $tip) {
             $i++;
             $tips[$key]->comment_content = nl2br($tips[$key]->comment_content);
