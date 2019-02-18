@@ -217,11 +217,6 @@ class POF_Importer {
             }, []
         );
 
-        if ( empty( $delete_ids ) ) {
-            $this->wp_cli_msg( 'No posts to delete.' );
-            return false;
-        }
-
         // Check that we will still have a suitable amount of posts after the deletion
         if ( count( $ids ) - count( $delete_ids ) < 70 ) {
             $this->wp_cli_error( 'There would be less than a 1000 posts after cleanup so aborting just in case.' );
@@ -236,16 +231,26 @@ class POF_Importer {
             $this->wp_cli_success( 'Dry run complete, would delete (' . count( $delete_ids ) . ') posts.' );
         }
         else {
-            $this->wp_cli_msg( 'Deleting old posts.' );
-            $wpdb->query( 'DELETE FROM ' . $posts_table . ' WHERE ID IN(' . implode( ',', $delete_ids ) . ')' );
-            $this->wp_cli_msg( 'Deleting old postmeta.' );
-            $wpdb->query( 'DELETE FROM ' . $postmeta_table . ' WHERE post_id IN(' . implode( ',', $delete_ids ) . ')' );
+            if ( ! empty( $delete_ids ) ) {
+                $this->wp_cli_msg( 'No posts to delete.' );
+            }
+            else {
+                $this->wp_cli_msg( 'Deleting old posts.' );
+                $wpdb->query( 'DELETE FROM ' . $posts_table . ' WHERE ID IN(' . implode( ',', $delete_ids ) . ')' );
+                $this->wp_cli_msg( 'Deleting old postmeta.' );
+                $wpdb->query( 'DELETE FROM ' . $postmeta_table . ' WHERE post_id IN(' . implode( ',', $delete_ids ) . ')' );
+
+                $this->wp_cli_success( 'Run complete, deleted (' . count( $delete_ids ) . ') posts.' );
+            }
 
             $this->wp_cli_msg( 'Flushing cache & rewrite rules' );
             wp_cache_flush();
             flush_rewrite_rules();
 
-            $this->wp_cli_success( 'Run complete, deleted (' . count( $delete_ids ) . ') posts.' );
+            if ( function_exists( 'relevanssi_build_index' ) ) {
+                $this->wp_cli_msg( 'Rebuilding relevanssi index.' );
+                relevanssi_build_index();
+            }
         }
 
         // List delete_ids content
