@@ -231,7 +231,7 @@ class POF_Importer {
             $this->wp_cli_success( 'Dry run complete, would delete (' . count( $delete_ids ) . ') posts.' );
         }
         else {
-            if ( ! empty( $delete_ids ) ) {
+            if ( empty( $delete_ids ) ) {
                 $this->wp_cli_msg( 'No posts to delete.' );
             }
             else {
