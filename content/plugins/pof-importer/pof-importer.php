@@ -103,6 +103,7 @@ class POF_Importer {
                 $guid      = get_post_meta( $object_id, 'api_guid', true );
             }
             elseif ( $post->post_type === 'pof_tip' ) {
+                $author                = intval( $post->post_author );
                 $pof_tip_parent        = get_post_meta( $post->ID, 'pof_tip_parent', true );
                 $pof_tip_parent_exists = in_array( $pof_tip_parent, $id_list, true );
                 if ( $pof_tip_parent_exists ) {
