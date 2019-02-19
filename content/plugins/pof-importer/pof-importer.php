@@ -464,23 +464,7 @@ class POF_Importer {
         $this->created    = 0;
         $this->start_time = microtime( true );
 
-        // fetch tasks from database
-        $args  = [
-            'posts_per_page' => -1,
-            'post_type'      => 'page',
-            'post_parent'    => $post_id,
-            'post_status'    => 'publish',
-            'meta_key'       => 'api_type',
-            'meta_value'     => 'task',
-        ];
-        $tasks = \DustPress\Query::get_acf_posts( $args );
-
-        $taskData = array();
-        foreach ( $tasks as $key => $task ) {
-            $taskData[ $task->fields['api_guid'] ][ strtolower( $task->fields['api_lang'] ) ] = $task;
-        }
-
-        $this->update_tips( $taskData );
+        $this->update_tips();
     }
 
     /**
@@ -901,52 +885,64 @@ class POF_Importer {
      *
      * @param array $data Tip data.
      */
-    private function update_tips( $data ) {
+    private function update_tips() {
 
         $tips_data = $this->fetch_data( $this->tips_url );
 
         if ( ! $tips_data ) {
-            $this->error = __('An error occured while fetching tips from backend.', 'pof_importer');
-        } else {
+            $this->error = __( 'An error occured while fetching tips from backend.', 'pof_importer' );
+        }
+        else {
             $progress = $this->wp_cli_progress( 'Importing tips', count( $tips_data ) );
 
-            foreach ($tips_data as $id => $tip) {
+            foreach ( $tips_data as $id => $tip ) {
                 $progress->tick();
 
-                $parent = $data[$tip['post']['guid']][$tip['lang']];
-                if ( isset ( $parent ) ) {
+                global $wpdb;
+                $postmeta_table = $wpdb->prefix . 'postmeta';
+                $parent_query   = 'SELECT post_id FROM ' . $postmeta_table . ' WHERE meta_key="api_guid" AND meta_value="%s"';
+                $parent_query   = $wpdb->prepare( $parent_query, $tip['post']['guid'] );
+                $parent_id      = $wpdb->get_row( $parent_query );
+
+                if ( ! empty( $parent_id ) ) {
+                    $parent_id = $parent_id->post_id;
 
                     // Data for new import
-                    $args = array(
-                        'post_title' => $tip['guid'],
-                        'post_content' => $tip['content'],
-                        'post_date' => $tip['modified'],
+                    $args = [
+                        'post_title'    => ! empty( $tip['title'] ) ? $tip['title'] : $tip['guid'],
+                        'post_content'  => $tip['content'],
+                        'post_date'     => $tip['modified'],
                         'post_date_gmt' => $tip['modified'],
-                        'post_type' => 'pof_tip',
-                        'post_status' => 'publish',
-                    );
+                        'post_type'     => 'pof_tip',
+                        'post_status'   => 'publish',
+                    ];
 
-                    $post_id = post_exists( $args['post_title'], $args['post_content'], $args['post_date']);
-                    if ( $post_id !== 0 ) {
+                    $tip_query      = 'SELECT post_id FROM ' . $postmeta_table . ' WHERE meta_key="pof_tip_guid" AND meta_value="%s"';
+                    $tip_query      = $wpdb->prepare( $tip_query, $tip['guid'] );
+                    $post_id        = $wpdb->get_row( $tip_query );
+                    if ( ! empty( $post_id ) ) {
+                        $post_id    = $post_id->post_id;
                         $args['ID'] = $post_id;
                         $this->updated++;
-                    } else {
+                    }
+                    else {
                         $this->created++;
                     }
+
                     $post_id = wp_insert_post( $args );
                     if ( is_wp_error( $post_id ) ) {
                         $this->wp_cli_warning( 'WP error on insert post, guid: (' . $tip['guid'] . '), error: ' . wp_json_encode( $post_id ) );
                         continue;
                     }
 
-                    $meta = array(
+                    $meta = [
                         'pof_tip_nickname' => $tip['publisher']['nickname'],
-                        'pof_tip_parent' => $parent->ID,
-                        'pof_tip_guid'   => $tip['guid'],
-                        'api_type'   => 'pof_tip',
-                    );
+                        'pof_tip_parent'   => $parent_id,
+                        'pof_tip_guid'     => $tip['guid'],
+                        'api_type'         => 'pof_tip',
+                    ];
 
-                    foreach( $meta as $meta_key => $meta_value ) {
+                    foreach ( $meta as $meta_key => $meta_value ) {
                         update_post_meta( $post_id, $meta_key, $meta_value );
                     }
                 }
