@@ -33,6 +33,7 @@ class POF_Importer {
     private $normal_importer;   // tell that we run normal importer
     private $tips_importer;     // tell that we run tips importer
     private $site_languages;    // get site general languages
+    private $importer_user;     // Importer user object
     private static $instance;
 
     public static function init() {
@@ -47,7 +48,236 @@ class POF_Importer {
         add_action( 'init', array( $this, 'init_plugin' ) );
         add_action( 'daily_cron',  array( $this, 'importer_cron' ) );
         if ( defined( '\\WP_CLI' ) && \WP_CLI ) {
+
+            // Does the import
             \WP_CLI::add_command( 'pof import', [ $this, 'importer_cron' ] );
+
+            // Deletes imported api items that don't exist anymore
+            \WP_CLI::add_command( 'pof cleanup', [ $this, 'importer_cleanup' ] );
+        }
+    }
+
+    /**
+     * Delete imported posts that no longer exist in the backend
+     *
+     * [--dry-run]
+     * : Run the function without running the deletion.
+     *
+     * [--list-delete]
+     * : List what id's are on the delete list after the run is complete.
+     *
+     * @param  array $args       Auto populated by WP_CLI (unsued).
+     * @param  array $assoc_args Auto populated by, used to detect dry runs.
+     * @return bool              Whether posts were deleted or not.
+     */
+    public function importer_cleanup( $args = [], $assoc_args = [] ) : bool {
+        global $wpdb;
+        $posts_table    = $wpdb->prefix . 'posts';
+        $postmeta_table = $wpdb->prefix . 'postmeta';
+
+        $this->wp_cli_msg( 'Deleting old imported data.' );
+
+        // Collect all of the currently existing guid's
+        $tree  = $this->fetch_data( $this->tree_url );
+        $guids = array_keys( $this->flatten_tree( $tree['program'][0] ) );
+
+        // Collect all posts
+        $posts = $wpdb->get_results( 'SELECT ID,post_author,post_type,post_modified FROM ' . $posts_table . ' WHERE post_type IN ( "page", "nav_menu_item" )' );
+
+        $progress = $this->wp_cli_progress( 'Fetching post data to check for deletion', count( $posts ) );
+
+        /**
+         * Add api guid, template & object_id to each post
+         *
+         * @param  array $ids      Total id list.
+         * @param  int   $post_id  Post id to get data for.
+         * @uses   mixed $progress Progressbar helper.
+         * @return array           Modified $ids.
+         */
+        $ids = array_map( function( \stdClass $post ) use ( $progress ) : array {
+            $progress->tick();
+
+            $object_id = get_post_meta( $post->ID, '_menu_item_object_id', true ) ?? null;
+            $guid      = get_post_meta( ( ! empty( $object_id ) ? $object_id : $post->ID ), 'api_guid', true );
+            $template  = empty( $object_id ) ? get_post_meta( $post->ID, '_wp_page_template', true ) : null;
+            $modified  = strtotime( $post->post_modified );
+            $author    = intval( $post->post_author );
+            $language  = empty( $object_id ) ? pll_get_post_language( $post->ID ) : null;
+            $post      = [
+                'post_id'   => $post->ID,
+                'guid'      => $guid,
+                'object_id' => $object_id,
+                'template'  => $template,
+                'modified'  => $modified,
+                'author'    => $author,
+                'language'  => $language,
+            ];
+            return $post;
+        }, $posts );
+        $progress->finish();
+
+        $importer = $this;
+
+        /**
+         * Filter the id's to be deleted
+         *
+         * @var array
+         */
+        $delete_ids = array_reduce(
+
+            /**
+             * Reduce the $ids array into those that should be deleted
+             *
+             * @param  array        $delete_ids Final list of id's to be deleted.
+             * @param  array        $data       Current $ids array item to check for deletion.
+             * @uses   array        $ids        Complete list of ids, used to check for duplicates.
+             * @uses   array        $guids      Complete list of guids in new api result,
+             *                                  used to check for api items that no longer exist.
+             * @uses   POF_Importer $importer   Used to get importer user id.
+             * @return array                    Modified $delete_ids.
+             */
+            $ids, function( array $delete_ids, array $data ) use ( $ids, $guids, $importer ) : array {
+
+            if (
+                // If item is already in the delete list no need to check anything
+                // this can happen when duplicates are added to the list
+                ! in_array( $data['post_id'], $delete_ids, true )
+            ) {
+                if (
+                    ( // Is nav menu item
+                        ! empty( $data['guid'] ) &&
+                        ! empty( $data['object_id'] )
+                    ) ||
+                    ( // Item is not in new tree
+                        ! empty( $data['guid'] ) &&
+                        ! in_array( $data['guid'], $guids, true )
+                    ) ||
+                    ( // Imported post is not from the author "importer"
+                        ! empty( $data['guid'] ) &&
+                        $importer->get_importer_user()->ID !== $data['author']
+                    ) ||
+                    ( // Item is a failed import (no guid but has api item template)
+                        empty( $data['guid'] ) &&
+                        in_array(
+                            $data['template'], [
+                                'models/page-agegroup.php',
+                                'models/page-program.php',
+                                'models/page-task.php',
+                                'models/page-taskgroup.php',
+                            ], true
+                        )
+                    ) ||
+                    ( // Item has no language
+                        ! empty( $data['guid'] ) &&
+                        empty( $data['language'] )
+                    )
+                ) {
+
+                    // Add item to delete list
+                    $delete_ids[] = $data['post_id'];
+                }
+                elseif ( ! empty( $data['guid'] ) ) {
+
+                    // If nothing else matched, check for duplicates
+                    $duplicates = array_filter(
+                        $ids, function( array $itemdata ) use ( $data ) : bool {
+                            return (
+                                $itemdata['guid'] === $data['guid'] &&
+                                $itemdata['language'] === $data['language']
+                            );
+                        }
+                    );
+
+                    if ( count( $duplicates ) > 1 ) {
+
+                        /**
+                         * Sort the duplicates so that the latest one is first
+                         *
+                         * @param  array $a Item to sort.
+                         * @param  array $b Item to sort.
+                         * @return int      1, -1 or 0 depending on sort result.
+                         */
+                        usort( $duplicates, function( array $a, array $b ) : int {
+                            return $b['modified'] <=> $a['modified'];
+                        });
+
+                        // Add all but first of the duplicates to the delete list
+                        // As the first "duplicate" is the actual post we want to preserve
+                        array_shift( $duplicates );
+                        foreach ( $duplicates as $duplicate ) {
+                            if ( ! in_array( $duplicate['post_id'], $delete_ids, true ) ) {
+                                $delete_ids[] = $duplicate['post_id'];
+                            }
+                        }
+                    }
+                }
+            }
+
+            return $delete_ids;
+            }, []
+        );
+
+        // Check that we will still have a suitable amount of posts after the deletion
+        if ( count( $ids ) - count( $delete_ids ) < 70 ) {
+            $this->wp_cli_error( 'There would be less than a 1000 posts after cleanup so aborting just in case.' );
+            return false;
+        }
+
+        // Do not run actual deletion on dry run
+        if (
+            array_key_exists( 'dry-run', $assoc_args ) &&
+            $assoc_args['dry-run']
+        ) {
+            $this->wp_cli_success( 'Dry run complete, would delete (' . count( $delete_ids ) . ') posts.' );
+        }
+        else {
+            if ( ! empty( $delete_ids ) ) {
+                $this->wp_cli_msg( 'No posts to delete.' );
+            }
+            else {
+                $this->wp_cli_msg( 'Deleting old posts.' );
+                $wpdb->query( 'DELETE FROM ' . $posts_table . ' WHERE ID IN(' . implode( ',', $delete_ids ) . ')' );
+                $this->wp_cli_msg( 'Deleting old postmeta.' );
+                $wpdb->query( 'DELETE FROM ' . $postmeta_table . ' WHERE post_id IN(' . implode( ',', $delete_ids ) . ')' );
+
+                $this->wp_cli_success( 'Run complete, deleted (' . count( $delete_ids ) . ') posts.' );
+            }
+
+            $this->wp_cli_msg( 'Flushing cache & rewrite rules' );
+            wp_cache_flush();
+            flush_rewrite_rules();
+
+            if ( function_exists( 'relevanssi_build_index' ) ) {
+                $this->wp_cli_msg( 'Rebuilding relevanssi index.' );
+                relevanssi_build_index();
+            }
+        }
+
+        // List delete_ids content
+        if (
+            array_key_exists( 'list-delete', $assoc_args ) &&
+            $assoc_args['list-delete']
+        ) {
+            $this->wp_cli_format_items( array_map( function( int $id ) : array {
+                return [
+                    'id' => $id,
+                ];
+            }, $delete_ids ), [ 'id' ] );
+        }
+
+        return true;
+    }
+
+    /**
+     * Format items for wp cli
+     *
+     * @param  array  $items  An array of items to format.
+     * @param  array  $fields Fields to get from items.
+     * @param  string $format What format to output the result in (table,yaml,json).
+     */
+    protected function wp_cli_format_items( array $items, array $fields, string $format = 'table' ) {
+        if ( defined( '\\WP_CLI' ) && \WP_CLI ) {
+            \WP_CLI\Utils\format_items( $format, $items, $fields );
         }
     }
 
@@ -85,6 +315,17 @@ class POF_Importer {
     }
 
     /**
+     * Print warning message to wp cli if it is enabled
+     *
+     * @param string $msg Message to print.
+     */
+    protected function wp_cli_warning( $msg ) {
+        if ( defined( '\\WP_CLI' ) && \WP_CLI ) {
+            \WP_CLI::warning( $msg );
+        }
+    }
+
+    /**
      * Create wp cli progress bar if it is enabled.
      *
      * @param  string $msg   Message to show alongside progressbar.
@@ -106,12 +347,38 @@ class POF_Importer {
         return $progress;
     }
 
+    /**
+     * Get api tree url
+     *
+     * @param  array $extra_params Optional extra params to add to url.
+     * @return string              Url.
+     */
+    public function get_tree_url( array $extra_params = [] ) : string {
+        if ( ! empty( $this->tree_url ) ) {
+            return $this->tree_url;
+        }
+
+        $tree_url = get_field( 'ohjelma-json', 'option' );
+        if ( ! empty( $tree_url ) ) {
+            $url_parts = wp_parse_url( $tree_url );
+            $params    = [];
+            parse_str( $url_parts['query'], $params );
+            $params             = $params += $extra_params;
+            $url_parts['query'] = http_build_query( $params );
+            $tree_url           = $url_parts['scheme'] . '://' . $url_parts['host'] . $url_parts['path'] . '?' . $url_parts['query'];
+        }
+
+        $this->tree_url = $tree_url;
+        return $tree_url;
+    }
+
     public function init_plugin() {
 
         // get API url from options
         include_once ABSPATH . 'wp-admin/includes/plugin.php'; // included for is_plugin_active()
         if ( is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
-            $this->tree_url       = get_field( 'ohjelma-json', 'option' ) . '?rand=' . mt_rand();
+
+            $this->tree_url       = $this->get_tree_url( [ 'rand' => mt_rand() ] );
             $this->tips_url       = get_field( 'tips-json', 'option' ) . '?rand=' . mt_rand();
             $this->site_languages = array();
             if ( function_exists( 'pll_languages_list' ) ) {
@@ -141,13 +408,12 @@ class POF_Importer {
         $start = microtime( true );
         $this->wp_cli_msg( 'Beginning import' );
         ini_set( 'memory_limit', '-1' );
-        $this->tree_url = get_field( 'ohjelma-json', 'option' );
-        $this->tips_url = get_field( 'tips-json', 'option' );
         $this->import();
         update_field( 'field_57c6b36acafd4', date( 'Y-m-d H:i:s' ), 'option' );
         $this->import_tips();
         update_field( 'field_57c6b3e52325e', date( 'Y-m-d H:i:s' ), 'option' );
         $this->wp_cli_msg( 'Import finished in: ' . round( microtime( true ) - $start, 4 ) . 's' );
+        $this->importer_cleanup();
     }
 
     /*
@@ -183,7 +449,6 @@ class POF_Importer {
             $tree = $this->retrieve_new_data( $tree );
 
             $this->update_pages( $tree );
-            $this->update_metas( $tree );
         }
     }
 
@@ -219,6 +484,39 @@ class POF_Importer {
     }
 
     /**
+     * Recursively add api item to flattened array
+     *
+     * @param array  $item      Item to add.
+     * @param array  $flattened Array to gather items to.
+     * @param string $parent    Parent guid.
+     */
+    protected function add_to_flattened( $item, &$flattened, $parent = null ) {
+        $item['parent']  = $parent;
+        $items_to_search = [
+            'taskgroups',
+            'tasks',
+            'agegroups',
+        ];
+
+        // Add oldest parent to flattened first so that we can create the posts in the right order
+        $flattened[ $item['guid'] ] = array_filter( $item, function( string $key ) use ( $items_to_search ) : bool {
+
+            // Remove unnecessary data from item
+            return ! in_array( $key, $items_to_search, true );
+        }, ARRAY_FILTER_USE_KEY );
+
+        // Recursively go through items
+        foreach ( $items_to_search as $key ) {
+            if ( array_key_exists( $key, $item ) ) {
+                foreach ( $item[ $key ] as $new_item ) {
+                    $this->add_to_flattened( $new_item, $flattened, $item['guid'] );
+                }
+            }
+        }
+    }
+
+
+    /**
      * Flatten api program tree into a single array
      *
      * @param  array $tree Api program tree.
@@ -228,36 +526,7 @@ class POF_Importer {
         $flattened = [];
         $start     = microtime( true );
 
-        /**
-         * Recursively add api item to flattened array
-         *
-         * @param array  $item      Item to add.
-         * @param array  $flattened Array to gather items to.
-         * @param string $parent    Parent guid.
-         */
-        function add_to_flattened( $item, &$flattened, $parent = null ) {
-            $item['parent']  = $parent;
-            $items_to_search = [
-                'taskgroups',
-                'tasks',
-                'agegroups',
-            ];
-
-            foreach ( $items_to_search as $key ) {
-                if ( array_key_exists( $key, $item ) ) {
-                    foreach ( $item[ $key ] as $new_item ) {
-                        add_to_flattened( $new_item, $flattened, $item['guid'] );
-                    }
-
-                    // Remove unnecessary data from item
-                    unset( $item[ $key ] );
-                }
-            }
-
-            $flattened[ $item['guid'] ] = $item;
-
-        }
-        add_to_flattened( $tree, $flattened );
+        $this->add_to_flattened( $tree, $flattened );
 
         $this->wp_cli_msg( 'Flattened tree in: ' . round( microtime( true ) - $start, 4 ) . 's' );
 
@@ -286,13 +555,15 @@ class POF_Importer {
      * @return array       Modified & filtered $tree.
      */
     private function get_import_data( $tree ) {
+        global $wpdb;
+        $start       = microtime( true );
+        $posts_table = $wpdb->prefix . 'posts';
+        $posts       = $wpdb->get_results( 'SELECT ID FROM ' . $posts_table . ' WHERE post_type="page"' );
+        $posts       = array_map(function( \stdClass $post ) {
+            return \DustPress\Query::get_acf_post( $post->ID );
+        }, $posts );
 
-        $start = microtime( true );
-        $posts = \DustPress\Query::get_acf_posts([
-            'post_type'      => 'page',
-            'post_status'    => 'any',
-            'posts_per_page' => -1, //phpcs:ignore
-        ]);
+
         // Store each post and its language
         foreach ( $posts as $post ) {
             $guid = $post->fields['api_guid'];
@@ -315,53 +586,82 @@ class POF_Importer {
         $importer = $this; // Store this in variable to pass it to the functions
         $tree     = array_map(function( $item ) use ( $posts, $progress, $importer ) {
 
+            // Update progressbar
+            $progress->tick();
+
             // Collect only matching posts
             $pages = array_filter( $posts, function( $page ) use ( $item ) {
                 return ( ! empty( $page->fields ) && $page->fields['api_guid'] === $item['guid'] );
             });
 
             // Update languages with necessary data
-            $item['languages'] = array_map(function( $lang ) use ( $pages, $importer ) {
-                // Mark posts to update
-                foreach ( $pages as $page ) {
-                    if ( $lang['lang'] === strtolower( $page->fields['api_lang'] ) ) {
+            $item['languages'] = array_map(function( $lang ) use ( $pages, $importer, $item ) {
 
-                        // Store the page to possibly update it or translations later
-                        $lang['page'] = $page;
+                if ( empty( $pages ) ) {
 
-                        // Mark post meta for update
-                        if (
-                            strtotime( $page->fields['api_lastmodified'] ) <
-                            strtotime( $lang['lastModified'] )
-                        ) {
-                            $lang['update_meta'] = true;
-                        }
+                    // No matching pages so we need to create new ones
+                    $lang['update'] = true;
+                }
+                else {
 
-                        // Mark page for update
-                        if (
-                            strtotime( $page->post_modified ) <
-                            strtotime( $lang['lastModified'] )
-                        ) {
-                            $lang['update_page'] = true;
+                    // Mark posts to update
+                    foreach ( $pages as $page ) {
+                        if ( $lang['lang'] === strtolower( $page->fields['api_lang'] ) ) {
+
+                            // Store the page to possibly update it or translations later
+                            $lang['page'] = $page;
+
+                            // Mark post for update
+                            if (
+                                ( // Post has been modified
+                                    strtotime( $page->fields['api_lastmodified'] ) <
+                                    strtotime( $lang['lastModified'] )
+                                ) ||
+                                ( // Post has been modified
+                                    strtotime( $page->post_modified ) <
+                                    strtotime( $lang['lastModified'] )
+                                ) ||
+                                ( // Post isnt by importer user
+                                    $importer->get_importer_user()->ID !== intval( $page->post_author )
+                                )
+                            ) {
+                                $lang['update'] = true;
+                            }
                         }
                     }
+
+                    if ( // Post doesn't have a parent it should have
+                        ! empty( $item['parent'] ) &&
+                        (
+                            empty( $lang['page'] ) ||
+                            (
+                                ! empty( $lang['page'] ) &&
+                                empty( $lang['page']->post_parent )
+                            )
+                        )
+                    ) {
+                        $lang['update'] = true;
+                    }
+                }
+
+                // Item doesnt have a post in its language
+                if ( empty( $lang['page'] ) ) {
+                    $lang['update'] = true;
                 }
 
                 return $lang;
             }, $item['languages'] );
 
-            // Update progressbar
-            $progress->tick();
-
             return $item;
         }, $tree);
+
         // Finish progressbar
         $progress->finish();
 
         // Reduce tree to only those that need to be updated
         $tree = array_filter( $tree, function( $item ) {
             foreach ( $item['languages'] as $lang ) {
-                if ( $lang['update_meta'] || $lang['update_page'] ) {
+                if ( $lang['update'] ) {
                     return true;
                 }
             }
@@ -397,7 +697,9 @@ class POF_Importer {
         $progress = $this->wp_cli_progress( 'Fetching new data', $size );
         foreach ( $tree as $item ) {
             foreach ( $item['languages'] as $lang ) {
-                if ( $lang['update_meta'] || $lang['update_page'] ) {
+                $progress->tick();
+
+                if ( $lang['update'] ) {
                     if ( count( $pool ) >= $pool_size ) {
                         $responses = \Requests::request_multiple( $pool );
                         foreach ( $responses as $resp ) {
@@ -414,8 +716,6 @@ class POF_Importer {
                         'type' => 'GET',
                     ];
                 }
-
-                $progress->tick();
             }
         }
         // Finish any dangling requests
@@ -429,7 +729,7 @@ class POF_Importer {
         // Assign results to languages
         foreach ( $tree as &$item ) {
             foreach ( $item['languages'] as &$lang ) {
-                if ( $lang['update_meta'] || $lang['update_page'] ) {
+                if ( $lang['update'] ) {
                     $lang['data'] = ! empty( $done[ $lang['details'] ]->body ) ? json_decode( $done[ $lang['details'] ]->body, true ) : null;
                 }
             }
@@ -439,50 +739,95 @@ class POF_Importer {
     }
 
     /**
+     * Get importer user object
+     * Creates importer user if it doesnt exist
+     *
+     * @return \WP_User
+     */
+    public function get_importer_user() : \WP_User {
+        if ( ! empty( $this->importer_user ) ) {
+            return $this->importer_user;
+        }
+
+        $user = get_user_by( 'slug', 'importer' );
+        if ( empty( $user ) ) {
+            $user_id = wp_create_user( 'importer', '', 'importer@partio.fi' );
+            $user    = get_user_by( 'ID', $user_id );
+            $user->add_role( 'administrator' );
+        }
+        $this->importer_user = $user;
+
+        return $user;
+    }
+
+    /**
      * Begin the actual import process
      *
      * @param array $tree Api data.
      */
-    private function update_pages( &$tree ) {
+    private function update_pages( $tree ) {
+        $queried = $this->queried;
 
         // Create wp cli progress bar
         $progress = $this->wp_cli_progress( 'Importing page content', count( $tree ) );
         $start    = microtime( true );
+        $class    = $this;
 
-        // Update/Create invidual pages
-        foreach ( $tree as &$item ) {
+        $tree = array_map(function( $item ) use ( $progress, &$queried, $class ) {
+            $progress->tick();
 
             // Collect connected posts
-            $translations = [];
-            foreach ( $item['languages'] as $lang ) {
-                if ( $lang['page'] ) {
-                    $translations[ $lang['lang'] ] = $lang['page']->ID;
-                    break;
+            $translations = array_reduce( $item['languages'], function( $carry, $lang ) use ( $class ) {
+                if ( ! empty( $lang['page'] ) ) {
+                    $carry[ $lang['lang'] ] = $lang['page']->ID;
                 }
-            }
-            $new_translations = false;
 
-            // Update translations
-            foreach ( $item['languages'] as &$lang ) {
-                if ( $lang['update_page'] && $lang['data'] ) {
+                return $carry;
+            }, []);
+
+            $new_translations  = false;
+            $item['languages'] = array_map( function( $lang ) use ( &$new_translations, &$translations, &$queried, $item, $class ) {
+
+                if ( $lang['update'] && $lang['data'] ) {
 
                     // Post object params
                     $args = [
-                        'post_title'    => sanitize_title( $lang['title'] ),
+                        'post_title'    => $lang['title'] ?? $item['title'],
                         'menu_order'    => $item['order'],
                         'post_status'   => 'publish',
                         'post_type'     => 'page',
-                        'post_title'    => $item['title'],
                         'post_content'  => $lang['data']['content'],
                         'page_template' => 'models/page-' . $lang['data']['type'] . '.php',
                         'post_modified' => $lang['lastModified'],
+                        'post_author'   => $class->get_importer_user()->ID,
                     ];
 
                     // If item has parent link to it
                     if ( ! empty( $item['parent'] ) ) {
-                        $parent_id = $this->queried[ $item['parent'] ][ $lang['lang'] ]->ID;
+                        $parent_id = $queried[ $item['parent'] ][ $lang['lang'] ]->ID;
                         if ( ! empty( $parent_id ) ) {
-                            $args['post_parent'] = $parent_id;
+
+                            // Parent post already exists
+                            $args['post_parent'] = icl_object_id( $parent_id, 'page', false, $lang['lang'] );
+                        }
+                        else {
+
+                            // Try to get post parent via wp query if it wasnt part of the import
+                            $post_parent_query = new \WP_Query([
+                                'post_type'      => 'page',
+                                'posts_per_page' => 1,
+                                'fields'         => 'ids',
+                                'meta_key'       => 'api_guid',
+                                'meta_value'     => $item['parent'],
+                            ]);
+                            if ( ! empty( $post_parent_query->posts ) ) {
+                                $args['post_parent'] = icl_object_id( $post_parent_query->posts[0], 'page', false, $lang['lang'] );
+                            }
+                            else {
+
+                                // Parent post doesnt exist
+                                $class->wp_cli_warning( 'Failed to get post parent for guid (' . $item['guid'] . '), parent should have guid (' . $item['parent'] . ')' );
+                            }
                         }
                     }
 
@@ -499,13 +844,10 @@ class POF_Importer {
                                 break;
                             }
                         }
-
-                        // If no changes were made collect page id just in case anyways
-                        if ( ! $post_id ) {
-                            $post_id = $lang['page']->ID;
-                        }
+                        $post_id = $post_id ?? $lang['page']->ID;
                     }
                     else {
+
                         // Create the post
                         $post_id = wp_insert_post( $args );
 
@@ -519,13 +861,26 @@ class POF_Importer {
                             $translations[ $lang['lang'] ] = $post_id;
                         }
 
-                        // Create dummy page object for post meta update
-                        $lang['page'] = (object) [
+                    }
+                    if ( ! empty( $post_id ) ) {
+                        $pseudo_page = (object) [
                             'ID' => $post_id,
                         ];
+
+                        // Create dummy page object for post meta update
+                        $lang['page'] = $pseudo_page;
+
+                        // Create a dummy page object for page parent update
+                        $queried[ $item['guid'] ]                  = $queried[ $item['guid'] ] ?? [];
+                        $queried[ $item['guid'] ][ $lang['lang'] ] = $pseudo_page;
+
+                        // Update meta
+                        $this->update_page_meta( $post_id, $item, $lang );
                     }
                 }
-            }
+
+                return $lang;
+            }, $item['languages']);
 
             // Link connected translations
             if ( $new_translations ) {
@@ -534,35 +889,11 @@ class POF_Importer {
                 }
             }
 
-            $progress->tick();
-        }
+            return $item;
+        }, $tree);
         $progress->finish();
-    }
 
-    /**
-     * Update page meta data
-     *
-     * @param array $tree Api data.
-     */
-    private function update_metas( $tree ) {
-
-        // Create wp cli progress bar
-        $progress = $this->wp_cli_progress( 'Importing postmeta', count( $tree ) );
-        $start    = microtime( true );
-
-        // Update meta data
-        foreach ( $tree as $item ) {
-
-            // Update translations
-            foreach ( $item['languages'] as $lang ) {
-                if ( $lang['update_meta'] && $lang['data'] ) {
-                    // Update meta fields
-                    $this->update_page_meta( $lang['page']->ID, $item, $lang );
-                }
-            }
-            $progress->tick();
-        }
-        $progress->finish();
+        return $tree;
     }
 
     /**
@@ -581,6 +912,8 @@ class POF_Importer {
             $progress = $this->wp_cli_progress( 'Importing tips', count( $tips_data ) );
 
             foreach ( $tips_data as $id => $tip ) {
+                $progress->tick();
+
                 $parent     = $data[ $tip['post']['guid'] ][ $tip['lang'] ];
                 $comment_id = null;
                 if ( isset( $parent ) ) {
@@ -629,8 +962,6 @@ class POF_Importer {
 
                     // TODO: Errorlog, if some tips not importet
                 }
-
-                $progress->tick();
             }
             $progress->finish();
         }
@@ -644,16 +975,19 @@ class POF_Importer {
      * @param  array $lang    Post language data.
      */
     public function update_page_meta( $post_id, $item, $lang ) {
+        $this->wp_cli_msg( 'Updating postmeta for ID: (' . $post_id . ') lang: (' . $lang['lang'] . ')' );
+
         $fields = [
-            'api_type'        => $lang['data']['type'],
-            'api_ingress'     => $lang['data']['ingress'],
-            'last_modified'   => $lang['data']['lastModified'],
-            'api_lang'        => $lang['data']['lang'],
-            'api_guid'        => $lang['data']['guid'],
-            'api_url'         => $lang['details'],
-            'api_path'        => wp_json_encode( $lang['data']['parents'] ),
-            'api_images'      => null,
-            'api_attachments' => null,
+            'field_559a2aa1bbff7' => $lang['data']['type'],                      // api_type
+            'field_559a2abfbbff8' => $lang['data']['ingress'],                   // api_ingress
+            'field_559a2aebbbff9' => $lang['data']['lastModified'],              // api_lastmodified
+            'field_559a2d91a18a1' => $lang['data']['lang'],                      // api_lang
+            'field_559a2db2a18a2' => $lang['data']['guid'],                      // api_guid
+            'field_559e4a50b1f42' => $lang['details'],                           // api_url
+            'field_5abca09542839' => wp_json_encode( $lang['data']['parents'] ), // api_path
+            'field_55a369e3d3b3a' => [],                                         // api_images
+            'field_57bffb08a4191' => [],                                         // api_attachments
+            'last_modified'       => $lang['data']['lastModified'],
         ];
         foreach ( $fields as $key => $value ) {
             update_field( $key, $value, $post_id );
@@ -700,7 +1034,7 @@ class POF_Importer {
         }
 
         // update page specific fields
-        switch ( $lang['type'] ) {
+        switch ( $lang['data']['type'] ) {
             case 'agegroup':
                 if ( isset( $lang['subtaskgroup_term'] ) ) {
                     update_field( 'field_57c067cfff3cf', wp_json_encode( $lang['subtaskgroup_term'] ), $post_id ); // task_term
@@ -716,10 +1050,10 @@ class POF_Importer {
                 if ( isset( $lang['subtask_term'] ) ) {
                     update_field( 'field_57c0680ae6bd0', wp_json_encode( $lang['subtask_term'] ), $post_id ); // task_term
                 }
-                $this->update_task_data( $post_id, $item['guid'], $lang, true );
+                $this->update_task_data( $post_id, $item['guid'], $lang['data'], true );
                 break;
             case 'task':
-                $this->update_task_data( $post_id, $item['guid'], $lang );
+                $this->update_task_data( $post_id, $item['guid'], $lang['data'] );
                 break;
             default:
                 break;

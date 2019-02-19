@@ -6,9 +6,11 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 ## [Julkaisematta]
 
 ### Lisätty
-- PO-292: Wp-cli:llä ajettava versio importista§
+- PO-292: Wp-cli:llä ajettava versio importista
+- PO-360: Importer poistamaan importatut postaukset joita ei ole enään backendissä
 
 ### Muutettu
+- PO-326: Korjattu importerin postmetan importtaus ja viimeksi muokattu kentän päivitys
 - PO-292: Nopeutettu importerin sivujen importtausta
 
 ### Korjattu
