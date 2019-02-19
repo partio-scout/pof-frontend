@@ -11,38 +11,17 @@ class Tips extends \DustPress\Model {
             $this->validate_tip( $args );
             return;
         }
-        $tips_args = [
-            'post_id' => get_the_ID(),    // id of the curr page
-            'status'  => 'approve',
-            'orderby' => 'comment_date',
-            'order'   => 'ASC',
-        ];
-        $tips      = get_comments( $tips_args );
-        foreach ( $tips as &$tip ) {
-            $tip->comment_content = nl2br( $tip->comment_content );
-            $tip->fields          = get_comment_meta( $tip->comment_ID );
+        $args = array(
+            'post_per_page' => 100,
+            'post_type' => 'pof_tip',
+            'post_status' => 'publish',
+            'meta_key' => 'pof_tip_parent',
+            'meta_compare' => '=',
+            'meta_value' => get_the_ID(),
+        );
 
-            // Parse tip guid from meta fields
-            foreach ( $tip->fields as $key => $value ) {
-                $key_arr = explode( '_', $key ); // guid is formatted as ag_{guid}_{lang}
-                if ( count( $key_arr ) === 3 && $key_arr[0] === 'ag' ) {
-                    $tip->guid = $key_arr[1];
-                    break;
-                }
-            }
-
-            if ( isset( $tip->fields['attachments'] ) ) {
-                $tip->fields['attachments'] = json_decode_pof( $tip->fields['attachments'][0] );
-
-                foreach ( $tip->fields['attachments'] as $type => $attachment ) {
-                    if ( $type === 'files' ) {
-                        foreach ( $attachment as $attachment_key => $file ) {
-                            $tip->fields['attachments']->{$type}[ $attachment_key ]->icon = get_template_directory_uri() . '/assets/img/file_' . substr( $file->url, -3 ) . '.png';
-                        }
-                    }
-                }
-            }
-        }
+        $query = new WP_Query( $args );
+        $tips = $query->posts;
         return $tips;
     }
 

@@ -903,63 +903,55 @@ class POF_Importer {
      */
     private function update_tips( $data ) {
 
-        $tips      = array();
         $tips_data = $this->fetch_data( $this->tips_url );
 
         if ( ! $tips_data ) {
-            $this->error = __( 'An error occured while fetching tips from backend.', 'pof_importer' );
+            $this->error = __('An error occured while fetching tips from backend.', 'pof_importer');
         } else {
             $progress = $this->wp_cli_progress( 'Importing tips', count( $tips_data ) );
 
-            foreach ( $tips_data as $id => $tip ) {
+            foreach ($tips_data as $id => $tip) {
                 $progress->tick();
 
-                $parent     = $data[ $tip['post']['guid'] ][ $tip['lang'] ];
-                $comment_id = null;
-                if ( isset( $parent ) ) {
+                $parent = $data[$tip['post']['guid']][$tip['lang']];
+                if ( isset ( $parent ) ) {
+
                     // Data for new import
-                    $comment_data = array(
-                        'comment_post_ID'  => $parent->ID,
-                        'comment_author'   => $tip['publisher']['nickname'],
-                        'comment_content'  => $tip['content'],
-                        'user_id'          => $parent->post_author,
-                        'comment_date'     => $tip['modified'],
-                        'comment_approved' => 1,
+                    $args = array(
+                        'post_title' => $tip['guid'],
+                        'post_content' => $tip['content'],
+                        'post_date' => $tip['modified'],
+                        'post_date_gmt' => $tip['modified'],
+                        'post_type' => 'pof_tip',
+                        'post_status' => 'publish',
                     );
 
-                    // Check if comment exists
-                    $args     = array(
-                        'meta_key'   => 'ag_' . $tip['guid'] . '_' . $tip['lang'],
-                        'meta_value' => 'true',
-                    );
-                    $comments = get_comments( $args );
-
-                    if ( count( $comments ) > 0 ) {
-                        if ( $tip['modified'] > $comments[0]->comment_date ) {
-                            $comment_id                 = $comments[0]->comment_ID;
-                            $comment_data['comment_ID'] = $comment_id;
-                            wp_update_comment( $comment_data );
-                            $this->data['updated'][] = $tip;
-                            $this->updated++;
-                        }
+                    $post_id = post_exists( $args['post_title'], $args['post_content'], $args['post_date']);
+                    if ( $post_id !== 0 ) {
+                        $args['ID'] = $post_id;
+                        $this->updated++;
                     } else {
-                        $comment_id = wp_new_comment( $comment_data );
-                        // Force update after insert because looks like inserting won't auto approve tip
-                        $comment_data['comment_ID'] = $comment_id;
-                        wp_update_comment( $comment_data );
-                        $this->data['created'][] = $tip;
                         $this->created++;
                     }
-                    if ( $comment_id ) {
-                        update_comment_meta( $comment_id, 'ag_' . $tip['guid'] . '_' . $tip['lang'], 'true' );
-                        update_comment_meta( $comment_id, 'guid', $tip['guid'] );
-                        update_comment_meta( $comment_id, 'title', $tip['title'] );
-                        if ( ! empty( $tip['additional_content'] ) ) {
-                            update_comment_meta( $comment_id, 'attachments', json_encode( $tip['additional_content'] ) );
-                        }
+                    $post_id = wp_insert_post( $args );
+                    if ( is_wp_error( $post_id ) ) {
+                        $this->wp_cli_warning( 'WP error on insert post, guid: (' . $tip['guid'] . '), error: ' . wp_json_encode( $post_id ) );
+                        continue;
                     }
-                } else {
 
+                    $meta = array(
+                        'pof_tip_nickname' => $tip['publisher']['nickname'],
+                        'pof_tip_parent' => $parent->ID,
+                        'pof_tip_guid'   => $tip['guid'],
+                        'api_type'   => 'pof_tip',
+                    );
+
+                    foreach( $meta as $meta_key => $meta_value ) {
+                        update_post_meta( $post_id, $meta_key, $meta_value );
+                    }
+                }
+                else {
+                    $this->wp_cli_warning( 'No parent data for guid: (' . $tip['guid'] . ')' );
                     // TODO: Errorlog, if some tips not importet
                 }
             }
