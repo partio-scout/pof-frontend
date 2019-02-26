@@ -367,6 +367,31 @@ class POF_Importer {
         return $tree_url;
     }
 
+    /**
+     * Get api tips url
+     *
+     * @param  array $extra_params Optional extra params to add to url.
+     * @return string              Url.
+     */
+    public function get_tips_url( array $extra_params = [] ) : string {
+        if ( ! empty( $this->tips_url ) ) {
+            return $this->tips_url;
+        }
+
+        $tips_url = get_field( 'tips-json', 'option' );
+        if ( ! empty( $tips_url ) ) {
+            $url_parts = wp_parse_url( $tips_url );
+            $params    = [];
+            parse_str( $url_parts['query'], $params );
+            $params             = $params += $extra_params;
+            $url_parts['query'] = http_build_query( $params );
+            $tips_url           = $url_parts['scheme'] . '://' . $url_parts['host'] . $url_parts['path'] . '?' . $url_parts['query'];
+        }
+
+        $this->tips_url = $tips_url;
+        return $tips_url;
+    }
+
     public function init_plugin() {
 
         // get API url from options
@@ -374,7 +399,7 @@ class POF_Importer {
         if ( is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
 
             $this->tree_url       = $this->get_tree_url( [ 'rand' => mt_rand() ] );
-            $this->tips_url       = get_field( 'tips-json', 'option' ) . '?rand=' . mt_rand();
+            $this->tips_url       = $this->get_tips_url( [ 'rand' => mt_rand() ] );
             $this->site_languages = array();
             if ( function_exists( 'pll_languages_list' ) ) {
                 $this->site_languages = pll_languages_list();
