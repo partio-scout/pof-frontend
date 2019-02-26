@@ -944,6 +944,7 @@ class POF_Importer {
                         'post_date_gmt' => $tip['modified'],
                         'post_type' => 'pof_tip',
                         'post_status' => 'publish',
+                        'post_author' => $this->get_importer_user()->ID,
                     );
 
                     $post_id = post_exists( $args['post_title'], $args['post_content'], $args['post_date']);
