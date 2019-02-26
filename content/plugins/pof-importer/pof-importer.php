@@ -103,6 +103,7 @@ class POF_Importer {
                 $guid      = get_post_meta( $object_id, 'api_guid', true );
             }
             elseif ( $post->post_type === 'pof_tip' ) {
+                $language              = pll_get_post_language( $post->ID );
                 $pof_tip_parent        = get_post_meta( $post->ID, 'pof_tip_parent', true );
                 $pof_tip_parent_exists = in_array( $pof_tip_parent, $id_list, true );
                 if ( $pof_tip_parent_exists ) {
@@ -182,6 +183,9 @@ class POF_Importer {
                         (
                             ( // Tip parent has been deleted
                                 empty( $data['pof_tip_parent_exists'] )
+                            ) ||
+                            ( // Item has no language
+                                empty( $data['language'] )
                             )
                         )
                     ) ||
