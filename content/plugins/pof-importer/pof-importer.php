@@ -104,6 +104,7 @@ class POF_Importer {
             }
             elseif ( $post->post_type === 'pof_tip' ) {
                 $language              = pll_get_post_language( $post->ID );
+                $author                = intval( $post->post_author );
                 $pof_tip_parent        = get_post_meta( $post->ID, 'pof_tip_parent', true );
                 $pof_tip_parent_exists = in_array( $pof_tip_parent, $id_list, true );
                 if ( $pof_tip_parent_exists ) {
