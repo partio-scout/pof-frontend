@@ -949,12 +949,14 @@ class POF_Importer {
 
                     $post_id = post_exists( $args['post_title'], $args['post_content'], $args['post_date']);
                     if ( $post_id !== 0 ) {
+                        $post_id    = icl_object_id( $post_id, 'pof_tip', false, $tip['lang'] );
                         $args['ID'] = $post_id;
                         $this->updated++;
                     } else {
                         $this->created++;
                     }
                     $post_id = wp_insert_post( $args );
+                    pll_set_post_language( $post_id, $tip['lang'] );
                     if ( is_wp_error( $post_id ) ) {
                         $this->wp_cli_warning( 'WP error on insert post, guid: (' . $tip['guid'] . '), error: ' . wp_json_encode( $post_id ) );
                         continue;
