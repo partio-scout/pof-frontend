@@ -183,7 +183,8 @@ class POF_Importer {
                         $ids, function( array $itemdata ) use ( $data ) : bool {
                             return (
                                 $itemdata['guid'] === $data['guid'] &&
-                                $itemdata['language'] === $data['language']
+                                $itemdata['language'] === $data['language'] &&
+                                $itemdata['post_type'] === $data['post_type']
                             );
                         }
                     );
@@ -900,12 +901,12 @@ class POF_Importer {
 
                 global $wpdb;
                 $postmeta_table = $wpdb->prefix . 'postmeta';
-                $parent_query   = 'SELECT post_id FROM ' . $postmeta_table . ' WHERE meta_key="api_guid" AND meta_value="%s"';
+                $parent_query   = 'SELECT post_id FROM ' . $postmeta_table . ' WHERE meta_key="api_guid" AND meta_value="%s" ORDER BY post_id DESC';
                 $parent_query   = $wpdb->prepare( $parent_query, $tip['post']['guid'] );
                 $parent_id      = $wpdb->get_row( $parent_query );
+                $parent_id      = $parent_id ? icl_object_id( $parent_id->post_id, 'pof_tip', false, $tip['lang'] ) : null;
 
                 if ( ! empty( $parent_id ) ) {
-                    $parent_id = $parent_id->post_id;
 
                     // Data for new import
                     $args = [
