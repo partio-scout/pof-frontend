@@ -182,9 +182,9 @@ class POF_Importer {
                     $duplicates = array_filter(
                         $ids, function( array $itemdata ) use ( $data ) : bool {
                             return (
+                                $itemdata['post_type'] !== 'pof_tip' &&
                                 $itemdata['guid'] === $data['guid'] &&
-                                $itemdata['language'] === $data['language'] &&
-                                $itemdata['post_type'] === $data['post_type']
+                                $itemdata['language'] === $data['language']
                             );
                         }
                     );
@@ -944,7 +944,13 @@ class POF_Importer {
                     ];
 
                     foreach ( $meta as $meta_key => $meta_value ) {
-                        update_post_meta( $post_id, $meta_key, $meta_value );
+                        $success = update_post_meta( $post_id, $meta_key, $meta_value );
+                        if ( $success === false ) {
+                            $original_value = get_post_meta( $post_id, $meta_key, true );
+                            if ( $original_value != $meta_value ) {
+                                $this->wp_cli_warning( 'Failed inserting postmeta. post_id: (' . $post_id . ') meta_key: (' . $meta_key . ') meta_value: (' . $meta_value . ')' );
+                            }
+                        }
                     }
                 }
                 else {
