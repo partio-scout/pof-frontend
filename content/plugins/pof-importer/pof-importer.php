@@ -118,6 +118,8 @@ class POF_Importer {
 
         $importer = $this;
 
+        $progress = $this->wp_cli_progress( 'Filtering post data to check for deletion', count( $ids ) );
+
         /**
          * Filter the id's to be deleted
          *
@@ -136,12 +138,13 @@ class POF_Importer {
              * @uses   POF_Importer $importer   Used to get importer user id.
              * @return array                    Modified $delete_ids.
              */
-            $ids, function( array $delete_ids, array $data ) use ( $ids, $guids, $importer ) : array {
+            $ids, function( array $delete_ids, array $data ) use ( $ids, $guids, $importer, $progress ) : array {
+            $progress->tick();
 
             if (
                 // If item is already in the delete list no need to check anything
                 // this can happen when duplicates are added to the list
-                ! in_array( $data['post_id'], $delete_ids, true )
+                ! array_key_exists( $data['post_id'], $delete_ids )
             ) {
                 if (
                     ( // Is nav menu item
@@ -174,11 +177,13 @@ class POF_Importer {
                 ) {
 
                     // Add item to delete list
-                    $delete_ids[] = $data['post_id'];
+                    $delete_ids[ $data['post_id'] ] = (object) [
+                        'id'     => $data['post_id'],
+                        'reason' => $reason,
+                    ];
                 }
                 elseif ( ! empty( $data['guid'] ) ) {
 
-                    // If nothing else matched, check for duplicates
                     $duplicates = array_filter(
                         $ids, function( array $itemdata ) use ( $data ) : bool {
                             return (
@@ -206,7 +211,11 @@ class POF_Importer {
                         array_shift( $duplicates );
                         foreach ( $duplicates as $duplicate ) {
                             if ( ! in_array( $duplicate['post_id'], $delete_ids, true ) ) {
-                                $delete_ids[] = $duplicate['post_id'];
+                                $reason       = 8;
+                                $delete_ids[ $duplicate['post_id'] ] = (object) [
+                                    'id'     => $duplicate['post_id'],
+                                    'reason' => $reason,
+                                ];
                             }
                         }
                     }
@@ -216,6 +225,7 @@ class POF_Importer {
             return $delete_ids;
             }, []
         );
+        $progress->finish();
 
         // Check that we will still have a suitable amount of posts after the deletion
         if ( count( $ids ) - count( $delete_ids ) < 70 ) {
