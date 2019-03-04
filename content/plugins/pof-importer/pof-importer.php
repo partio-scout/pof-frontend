@@ -97,20 +97,39 @@ class POF_Importer {
         $ids = array_map( function( \stdClass $post ) use ( $progress ) : array {
             $progress->tick();
 
-            $object_id = get_post_meta( $post->ID, '_menu_item_object_id', true ) ?? null;
-            $guid      = get_post_meta( ( ! empty( $object_id ) ? $object_id : $post->ID ), 'api_guid', true );
-            $template  = empty( $object_id ) ? get_post_meta( $post->ID, '_wp_page_template', true ) : null;
-            $modified  = strtotime( $post->post_modified );
-            $author    = intval( $post->post_author );
-            $language  = empty( $object_id ) ? pll_get_post_language( $post->ID ) : null;
-            $post      = [
-                'post_id'   => $post->ID,
-                'guid'      => $guid,
-                'object_id' => $object_id,
-                'template'  => $template,
-                'modified'  => $modified,
-                'author'    => $author,
-                'language'  => $language,
+            if ( $post->post_type === 'nav_menu_item' ) {
+                $object_id = get_post_meta( $post->ID, '_menu_item_object_id', true );
+                $guid      = get_post_meta( $object_id, 'api_guid', true );
+            }
+            elseif ( $post->post_type === 'pof_tip' ) {
+                $language              = pll_get_post_language( $post->ID );
+                $author                = intval( $post->post_author );
+                $pof_tip_guid          = get_post_meta( $post->ID, 'pof_tip_guid', true );
+                $pof_tip_parent        = get_post_meta( $post->ID, 'pof_tip_parent', true );
+                $pof_tip_parent_exists = in_array( $pof_tip_parent, $id_list, true );
+                $modified              = strtotime( $post->post_modified );
+                if ( $pof_tip_parent_exists ) {
+                    $guid = get_post_meta( $pof_tip_parent, 'api_guid', true );
+                }
+            }
+            else {
+                $guid     = get_post_meta( $post->ID, 'api_guid', true );
+                $template = get_post_meta( $post->ID, '_wp_page_template', true );
+                $author   = intval( $post->post_author );
+                $language = pll_get_post_language( $post->ID );
+                $modified = strtotime( $post->post_modified );
+            }
+            $post = [
+                'post_id'               => $post->ID,
+                'post_type'             => $post->post_type,
+                'guid'                  => $guid ?? null,
+                'object_id'             => $object_id ?? null,
+                'template'              => $template ?? null,
+                'modified'              => $modified ?? null,
+                'author'                => $author ?? null,
+                'language'              => $language ?? null,
+                'pof_tip_parent_exists' => $pof_tip_parent_exists ?? null,
+                'pof_tip_guid'          => $pof_tip_guid ?? null,
             ];
             return $post;
         }, $posts );
@@ -144,37 +163,69 @@ class POF_Importer {
                 ! in_array( $data['post_id'], $delete_ids, true )
             ) {
                 if (
-                    ( // Is nav menu item
-                        ! empty( $data['guid'] ) &&
-                        ! empty( $data['object_id'] )
-                    ) ||
-                    ( // Item is not in new tree
-                        ! empty( $data['guid'] ) &&
-                        ! in_array( $data['guid'], $guids, true )
-                    ) ||
-                    ( // Imported post is not from the author "importer"
-                        ! empty( $data['guid'] ) &&
-                        $importer->get_importer_user()->ID !== $data['author']
-                    ) ||
-                    ( // Item is a failed import (no guid but has api item template)
-                        empty( $data['guid'] ) &&
-                        in_array(
-                            $data['template'], [
-                                'models/page-agegroup.php',
-                                'models/page-program.php',
-                                'models/page-task.php',
-                                'models/page-taskgroup.php',
-                            ], true
+                    ( // Common checks
+                        ( // Item guid is not in new tree
+                            ! empty( $data['guid'] ) &&
+                            ! in_array( $data['guid'], $guids, true ) &&
+                            $reason = 1
+                        ) ||
+                        ( // Imported post is not from the author "importer"
+                            ! empty( $data['guid'] ) &&
+                            $importer->get_importer_user()->ID !== $data['author'] &&
+                            $reason = 2
                         )
                     ) ||
-                    ( // Item has no language
-                        ! empty( $data['guid'] ) &&
-                        empty( $data['language'] )
+                    ( // Checks for nav menu items
+                        $data['post_type'] === 'nav_menu_item' &&
+                        (
+                            ( // Is nav menu item with api item as nav item
+                                ! empty( $data['guid'] ) &&
+                                $reason = 3
+                            )
+                        )
+                    ) ||
+                    ( // Checks for api tips
+                        $data['post_type'] === 'pof_tip' &&
+                        (
+                            ( // Tip parent has been deleted
+                                empty( $data['pof_tip_parent_exists'] ) &&
+                                $reason = 4
+                            ) ||
+                            ( // Item has no language
+                                empty( $data['language'] ) &&
+                                $reason = 5
+                            )
+                        )
+                    ) ||
+                    ( // Check for api posts
+                        $data['post_type'] === 'page' &&
+                        (
+                            ( // Item is a failed import (no guid but has api item template)
+                                empty( $data['guid'] ) &&
+                                in_array(
+                                    $data['template'], [
+                                        'models/page-agegroup.php',
+                                        'models/page-program.php',
+                                        'models/page-task.php',
+                                        'models/page-taskgroup.php',
+                                    ], true
+                                ) &&
+                                $reason = 6
+                            ) ||
+                            ( // Item has no language
+                                ! empty( $data['guid'] ) &&
+                                empty( $data['language'] ) &&
+                                $reason = 7
+                            )
+                        )
                     )
                 ) {
 
                     // Add item to delete list
-                    $delete_ids[] = $data['post_id'];
+                    $delete_ids[] = (object) [
+                        'id'     => $data['post_id'],
+                        'reason' => $reason,
+                    ];
                 }
                 elseif ( ! empty( $data['guid'] ) ) {
 
@@ -182,8 +233,17 @@ class POF_Importer {
                     $duplicates = array_filter(
                         $ids, function( array $itemdata ) use ( $data ) : bool {
                             return (
-                                $itemdata['guid'] === $data['guid'] &&
-                                $itemdata['language'] === $data['language']
+                                // Check that languages are the same
+                                $itemdata['language'] === $data['language'] &&
+                                $itemdata['post_type'] === $data['post_type'] &&
+                                ( // Check that guid's are the same (tips and other posts have different meta guid keys)
+                                    $itemdata['post_type'] === 'pof_tip' ? (
+                                        $itemdata['pof_tip_guid'] === $data['pof_tip_guid']
+                                    ) :
+                                    (
+                                        $itemdata['guid'] === $data['guid']
+                                    )
+                                )
                             );
                         }
                     );
@@ -206,7 +266,11 @@ class POF_Importer {
                         array_shift( $duplicates );
                         foreach ( $duplicates as $duplicate ) {
                             if ( ! in_array( $duplicate['post_id'], $delete_ids, true ) ) {
-                                $delete_ids[] = $duplicate['post_id'];
+                                $reason       = 8;
+                                $delete_ids[] = (object) [
+                                    'id'     => $duplicate['post_id'],
+                                    'reason' => $reason,
+                                ];
                             }
                         }
                     }
@@ -235,12 +299,13 @@ class POF_Importer {
                 $this->wp_cli_msg( 'No posts to delete.' );
             }
             else {
+                $ids = wp_list_pluck( $delete_ids, 'id' );
                 $this->wp_cli_msg( 'Deleting old posts.' );
-                $wpdb->query( 'DELETE FROM ' . $posts_table . ' WHERE ID IN(' . implode( ',', $delete_ids ) . ')' );
-                $this->wp_cli_msg( 'Deleting old postmeta.' );
-                $wpdb->query( 'DELETE FROM ' . $postmeta_table . ' WHERE post_id IN(' . implode( ',', $delete_ids ) . ')' );
+                $wpdb->query( 'DELETE FROM ' . $posts_table . ' WHERE ID IN(' . implode( ',', $ids ) . ')' );
+                $this->wp_cli_msg( 'Deleting detached postmeta.' );
+                $wpdb->query( 'DELETE ' . $postmeta_table . '.* FROM ' . $postmeta_table . ' LEFT JOIN ' . $posts_table . ' ON ' . $postmeta_table . '.post_id = ' . $posts_table . '.ID WHERE ID IS NULL' );
 
-                $this->wp_cli_success( 'Run complete, deleted (' . count( $delete_ids ) . ') posts.' );
+                $this->wp_cli_success( 'Run complete, deleted (' . count( $ids ) . ') posts.' );
             }
 
             $this->wp_cli_msg( 'Flushing cache & rewrite rules' );
@@ -258,11 +323,9 @@ class POF_Importer {
             array_key_exists( 'list-delete', $assoc_args ) &&
             $assoc_args['list-delete']
         ) {
-            $this->wp_cli_format_items( array_map( function( int $id ) : array {
-                return [
-                    'id' => $id,
-                ];
-            }, $delete_ids ), [ 'id' ] );
+            $this->wp_cli_format_items( array_map( function( \stdClass $item ) : array {
+                return (array) $item;
+            }, $delete_ids ), [ 'id', 'reason' ] );
         }
 
         return true;
@@ -926,8 +989,11 @@ class POF_Importer {
                         'post_status' => 'publish',
                     );
 
-                    $post_id = post_exists( $args['post_title'], $args['post_content'], $args['post_date']);
-                    if ( $post_id !== 0 ) {
+                    $tip_query      = 'SELECT post_id FROM ' . $postmeta_table . ' WHERE meta_key="pof_tip_guid" AND meta_value="%s"';
+                    $tip_query      = $wpdb->prepare( $tip_query, $tip['guid'] );
+                    $post_id        = $wpdb->get_row( $tip_query );
+                    if ( ! empty( $post_id ) ) {
+                        $post_id    = $post_id->post_id;
                         $args['ID'] = $post_id;
                         $this->updated++;
                     } else {
