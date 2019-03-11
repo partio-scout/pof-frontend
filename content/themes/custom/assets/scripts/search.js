@@ -276,12 +276,7 @@ class Search {
             this.stop( e );
         }
 
-        const $form   = this.$filterForm;
-        const $SInput = $form.find( 'input[name="s"]' );
-
-        // Duplicate search value across all forms
-        this.$searchInput.val( $SInput.val() );
-        this.$filterForm.find( 'input[name="s"]' ).val( $SInput.val() );
+        const $form   = $( e.currentTarget ).closest( 'form' );
 
         // Collect args from the form that was submitted either via click or submit event
         const args = this.getArgs( $form );
