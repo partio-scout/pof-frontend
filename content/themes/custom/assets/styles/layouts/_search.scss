@@ -207,6 +207,12 @@ $search_fontsize_smaller: rem-calc(12);
 .search-input-container {
 	position: relative;
 
+	.search-input {
+		&::-ms-clear {
+			display: none;
+		}
+	}
+
 	.search-icon,
 	.filter-icon {
 		color: $partio_main_color_lighter;

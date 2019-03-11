@@ -32,6 +32,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - PO-287: Laitettu takaisin title kenttä vinkin lisäykseen
 - PO-299: Piilotettu haun rajaustapa toistaiseksi
 - PO-301: Haun filttereiden taustaväri
+- PO-308: Piilotettu IE:n tekstikentän X painike
 - PO-288: Päivitetty jQuery ja siirretty se webpackillä compilattavaksi
 - PO-260: Kaikki frontin käännökset haetaan pof backendistä
 
