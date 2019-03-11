@@ -108,6 +108,7 @@ class Search {
             this.$filterInputs.on( 'change', ( e ) => this.filterInputChange( $( e.currentTarget ), e ) );
             this.$advSearchLink.on( 'click', ( e ) => this.highLightFilter( e ) );
             this.$emptyFiltersButton.on( 'click', ( e ) => this.emptyFilters( e ) );
+            this.$searchInput.on( 'change', ( e ) => this.searchInputChange( e ) );
 
             this.populateFilters();
             this.setEmptyBtnStatus();
@@ -137,6 +138,16 @@ class Search {
         );
 
         $input.closest( '.filter-opener' ).children( 'input[name]' ).attr( 'checked', checked ).prop( 'checked', checked );
+    }
+
+    /**
+     * Handle change event on search input.
+     * 
+     * @param {object} e Change event.
+     */
+    searchInputChange( e ) {
+        const searchValue = $( e.target ).val();
+        this.$filterForm.find( 'input[name="s"]' ).val( searchValue );
     }
 
     /**
