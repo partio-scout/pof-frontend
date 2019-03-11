@@ -37,6 +37,15 @@ class Tips {
             this.sortTips( e );
         });
         this.$tipsForm.submit( () => this.saveTip() );
+
+        // Jump to tip.
+        if ( window.location.hash ) {
+            const target = $( window.location.hash );
+
+            if ( target.length ) {
+                $( 'html, body' ).scrollTop( target.offset().top );
+            }
+        }
     }
 
     /**
