@@ -21,6 +21,9 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - PO-349: Otetaan "tasks" pois haku filttereistä
 - PO-310: Vaihdettu SEO kuvan haku logosta, jos sellainen on
 
+### Muutettu
+- PO-336: Näytetään hakutuloksia vain jos on hakusana tai filtereitä
+
 ### Korjattu
 - PO-320: Yläreunan kuvakaruselli
 - PO-293: Vinkkien järjestäminen
