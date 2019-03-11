@@ -137,7 +137,7 @@ $search_fontsize_smaller: rem-calc(12);
 }
 
 .search-filter {
-	background-color: $partio_main_color;
+	background-color: lighten($partio_main_color, 10%);
 	color: $white;
 	margin-right: -$column-gutter;
 	padding: $column-gutter;
