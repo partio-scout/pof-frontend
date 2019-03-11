@@ -105,7 +105,7 @@ window.Partio = ( function( window, document, $ ){
 			"fade": true,
 			"infinite": true,
 			"pause": false,
-			"speed": 500
+            "speed": 500
 		});
 
         $(function() {
