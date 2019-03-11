@@ -2,7 +2,7 @@
     {?embed}
         <div class="search-filter embed-filter">
     {:else}
-        <form class="search-filter">
+        <form class="search-filter" id="search-filter">
     {/embed}
 
     <h3>

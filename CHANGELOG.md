@@ -6,6 +6,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 ## [Julkaisematta]
 
 ### Lisätty
+<<<<<<< HEAD
 - PO-292: Wp-cli:llä ajettava versio importista
 - PO-360: Importer poistamaan importatut postaukset joita ei ole enään backendissä
 - PO-237: Ikonin haku backendistä
@@ -18,13 +19,13 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - PO-267: Näytetään kun haku on käynnissä
 - PO-351: Optimoitu redikseen menevää dataa
 - PO-269: Parannettu menu logiikkaa
-
-### Muutettu
 - PO-349: Otetaan "tasks" pois haku filttereistä
 
 ### Korjattu
 - PO-320: Yläreunan kuvakaruselli
 - PO-293: Vinkkien järjestäminen
+- PO-350: Tehdään tyhjentämisen jälkeen haku vain jos jotain muuttui
+- PO-300: Haun tyhjennä fillterit painike
 
 ## [1.2.0] - 2018-09-05
 

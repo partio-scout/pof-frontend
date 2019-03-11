@@ -33,12 +33,23 @@ class Search {
         this.$filterInputs           = this.$filterForm.find( 'input[name]:not([type="text"]), select[name]' );
         this.lastSearch              = this.$searchInput.val();
         this.$langMenu               = $( '#second-lang-menu' );
+        this.$searchFilter           = $( '#search-filter' );
+        this.$emptyFiltersButton     = this.$filterForm.find( '#search-empty-filters-button' );
         this.$postRelation           = this.$filterForm.find( 'input[name="post_relation"]' );
     };
 
     toggleSelfActive( e ) {
         e.preventDefault();
         $( e.currentTarget ).toggleClass( 'active' );
+    }
+
+    setEmptyBtnStatus() {
+        const url = new Url();
+        if ( !! _.get( url, 'query.post_guids', []).length ) {
+            this.$emptyFiltersButton.removeClass( 'disabled' );
+        } else {
+            this.$emptyFiltersButton.addClass( 'disabled' );
+        }
     }
 
     /**
@@ -96,8 +107,10 @@ class Search {
             this.$filterMoreBtn.on( 'click', ( e ) => this.toggleSelfActive( e ) );
             this.$filterInputs.on( 'change', ( e ) => this.filterInputChange( $( e.currentTarget ), e ) );
             this.$advSearchLink.on( 'click', ( e ) => this.highLightFilter( e ) );
+            this.$emptyFiltersButton.on( 'click', ( e ) => this.emptyFilters( e ) );
 
             this.populateFilters();
+            this.setEmptyBtnStatus();
         }
     };
 
@@ -262,6 +275,7 @@ class Search {
         // Collect args from the form that was submitted either via click or submit event
         const args = this.getArgs( $form );
         this.handleUrlOnSearch( args );
+        this.setEmptyBtnStatus();
 
         // Abort any existing calls
         if ( this.xhr ) {
@@ -437,6 +451,17 @@ class Search {
         e.stopPropagation();
         e.preventDefault();
     };
+
+    /**
+     * Empty filters.
+     */
+    emptyFilters( e ) {
+        const $btn = $( e.currentTarget );
+        if ( ! $btn.hasClass( 'disabled' ) ) {
+            this.$searchFilter.find( 'input[type=checkbox]:not(.and-or-input):checked' ).removeAttr( 'checked' ).prop( 'checked', false );
+            this.doSearch( e );
+        }
+    }
 }
 
 export default new Search();
