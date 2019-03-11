@@ -40,7 +40,7 @@
 						                <div class="row hidden loadmore-container">
 						                    <div class="small-12 text-center column">
 												<button
-													class="load-more-button"
+													class="load-more-button {@eq key=Results.max_num_pages value=Results.page}hidden{/eq}"
 													id="search-results-loadmore"
 													data-maxpages="{Results.max_num_pages}"
 													data-page="{Results.page}"
