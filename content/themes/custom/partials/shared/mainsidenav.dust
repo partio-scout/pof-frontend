@@ -1,36 +1,4 @@
-
-	<aside class="main_menu-wrapper">
-		<h3 class="main_menu-heading">{@apitranslation path="yleiset.main_menu" fallback="yleiset.main_menu" /}</h3>
-		<ul class="menu">
-			<li class="row lang-menu-row lang-menu-container">
-				<ul class="lang-menu">
-					{#Header.LangSwitcher.langs}
-						<li><a{?active} class="active"{/active} href="{permalink}">{lang}</a></li>
-					{/Header.LangSwitcher.langs}
-				</ul>
-			</li>
-
-			{#Header.Content}
-			<li class="menu-item{?has_children} menu-item-has-children{/has_children} {current_first}">
-				<a href={url}>{title}{?has_children}<span class="toggler {?current_first}opened{/current_first}"></span>{/has_children}</a>
-			{?has_children}
-				<ul class="sub-menu">
-					{#children}
-						<li class="menu-item{?has_sub_children} menu-item-has-children{/has_sub_children} {current_second} {@eq key=current_id value=ID} current-page {/eq}">
-							<a href={permalink}>{post_title}{?has_sub_children}<span class="toggler {?current_second}opened{/current_second}"></span>{/has_sub_children}</a>
-							{?has_sub_children}
-								<ul class="sub-menu">
-									{#children}
-										<li class="menu-item {@eq key=current_id value=ID} current-page {/eq}"><a href={permalink}>{post_title}</a></li>
-									{/children}
-								</ul>
-							{/has_sub_children}
-						</li>
-					{/children}
-				</ul>
-			{/has_children}
-			</li>
-			{/Header.Content}
-		</ul>
-	</aside>
-
+<aside class="main_menu-wrapper">
+	<h3 class="main_menu-heading">{@apitranslation path="yleiset.main_menu" fallback="yleiset.main_menu" /}</h3>
+	{@menu menu_name="main-menu" ul_classes="menu" /}
+</aside>

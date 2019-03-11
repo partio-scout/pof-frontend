@@ -1,19 +1,31 @@
 <?php
+/**
+ * Header class file
+ */
 
+/**
+ * Header class
+ */
 class Header extends \DustPress\Model {
 
+    /**
+     * Get google analytics key
+     */
     public function Analytics() {
         return get_field('google_analytics', 'option');
     }
 
     /**
-     * Get the slug for current language
+     * Get current language slug
      */
     public function LangSlug() {
         $slug = pll_current_language();
         return $slug;
     }
 
+    /**
+     * Get current language home url
+     */
     public function HomeUrl() {
         return pll_home_url();
     }
@@ -212,8 +224,26 @@ class Header extends \DustPress\Model {
     }
 
 
+    /**
+     * Add current language slug to body classes
+     *
+     * @param  array $classes Class list.
+     * @return array          Modified $classes.
+     */
     public function add_lang_to_body_class( $classes ) {
-        $classes['lang'] = $this->current_lang;
+        $classes['lang'] = pll_current_language();
         return $classes;
+    }
+
+    /**
+     * Get translations
+     *
+     * @return array
+     */
+    public function S() {
+        $s = [
+            'valikko' => __( 'Main Menu', 'pof' ),
+        ];
+        return $s;
     }
 }
