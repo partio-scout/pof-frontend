@@ -28,7 +28,7 @@ class Search extends \DustPress\Model {
          * @return string        Modified $title.
          */
         add_filter( 'wp_title', function( string $title ) : string {
-            $title = \DustPress\ApiTranslation::get_translation( 'haku.advanced_search' ) ?? $title;
+            $title = parse_path( 'haku.advanced_search', \DustPress\ApiTranslation::get_translations() ) ?? $title;
             return $title;
         }, 30);
     }
