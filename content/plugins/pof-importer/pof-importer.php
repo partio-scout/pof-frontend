@@ -82,7 +82,8 @@ class POF_Importer {
         $guids = array_keys( $this->flatten_tree( $tree['program'][0] ) );
 
         // Collect all posts
-        $posts = $wpdb->get_results( 'SELECT ID,post_author,post_type,post_modified FROM ' . $posts_table . ' WHERE post_type IN ( "page", "nav_menu_item" )' );
+        $posts   = $wpdb->get_results( 'SELECT ID,post_author,post_type,post_modified FROM ' . $posts_table . ' WHERE post_type IN ( "page", "nav_menu_item", "pof_tip" )' );
+        $id_list = wp_list_pluck( $posts, 'ID' );
 
         $progress = $this->wp_cli_progress( 'Fetching post data to check for deletion', count( $posts ) );
 
@@ -94,7 +95,7 @@ class POF_Importer {
          * @uses   mixed $progress Progressbar helper.
          * @return array           Modified $ids.
          */
-        $ids = array_map( function( \stdClass $post ) use ( $progress ) : array {
+        $ids = array_map( function( \stdClass $post ) use ( $id_list, $progress ) : array {
             $progress->tick();
 
             if ( $post->post_type === 'nav_menu_item' ) {
@@ -137,6 +138,8 @@ class POF_Importer {
 
         $importer = $this;
 
+        $progress = $this->wp_cli_progress( 'Filtering post data to check for deletion', count( $ids ) );
+
         /**
          * Filter the id's to be deleted
          *
@@ -155,12 +158,13 @@ class POF_Importer {
              * @uses   POF_Importer $importer   Used to get importer user id.
              * @return array                    Modified $delete_ids.
              */
-            $ids, function( array $delete_ids, array $data ) use ( $ids, $guids, $importer ) : array {
+            $ids, function( array $delete_ids, array $data ) use ( $ids, $guids, $importer, $progress ) : array {
+            $progress->tick();
 
             if (
                 // If item is already in the delete list no need to check anything
                 // this can happen when duplicates are added to the list
-                ! in_array( $data['post_id'], $delete_ids, true )
+                ! array_key_exists( $data['post_id'], $delete_ids )
             ) {
                 if (
                     ( // Common checks
@@ -222,14 +226,13 @@ class POF_Importer {
                 ) {
 
                     // Add item to delete list
-                    $delete_ids[] = (object) [
+                    $delete_ids[ $data['post_id'] ] = (object) [
                         'id'     => $data['post_id'],
                         'reason' => $reason,
                     ];
                 }
                 elseif ( ! empty( $data['guid'] ) ) {
 
-                    // If nothing else matched, check for duplicates
                     $duplicates = array_filter(
                         $ids, function( array $itemdata ) use ( $data ) : bool {
                             return (
@@ -267,7 +270,7 @@ class POF_Importer {
                         foreach ( $duplicates as $duplicate ) {
                             if ( ! in_array( $duplicate['post_id'], $delete_ids, true ) ) {
                                 $reason       = 8;
-                                $delete_ids[] = (object) [
+                                $delete_ids[ $duplicate['post_id'] ] = (object) [
                                     'id'     => $duplicate['post_id'],
                                     'reason' => $reason,
                                 ];
@@ -280,6 +283,7 @@ class POF_Importer {
             return $delete_ids;
             }, []
         );
+        $progress->finish();
 
         // Check that we will still have a suitable amount of posts after the deletion
         if ( count( $ids ) - count( $delete_ids ) < 70 ) {
@@ -295,7 +299,7 @@ class POF_Importer {
             $this->wp_cli_success( 'Dry run complete, would delete (' . count( $delete_ids ) . ') posts.' );
         }
         else {
-            if ( ! empty( $delete_ids ) ) {
+            if ( empty( $delete_ids ) ) {
                 $this->wp_cli_msg( 'No posts to delete.' );
             }
             else {
@@ -435,6 +439,31 @@ class POF_Importer {
         return $tree_url;
     }
 
+    /**
+     * Get api tips url
+     *
+     * @param  array $extra_params Optional extra params to add to url.
+     * @return string              Url.
+     */
+    public function get_tips_url( array $extra_params = [] ) : string {
+        if ( ! empty( $this->tips_url ) ) {
+            return $this->tips_url;
+        }
+
+        $tips_url = get_field( 'tips-json', 'option' );
+        if ( ! empty( $tips_url ) ) {
+            $url_parts = wp_parse_url( $tips_url );
+            $params    = [];
+            parse_str( $url_parts['query'], $params );
+            $params             = $params += $extra_params;
+            $url_parts['query'] = http_build_query( $params );
+            $tips_url           = $url_parts['scheme'] . '://' . $url_parts['host'] . $url_parts['path'] . '?' . $url_parts['query'];
+        }
+
+        $this->tips_url = $tips_url;
+        return $tips_url;
+    }
+
     public function init_plugin() {
 
         // get API url from options
@@ -442,7 +471,7 @@ class POF_Importer {
         if ( is_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
 
             $this->tree_url       = $this->get_tree_url( [ 'rand' => mt_rand() ] );
-            $this->tips_url       = get_field( 'tips-json', 'option' ) . '?rand=' . mt_rand();
+            $this->tips_url       = $this->get_tips_url( [ 'rand' => mt_rand() ] );
             $this->site_languages = array();
             if ( function_exists( 'pll_languages_list' ) ) {
                 $this->site_languages = pll_languages_list();
@@ -527,23 +556,7 @@ class POF_Importer {
         $this->created    = 0;
         $this->start_time = microtime( true );
 
-        // fetch tasks from database
-        $args  = [
-            'posts_per_page' => -1,
-            'post_type'      => 'page',
-            'post_parent'    => $post_id,
-            'post_status'    => 'publish',
-            'meta_key'       => 'api_type',
-            'meta_value'     => 'task',
-        ];
-        $tasks = \DustPress\Query::get_acf_posts( $args );
-
-        $taskData = array();
-        foreach ( $tasks as $key => $task ) {
-            $taskData[ $task->fields['api_guid'] ][ strtolower( $task->fields['api_lang'] ) ] = $task;
-        }
-
-        $this->update_tips( $taskData );
+        $this->update_tips();
     }
 
     /**
@@ -851,7 +864,6 @@ class POF_Importer {
             $new_translations  = false;
             $item['languages'] = array_map( function( $lang ) use ( &$new_translations, &$translations, &$queried, $item, $class ) {
 
-<<<<<<< HEAD
                 if ( $lang['update'] && $lang['data'] ) {
 
                     // Post object params
@@ -892,12 +904,6 @@ class POF_Importer {
                                 // Parent post doesnt exist
                                 $class->wp_cli_warning( 'Failed to get post parent for guid (' . $item['guid'] . '), parent should have guid (' . $item['parent'] . ')' );
                             }
-=======
-                    $this->update_page_meta( $post_id, $guid, $item );
-                    if (in_array(strtolower($item['lang']), $this->site_languages)) {
-                        if (function_exists('pll_set_post_language')) {
-                            pll_set_post_language($post_id, strtolower($item['lang']));
->>>>>>> PO-351
                         }
                     }
 
@@ -927,8 +933,6 @@ class POF_Importer {
                                 pll_set_post_language( $post_id, $lang['lang'] );
                                 $new_translations = true;
                             }
-                            // Store set language
-                            $translations[ $lang['lang'] ] = $post_id;
                         }
 
                     }
@@ -952,6 +956,12 @@ class POF_Importer {
                 return $lang;
             }, $item['languages']);
 
+            // Collect connected posts
+            $translations = [];
+            foreach ( $item['languages'] as $itemlang ) {
+                $translations[ $itemlang['lang'] ] = $itemlang['page']->ID;
+            }
+
             // Link connected translations
             if ( $new_translations ) {
                 if ( function_exists( 'pll_save_post_translations' ) ) {
@@ -971,105 +981,77 @@ class POF_Importer {
      *
      * @param array $data Tip data.
      */
-    private function update_tips( $data ) {
+    private function update_tips() {
 
         $tips_data = $this->fetch_data( $this->tips_url );
 
         if ( ! $tips_data ) {
-            $this->error = __('An error occured while fetching tips from backend.', 'pof_importer');
-        } else {
-<<<<<<< HEAD
+            $this->error = __( 'An error occured while fetching tips from backend.', 'pof_importer' );
+        }
+        else {
             $progress = $this->wp_cli_progress( 'Importing tips', count( $tips_data ) );
-=======
->>>>>>> PO-351
 
-            foreach ($tips_data as $id => $tip) {
+            foreach ( $tips_data as $id => $tip ) {
                 $progress->tick();
 
-                $parent = $data[$tip['post']['guid']][$tip['lang']];
-<<<<<<< HEAD
-=======
-                $comment_id = null;
->>>>>>> PO-351
-                if ( isset ( $parent ) ) {
+                global $wpdb;
+                $postmeta_table = $wpdb->prefix . 'postmeta';
+                $parent_query   = 'SELECT post_id FROM ' . $postmeta_table . ' WHERE meta_key="api_guid" AND meta_value="%s" ORDER BY post_id DESC';
+                $parent_query   = $wpdb->prepare( $parent_query, $tip['post']['guid'] );
+                $parent_id      = $wpdb->get_row( $parent_query );
+                $parent_id      = $parent_id ? icl_object_id( $parent_id->post_id, 'pof_tip', false, $tip['lang'] ) : null;
+
+                if ( ! empty( $parent_id ) ) {
 
                     // Data for new import
-                    $args = array(
-                        'post_title' => $tip['guid'],
-                        'post_content' => $tip['content'],
-                        'post_date' => $tip['modified'],
+                    $args = [
+                        'post_title'    => ! empty( $tip['title'] ) ? $tip['title'] : $tip['guid'],
+                        'post_content'  => $tip['content'],
+                        'post_date'     => $tip['modified'],
                         'post_date_gmt' => $tip['modified'],
-                        'post_type' => 'pof_tip',
-                        'post_status' => 'publish',
-                    );
+                        'post_type'     => 'pof_tip',
+                        'post_status'   => 'publish',
+                        'post_author'   => $this->get_importer_user()->ID,
+                    ];
 
-<<<<<<< HEAD
                     $tip_query      = 'SELECT post_id FROM ' . $postmeta_table . ' WHERE meta_key="pof_tip_guid" AND meta_value="%s"';
                     $tip_query      = $wpdb->prepare( $tip_query, $tip['guid'] );
                     $post_id        = $wpdb->get_row( $tip_query );
                     if ( ! empty( $post_id ) ) {
                         $post_id    = $post_id->post_id;
-=======
-                    error_log( 'creating post: ' . $tip['guid'] );
-
-                    $post_id = post_exists( $args['post_title'], $args['post_content'], $args['post_date']);
-                    if ( $post_id !== 0 ) {
-                        error_log('post exists with id: ' . $post_id );
->>>>>>> PO-351
                         $args['ID'] = $post_id;
                         $this->updated++;
-                    } else {
+                    }
+                    else {
                         $this->created++;
                     }
-<<<<<<< HEAD
+
                     $post_id = wp_insert_post( $args );
+                    pll_set_post_language( $post_id, $tip['lang'] );
                     if ( is_wp_error( $post_id ) ) {
                         $this->wp_cli_warning( 'WP error on insert post, guid: (' . $tip['guid'] . '), error: ' . wp_json_encode( $post_id ) );
                         continue;
                     }
 
-                    $meta = array(
+                    $meta = [
                         'pof_tip_nickname' => $tip['publisher']['nickname'],
-                        'pof_tip_parent' => $parent->ID,
-                        'pof_tip_guid'   => $tip['guid'],
-                        'api_type'   => 'pof_tip',
-                    );
+                        'pof_tip_parent'   => $parent_id,
+                        'pof_tip_guid'     => $tip['guid'],
+                        'api_type'         => 'pof_tip',
+                    ];
 
-                    foreach( $meta as $meta_key => $meta_value ) {
-                        update_post_meta( $post_id, $meta_key, $meta_value );
-=======
-                    error_log( 'updating post ');
-                    $post_id = wp_insert_post( $args );
-                    if ( is_wp_error( $post_id ) ) { continue;
-                        error_log('wp error!');
->>>>>>> PO-351
+                    foreach ( $meta as $meta_key => $meta_value ) {
+                        $success = update_post_meta( $post_id, $meta_key, $meta_value );
+                        if ( $success === false ) {
+                            $original_value = get_post_meta( $post_id, $meta_key, true );
+                            if ( $original_value != $meta_value ) {
+                                $this->wp_cli_warning( 'Failed inserting postmeta. post_id: (' . $post_id . ') meta_key: (' . $meta_key . ') meta_value: (' . $meta_value . ')' );
+                            }
+                        }
                     }
-                    error_log( 'updating post meta ');
-
-                    $meta = array(
-                        'pof_tip_nickname' => $tip['publisher']['nickname'],
-                        'pof_tip_parent' => $parent->ID,
-                        'pof_tip_guid'   => $tip['guid'],
-                        'api_type'      => 'pof_tip',
-                    );
-
-                    foreach( $meta as $meta_key => $meta_value ) {
-                        update_post_meta( $post_id, $meta_key, $meta_value );
-                    }
-
-                    if ( function_exists('pll_set_post_language' ) ) {
-                        pll_set_post_language( $post_id, strtolower( $tip['lang'] ) );
-                    }
-
-                    error_log( 'done');
-
                 }
                 else {
-<<<<<<< HEAD
                     $this->wp_cli_warning( 'No parent data for guid: (' . $tip['guid'] . ')' );
-=======
-                    error_log('no parent data');
->>>>>>> PO-351
                     // TODO: Errorlog, if some tips not importet
                 }
             }
@@ -1255,16 +1237,12 @@ class POF_Importer {
                 )
             );
         }
-<<<<<<< HEAD
-        $json = file_get_contents( $url, false, $ctx );
-=======
         try {
             $json = file_get_contents( $url, false, $ctx );
         }
         catch ( \Exception $e ) {
             $json = '[]';
         }
->>>>>>> PO-351
         if ( $json ) {
             return json_decode( $json, true ); // decode the JSON into an associative array (true)
         } else {
