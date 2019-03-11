@@ -246,8 +246,6 @@ class Search extends \DustPress\Model {
                 $posts = $this->filter_posts( $posts, $params->filters );
             }
 
-            $posts = $this->remove_duplicate_posts( $posts );
-
             // Do pagination in php since we do the filtering in php as well
             $count         = count( $posts );
             $max_num_pages = ceil( $count / $params->per_page );
@@ -269,22 +267,20 @@ class Search extends \DustPress\Model {
      * Remove duplicate posts.
      * If duplicated posts found, keep the post which post type is 'pof_tip' only.
      *
-     * @param array $posts Posts array.
-     * @return void
+     * @param   array $posts Posts array.
+     * @return array         Modified $posts.
      */
     protected function remove_duplicate_posts( $posts ) {
-        foreach ( $posts as $post ) {
-            // Current post data.
-            $current_id    = $post->ID;
-            $current_title = $post->post_title;
-
-            foreach ( $posts as $key => $post ) {
+        foreach ( $posts as $key => $post ) {
+            foreach ( $posts as $key2 => $post2 ) {
                 // Do not care current post.
-                if ( $current_id !== $post->ID ) {
-                    // If post found with same title and it is not pof_tip, delete it.
-                    if ( $post->post_title === $current_title && $post->post_type !== 'pof_tip' ) {
-                        unset( $posts[ $key ] );
-                    }
+                if (
+                    $post2->ID !== $post->ID &&
+                    $post2->post_title === $post->post_title &&
+                    $post2->post_type !== 'pof_tip'
+                ) {
+                    unset( $posts[ $key ] );
+                    break;
                 }
             }
         }
