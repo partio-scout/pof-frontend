@@ -7,10 +7,15 @@
                 <div class="row collapse align-center">
                     <div class="small-12 columns search-input-container">
                         <input type="search" name="s" value="{Term}" class="search-input" placeholder="{@apitranslation path="haku.search_input" fallback="haku.search_input" /}"  title="{@apitranslation path="haku.search_title" fallback="haku.search_title" /}">
-                        <button type="submit" class="search-icon">
+                        <button type="submit" class="search-icon {?is_frontpage}search-icon--force-right{/is_frontpage}">
                             <i class="icon-search"></i>
                         </button>
-                        <i class="icon-filter filter-icon"></i>
+
+                        {! Do not add filter icon on frontpage !}
+                        {^is_frontpage}
+                            <i class="icon-filter filter-icon"></i>
+                        {/is_frontpage}
+
                         {^small}
                             {>"shared/search-filter" embed="true" /}
                         {/small}
