@@ -6,7 +6,6 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 ## [Julkaisematta]
 
 ### Lisätty
-<<<<<<< HEAD
 - PO-292: Wp-cli:llä ajettava versio importista
 - PO-360: Importer poistamaan importatut postaukset joita ei ole enään backendissä
 - PO-237: Ikonin haku backendistä
