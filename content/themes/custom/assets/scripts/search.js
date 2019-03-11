@@ -22,6 +22,7 @@ class Search {
         this.$searchForm             = $( '.search-box__form' );
         this.$searchInput            = this.$searchForm.find( 'input[name="s"]' );
         this.$advSearchLink          = this.$searchForm.find( '.advanced-search-link' );
+        this.$searchBlock            = $( '.search-block' );
         this.$resultMessageContainer = $( '#results-message' );
         this.$resultsCount           = $( '#results-count' );
         this.$loadmoreContainer      = $( '.loadmore-container' );
@@ -453,6 +454,8 @@ class Search {
         this.$resultsContainer.html( html );
 
         this.$searchResults.removeClass( 'loading' );
+
+        this.$searchBlock.removeClass( 'hidden' );
     };
 
     /**

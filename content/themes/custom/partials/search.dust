@@ -31,7 +31,7 @@
 									<button class="clipboard" data-clipboard-get="location.href" title="Copy url" data-msg="Url copied to clipboard"></button>
 									<section class="search-results">
 										<span class="sr-only" aria-live="polite" id="results-message"></span>
-										<div class="column search-block">
+										<div class="column search-block {^Results}hidden{/Results}">
 											<p class="search-results__breadcrumb"><span id="results-count">{Results.count}</span> {@apitranslation path="haku.results_found" fallback="haku.results_found" /}</p>
 										</div>
 										<div class="row small-up-1" id="search-results-container">
