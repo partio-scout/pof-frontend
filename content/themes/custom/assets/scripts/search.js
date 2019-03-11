@@ -109,6 +109,7 @@ class Search {
             this.$advSearchLink.on( 'click', ( e ) => this.highLightFilter( e ) );
             this.$emptyFiltersButton.on( 'click', ( e ) => this.emptyFilters( e ) );
             this.$searchInput.on( 'change', ( e ) => this.searchInputChange( e ) );
+            this.$searchInput.on( 'input change', _.debounce( ( e ) => this.doSearch( e ), 500 ) );
 
             this.populateFilters();
             this.setEmptyBtnStatus();

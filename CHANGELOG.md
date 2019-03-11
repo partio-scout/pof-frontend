@@ -9,6 +9,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - PO-292: Wp-cli:llä ajettava versio importista
 - PO-360: Importer poistamaan importatut postaukset joita ei ole enään backendissä
 - PO-237: Ikonin haku backendistä
+- PO-334: Automaattinen haku jos käyttäjä kirjoittaa hakukenttään, 500ms viiveellä
 
 ### Muutettu
 - PO-326: Korjattu importerin postmetan importtaus ja viimeksi muokattu kentän päivitys
@@ -20,8 +21,6 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - PO-269: Parannettu menu logiikkaa
 - PO-349: Otetaan "tasks" pois haku filttereistä
 - PO-310: Vaihdettu SEO kuvan haku logosta, jos sellainen on
-
-### Muutettu
 - PO-336: Näytetään hakutuloksia vain jos on hakusana tai filtereitä
 
 ### Korjattu
