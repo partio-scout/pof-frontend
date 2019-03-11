@@ -16,7 +16,7 @@
     "require": {
         "johnpbloch/wordpress-core-installer": "^1.0.0",
         "johnpbloch/wordpress": "^4.7",
-        "devgeniem/dustpress": "^1.6.9",
+        "devgeniem/dustpress": "1.20.0",
         "devgeniem/dustpress-debugger": "1.*",
         "devgeniem/dustpress-js": "^3.0.3",
         "devgeniem/ext-relevanssi-premium": "^2.1.5.1",

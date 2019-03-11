@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e9d9d1c8e8fe19d164b6e929385685c",
+    "content-hash": "58bee00d9c75385852fd6c9c54dd822b",
     "packages": [
         {
             "name": "composer/installers",
@@ -154,16 +154,16 @@
         },
         {
             "name": "devgeniem/dustpress",
-            "version": "1.21.0",
+            "version": "1.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devgeniem/dustpress.git",
-                "reference": "4a328e60d5030df29f2401a8cf85b7d21b03ff5a"
+                "reference": "1861b1c9c3c1274864e8ed9e0d3efcc624e4f7fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devgeniem/dustpress/zipball/4a328e60d5030df29f2401a8cf85b7d21b03ff5a",
-                "reference": "4a328e60d5030df29f2401a8cf85b7d21b03ff5a",
+                "url": "https://api.github.com/repos/devgeniem/dustpress/zipball/1861b1c9c3c1274864e8ed9e0d3efcc624e4f7fd",
+                "reference": "1861b1c9c3c1274864e8ed9e0d3efcc624e4f7fd",
                 "shasum": ""
             },
             "type": "library",
@@ -199,7 +199,7 @@
                 "theme",
                 "wordpress"
             ],
-            "time": "2019-02-01T10:31:50+00:00"
+            "time": "2019-01-08T14:44:31+00:00"
         },
         {
             "name": "devgeniem/dustpress-debugger",
