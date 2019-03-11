@@ -19,6 +19,12 @@
                 </button>
             </div>
         </label>
+
+        <div class="search-buttons">
+            <button class="search-buttons__btn" type="button" id="search-empty-filters-button">{@apitranslation path="haku.search_clear" fallback="haku.search_clear" /}</button>
+        </div>
+
+        <input type="hidden" name="s" value="{Term}" placeholder="{Header.S.search_placeholder}" title="{Header.S.search_title}">
     {/embed}
 
     {>"search-and-or" name="post_relation" /}
