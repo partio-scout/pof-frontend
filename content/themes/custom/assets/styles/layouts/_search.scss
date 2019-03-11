@@ -259,7 +259,8 @@ $search_fontsize_smaller: rem-calc(12);
 
 .search-and-or {
 	background-color: $partio_main_color_darker;
-	display: flex;
+	display: none; // Delete this when search-and-or feature is needed.
+	// display: flex;
 	align-items: center;
 	flex-wrap: wrap;
 	margin-bottom: 1rem;
