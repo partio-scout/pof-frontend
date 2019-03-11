@@ -16,6 +16,23 @@ class Search extends \DustPress\Model {
         'Results'
     ];
 
+    /**
+     * Modify page title according to backend translation
+     */
+    public function ModifyTitle() {
+
+        /**
+         * Change the title
+         *
+         * @param  string $title Existing title.
+         * @return string        Modified $title.
+         */
+        add_filter( 'wp_title', function( string $title ) : string {
+            $title = \DustPress\ApiTranslation::get_translation( 'haku.advanced_search' ) ?? $title;
+            return $title;
+        }, 30);
+    }
+
     public function SearchBase() {
         return search_base( pll_current_language() );
     }
