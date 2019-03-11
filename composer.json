@@ -14,18 +14,22 @@
         }
     ],
     "require": {
-        
         "johnpbloch/wordpress-core-installer": "^1.0.0",
         "johnpbloch/wordpress": "^4.7",
-        "devgeniem/dustpress": "^1.6",
-        "devgeniem/dustpress-debugger": "^1.2",
-        "devgeniem/dustpress-js": "^1.1",
+        "devgeniem/dustpress": "^1.6.9",
+        "devgeniem/dustpress-debugger": "1.*",
+        "devgeniem/dustpress-js": "^3.0.3",
+        "devgeniem/ext-relevanssi-premium": "^2.1.5.1",
         "partio-scout/wordpress-advanced-custom-fields-pro": "^5.3",
         "vlucas/phpdotenv": "^2.4",
         "composer/installers": "^1.3",
         "predis/predis": "^1.1",
         "wpackagist-plugin/user-switching": "^1.0",
-        "devgeniem/dustpress-responsive-background-image": "^2.0.2"
+        "devgeniem/wp-redis-object-cache-dropin": "1.3.4.1",
+        "wpackagist-plugin/redis-cache": "1.3.0",
+        "devgeniem/dustpress-responsive-background-image": "^2.0.2",
+        "devgeniem/classic-editor": "^0.4.0",
+        "filp/whoops": "^2.2"
     },
     "extra": {
         "wordpress-install-dir": "wp",
@@ -33,6 +37,11 @@
             "content/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
             "content/plugins/{$name}/": ["type:wordpress-plugin"],
             "content/themes/{$name}/": ["type:wordpress-theme"]
+        },
+        "dropin-paths": {
+            "content/": [
+                "type:wordpress-dropin"
+            ]
         }
     },
     "repositories": {
@@ -44,9 +53,21 @@
             "type": "composer",
             "url": "https://wpackagist.org"
         },
+        "relevanssi" : {
+            "type": "git",
+            "url": "git@github.com:devgeniem/ext-relevanssi-premium.git"
+        },
+        "devgeniem/wp-redis-object-cache-dropin": {
+            "type": "git",
+            "url": "git@github.com:devgeniem/wp-redis-object-cache-dropin.git"
+        },
         "devgeniem/dustpress-responsive-background-image": {
             "type": "git",
             "url": "git@github.com:devgeniem/dustpress-responsive-background-image.git"
+        },
+        "classic-editor": {
+            "type": "git",
+            "url": "git@github.com:devgeniem/classic-editor.git"
         }
     }
 }

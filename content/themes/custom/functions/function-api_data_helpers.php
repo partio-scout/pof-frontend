@@ -12,7 +12,9 @@ function json_decode_pof($data) {
 function map_api_images( &$images ) {
     if ( is_array( $images ) ) {
         foreach ( $images as &$img ) {
-            $img = [ $img['key'] => json_decode_pof( $img['object'] ) ];
+            if ( is_array( $img ) && array_key_exists( 'key', $img ) ) {
+                $img = [ $img['key'] => json_decode_pof( $img['object'] ) ];
+            }
         }
     }
 }
@@ -227,4 +229,96 @@ function get_api_media( $id, $rendered = true ) {
     }
 
     return $media_data;
+}
+
+/**
+ * Sort taskgroups and tasks in age groups result
+ *
+ * @param mixed $data Data to sort.
+ */
+function sort_results( &$data ) {
+    if ( is_array( $data ) ) {
+        if ( array_key_exists( 'taskgroups', $data ) && ! empty( $data['taskgroups'] ) ) {
+            usort( $data['taskgroups'], 'sort_by_order' );
+            foreach ( $data['taskgroups'] as &$sub_array ) {
+                sort_results( $sub_array );
+            }
+        }
+        elseif ( array_key_exists( 'tasks', $data ) && ! empty( $data['tasks'] ) ) {
+            // Use elseif here because if we have taskgroups we don't show tasks
+            usort( $data['tasks'], 'sort_by_order' );
+        }
+    }
+}
+
+/**
+ * Sort array by item order parameter
+ *
+ * @param  array $a Item to compare.
+ * @param  array $b Item to compare.
+ * @return int
+ */
+function sort_by_order( $a, $b ) {
+    return $a['order'] - $b['order'];
+}
+
+/**
+ * Get age groups from the api
+ *
+ * @return array
+ */
+function get_age_groups() {
+    $ohjelma_json = get_field( 'ohjelma-json', 'option' );
+    $program      = \POF\Api::get( $ohjelma_json, true );
+    $age_groups   = $program['program'][0]['agegroups'];
+
+    usort( $age_groups, 'sort_by_order' );
+    sort_results( $age_groups );
+
+    return $age_groups;
+}
+
+/**
+ * Flatten api program tree into a single array
+ *
+ * @return array Flattened tree.
+ */
+function get_flat_program_tree() {
+    // Retrieve the program tree from the api
+    $ohjelma_json = get_field( 'ohjelma-json', 'option' );
+    $program      = \POF\Api::get( $ohjelma_json, true );
+    $tree         = $program['program'][0];
+
+    $flattened = [];
+    /**
+     * Recursively add api item to flattened array
+     *
+     * @param array  $item      Item to add.
+     * @param array  $flattened Array to gather items to.
+     * @param string $parent    Parent guid.
+     */
+    function add_to_flattened( $item, &$flattened, $parent = null ) {
+        $item['parent']  = $parent;
+        $items_to_search = [
+            'taskgroups',
+            'tasks',
+            'agegroups',
+        ];
+        foreach ( $items_to_search as $key ) {
+            if ( array_key_exists( $key, $item ) ) {
+                foreach ( $item[ $key ] as $new_item ) {
+                    add_to_flattened( $new_item, $flattened, $item['guid'] );
+                }
+
+                // Collapse sub items to just their guid's
+                $item[ $key ] = array_map(function( $item ) {
+                    return $item['guid'];
+                }, $item[ $key ]);
+            }
+        }
+        $flattened[ $item['guid'] ] = $item;
+    }
+    add_to_flattened( $tree, $flattened );
+
+    return $flattened;
 }

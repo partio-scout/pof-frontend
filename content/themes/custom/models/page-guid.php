@@ -15,7 +15,8 @@ class PageGuid extends \DustPress\Model {
 
         // Get necessary args
         $guid = get_query_var( 'guid' );
-        $lang = strtolower( get_query_var( 'lang', 'fi' ) );
+        $lang = get_query_var( 'lang' ) ?: pll_current_language();
+
         if ( empty( $guid ) ) {
             wp_safe_redirect( '/' );
             exit;

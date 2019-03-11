@@ -1,0 +1,70 @@
+{#Search}
+	{>"shared/header" /}
+
+	{>"shared/content_hero" /}
+	
+		<div class="content-bg">
+
+			<div class="row">
+
+				<div class="page-wrapper clearfix">
+
+					{>"shared/sidenav" /}
+
+					<main class="content-wrapper">
+
+						<div class="content-inner">
+
+							{>"shared/sidenav_button" /}
+
+							{>"shared/breadcrumbs_haku" /}
+
+							{>"shared/program-langnav" /}
+
+							<div id="program-content">
+								<div class="small-12 columns">
+                					<h3 class="search-heading">{@apitranslation path="haku.search_title" fallback="haku.search_title" /}</h3>
+								</div>
+								<div class="small-12 medium-7 columns">
+									{>"shared/search-section" /}
+
+									<button class="clipboard" data-clipboard-get="location.href" title="Copy url" data-msg="Url copied to clipboard"></button>
+									<section class="search-results">
+										<span class="sr-only" aria-live="polite" id="results-message"></span>
+										<div class="column search-block">
+											<p class="search-results__breadcrumb"><span id="results-count">{Results.count}</span> {@apitranslation path="haku.results_found" fallback="haku.results_found" /}</p>
+										</div>
+										<div class="row small-up-1" id="search-results-container">
+											{>"search-results-list" /}
+										</div>
+						                <div class="row hidden loadmore-container">
+						                    <div class="small-12 text-center column">
+												<button
+													class="load-more-button"
+													id="search-results-loadmore"
+													data-maxpages="{Results.max_num_pages}"
+													data-page="{Results.page}"
+													data-postcount="{Results.count}">
+													{@apitranslation path="yleiset.load_more" fallback="yleiset.load_more" /}
+												</button>
+						                    </div>
+						                </div>
+							        </section>
+								</div>
+								<div class="small-12 medium-5 columns">
+									{>"shared/search-filter" /}
+								</div>
+							</div>
+
+						</div>
+
+					</main>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	{>"shared/footer" /}
+{/Search}

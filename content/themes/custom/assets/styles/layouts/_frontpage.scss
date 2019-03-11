@@ -77,10 +77,21 @@
 .hero__heading-group-bottom {
 	position: relative;
 	width: 90%;
+	min-height: 150px;
 	max-width: 48rem;
 	margin: 0 auto;
 	top: 30%;
 	text-align: center;
+	transition: top .3s ease;
+}
+
+.hero__heading-group-search {
+	position: relative;
+	width: 50%;
+	min-width: 48rem;
+	margin: 0 auto;
+	top: 25%;
+	left: 25px;
 	transition: top .3s ease;
 }
 
@@ -290,56 +301,6 @@
 	color: $white;
 }
 
-// AKTIVITEETTIHAKU
-
-.search {
-    padding: 2em 0;
-    background: $partio_main_color_lighter;
-
-    label {
-        position: absolute;
-        top: 13px;
-        left: 34px;
-        i {
-            font-size: 1.4rem;
-        }
-    }
-}
-
-.search__input-lg {
-    display: block;
-    width: 100%;
-    height: 50px;
-    padding-left: 3.2rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 2rem;
-    color: #444;
-    background-color: #ffffff;
-    background-image: none;
-    border: 1px solid $partio_main_color;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    @extend %garamond-italic;
-
-    &:focus {
-        border-color: $partio_main_color;
-        outline: 0;
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px $partio_main_color;
-    }
-}
-
-// .search__advanced-link {
-// 	display: block;
-// 	width: 200px;
-// 	margin: 0 auto;
-// 	text-align: center;
-// 	color: $partio_second_color;
-// 	padding-top: .8rem;
-// 	&:hover {
-// 		text-decoration: underline;
-// 	}
-// }
-
 @media #{$medium-up} {
 	.hero {
 		height: 60%;
@@ -427,6 +388,11 @@
 	.hero__heading-group-bottom {
 		top: 20%;
 	}
+
+	.hero__heading-group-search {
+		top: 15%;
+		min-width: 40rem;
+	}
 }
 
 @media #{$small-only} {
@@ -440,9 +406,19 @@
 	}
 	.hero__heading-group-middle {
 		top: 15%;
+		.hero__divider {
+			 margin: .2rem auto;
+		}
 	}
 
 	.hero__heading-group-bottom {
 		top: 20%;
+		min-height: 100px;
+	}
+
+	.hero__heading-group-search {
+		top: 16%;
+		left: 0;
+		min-width: 27rem;
 	}
 }

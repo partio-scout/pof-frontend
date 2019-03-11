@@ -1,0 +1,71 @@
+{! We use here 'double' context because ajax loadmore returns Search { Results { data } }  !}
+{#Search.Results.posts}
+    <div class="column search-block">
+        <div class="basic-details clearfix">
+            <div class="search-results__title">
+                {#image}
+                    {?id}
+                        {@apiimage id=id img_only="true" class="taskgroup-sidelogo search-sidelogo hide-for-small-only" /}
+                    {:else}
+                        <img
+                            class="taskgroup-sidelogo search-sidelogo hide-for-small-only"
+                            src="{thumbnail.url}"
+                            width="{thumbnail.width}"
+                            height="{thumbnail.height}"
+                            alt="{post_title}"
+                        />
+                    {/id}
+                {/image}
+                <div class="{?image}float-content clearfix{/image}">
+                    <span class="left clearfix">
+                        <a href="{permalink}">
+                            <h5 class="page_title left">
+                                {@eq key=post_type value="pof_tip"}
+                                    <i>{post_title}</i>
+                                {:else}
+                                    {post_title}
+                                {/eq}
+                            </h5>
+                        </a>
+                    </span>
+                    <span class="divider">|</span>
+                    <span class="page_type">
+                        {! Get translation from both groups as only 1 will match !}
+                        {@apitranslation path="aktiviteettipaketin_ylakasite.{term.single}_single" /}
+                        {@apitranslation path="aktiviteetin_ylakasite.{term.single}_single" /}
+                    </span>
+                    {?post_excerpt}
+                        <p class="page_ingress">
+                            {post_excerpt|s}
+                        </p>
+                    {:else}
+                        {?post_content}
+                            <p class="page_ingress">
+                                {@excerpt string=post_content /}
+                            </p>
+                        {/post_content}
+                    {/post_excerpt}
+                </div>
+            </div>
+        </div>
+        {?parents}
+            <p class="search-results__breadcrumb">
+                {#parents}
+                    {@first}
+                        {#logo}
+                            {?id}
+                                {@apiimage id=logo.id img_only="true" class="search-results__breadcrumb__logo" /}
+                            {:else}
+                                <img src="{thumbnail.url}" class="search-results__breadcrumb__logo" alt="" />
+                            {/id}
+                        {/logo}
+                    {/first}
+                    <a class="search-results__breadcrumb-link" href="/{Search.Results.lang_base}/guid/{guid}">
+                        {@apititle /}
+                    </a>
+                    {@sep}<i class="icon-chevron-right breadcrumb-divider"></i>{/sep}
+                {/parents}
+            </p>
+        {/parents}
+    </div>
+{/Search.Results.posts}

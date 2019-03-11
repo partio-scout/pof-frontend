@@ -19,7 +19,7 @@ class PageFrontpage extends \DustPress\Model {
     }
 
     // Get program and agegroups to frontpage
-    public function Program() {
+    public static function Program() {
         $args = [
             'posts_per_page'    => -1,
             'post_type'         => 'page',

@@ -1,0 +1,14 @@
+@keyframes highlight {
+    from {
+        background-color: $partio_main_color_lighter;
+    }
+
+    to {
+        background-color: $partio_main_color;
+    }
+}
+
+.highlight {
+    animation-name: highlight;
+    animation-duration: 2s;
+}

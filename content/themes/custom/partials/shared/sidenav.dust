@@ -1,4 +1,7 @@
 	<aside class="menu-wrapper">
+		<div class="menu-search-block">
+			{>"search-section" small="true" /}
+		</div>
 		<h3 class="menu-heading show-for-medium-up">{Header.S.valikko}</h3>
 		<ul class="menu">
             <div class="row lang-menu-row">
@@ -32,11 +35,4 @@
 			</li>
 			{/Header.Content}
 		</ul>
-		{! Search elements hide before implementation
-		<div class="sidenav-search">
-			<div class="sidenav-search__inner">
-				<label><i class="icon-search"></i></label>
-				<input placeholder="Hae aktiviteetteja" id="" class="form-control sidenav-search__input">
-			</div>
-		</div>!}
 	</aside>

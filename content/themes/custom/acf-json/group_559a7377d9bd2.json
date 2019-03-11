@@ -31,7 +31,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "https:\/\/pof-backend.partio.fi\/spn-ohjelma-json-taysi\/?postGUID=86b5b30817ce3649e590c5059ec88921",
+            "default_value": "https:\/\/pof-backend.partio.fi\/spn-ohjelma-json-taysi\/",
             "placeholder": ""
         },
         {
@@ -51,10 +51,42 @@
             "placeholder": ""
         },
         {
+            "key": "field_5b0e566792774",
+            "label": "Haku-JSON",
+            "name": "haku-json",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_5b0e568692775",
+            "label": "K\u00e4\u00e4nn\u00f6s-JSON",
+            "name": "kaannos-json",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
             "key": "field_57c66abf9293b",
             "label": "Vinkkien l\u00e4hetysosoite",
             "name": "tips-send-url",
-            "type": "url",
+            "type": "text",
             "instructions": "URL jonne vinkkiehdotukset l\u00e4hetet\u00e4\u00e4n hyv\u00e4ksytt\u00e4v\u00e4ksi.",
             "required": 1,
             "conditional_logic": 0,
@@ -64,7 +96,12 @@
                 "id": ""
             },
             "default_value": "https:\/\/pof-backend.partio.fi\/lisaa-vinkki\/",
-            "placeholder": ""
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "readonly": 0,
+            "disabled": 0
         },
         {
             "key": "field_5b052a477dca9",
@@ -218,5 +255,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1549347440
+    "modified": 1552309863
 }

@@ -16,7 +16,12 @@
 /content/themes/custom/config.codekit
 .env
 content/themes/custom/config.codekit3
-/content/plugins/dustpress-responsive-background-image
+content/plugins/relevanssi-premium/
 node_modules
 /content/mu-plugins/classic-editor/
 /content/plugins/relevanssi-premium/
+npm-debug.log
+/content/plugins/redis-cache/
+/content/object-cache.php
+/wp-content
+/content/plugins/dustpress-responsive-background-image

@@ -1,0 +1,40 @@
+<div class="field-list agegroups">
+    {#age_groups}
+        <div class="filter-opener">
+            <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
+            <p>{@apititle /}</p>
+            <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
+            <div class="collapsed">
+                <div class="collapsed-content checkbox field-list">
+
+                    {#taskgroups}
+                        <div class="filter-opener">
+                            <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
+                            <p>{@apititle /}</p>
+                            <input type="checkbox" role="button" class="collapse-toggle custom checkbox">
+                            <div class="collapsed">
+                                <div class="collapsed-content checkbox field-list">
+
+                                    {?taskgroups}
+                                        {@set key="children" value=taskgroups /}
+                                    {:else}
+                                        {@set key="children" value=tasks /}
+                                    {/taskgroups}
+
+                                    {#children}
+                                        <label class="filter-opener">
+                                            <input type="checkbox" class="custom checkbox" name="post_guids[]" value="{.guid}">
+                                            <p>{@apititle /}</p>
+                                        </label>
+                                    {/children}
+
+                                </div>
+                            </div>
+                        </div>
+                    {/taskgroups}
+
+                </div>
+            </div>
+        </div>
+    {/age_groups}
+</div>

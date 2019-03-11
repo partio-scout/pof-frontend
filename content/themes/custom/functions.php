@@ -48,6 +48,9 @@ include_once( 'functions/function-menus.php' );
 // Search functions
 include_once( 'functions/function-search.php' );
 
+// Dustpress helpers
+include_once( 'functions/function-dustpress-helpers.php' );
+
 // Dustpress apiimage helper & filter
 include_once( 'functions/function-api_image_helper.php' );
 
@@ -57,7 +60,14 @@ include_once( 'functions/function-post-description.php' );
 // manifest.json handler
 include_once( 'functions/function-manifest.php' );
 
+// Api call helper class
+include_once( 'functions/class-api.php' );
 
+// Translation helper
+require_once 'functions/function-program_lang_helper.php';
+
+// Complete api translation retriever
+require_once 'functions/class-apitranslation.php';
 
 /*
  * Fixes missing field key mappings in postmeta table for pages

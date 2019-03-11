@@ -1,5 +1,4 @@
 <nav class="breadcrumbs">
-	<a href="{WP.home}/etusivu">Etusivu</a>
-	<a href="{WP.home}/etusivu/ohjelma">Ohjelma</a>
-	<a href="{WP.home}/haku" class="current">Aktiviteettihaku</a>
+	<a href="{WP.home}/">{Header.S.frontpage}</a>
+	<a href="" class="current">{@apitranslation path="haku.search_results" fallback="haku.search_results" /}</a>
 </nav>

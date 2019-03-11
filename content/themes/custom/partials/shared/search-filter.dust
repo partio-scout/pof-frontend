@@ -1,0 +1,56 @@
+{#ApiSearchTerms}
+    {?embed}
+        <div class="search-filter embed-filter">
+    {:else}
+        <form class="search-filter">
+    {/embed}
+
+    <h3>
+        <i class="icon-filter" aria-hidden="true"></i>
+        {@apitranslation path="haku.filter_search" fallback="haku.filter_search" /}
+    </h3>
+
+    {^embed}
+        <label>
+            <div class="search-input-container">
+                <input type="search" name="s" value="{Term}" placeholder="{Header.S.search_placeholder}" title="{Header.S.search_title}">
+                <button type="submit" class="search-icon">
+                    <i class="icon-search"></i>
+                </button>
+            </div>
+        </label>
+    {/embed}
+
+    {>"search-and-or" name="post_relation" /}
+
+    <fieldset>
+        {?embed}
+            <p>{@apitranslation path="haku.filter_by_agegroup" fallback="haku.filter_by_agegroup" /}</p>
+        {:else}
+            <p>{@apitranslation path="haku.by_agegroup" fallback="haku.by_agegroup" /}</p>
+        {/embed}
+
+        {>"agegroup-filters" embed="false" /}
+    </fieldset>
+
+    {!
+    <fieldset>
+        {?embed}
+            <button class="toggle-global-filters" type="button">
+                <i class="icon-cog"></i>
+                {@apitranslation path="haku.more_filters" fallback="haku.more_filters" /}
+            </button>
+        {:else}
+            <p>{@apitranslation path="haku.other_filters" fallback="haku.other_filters" /}</p>
+        {/embed}
+
+        {>"filters" prefix="global" /}
+    </fieldset>
+    !}
+
+    {?embed}
+        </div>
+    {:else}
+        </form>
+    {/embed}
+{/ApiSearchTerms}

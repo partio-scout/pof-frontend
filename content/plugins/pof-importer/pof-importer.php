@@ -851,6 +851,7 @@ class POF_Importer {
             $new_translations  = false;
             $item['languages'] = array_map( function( $lang ) use ( &$new_translations, &$translations, &$queried, $item, $class ) {
 
+<<<<<<< HEAD
                 if ( $lang['update'] && $lang['data'] ) {
 
                     // Post object params
@@ -891,6 +892,12 @@ class POF_Importer {
                                 // Parent post doesnt exist
                                 $class->wp_cli_warning( 'Failed to get post parent for guid (' . $item['guid'] . '), parent should have guid (' . $item['parent'] . ')' );
                             }
+=======
+                    $this->update_page_meta( $post_id, $guid, $item );
+                    if (in_array(strtolower($item['lang']), $this->site_languages)) {
+                        if (function_exists('pll_set_post_language')) {
+                            pll_set_post_language($post_id, strtolower($item['lang']));
+>>>>>>> PO-351
                         }
                     }
 
@@ -971,12 +978,19 @@ class POF_Importer {
         if ( ! $tips_data ) {
             $this->error = __('An error occured while fetching tips from backend.', 'pof_importer');
         } else {
+<<<<<<< HEAD
             $progress = $this->wp_cli_progress( 'Importing tips', count( $tips_data ) );
+=======
+>>>>>>> PO-351
 
             foreach ($tips_data as $id => $tip) {
                 $progress->tick();
 
                 $parent = $data[$tip['post']['guid']][$tip['lang']];
+<<<<<<< HEAD
+=======
+                $comment_id = null;
+>>>>>>> PO-351
                 if ( isset ( $parent ) ) {
 
                     // Data for new import
@@ -989,16 +1003,25 @@ class POF_Importer {
                         'post_status' => 'publish',
                     );
 
+<<<<<<< HEAD
                     $tip_query      = 'SELECT post_id FROM ' . $postmeta_table . ' WHERE meta_key="pof_tip_guid" AND meta_value="%s"';
                     $tip_query      = $wpdb->prepare( $tip_query, $tip['guid'] );
                     $post_id        = $wpdb->get_row( $tip_query );
                     if ( ! empty( $post_id ) ) {
                         $post_id    = $post_id->post_id;
+=======
+                    error_log( 'creating post: ' . $tip['guid'] );
+
+                    $post_id = post_exists( $args['post_title'], $args['post_content'], $args['post_date']);
+                    if ( $post_id !== 0 ) {
+                        error_log('post exists with id: ' . $post_id );
+>>>>>>> PO-351
                         $args['ID'] = $post_id;
                         $this->updated++;
                     } else {
                         $this->created++;
                     }
+<<<<<<< HEAD
                     $post_id = wp_insert_post( $args );
                     if ( is_wp_error( $post_id ) ) {
                         $this->wp_cli_warning( 'WP error on insert post, guid: (' . $tip['guid'] . '), error: ' . wp_json_encode( $post_id ) );
@@ -1014,10 +1037,39 @@ class POF_Importer {
 
                     foreach( $meta as $meta_key => $meta_value ) {
                         update_post_meta( $post_id, $meta_key, $meta_value );
+=======
+                    error_log( 'updating post ');
+                    $post_id = wp_insert_post( $args );
+                    if ( is_wp_error( $post_id ) ) { continue;
+                        error_log('wp error!');
+>>>>>>> PO-351
                     }
+                    error_log( 'updating post meta ');
+
+                    $meta = array(
+                        'pof_tip_nickname' => $tip['publisher']['nickname'],
+                        'pof_tip_parent' => $parent->ID,
+                        'pof_tip_guid'   => $tip['guid'],
+                        'api_type'      => 'pof_tip',
+                    );
+
+                    foreach( $meta as $meta_key => $meta_value ) {
+                        update_post_meta( $post_id, $meta_key, $meta_value );
+                    }
+
+                    if ( function_exists('pll_set_post_language' ) ) {
+                        pll_set_post_language( $post_id, strtolower( $tip['lang'] ) );
+                    }
+
+                    error_log( 'done');
+
                 }
                 else {
+<<<<<<< HEAD
                     $this->wp_cli_warning( 'No parent data for guid: (' . $tip['guid'] . ')' );
+=======
+                    error_log('no parent data');
+>>>>>>> PO-351
                     // TODO: Errorlog, if some tips not importet
                 }
             }
@@ -1203,7 +1255,16 @@ class POF_Importer {
                 )
             );
         }
+<<<<<<< HEAD
         $json = file_get_contents( $url, false, $ctx );
+=======
+        try {
+            $json = file_get_contents( $url, false, $ctx );
+        }
+        catch ( \Exception $e ) {
+            $json = '[]';
+        }
+>>>>>>> PO-351
         if ( $json ) {
             return json_decode( $json, true ); // decode the JSON into an associative array (true)
         } else {
