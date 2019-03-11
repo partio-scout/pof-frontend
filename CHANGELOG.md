@@ -19,6 +19,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - PO-351: Optimoitu redikseen menevää dataa
 - PO-269: Parannettu menu logiikkaa
 - PO-349: Otetaan "tasks" pois haku filttereistä
+- PO-310: Vaihdettu SEO kuvan haku logosta, jos sellainen on
 
 ### Korjattu
 - PO-320: Yläreunan kuvakaruselli

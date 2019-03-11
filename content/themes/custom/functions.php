@@ -57,6 +57,9 @@ include_once( 'functions/function-api_image_helper.php' );
 // Post seo description generation
 include_once( 'functions/function-post-description.php' );
 
+// SEO helpers
+include_once( 'functions/function-seo-helpers.php' );
+
 // manifest.json handler
 include_once( 'functions/function-manifest.php' );
 
