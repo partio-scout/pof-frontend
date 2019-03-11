@@ -125,25 +125,19 @@ class Search extends \DustPress\Model {
         $result      = wp_cache_get( $cache_key );
         if ( empty( $result ) ) {
             $args = [
-                'post_type'      => [ 'page', 'pof_tip' ],
+                'post_type'      => 'any',
                 'post_status'    => 'publish',
                 'posts_per_page' => -1, //phpcs:ignore
                 'meta_query'     => [
                     'relation' => 'OR',
                     [
                         'key'     => 'api_type',
-                        'value'   => 'task',
-                        'compare' => '=',
-                    ],
-                    [
-                        'key'     => 'api_type',
-                        'value'   => 'taskgroup',
-                        'compare' => '=',
-                    ],
-                    [
-                        'key'     => 'api_type',
-                        'value'   => 'pof_tip',
-                        'compare' => '=',
+                        'compare' => 'IN',
+                        'value'   => [
+                            'task',
+                            'taskgroup',
+                            'pof_tip',
+                        ],
                     ],
                 ],
                 // Manually add language query
