@@ -725,6 +725,11 @@ class POF_Importer {
                     $lang['update'] = true;
                 }
 
+                if ( empty( $lang['page'] ) ) {
+                    $lang['update_meta'] = true;
+                    $lang['update_page'] = true;
+                }
+
                 return $lang;
             }, $item['languages'] );
 
@@ -955,6 +960,12 @@ class POF_Importer {
 
                 return $lang;
             }, $item['languages']);
+
+            // Collect connected posts
+            $translations = [];
+            foreach ( $item['languages'] as $itemlang ) {
+                $translations[ $itemlang['lang'] ] = $itemlang['page']->ID;
+            }
 
             // Collect connected posts
             $translations = [];
