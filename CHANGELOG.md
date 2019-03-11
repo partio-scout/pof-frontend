@@ -19,6 +19,9 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - PO-351: Optimoitu redikseen menevää dataa
 - PO-269: Parannettu menu logiikkaa
 
+### Muutettu
+- PO-349: Otetaan "tasks" pois haku filttereistä
+
 ### Korjattu
 - PO-293: Vinkkien järjestäminen
 
