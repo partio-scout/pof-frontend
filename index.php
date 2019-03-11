@@ -15,6 +15,10 @@ define( 'WP_REDIS_DISABLE', (int) getenv( 'WP_REDIS_DISABLE' ) );
 define( 'WP_REDIS_DB', getenv( 'WP_REDIS_DB' ) );
 define( 'WP_REDIS_HOST', getenv( 'WP_REDIS_HOST' ) );
 define( 'WP_REDIS_PASSWORD', getenv( 'WP_REDIS_PASSWORD' ) ?: null );
+$local_redis         = false;
+$redis_read_host     = WP_REDIS_HOST;
+$redis_read_pass     = WP_REDIS_PASSWORD;
+$redis_read_database = WP_REDIS_DB;
 
 // To disable redis caching, set the WP_REDIS_DISABLE env as 1.
 if ( WP_REDIS_DISABLE === 1 ) {

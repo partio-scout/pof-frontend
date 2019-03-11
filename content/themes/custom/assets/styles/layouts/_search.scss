@@ -60,11 +60,13 @@ $search_fontsize_smaller: rem-calc(12);
 	padding-top: 1.5rem;
 	border-bottom: 1px solid #dddddd;
 	.basic-details {
-		width: 75%;
 		overflow: visible;
 		border-bottom: 1px dashed #dddddd;
 		margin-bottom: 0.2rem;
 		.search-results__title {
+			a {
+				text-decoration: none;
+			}
 			.search-sidelogo {
 				width: 75px;
 				margin-left: 40px;
@@ -80,6 +82,7 @@ $search_fontsize_smaller: rem-calc(12);
 			.page_title {
 				text-decoration: none;
 				margin-bottom: 0;
+				display: inline;
 			}
 			.page_title:hover {
 				text-decoration:underline;
@@ -361,6 +364,7 @@ $search_fontsize_smaller: rem-calc(12);
 
 	&.checkbox,
 	&.radio {
+		color: white;
 		&::before {
 			font-family: icomoon;
 		}

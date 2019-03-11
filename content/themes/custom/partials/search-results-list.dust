@@ -16,40 +16,38 @@
                         />
                     {/id}
                 {/image}
-                <div class="{?image}float-content clearfix{/image}">
-                    <span class="left clearfix">
-                        <a href="{permalink}">
-                            <h5 class="page_title left">
-                                {@eq key=post_type value="pof_tip"}
-                                    <i>{post_title}</i>
-                                {:else}
-                                    {post_title}
-                                {/eq}
-                            </h5>
-                        </a>
-                    </span>
-                    <span class="divider">|</span>
-                    <span class="page_type">
-                        {! Get translation from both groups as only 1 will match !}
-                        {?task.term}
+                <a href="{permalink}">
+                    <h5 class="page_title">
+                        {@eq key=post_type value="pof_tip"}
+                            <i>{post_title}</i>
+                        {:else}
+                            {post_title}
+                        {/eq}
+                    </h5>
+                </a>
+                <span class="divider">|</span>
+                <span class="page_type">
+                    {! Get translation from both groups as only 1 will match !}
+                    {?term}
+                        {@eq key=fields.api_type value="taskgroup"}
                             {@apitranslation path="aktiviteettipaketin_ylakasite.{term.single}_single" /}
                         {:else}
                             {@apitranslation path="aktiviteetin_ylakasite.{term.single}_single" /}
-                        {/task.term}
-                    </span>
-                    {?post_excerpt}
-                        <p class="page_ingress">
-                            {post_excerpt|s}
-                        </p>
-                    {:else}
-                        {?post_content}
-                            <p class="page_ingress">
-                                {@excerpt string=post_content /}
-                            </p>
-                        {/post_content}
-                    {/post_excerpt}
-                </div>
+                        {/eq}
+                    {/term}
+                </span>
             </div>
+            {?post_excerpt}
+                <p class="page_ingress">
+                    {post_excerpt|s}
+                </p>
+            {:else}
+                {?post_content}
+                    <p class="page_ingress">
+                        {@excerpt string=post_content /}
+                    </p>
+                {/post_content}
+            {/post_excerpt}
         </div>
         {?parents}
             <p class="search-results__breadcrumb">
