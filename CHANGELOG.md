@@ -8,6 +8,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 ### Lisätty
 - PO-292: Wp-cli:llä ajettava versio importista
 - PO-360: Importer poistamaan importatut postaukset joita ei ole enään backendissä
+- PO-237: Ikonin haku backendistä
 
 ### Muutettu
 - PO-326: Korjattu importerin postmetan importtaus ja viimeksi muokattu kentän päivitys
@@ -25,6 +26,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 ### Muutettu
 - PO-287: Laitettu takaisin title kenttä vinkin lisäykseen
 - PO-288: Päivitetty jQuery ja siirretty se webpackillä compilattavaksi
+- PO-260: Kaikki frontin käännökset haetaan pof backendistä
 
 ### Lisätty
 - PO-270: Sisältöjen jakotoiminto kopioimalla linkki leikepöydälle

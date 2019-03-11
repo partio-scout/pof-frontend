@@ -16,7 +16,7 @@ class ApiTitle extends Helper {
      * @return string
      */
     public function output() {
-        $locale    = $this->params->locale ?? $this->context->get( 'locale' ) ?? explode( '_', get_locale() )[0];
+        $locale    = $this->params->locale ?? $this->context->get( 'locale' ) ?? get_short_locale();
         $title     = $this->params->title ?? $this->context->get( 'title' );
         $languages = $this->params->languages ?? $this->context->get( 'languages' );
 

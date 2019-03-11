@@ -40,16 +40,6 @@ class Search extends \DustPress\Model {
     }
 
     /**
-     * Get short locale
-     *
-     * @return string First part of locale.
-     */
-    public static function get_locale() {
-        $locale = explode( '_', get_locale() )[0];
-        return $locale;
-    }
-
-    /**
      * Get search terms and translations from api
      */
     public static function ApiSearchTerms() {
@@ -57,7 +47,7 @@ class Search extends \DustPress\Model {
         // Get remote data
         $haku_json    = get_field( 'haku-json', 'option' );
         $search_terms = \POF\Api::get( $haku_json, true );
-        $age_groups   = get_age_groups();
+        $age_groups   = get_age_groups( true ); // Get age groups filtered to current language
 
         // Create pseudo filtering field for api_type
         $search_terms['api_type'] = [
@@ -154,6 +144,15 @@ class Search extends \DustPress\Model {
                         'key'     => 'api_type',
                         'value'   => 'pof_tip',
                         'compare' => '=',
+                    ],
+                ],
+                // Manually add language query
+                'tax_query' => [
+                    [
+                        'taxonomy'         => 'language',
+                        'field'            => 'slug',
+                        'terms'            => get_short_locale(),
+                        'include_children' => false,
                     ],
                 ],
             ];
@@ -389,7 +388,7 @@ class Search extends \DustPress\Model {
                     'guid'      => $post->fields['api_guid'],
                     'languages' => [
                         [
-                            'lang'  => static::get_locale(),
+                            'lang'  => get_short_locale(),
                             'title' => $parent_post->post_title,
                         ],
                     ],
@@ -670,15 +669,5 @@ class Search extends \DustPress\Model {
         }
 
         return true;
-    }
-
-    /**
-     * Bind translated strings.
-     */
-    public function S() {
-        $s = [
-            'aktiviteettiryhma' => __( 'Task group', 'pof' ),
-        ];
-        return $s;
     }
 }

@@ -85,35 +85,6 @@ class PageTask extends \DustPress\Model {
         return $hero;
     }
 
-    // Bind translated strings.
-    public function S() {
-
-        $s = [
-            'suoritustiedot'                => __( 'Execution and goals', 'pof' ),
-            'lisatiedot'                    => __( 'Additional information', 'pof' ),
-            'tarvikkeet'                    => __( 'Equipment', 'pof' ),
-            'aktiviteettiryhma'             => __( 'Task group', 'pof' ),
-            'ryhman_muut_aktiviteetit'      => __( 'Paraller', 'pof' ),
-            'valitse'                       => __( 'Choose', 'pof' ),
-            'taitoalueet'                   => __( 'Skill areas', 'pof' ),
-            'vinkit'                        => __( 'Tips', 'pof' ),
-            'kommentit'                     => __( 'Comments', 'pof' ),
-            'avainsanat'                    => __( 'Keywords', 'pof' ),
-            'suoritus_valmistelu_kesto'     => __( 'Preparation', 'pof' ),
-            'suoritus_kesto'                => __( 'Length', 'pof' ),
-            'taso'                          => __( 'Level', 'pof' ),
-            'johtajan_tehtava'              => __( 'Leaders task', 'pof' ),
-            'johtamistaito'                 => __( 'Leadership skills', 'pof' ),
-            'pakollisuus'                   => __( 'Obligatory', 'pof' ),
-            'ryhmakoko'                     => __( 'Group size', 'pof' ),
-            'paikka'                        => __( 'Place', 'pof' ),
-            'kasvatustavoitteet'            => __( 'Educational goals', 'pof' ),
-            'tavoite'                       => __( 'Goal', 'pof' ),
-            'kuvaus'                        => __( 'Description', 'pof' ),
-        ];
-        return $s;
-    }
-
     protected function translate() {
         $args = $this->get_args();
 

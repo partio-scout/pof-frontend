@@ -62,5 +62,4 @@ class Tips extends \DustPress\Model {
 
         return $s;
     }
-
 }

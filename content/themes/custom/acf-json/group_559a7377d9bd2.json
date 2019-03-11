@@ -23,15 +23,15 @@
             "label": "Ohjelma-JSON",
             "name": "ohjelma-json",
             "type": "url",
-            "instructions": "Url kohteeseen: SP:n ohjelma, JSON, t\u00e4ysi.",
-            "required": 1,
+            "instructions": "",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "default_value": "https:\/\/pof-backend.partio.fi\/spn-ohjelma-json-taysi\/",
+            "default_value": "",
             "placeholder": ""
         },
         {
@@ -39,15 +39,15 @@
             "label": "Vinkit-JSON",
             "name": "tips-json",
             "type": "url",
-            "instructions": "Url kohteeseen: Vinkit, JSON, kaikki.",
-            "required": 1,
+            "instructions": "",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "default_value": "https:\/\/pof-backend.partio.fi\/json-vinkit-kaikki",
+            "default_value": "",
             "placeholder": ""
         },
         {
@@ -83,41 +83,41 @@
             "placeholder": ""
         },
         {
-            "key": "field_57c66abf9293b",
-            "label": "Vinkkien l\u00e4hetysosoite",
-            "name": "tips-send-url",
-            "type": "text",
-            "instructions": "URL jonne vinkkiehdotukset l\u00e4hetet\u00e4\u00e4n hyv\u00e4ksytt\u00e4v\u00e4ksi.",
-            "required": 1,
+            "key": "field_5b8e815aed879",
+            "label": "Icon-JSON",
+            "name": "icon-json",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "default_value": "https:\/\/pof-backend.partio.fi\/lisaa-vinkki\/",
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_57c66abf9293b",
+            "label": "Vinkkien l\u00e4hetysosoite",
+            "name": "tips-send-url",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
             "maxlength": "",
             "placeholder": "",
             "prepend": "",
             "append": "",
             "readonly": 0,
             "disabled": 0
-        },
-        {
-            "key": "field_5b052a477dca9",
-            "label": "Media",
-            "name": "media-url",
-            "type": "url",
-            "instructions": "URL josta haetaan ulkoisen median tiedot",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "https:\/\/pof-backend.partio.fi\/wp-json\/wp\/v2\/media\/",
-            "placeholder": ""
         },
         {
             "key": "field_57c6b36acafd4",
@@ -255,5 +255,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1552309863
+    "modified": 1552309932
 }
