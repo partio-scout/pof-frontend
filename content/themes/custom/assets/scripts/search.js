@@ -229,15 +229,26 @@ class Search {
         }, 2 * 1000 );
     }
 
+    /**
+     * Recrusively collect enabled post guids
+     *
+     * @param  {jQuery} $el       Element to collect post guids from.
+     * @param  {Array}  collected Already collected post guids.
+     * @return {Array}            An array of post guids.
+     */
     collectGuids( $el, collected = []) {
         const $inputs  = $el.find( '>.filter-opener>input[name="post_guids[]"]' );
         const $checked = $inputs.filter( ':checked' );
+
+        // Do not collect post guids if they are all collected
+        // In this case we will automatically just collect the parent guid
         if ( $inputs.length !== $checked.length ) {
             $checked.each( ( i, el ) => {
                 collected.push( el.value );
             });
         }
 
+        // Continue on to parent element to collect all the guids
         $inputs.each( ( i, el ) => {
             this.collectGuids( $( el ).parent().find( '>.collapsed>.field-list' ), collected );
         });
@@ -245,13 +256,19 @@ class Search {
         return collected;
     }
 
+    /**
+     * Get current search args
+     *
+     * @param  {jQuery} $searchForm The searchform element that was activated.
+     * @return {Object}             An object containing the search terms.
+     */
     getArgs( $searchForm = null ) {
         const $filterForm  = $().add( this.$filterForm ).add( $searchForm ).filter( ':visible' );
         const formdata     = new FormData( $searchForm.get( 0 ) );
         const postGuids    = this.collectGuids( $filterForm.find( '.agegroups:visible' ) ).join( ',' );
         const postRelation = formdata.get( 'post_relation' );
         const s            = formdata.get( 's' );
-        const args         = { s };
+        const args         = { s }; // Create the return object
 
         if ( postGuids ) {
             args['post_guids'] = postGuids;
@@ -339,9 +356,15 @@ class Search {
         }
     };
 
+    /**
+     * Populate the selected filters on page reload according to GET params
+     */
     populateFilters() {
+
+        // Get current url params
         const url = new Url();
 
+        // Populate post_relation checkbox
         const postRelation = _.get( url, 'query.post_relation', 'OR' );
         if ( postRelation === 'AND' ) {
             this.$postRelation.attr( 'checked', true );
@@ -360,20 +383,32 @@ class Search {
             });
 
             // After population expand areas that are not checked but have checked children
-            $postGuidInputs.filter( ':checked' ).each( ( i, el ) => this.openParent( i, el ) );
+            $postGuidInputs.filter( ':checked' ).each( ( i, el ) => this.openParent( el ) );
         }
     }
 
-    openParent( i, el ) {
+    /**
+     * Open filter parents recursively to show all selected filters
+     *
+     * @param {Object} el Element to make visible.
+     */
+    openParent( el ) {
         const $el              = $( el );
         const $parentContainer = $el.closest( '.field-list' ).closest( '.filter-opener' );
-        const $parentInput     = $parentContainer.children( 'input[name="post_guids[]"]:not(:checked)' );
+
+        // If this has a parent then make that visible as well
+        const $parentInput = $parentContainer.children( 'input[name="post_guids[]"]:not(:checked)' );
         if ( $parentInput.length ) {
             $parentContainer.children( '.collapse-toggle' ).attr( 'checked', true );
-            this.openParent( i, $parentInput.get( 0 ) );
+            this.openParent( $parentInput.get( 0 ) );
         }
     }
 
+    /**
+     * Change url when a search is done
+     *
+     * @param {Object} data Search data.
+     */
     handleUrlOnSearch( data ) {
 
         // Change url and add the query to the history
