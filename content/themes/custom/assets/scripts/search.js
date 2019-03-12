@@ -255,6 +255,8 @@ class Search {
             this.collectGuids( $( el ).parent().find( '>.collapsed>.field-list' ), collected );
         });
 
+        collected = _.uniq( collected );
+
         return collected;
     }
 
@@ -267,7 +269,7 @@ class Search {
     getArgs( $searchForm = null ) {
         const $filterForm  = $().add( this.$filterForm ).add( $searchForm ).filter( ':visible' );
         const formdata     = new FormData( $filterForm.get( 0 ) );
-        const postGuids    = this.collectGuids( $filterForm.find( '.agegroups:visible' ) ).join( ',' );
+        const postGuids    = this.collectGuids( $filterForm.find( '.agegroups' ) ).join( ',' );
         const postRelation = formdata.get( 'post_relation' );
         const s            = formdata.get( 's' );
         const args         = { s }; // Create the return object
