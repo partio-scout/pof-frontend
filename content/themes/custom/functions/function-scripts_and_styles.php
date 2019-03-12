@@ -8,12 +8,12 @@ function enqueue_styles_and_scripts() {
     }
 
     // Local styles & scripts
-    wp_enqueue_style( 'main-css', get_template_directory_uri() . '/assets/dist/main.css', false, '1.3.0' );
+    wp_enqueue_style( 'main-css', get_template_directory_uri() . '/assets/dist/main.css', false, '1.3.1' );
 
-    wp_register_script( 'main-js', get_template_directory_uri() . '/assets/dist/main.js', false, '1.3.0' );
+    wp_register_script( 'main-js', get_template_directory_uri() . '/assets/dist/main.js', false, '1.3.1' );
 
     // We have to manually add dustpress-responsive-background-image plugin JS-file, because we deregister jquery.
-    wp_enqueue_script( 'dp-resp-bgimg-main', plugins_url( 'dustpress-responsive-background-image/assets/dist/main.js' ), [], '1.3.0', true );
+    wp_enqueue_script( 'dp-resp-bgimg-main', plugins_url( 'dustpress-responsive-background-image/assets/dist/main.js' ), [], '1.3.1', true );
 
     // Localize data for javascript to use.
     $localized_data = array(
