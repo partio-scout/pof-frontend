@@ -39,6 +39,7 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - PO-323: Filtereiden checkboxien mobiilityylit
 - PO-324: Hakutuloksien määrä
 - PO-350: Tehdään tyhjentämisen jälkeen haku vain jos jotain muuttui
+- PO-372: Bugi missä haku välillä menetti agegroup valinnat
 
 ## [1.2.0] - 2018-09-05
 
