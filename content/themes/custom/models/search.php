@@ -20,17 +20,19 @@ class Search extends \DustPress\Model {
      * Modify page title according to backend translation
      */
     public function ModifyTitle() {
+        add_filter( 'wp_title', [ __CLASS__, 'PageTitle' ], 100 );
+        add_filter( 'wpseo_opengraph_title', [ __CLASS__, 'PageTitle' ], 100 );
+    }
 
-        /**
-         * Change the title
-         *
-         * @param  string $title Existing title.
-         * @return string        Modified $title.
-         */
-        add_filter( 'wp_title', function( string $title ) : string {
-            $title = parse_path( 'haku.advanced_search', \DustPress\ApiTranslation::get_translations() ) ?? $title;
-            return $title;
-        }, 30);
+    /**
+     * Change the title
+     *
+     * @param  string $title Existing title.
+     * @return string        Modified $title.
+     */
+    public static function PageTitle( string $title ) : string {
+        $title = parse_path( 'haku.advanced_search', \DustPress\ApiTranslation::get_translations() ) ?? $title;
+        return $title;
     }
 
     public function SearchBase() {
