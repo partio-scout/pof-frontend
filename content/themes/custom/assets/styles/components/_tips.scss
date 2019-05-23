@@ -86,9 +86,18 @@
 			}
 
 			.sort-filter {
+				.icon-chevron-down {
+					display: inline-block;
+					margin-left: .25rem;
+				}
+
 				&.active {
 					color: $partio_main_color_lighter;
 					text-decoration: underline;
+
+					.icon-chevron-down {
+						transform: translateY(20%) rotate(180deg);
+					}
 				}
 				&:hover {
 					cursor: pointer;

@@ -22,13 +22,13 @@
 
 			<div class="sort-tips">
 				<span>{@apitranslation path="yleiset.order" fallback="yleiset.order" /}:</span>
-				<a class="sort-filter active" data-sort="tip__date">{@apitranslation path="yleiset.latest" fallback="yleiset.latest" /}</a>
+				<a class="sort-filter active" data-sort="tip__date">{@apitranslation path="yleiset.latest" fallback="yleiset.latest" /}<i class="icon-chevron-down"></i></a>
 			</div>
 
 			<div class="list">
 			{#Tips}
 				<div class="tip" {?guid}id="{guid}"{/guid}>			
-					<p class="tip__date" hidden>{post_date}</p>
+					<p class="tip__date" hidden>{post_modified}</p>
 					<div class="tip__content">
 						<p>{post_content|s}</p>
 						{>"shared/clipboard" url="{Header.RawHomeUrl}guid/{Content.fields.api_guid}?lang={Header.LangSlug}" hash=guid /}
