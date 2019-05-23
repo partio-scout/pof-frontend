@@ -28,13 +28,17 @@
                 <span class="divider">|</span>
                 <span class="page_type">
                     {! Get translation from both groups as only 1 will match !}
-                    {?term}
-                        {@eq key=fields.api_type value="taskgroup"}
-                            {@apitranslation path="aktiviteettipaketin_ylakasite.{term.single}_single" /}
-                        {:else}
-                            {@apitranslation path="aktiviteetin_ylakasite.{term.single}_single" /}
-                        {/eq}
-                    {/term}
+                    {@eq key=post_type value="pof_tip"}
+                        {@apitranslation path="api_type.pof_tip" /}
+                    {:else}
+                        {?term}
+                            {@eq key=fields.api_type value="taskgroup"}
+                                {@apitranslation path="aktiviteettipaketin_ylakasite.{term.single}_single" /}
+                            {:else}
+                                {@apitranslation path="aktiviteetin_ylakasite.{term.single}_single" /}
+                            {/eq}
+                        {/term}
+                    {/eq}
                 </span>
             </div>
             {?post_excerpt}
