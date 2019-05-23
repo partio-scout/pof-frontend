@@ -1007,8 +1007,9 @@ class POF_Importer {
                     $args = [
                         'post_title'    => ! empty( $tip['title'] ) ? $tip['title'] : $tip['guid'],
                         'post_content'  => $tip['content'],
-                        'post_date'     => $tip['modified'],
-                        'post_date_gmt' => $tip['modified'],
+                        'post_date'     => $tip['published'],
+                        'post_date_gmt' => $tip['published'],
+                        'post_modified' => $tip['modified'],
                         'post_type'     => 'pof_tip',
                         'post_status'   => 'publish',
                         'post_author'   => $this->get_importer_user()->ID,
