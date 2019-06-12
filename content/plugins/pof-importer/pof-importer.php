@@ -72,6 +72,7 @@ class POF_Importer {
      */
     public function importer_cleanup( $args = [], $assoc_args = [] ) : bool {
         global $wpdb;
+        $options_table            = $wpdb->prefix . 'options';
         $posts_table              = $wpdb->prefix . 'posts';
         $postmeta_table           = $wpdb->prefix . 'postmeta';
         $term_relationships_table = $wpdb->prefix . 'term_relationships';
@@ -314,6 +315,8 @@ class POF_Importer {
             $wpdb->query( sprintf( 'DELETE pm FROM %s pm LEFT JOIN %s wp ON wp.ID = pm.post_id WHERE wp.ID IS NULL;', $postmeta_table, $posts_table ) );
             $this->wp_cli_msg( 'Deleting detached term relationships.' );
             $wpdb->query( sprintf( 'DELETE tr FROM %s tr LEFT JOIN %s wp ON wp.ID = tr.object_id WHERE wp.ID IS NULL;', $term_relationships_table, $posts_table ) );
+            $this->wp_cli_msg( 'Deleting unnecessary wpseo sitemap cache rows.' );
+            $wpdb->query( sprintf( 'DELETE FROM %s WHERE option_name like "wpseo_sitemap_%_cache_validator";', $options_table ) );
 
             $this->wp_cli_msg( 'Flushing cache & rewrite rules' );
             wp_cache_flush();
