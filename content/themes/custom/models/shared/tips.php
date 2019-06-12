@@ -18,6 +18,8 @@ class Tips extends \DustPress\Model {
             'meta_key' => 'pof_tip_parent',
             'meta_compare' => '=',
             'meta_value' => get_the_ID(),
+            'orderby'    => 'modified',
+            'order'      => 'ASC',
         );
 
         $query = new WP_Query( $args );
