@@ -72,8 +72,9 @@ class POF_Importer {
      */
     public function importer_cleanup( $args = [], $assoc_args = [] ) : bool {
         global $wpdb;
-        $posts_table    = $wpdb->prefix . 'posts';
-        $postmeta_table = $wpdb->prefix . 'postmeta';
+        $posts_table              = $wpdb->prefix . 'posts';
+        $postmeta_table           = $wpdb->prefix . 'postmeta';
+        $term_relationships_table = $wpdb->prefix . 'term_relationships';
 
         $this->wp_cli_msg( 'Deleting old imported data.' );
 
@@ -298,18 +299,20 @@ class POF_Importer {
             $this->wp_cli_success( 'Dry run complete, would delete (' . count( $delete_ids ) . ') posts.' );
         }
         else {
-            if ( ! empty( $delete_ids ) ) {
+            if ( empty( $delete_ids ) ) {
                 $this->wp_cli_msg( 'No posts to delete.' );
             }
             else {
                 $ids = wp_list_pluck( $delete_ids, 'id' );
                 $this->wp_cli_msg( 'Deleting old posts.' );
                 $wpdb->query( 'DELETE FROM ' . $posts_table . ' WHERE ID IN(' . implode( ',', $ids ) . ')' );
-                $this->wp_cli_msg( 'Deleting detached postmeta.' );
-                $wpdb->query( 'DELETE ' . $postmeta_table . '.* FROM ' . $postmeta_table . ' LEFT JOIN ' . $posts_table . ' ON ' . $postmeta_table . '.post_id = ' . $posts_table . '.ID WHERE ID IS NULL' );
-
                 $this->wp_cli_success( 'Run complete, deleted (' . count( $ids ) . ') posts.' );
             }
+
+            $this->wp_cli_msg( 'Deleting detached postmeta.' );
+            $wpdb->query( 'DELETE ' . $postmeta_table . '.* FROM ' . $postmeta_table . ' LEFT JOIN ' . $posts_table . ' ON ' . $postmeta_table . '.post_id = ' . $posts_table . '.ID WHERE ID IS NULL' );
+            $this->wp_cli_msg( 'Deleting detached term relationships.' );
+            $wpdb->query( 'DELETE tr FROM ' . $term_relationships_table . ' tr LEFT JOIN ' . $posts_table . ' wp ON wp.ID = tr.object_id WHERE wp.ID IS NULL;' );
 
             $this->wp_cli_msg( 'Flushing cache & rewrite rules' );
             wp_cache_flush();
