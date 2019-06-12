@@ -72,8 +72,9 @@ class POF_Importer {
      */
     public function importer_cleanup( $args = [], $assoc_args = [] ) : bool {
         global $wpdb;
-        $posts_table    = $wpdb->prefix . 'posts';
-        $postmeta_table = $wpdb->prefix . 'postmeta';
+        $posts_table              = $wpdb->prefix . 'posts';
+        $postmeta_table           = $wpdb->prefix . 'postmeta';
+        $term_relationships_table = $wpdb->prefix . 'term_relationships';
 
         $this->wp_cli_msg( 'Deleting old imported data.' );
 
@@ -82,7 +83,7 @@ class POF_Importer {
         $guids = array_keys( $this->flatten_tree( $tree['program'][0] ) );
 
         // Collect all posts
-        $posts   = $wpdb->get_results( 'SELECT ID,post_author,post_type,post_modified FROM ' . $posts_table . ' WHERE post_type IN ( "page", "nav_menu_item", "pof_tip" )' );
+        $posts   = $wpdb->get_results( sprintf( 'SELECT ID,post_author,post_type,post_modified FROM %s WHERE post_type IN ( "page", "nav_menu_item", "pof_tip" )', $posts_table ) );
         $id_list = wp_list_pluck( $posts, 'ID' );
 
         $progress = $this->wp_cli_progress( 'Fetching post data to check for deletion', count( $posts ) );
@@ -286,8 +287,9 @@ class POF_Importer {
         $progress->finish();
 
         // Check that we will still have a suitable amount of posts after the deletion
-        if ( count( $ids ) - count( $delete_ids ) < 70 ) {
-            $this->wp_cli_error( 'There would be less than a 1000 posts after cleanup so aborting just in case.' );
+        $delete_limit = 70;
+        if ( count( $ids ) - count( $delete_ids ) < $delete_limit ) {
+            $this->wp_cli_error( sprintf( 'There would be less than (%d) posts after cleanup so aborting just in case.', $delete_limit ) );
             return false;
         }
 
@@ -296,7 +298,7 @@ class POF_Importer {
             array_key_exists( 'dry-run', $assoc_args ) &&
             $assoc_args['dry-run']
         ) {
-            $this->wp_cli_success( 'Dry run complete, would delete (' . count( $delete_ids ) . ') posts.' );
+            $this->wp_cli_success( sprintf( 'Dry run complete, would delete (%d) posts.', count( $delete_ids ) ) );
         }
         else {
             if ( empty( $delete_ids ) ) {
@@ -305,12 +307,14 @@ class POF_Importer {
             else {
                 $ids = wp_list_pluck( $delete_ids, 'id' );
                 $this->wp_cli_msg( 'Deleting old posts.' );
-                $wpdb->query( 'DELETE FROM ' . $posts_table . ' WHERE ID IN(' . implode( ',', $ids ) . ')' );
-                $this->wp_cli_msg( 'Deleting detached postmeta.' );
-                $wpdb->query( 'DELETE ' . $postmeta_table . '.* FROM ' . $postmeta_table . ' LEFT JOIN ' . $posts_table . ' ON ' . $postmeta_table . '.post_id = ' . $posts_table . '.ID WHERE ID IS NULL' );
-
-                $this->wp_cli_success( 'Run complete, deleted (' . count( $ids ) . ') posts.' );
+                $wpdb->query( sprintf( 'DELETE FROM %s WHERE ID IN(%s)', $posts_table, implode( ',', $ids ) ) );
+                $this->wp_cli_success( sprintf( 'Run complete, deleted (%d) posts.', count( $ids ) ) );
             }
+
+            $this->wp_cli_msg( 'Deleting detached postmeta.' );
+            $wpdb->query( sprintf( 'DELETE pm FROM %s pm LEFT JOIN %s wp ON wp.ID = pm.post_id WHERE wp.ID IS NULL;', $postmeta_table, $posts_table ) );
+            $this->wp_cli_msg( 'Deleting detached term relationships.' );
+            $wpdb->query( sprintf( 'DELETE tr FROM %s tr LEFT JOIN %s wp ON wp.ID = tr.object_id WHERE wp.ID IS NULL;', $term_relationships_table, $posts_table ) );
 
             $this->wp_cli_msg( 'Flushing cache & rewrite rules' );
             wp_cache_flush();
