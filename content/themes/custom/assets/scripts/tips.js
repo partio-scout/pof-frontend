@@ -66,7 +66,7 @@ class Tips {
      * @param {object} e Click event.
      */
     sortTips( e ) {
-        const elem     = e.target;
+        const elem     = e.currentTarget;
         const { sort } = elem.dataset;
 
         elem.classList.toggle( 'active' );
