@@ -125,16 +125,16 @@
         },
         {
             "name": "devgeniem/dustpress",
-            "version": "1.15.0",
+            "version": "1.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devgeniem/dustpress.git",
-                "reference": "1db385b1d9446bc824ea5b82d286d7f7ec49973b"
+                "reference": "94a951a3e9920d28000c1fb6daf61fbac1a4acbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devgeniem/dustpress/zipball/1db385b1d9446bc824ea5b82d286d7f7ec49973b",
-                "reference": "1db385b1d9446bc824ea5b82d286d7f7ec49973b",
+                "url": "https://api.github.com/repos/devgeniem/dustpress/zipball/94a951a3e9920d28000c1fb6daf61fbac1a4acbd",
+                "reference": "94a951a3e9920d28000c1fb6daf61fbac1a4acbd",
                 "shasum": ""
             },
             "type": "library",
@@ -170,7 +170,7 @@
                 "theme",
                 "wordpress"
             ],
-            "time": "2018-05-09T10:18:19+00:00"
+            "time": "2019-01-07T10:43:54+00:00"
         },
         {
             "name": "devgeniem/dustpress-debugger",
