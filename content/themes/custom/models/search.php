@@ -141,6 +141,15 @@ class Search extends \DustPress\Model {
                         'compare' => '=',
                     ],
                 ],
+                // Manually add language query
+                'tax_query' => [
+                    [
+                        'taxonomy'         => 'language',
+                        'field'            => 'slug',
+                        'terms'            => get_short_locale(),
+                        'include_children' => false,
+                    ],
+                ],
             ];
 
             // Allow searching without a search term
