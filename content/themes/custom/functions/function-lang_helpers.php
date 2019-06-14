@@ -74,3 +74,13 @@ function generate_search_url( $search = '', $lang = null ) {
 
     return $url;
 }
+
+/**
+ * Get the short version of the locale
+ *
+ * @return string
+ */
+function get_short_locale() : string {
+    $locale = reset( str_word_count( get_locale(), 1 ) );
+    return $locale;
+}
