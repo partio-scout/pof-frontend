@@ -1,1 +1,0 @@
-loadFile 'config/production.rb'

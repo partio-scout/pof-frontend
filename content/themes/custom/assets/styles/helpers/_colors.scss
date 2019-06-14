@@ -24,6 +24,7 @@ $black       : #000000;
 // PARTIO
 
 $partio_main_color: #253764;
+$partio_main_color_darker: darken(saturate(adjust-hue(#253764, 3), 0.25), 8.63);
 $partio_main_color_lighter: #28a9e1;
 $partio_main_color_lightest: #9fbfd5;
 

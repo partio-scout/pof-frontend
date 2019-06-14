@@ -8,7 +8,7 @@
 	{! Vinkkiheader !}
 	<div class="tips__header">
 		<p class="tips__heading opened">
-			{S.vinkit}
+			{@apitranslation path="yleiset.tips" fallback="yleiset.tips" /}
 			<span id="tip-count"></span><i class="icon-chevron-down"></i></p>
 		<div class="tips__header__border"></div>
 	</div>
@@ -21,27 +21,23 @@
 
 
 			<div class="sort-tips">
-				<span>{S.jarjestys}:</span>
-				<a class="sort-filter active" data-sort="tip__date">{S.uusimmat}</a>
+				<span>{@apitranslation path="yleiset.order" fallback="yleiset.order" /}:</span>
+				<a class="sort-filter active" data-sort="tip__date">{@apitranslation path="yleiset.latest" fallback="yleiset.latest" /}<i class="icon-chevron-down"></i></a>
 			</div>
 
 			<div class="list">
 			{#Tips}
-				<div class="tip">
-					{! Ankkurilinkki vinkille !}
-					{?guid}
-						<a id="{guid}"></a>
-					{/guid}	
-					<p class="tip__date" hidden>{comment_date}</p>
+				<div class="tip" {?guid}id="{guid}"{/guid}>			
+					<p class="tip__date" hidden>{post_modified}</p>
 					<div class="tip__content">
-						<p>{comment_content|s}</p>
+						<p>{post_content|s}</p>
 						{>"shared/clipboard" url="{Header.RawHomeUrl}guid/{Content.fields.api_guid}?lang={Header.LangSlug}" hash=guid /}
 					</div>
 					{?fields.attachments}
 					<div class="row tasks__body-row opened">
 						{?fields.attachments.images}
 							<div class="columns small-4">
-							<h5>{Attachments.S.kuvat}</h5>
+							<h5>{@apitranslation path="yleiset.images" fallback="yleiset.images" /}</h5>
 							{#fields.attachments.images}
 								<div>
 									<a href="{url}"><img src="{thumbnail.url}" /></a>
@@ -52,7 +48,7 @@
 
 						{?fields.attachments.files}
 							<div class="columns small-4">
-							<h5>{Attachments.S.tiedostot}</h5>
+							<h5>{@apitranslation path="yleiset.files" fallback="yleiset.files" /}</h5>
 								{#fields.attachments.files}
 									<div>
 										<a href="{url}"><img src="{icon}" alt="{mime_type}" /></a> {description}
@@ -63,7 +59,7 @@
 
 						{?fields.attachments.links}
 							<div class="columns small-4">
-							<h5>{Attachments.S.linkit}</h5>
+							<h5>{@apitranslation path="yleiset.links" fallback="yleiset.links" /}</h5>
 								{#fields.attachments.links}
 									<div>
 										<a href="{url}">{description}</a>
@@ -87,7 +83,7 @@
 
 		<div id="tips__form-container">
 
-			<p class="tips__form-header">{S.lisaa_vinkki}</p>
+			<p class="tips__form-header">{@apitranslation path="yleiset.add_tip" fallback="yleiset.add_tip" /}</p>
 
 			<div class="alert-box alert radius tips__error" id="tips__general_errors">
 			</div>
@@ -95,23 +91,18 @@
 			<form class="tips__form" id="tips__form_data" enctype="multipart/form-data">
 
 				<div class="tips__input_container">
-					<input class="radius" type="text" name="suggestion_name" placeholder="{S.nimi}" aria-label="Name">
+					<input class="radius" type="text" name="suggestion_name" placeholder="{@apitranslation path="yleiset.suggestion_form_name_placeholder" fallback="yleiset.suggestion_form_name_placeholder" /}" aria-label="{@apitranslation path="yleiset.suggestion_form_name_placeholder" fallback="yleiset.suggestion_form_name_placeholder" /}">
 					<small class="error tips__error" id="tips__error_suggestion_name"></small>
 				</div>
 
 				<div class="tips__input_container">
-					<input class="radius" type="text" name="suggestion_title" placeholder="{S.otsikko}" aria-label="{S.otsikko}">
-					<small class="error tips__error" id="tips__error_suggestion_title"></small>
-				</div>
-
-				<div class="tips__input_container">
-					<textarea class="radius form-textarea" name="suggestion_content" placeholder="{S.kirjoita_tahan}..."></textarea>
+					<textarea class="radius form-textarea" name="suggestion_content" placeholder="{@apitranslation path="yleiset.write_here" fallback="yleiset.write_here" /}"></textarea>
 					<small class="error tips__error" id="tips__error_suggestion_content"></small>
 				</div>
 
 				<div class="clearfix" id="tips__form-images">
 
-					<h4>{S.liite}</h4>
+					<h4>{@apitranslation path="yleiset.attachment" fallback="yleiset.attachment" /}</h4>
 
 					<div id="tips__image_input_container">
 						<div class="clearfix file_input_container" id="suggestion_file_user_input_container">
@@ -127,7 +118,7 @@
 				<input type="hidden" name="post_guid" value="{PageTask.Content.fields.api_guid}">
 				<input type="hidden" name="lang" value="{PageTask.Content.fields.api_lang}">
 				<input type="hidden" name="sendUrl" value="{Tips.SendUrl}">
-				<input class="button radius" id="tips__save" name="submit-tip" type="submit" value="{S.laheta}" aria-label="Send">
+				<input class="button radius" id="tips__save" name="submit-tip" type="submit" value="{@apitranslation path="yleiset.send" fallback="yleiset.send" /}" aria-label="Send">
 
 				<div id="tips__form_loader">
 					{>"loader"/}

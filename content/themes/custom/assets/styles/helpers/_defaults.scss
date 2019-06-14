@@ -76,6 +76,10 @@ $tablet-only: "#{$screen} and (min-width:#{lower-bound($tablet-range)}) and (max
 	display: block;
 }
 
+.none {
+	display: none;
+}
+
 .columns + .columns:last-child {
 	float: left;
 }
@@ -90,4 +94,14 @@ $tablet-only: "#{$screen} and (min-width:#{lower-bound($tablet-range)}) and (max
 	@media #{$tablet-up} {
 		display: none;
 	}
+}
+
+@mixin word-wrap {
+    hyphens: auto;
+    word-break: break-word;
+    word-wrap: break-word;
+}
+
+.word-wrap {
+    @include word-wrap;
 }

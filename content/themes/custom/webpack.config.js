@@ -45,8 +45,7 @@ const config = {
         // Provide jQuery instance for all modules.
         new webpack.ProvidePlugin({
             $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery'
+            jQuery: 'jquery'
         })
     ],
     module: {

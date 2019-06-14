@@ -3,6 +3,11 @@
 
 @import 'helpers/colors';
 @import 'helpers/settings';
+@import 'helpers/utility';
+
+
+// Icons
+@import '../icomoon/style.css';
 @import '../icomoon/variables';
 
 // FOUNDATION DISABLED COMPONENTS
@@ -55,8 +60,8 @@
 // COMPONENTS
 @import 'components/topnav';
 @import 'components/sidenav';
-@import 'components/sidenav_search';
 @import 'components/mainsidenav';
+@import 'components/nav';
 @import 'components/langnav';
 @import 'components/second_langnav';
 @import 'components/breadcrumbs';
@@ -81,6 +86,3 @@
 
 // PRINT
 @import 'layouts/print';
-
-// Icons
-@import '../icomoon/style.css';

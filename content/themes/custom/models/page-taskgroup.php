@@ -39,6 +39,11 @@ class PageTaskgroup extends \DustPress\Model {
         $this->post_id = $post_id;
         $this->post = $post;
 
+        // Change seo image.
+        if ( ! empty( $this->post->fields['api_images'][0]['logo']->url ) ) {
+            change_seo_image( $this->post->fields['api_images'][0]['logo']->url );
+        }
+
         return $post;
     }
 
@@ -67,18 +72,6 @@ class PageTaskgroup extends \DustPress\Model {
         $child_tree = get_child_page_tree( $post_id, $dp );
 
         return sort_by_mandatory( $child_tree );
-    }
-
-    // Bind translated strings.
-    public function S() {
-
-        $s = [
-            'valinnaiset'           => __('Selectable', 'pof'),
-            'pakolliset'            => __('Obligatory', 'pof'),
-        ];
-
-        return $s;
-
     }
 
     public function Hero() {

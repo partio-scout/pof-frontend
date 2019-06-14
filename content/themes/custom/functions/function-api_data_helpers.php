@@ -12,7 +12,9 @@ function json_decode_pof($data) {
 function map_api_images( &$images ) {
     if ( is_array( $images ) ) {
         foreach ( $images as &$img ) {
-            $img = [ $img['key'] => json_decode_pof( $img['object'] ) ];
+            if ( is_array( $img ) && array_key_exists( 'key', $img ) ) {
+                $img = [ $img['key'] => json_decode_pof( $img['object'] ) ];
+            }
         }
     }
 }
@@ -227,4 +229,161 @@ function get_api_media( $id, $rendered = true ) {
     }
 
     return $media_data;
+}
+
+/**
+ * Sort taskgroups and tasks in age groups result
+ *
+ * @param mixed $data Data to sort.
+ */
+function sort_results( &$data ) {
+    if ( is_array( $data ) ) {
+        if ( array_key_exists( 'taskgroups', $data ) && ! empty( $data['taskgroups'] ) ) {
+            usort( $data['taskgroups'], 'sort_by_order' );
+            foreach ( $data['taskgroups'] as &$sub_array ) {
+                sort_results( $sub_array );
+            }
+        }
+        elseif ( array_key_exists( 'tasks', $data ) && ! empty( $data['tasks'] ) ) {
+            // Use elseif here because if we have taskgroups we don't show tasks
+            usort( $data['tasks'], 'sort_by_order' );
+        }
+    }
+}
+
+/**
+ * Sort array by item order parameter
+ *
+ * @param  array $a Item to compare.
+ * @param  array $b Item to compare.
+ * @return int
+ */
+function sort_by_order( $a, $b ) {
+    return $a['order'] - $b['order'];
+}
+
+/**
+ * Get age groups from the api
+ *
+ * @param  bool $filter Whether we should filter the results to the current language.
+ * @return array
+ */
+function get_age_groups( bool $filter = false ) : array {
+    $ohjelma_json = get_field( 'ohjelma-json', 'option' );
+    $program      = \POF\Api::get( $ohjelma_json, true )['program'];
+    $program      = $filter ? array_reduce( $program, 'filter_api_items', [] ) : $program;
+    $age_groups   = $program[0]['agegroups'];
+
+    usort( $age_groups, 'sort_by_order' );
+    sort_results( $age_groups );
+
+    return $age_groups;
+}
+
+/**
+ * Recursively filter api items and its child items to current language
+ * Should only be called via array_reduce
+ *
+ * @param  array $items Final result.
+ * @param  array $item  Api item to filter.
+ * @return array        Modified $items.
+ */
+function filter_api_items( array $items, array $item ) : array {
+    if ( array_key_exists( 'languages', $item ) ) {
+        $lang_exists = array_reduce( $item['languages'], 'languages_has_current', false );
+
+        if ( $lang_exists ) {
+            $keys_to_traverse = [
+                'agegroups',
+                'taskgroups',
+                'tasks',
+            ];
+            foreach ( $keys_to_traverse as $key ) {
+                if ( ! empty( $item[ $key ] ) ) {
+                    $item[ $key ] = array_reduce( $item[ $key ], 'filter_api_items', [] );
+                }
+            }
+            $items[] = $item;
+        }
+    }
+
+    return $items;
+}
+
+/**
+ * Check api items languages if it contains current language
+ * Should only be called via array_reduce
+ *
+ * @param  bool  $result True or false depending on if current language exists.
+ * @param  array $lang   Language to check.
+ * @return bool          Whether language exists.
+ */
+function languages_has_current( bool $result, array $lang ) {
+    return $result ? $result : $lang['lang'] === get_short_locale();
+}
+
+/**
+ * Flatten api program tree into a single array
+ *
+ * @return array Flattened tree.
+ */
+function get_flat_program_tree() {
+    // Retrieve the program tree from the api
+    $ohjelma_json = get_field( 'ohjelma-json', 'option' );
+    $program      = \POF\Api::get( $ohjelma_json, true );
+    $tree         = $program['program'][0];
+
+    $flattened = [];
+    /**
+     * Recursively add api item to flattened array
+     *
+     * @param array  $item      Item to add.
+     * @param array  $flattened Array to gather items to.
+     * @param string $parent    Parent guid.
+     */
+    function add_to_flattened( $item, &$flattened, $parent = null ) {
+        $item['parent']  = $parent;
+        $items_to_search = [
+            'taskgroups',
+            'tasks',
+            'agegroups',
+        ];
+        foreach ( $items_to_search as $key ) {
+            if ( array_key_exists( $key, $item ) ) {
+                foreach ( $item[ $key ] as $new_item ) {
+                    add_to_flattened( $new_item, $flattened, $item['guid'] );
+                }
+
+                // Collapse sub items to just their guid's
+                $item[ $key ] = array_map(function( $item ) {
+                    return $item['guid'];
+                }, $item[ $key ]);
+            }
+        }
+        $flattened[ $item['guid'] ] = $item;
+    }
+    add_to_flattened( $tree, $flattened );
+
+    return $flattened;
+}
+
+/**
+ * Parse item from data by path
+ *
+ * @param  string $path Dot separated path to item.
+ * @param  array  $item Items to search for path.
+ * @return mixed        Item found in path or null.
+ */
+function parse_path( string $path, array $item ) {
+    $path = explode( '.', $path );
+    foreach ( $path as $key ) {
+        if ( array_key_exists( $key, $item ) ) {
+            $item = $item[ $key ];
+        }
+        else {
+            return null;
+        }
+    }
+
+    return $item;
 }

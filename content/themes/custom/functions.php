@@ -9,9 +9,6 @@ function err($str) {
 // Instantiate DustPress
 dustpress();
 
-// Enable dustpress cache
-add_filter( 'dustpress/settings/cache', '__return_true' );
-
 // Add geniem functions
 include_once( 'functions/function-geniem_admin.php' );
 
@@ -43,10 +40,13 @@ include_once( 'functions/function-api_data_helpers.php' );
 include_once( 'functions/function-lang_helpers.php' );
 
 // Menu functions
-include_once( 'functions/function-menus.php' );
+require_once 'functions/class-menu.php';
 
 // Search functions
 include_once( 'functions/function-search.php' );
+
+// Dustpress helpers
+include_once( 'functions/function-dustpress-helpers.php' );
 
 // Dustpress apiimage helper & filter
 include_once( 'functions/function-api_image_helper.php' );
@@ -54,10 +54,23 @@ include_once( 'functions/function-api_image_helper.php' );
 // Post seo description generation
 include_once( 'functions/function-post-description.php' );
 
+// SEO helpers
+include_once( 'functions/function-seo-helpers.php' );
+
 // manifest.json handler
 include_once( 'functions/function-manifest.php' );
 
+// Api call helper class
+include_once( 'functions/class-api.php' );
 
+// Translation helper
+require_once 'functions/function-program_lang_helper.php';
+
+// Complete api translation retriever
+require_once 'functions/class-apitranslation.php';
+
+// Complete api icon retriever
+require_once 'functions/class-apiicon.php';
 
 /*
  * Fixes missing field key mappings in postmeta table for pages

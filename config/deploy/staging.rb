@@ -1,1 +1,0 @@
-loadFile 'config/staging.rb'

@@ -7,7 +7,7 @@
  * Match manifest.json query for all or no language
  */
 add_action( 'init', function() {
-    add_rewrite_rule( '^(fi|en|sv|)(?:/|)manifest.json?', 'index.php?manifest=true&lang=$matches[1]', 'top' );
+    add_rewrite_rule( '^([a-z]*)(?:/|)manifest.json?', 'index.php?manifest=true&lang=$matches[1]', 'top' );
 });
 
 /**

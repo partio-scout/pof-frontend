@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?dwc1sy');
-  src:  url('fonts/icomoon.eot?dwc1sy#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?dwc1sy') format('truetype'),
-    url('fonts/icomoon.woff?dwc1sy') format('woff'),
-    url('fonts/icomoon.svg?dwc1sy#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?5pf3pf');
+  src:  url('fonts/icomoon.eot?5pf3pf#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?5pf3pf') format('truetype'),
+    url('fonts/icomoon.woff?5pf3pf') format('woff'),
+    url('fonts/icomoon.svg?5pf3pf#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,33 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-circle-o:before {
+  content: "\e913";
+}
+.icon-check-circle:before {
+  content: "\e90d";
+}
+.icon-check-square:before {
+  content: "\e90e";
+}
+.icon-square-o:before {
+  content: "\e90f";
+}
+.icon-minus:before {
+  content: "\e910";
+}
+.icon-plus:before {
+  content: "\e911";
+}
+.icon-cog:before {
+  content: "\e90c";
+}
+.icon-chevron-right:before {
+  content: "\e90a";
+}
+.icon-filter:before {
+  content: "\e90b";
+}
 .icon-flag:before {
   content: "\e909";
 }

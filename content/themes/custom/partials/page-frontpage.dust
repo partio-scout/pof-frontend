@@ -33,6 +33,13 @@
 									{featured_content|s}
 								</div>
 							</div>
+							<div class="hero__heading-group-search">
+								{#Languages}
+									{?current_lang}
+										{>"shared/search-section" is_frontpage="true" /}
+									{/current_lang}
+								{/Languages}
+							</div>
 						</div>
 					</div>
 					{/Content.fields.featured}

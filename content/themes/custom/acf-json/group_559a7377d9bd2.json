@@ -3,102 +3,6 @@
     "title": "Sivuston asetukset",
     "fields": [
         {
-            "key": "field_559a7d65d2f13",
-            "label": "Kieliversiot",
-            "name": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0
-        },
-        {
-            "key": "field_559a737dde24d",
-            "label": "Kielet",
-            "name": "kielet",
-            "type": "repeater",
-            "instructions": "Lis\u00e4\u00e4 t\u00e4h\u00e4n sivuston p\u00e4\u00e4kielet. Kirjoita kielen kaksikirjaiminen lyhenne isoilla kirjaimilla, esimerkiksi 'FI'.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "min": "",
-            "max": "",
-            "layout": "row",
-            "button_label": "Lis\u00e4\u00e4 rivi",
-            "sub_fields": [
-                {
-                    "key": "field_559a7416de24e",
-                    "label": "Kielilyhenne",
-                    "name": "kielilyhenne",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": 2,
-                    "readonly": 0,
-                    "disabled": 0
-                }
-            ]
-        },
-        {
-            "key": "field_559a7da0b3dfc",
-            "label": "Sis\u00e4lt\u00f6",
-            "name": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0
-        },
-        {
-            "key": "field_57cd8a6a0d114",
-            "label": "Etusivun karusellin vaihtov\u00e4li",
-            "name": "slider_time",
-            "type": "number",
-            "instructions": "Aseta luku sekunneissa mink\u00e4 v\u00e4lein etusivun karuselli vaihtaa nostoa.",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": 10,
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "min": "",
-            "max": "",
-            "step": "",
-            "readonly": 0,
-            "disabled": 0
-        },
-        {
             "key": "field_559d20afda46a",
             "label": "API",
             "name": "",
@@ -119,15 +23,15 @@
             "label": "Ohjelma-JSON",
             "name": "ohjelma-json",
             "type": "url",
-            "instructions": "Url kohteeseen: SP:n ohjelma, JSON, t\u00e4ysi.",
-            "required": 1,
+            "instructions": "",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "default_value": "https:\/\/pof-backend.partio.fi\/spn-ohjelma-json-taysi\/?postGUID=86b5b30817ce3649e590c5059ec88921",
+            "default_value": "",
             "placeholder": ""
         },
         {
@@ -135,48 +39,85 @@
             "label": "Vinkit-JSON",
             "name": "tips-json",
             "type": "url",
-            "instructions": "Url kohteeseen: Vinkit, JSON, kaikki.",
-            "required": 1,
+            "instructions": "",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "default_value": "https:\/\/pof-backend.partio.fi\/json-vinkit-kaikki",
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_5b0e566792774",
+            "label": "Haku-JSON",
+            "name": "haku-json",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_5b0e568692775",
+            "label": "K\u00e4\u00e4nn\u00f6s-JSON",
+            "name": "kaannos-json",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_5b8e815aed879",
+            "label": "Icon-JSON",
+            "name": "icon-json",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
             "placeholder": ""
         },
         {
             "key": "field_57c66abf9293b",
             "label": "Vinkkien l\u00e4hetysosoite",
             "name": "tips-send-url",
-            "type": "url",
-            "instructions": "URL jonne vinkkiehdotukset l\u00e4hetet\u00e4\u00e4n hyv\u00e4ksytt\u00e4v\u00e4ksi.",
-            "required": 1,
+            "type": "text",
+            "instructions": "",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "default_value": "https:\/\/pof-backend.partio.fi\/lisaa-vinkki\/",
-            "placeholder": ""
-        },
-        {
-            "key": "field_5b052a477dca9",
-            "label": "Media",
-            "name": "media-url",
-            "type": "url",
-            "instructions": "URL josta haetaan ulkoisen median tiedot",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "https:\/\/pof-backend.partio.fi\/wp-json\/wp\/v2\/media\/",
-            "placeholder": ""
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "readonly": 0,
+            "disabled": 0
         },
         {
             "key": "field_57c6b36acafd4",
@@ -217,6 +158,45 @@
             "prepend": "",
             "append": "",
             "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
+            "key": "field_559a7da0b3dfc",
+            "label": "Sis\u00e4lt\u00f6",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_57cd8a6a0d114",
+            "label": "Etusivun karusellin vaihtov\u00e4li",
+            "name": "slider_time",
+            "type": "number",
+            "instructions": "Aseta luku sekunneissa mink\u00e4 v\u00e4lein etusivun karuselli vaihtaa nostoa.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 10,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": "",
             "readonly": 0,
             "disabled": 0
         },
@@ -275,5 +255,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1527065228
+    "modified": 1552309932
 }

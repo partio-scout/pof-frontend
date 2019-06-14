@@ -47,7 +47,7 @@
 			<div class="row tasks__heading-row">
 				<div class="columns small-12">
 					<h3 class="tasks__filter-heading opened">
-						{S.pakolliset} {Content.subtaskgroup_term.plural}<i class="icon-chevron-down"></i>
+						{@apitranslation path="yleiset.mandatory_plural" fallback="yleiset.mandatory_plural" /} {Content.subtaskgroup_term.plural}<i class="icon-chevron-down"></i>
 					</h3>
 				</div>
 			</div>
@@ -73,7 +73,7 @@
 			<div class="row tasks__heading-row">
 				<div class="columns small-12">
 					<h3 class="tasks__filter-heading opened">
-						{S.valinnaiset} {Content.subtaskgroup_term.plural}<i class="icon-chevron-down"></i>
+						{@apitranslation path="yleiset.optional_plural" fallback="yleiset.optional_plural" /} {Content.subtaskgroup_term.plural}<i class="icon-chevron-down"></i>
 					</h3>
 				</div>
 			</div>
