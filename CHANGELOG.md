@@ -5,6 +5,11 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Julkaisematta]
 
+## [1.3.1] - 2019-06-14
+
+### Korjattu
+- hotfixejä datan hakuun apista
+
 ## [1.3.0] - 2019-06-14
 
 ### Lisätty

@@ -36,12 +36,14 @@ class ApiTranslation extends Helper {
      * @return array
      */
     public static function get_translations() {
-        if ( empty( static::$translation ) ) {
+        if ( empty( static::$translations ) ) {
             // Get translations from the api and transform them into an easily searchable format
-            $kaannos_json         = get_field( 'kaannos-json', 'option' );
-            $translations         = \POF\Api::get( $kaannos_json, true );
-            $translations         = array_map( [ __CLASS__, 'map_get_translations' ], $translations );
-            static::$translations = $translations;
+            $kaannos_json = get_field( 'kaannos-json', 'option' );
+            if ( ! empty( $kaannos_json ) ) {
+                $translations         = \POF\Api::get( $kaannos_json, true ) ?? [];
+                $translations         = array_map( [ __CLASS__, 'map_get_translations' ], $translations );
+                static::$translations = $translations;
+            }
         }
 
         return static::$translations;
