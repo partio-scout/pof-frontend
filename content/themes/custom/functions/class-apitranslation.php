@@ -25,30 +25,9 @@ class ApiTranslation extends Helper {
     public function output() {
         $path        = $this->params->path;
         $fallback    = $this->params->fallback ?? null;
-        $translation = static::get_translation( $path ) ?: $fallback;
+        $translation = parse_path( $path, static::get_translations() ) ?: $fallback;
 
         return $translation;
-    }
-
-    /**
-     * Get translation with path
-     *
-     * @param  string $path Path to translation.
-     * @return mixed        Translation or null.
-     */
-    public static function get_translation( string $path ) {
-        $path = explode( '.', $path );
-        $item = static::get_translations();
-        foreach ( $path as $key ) {
-            if ( array_key_exists( $key, $item ) ) {
-                $item = $item[ $key ];
-            }
-            else {
-                return null;
-            }
-        }
-
-        return $item;
     }
 
     /**

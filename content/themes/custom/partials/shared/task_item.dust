@@ -4,7 +4,12 @@
 		{#fields.tags}
 			{#.values}
 				{?icon}
-					<div class="icon"><img src="{icon}" alt="{name}" title="{name}"></div>
+					<div class="icon">
+						<img
+							src="{@apiicon base=group_key guid=fields.api_guid icon=slug /}"
+							alt="{@apitranslation path="{group_key}.{slug}" fallback="{group_key}.{slug}" /}"
+							title="{@apitranslation path="{group_key}.{slug}" fallback="{group_key}.{slug}" /}">
+					</div>
 				{/icon}
 			{/.values}
 		{/fields.tags}
