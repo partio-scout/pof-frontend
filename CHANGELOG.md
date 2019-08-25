@@ -5,6 +5,9 @@ Perustuu projektiin [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Julkaisematta]
 
+### Korjattu
+- Lisätty toinen redis database constant index.php:n määrittelyihin
+
 ## [1.3.1] - 2019-06-14
 
 ### Korjattu
