@@ -35,7 +35,7 @@
     "michelangelo": "^0.5.1",
     "modernizr": "^3.6.0",
     "modernizr-loader": "^1.0.1",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "normalize-css": "^2.3.1",
     "postcss-loader": "^2.1.0",
     "resolve-url-loader": "^2.2.1",
